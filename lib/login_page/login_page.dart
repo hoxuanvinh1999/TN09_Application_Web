@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tn09_app_web_demo/home_screen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -101,6 +102,11 @@ class _LoginPageState extends State<LoginPage> {
                               size: 17,
                             ),
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              _password = value.trim();
+                            });
+                          },
                         ),
                       ),
                       Padding(
@@ -119,6 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 20,
                       ),
                       GestureDetector(
+                        onTap: () => _signin(_email, _password),
                         child: Container(
                           alignment: Alignment.center,
                           width: 300,
@@ -134,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ])),
                           child: Padding(
                             padding: EdgeInsets.all(12.0),
-                            child: Text('Log In',
+                            child: Text('Sign In',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
@@ -178,5 +185,22 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  _signin(String _email, String _password) async {
+    try {
+      //Create Get Firebase Auth User
+      await auth.signInWithEmailAndPassword(email: _email, password: _password);
+
+      //Success
+      Fluttertoast.showToast(
+          msg: 'Sign In Successed', gravity: ToastGravity.TOP);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => HomeScreen()));
+    } on FirebaseAuthException catch (error) {
+      //String msgerror = 'Error sign in';
+      Fluttertoast.showToast(
+          msg: (error.message).toString(), gravity: ToastGravity.TOP);
+    }
   }
 }
