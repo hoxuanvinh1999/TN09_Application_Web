@@ -152,6 +152,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 20),
                       GestureDetector(
+                        onTap: () {
+                          showSignUpDialog(context: context);
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           width: 300,
@@ -187,6 +190,129 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  showSignUpDialog({required BuildContext context}) {
+    String signupEmail = '';
+    String signupPassword = '';
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Container(
+              height: 480,
+              width: 400,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                children: [
+                  Positioned(
+                    right: 0.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.green,
+                          child: Icon(Icons.close, color: Colors.red),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Text(
+                    'Sign Up Form',
+                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Sign up to our DataBase',
+                    style: TextStyle(fontSize: 15, color: Colors.grey),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: 300,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Email Address',
+                        suffixIcon: Icon(
+                          FontAwesomeIcons.envelope,
+                          size: 17,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          signupEmail = value.trim();
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: 300,
+                    child: TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        suffixIcon: Icon(
+                          FontAwesomeIcons.eyeSlash,
+                          size: 17,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          signupPassword = value.trim();
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _signup(
+                          signupEmail: signupEmail,
+                          signupPassword: signupPassword);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 300,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color(0xFFBFAC97),
+                                Color(0xFF74B424),
+                                Color(0xFF94C21E),
+                              ])),
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Text('Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   _signin(String _email, String _password) async {
     try {
       //Create Get Firebase Auth User
@@ -201,6 +327,26 @@ class _LoginPageState extends State<LoginPage> {
       //String msgerror = 'Error sign in';
       Fluttertoast.showToast(
           msg: (error.message).toString(), gravity: ToastGravity.TOP);
+    }
+  }
+
+  _signup({required String signupEmail, required String signupPassword}) async {
+    try {
+      //Create Get Firebase Auth User
+      await auth.createUserWithEmailAndPassword(
+          email: signupEmail, password: signupPassword);
+
+      //Success
+      Fluttertoast.showToast(
+          msg: 'Sign Up Successed', gravity: ToastGravity.TOP);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => HomeScreen()));
+    } on FirebaseAuthException catch (error) {
+      //String msgerror = 'Error sign up';
+      Fluttertoast.showToast(
+        msg: (error.message).toString(),
+        gravity: ToastGravity.TOP,
+      );
     }
   }
 }
