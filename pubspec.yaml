@@ -42,6 +42,7 @@ dependencies:
   google_fonts: ^2.1.0
   font_awesome_flutter: ^9.1.0
   fluttertoast: ^8.0.8
+  pluto_menu_bar: ^0.1.4
 
 dev_dependencies:
   flutter_test:
