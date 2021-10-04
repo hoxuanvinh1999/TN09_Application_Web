@@ -3,7 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String _email = '';
+  String _password = '';
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +59,7 @@ class LoginPage extends StatelessWidget {
                     children: [
                       SizedBox(height: 30),
                       Text(
-                        'Login Page',
+                        'Log In Page',
                         style: TextStyle(
                             fontSize: 35, fontWeight: FontWeight.bold),
                       ),
@@ -59,7 +67,7 @@ class LoginPage extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        'Login to our DataBase',
+                        'Log into our DataBase',
                         style: TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                       SizedBox(
@@ -75,6 +83,11 @@ class LoginPage extends StatelessWidget {
                               size: 17,
                             ),
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              _email = value.trim();
+                            });
+                          },
                         ),
                       ),
                       Container(
@@ -121,7 +134,7 @@ class LoginPage extends StatelessWidget {
                                   ])),
                           child: Padding(
                             padding: EdgeInsets.all(12.0),
-                            child: Text('Login',
+                            child: Text('Log In',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
