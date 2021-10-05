@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tn09_app_web_demo/collecteur_page.dart';
 import 'dart:async';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -64,20 +66,42 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 20,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        showSubMenu1(context: context);
+                      },
                       child: Container(
                         alignment: Alignment.center,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.blue,
-                        ),
+                        width: 200,
+                        decoration: BoxDecoration(color: Colors.blue),
                         child: Padding(
-                          padding: EdgeInsets.all(18),
-                          child: Text('Button 1 Longll',
+                          padding: EdgeInsets.all(12.0),
+                          child: Text('Button1',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 15,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showSubMenu2(context: context);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 200,
+                        decoration: BoxDecoration(color: Colors.blue),
+                        child: Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Text('Button2',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               )),
                         ),
                       ),
@@ -90,5 +114,49 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  showSubMenu1({required BuildContext context}) {
+    return showDialog(
+        barrierColor: null,
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            alignment: Alignment(-1.045, -0.04),
+            child: Container(
+                height: 400,
+                width: 200,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [],
+                  ),
+                )),
+          );
+        });
+  }
+
+  showSubMenu2({required BuildContext context}) {
+    return showDialog(
+        barrierColor: null,
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            alignment: Alignment(-0.6, -0.04),
+            child: Container(
+                height: 400,
+                width: 200,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [],
+                  ),
+                )),
+          );
+        });
   }
 }
