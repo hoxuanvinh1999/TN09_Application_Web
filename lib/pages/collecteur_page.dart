@@ -12,7 +12,10 @@ class CollecteurPage extends StatefulWidget {
 }
 
 class _CollecteurPageState extends State<CollecteurPage> {
-  final auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference collecteur =
+      FirebaseFirestore.instance.collection("collecteur");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +32,28 @@ class _CollecteurPageState extends State<CollecteurPage> {
                 width: 600,
                 height: 600,
                 color: Colors.green,
+                child: FutureBuilder<DocumentSnapshot>(
+                  future: collecteur.doc('xFEa0QGtcZwZ348bu1pP').get(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      print('snapshot = $snapshot');
+                      return Text("Something went wrong");
+                    }
+
+                    if (snapshot.hasData && !snapshot.data!.exists) {
+                      return Text("Document does not exist");
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      Map<String, dynamic> data =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                      return Text("Full Name: ${data['nomcollecteur']}");
+                    }
+
+                    return Text("loading");
+                  },
+                ),
               ),
             )
           ],
