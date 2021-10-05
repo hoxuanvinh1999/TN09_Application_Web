@@ -207,22 +207,22 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
               child: Column(
                 children: [
-                  Positioned(
-                    right: 0.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.green,
-                          child: Icon(Icons.close, color: Colors.red),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   right: 0.0,
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       Navigator.of(context).pop();
+                  //     },
+                  //     child: Align(
+                  //       alignment: Alignment.topRight,
+                  //       child: CircleAvatar(
+                  //         radius: 20,
+                  //         backgroundColor: Colors.green,
+                  //         child: Icon(Icons.close, color: Colors.red),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(height: 30),
                   Text(
                     'Sign Up Form',
