@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tn09_app_web_demo/collecteur_page.dart';
+import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 
 showSubMenu2({required BuildContext context}) {
   return showDialog(

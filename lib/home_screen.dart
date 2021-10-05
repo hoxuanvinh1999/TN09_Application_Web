@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tn09_app_web_demo/collecteur_page.dart';
+import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'dart:async';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:tn09_app_web_demo/menu.dart';
-import 'package:tn09_app_web_demo/showSubMenu1.dart';
+import 'package:tn09_app_web_demo/menu/menu.dart';
+import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

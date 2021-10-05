@@ -4,7 +4,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'dart:async';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:flutter/services.dart';
-import 'package:tn09_app_web_demo/menu.dart';
+import 'package:tn09_app_web_demo/menu/menu.dart';
 
 class CollecteurPage extends StatefulWidget {
   @override
@@ -21,6 +21,16 @@ class _CollecteurPageState extends State<CollecteurPage> {
           children: [
             header(),
             menu(context: context),
+            SizedBox(height: 20),
+            Align(
+              alignment: Alignment(-0.9, 0),
+              child: Container(
+                margin: EdgeInsets.only(left: 20),
+                width: 600,
+                height: 600,
+                color: Colors.green,
+              ),
+            )
           ],
         ),
       ),
