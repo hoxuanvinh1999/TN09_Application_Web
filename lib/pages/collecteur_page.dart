@@ -246,6 +246,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                                   height: 20,
                                                                 ),
                                                                 Container(
+                                                                  //Date de naissance still bug
                                                                   width: 400,
                                                                   height: 100,
                                                                   color: Colors
@@ -377,8 +378,14 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                                             20),
                                                                 child:
                                                                     GestureDetector(
-                                                                  onTap: () {
-                                                                    _collecteur.add({
+                                                                  onTap:
+                                                                      () async {
+                                                                    //
+                                                                    await _collecteur
+                                                                        .doc(_collecteur
+                                                                            .doc()
+                                                                            .id)
+                                                                        .set({
                                                                       'nomCollecteur':
                                                                           _nomCollecteurController
                                                                               .text,
@@ -392,8 +399,12 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                                           .format(
                                                                               date)
                                                                           .toString(),
+                                                                      'idCollecteur':
+                                                                          _collecteur
+                                                                              .doc()
+                                                                              .id
                                                                     }).then(
-                                                                        (value) {
+                                                                            (value) {
                                                                       _nomCollecteurController
                                                                           .text = '';
                                                                       _prenomCollecteurController
@@ -403,8 +414,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
-                                                                    }).catchError(
-                                                                        (error) =>
+                                                                    }).catchError((error) =>
                                                                             print("Failed to add user: $error"));
                                                                   },
                                                                   child: Row(
