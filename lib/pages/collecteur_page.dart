@@ -387,8 +387,11 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                                               .text,
                                                                       'siteCollecteur':
                                                                           _siteCollecteur,
-                                                                      'datedeNaissance':
-                                                                          date.toString(),
+                                                                      'datedeNaissance': DateFormat(
+                                                                              'yMd')
+                                                                          .format(
+                                                                              date)
+                                                                          .toString(),
                                                                     }).then(
                                                                         (value) {
                                                                       _nomCollecteurController
