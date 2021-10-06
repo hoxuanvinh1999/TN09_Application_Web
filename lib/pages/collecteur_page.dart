@@ -380,42 +380,39 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                                     GestureDetector(
                                                                   onTap:
                                                                       () async {
-                                                                    //
-                                                                    await _collecteur
-                                                                        .doc(_collecteur
-                                                                            .doc()
-                                                                            .id)
-                                                                        .set({
-                                                                      'nomCollecteur':
-                                                                          _nomCollecteurController
-                                                                              .text,
-                                                                      'prenomCollecteur':
-                                                                          _prenomCollecteurController
-                                                                              .text,
-                                                                      'siteCollecteur':
-                                                                          _siteCollecteur,
-                                                                      'datedeNaissance': DateFormat(
-                                                                              'yMd')
-                                                                          .format(
-                                                                              date)
-                                                                          .toString(),
-                                                                      'idCollecteur':
-                                                                          _collecteur
+                                                                    if (_createCollecteurKeyForm
+                                                                        .currentState!
+                                                                        .validate()) {
+                                                                      await _collecteur
+                                                                          .doc(_collecteur
                                                                               .doc()
-                                                                              .id
-                                                                    }).then(
-                                                                            (value) {
-                                                                      _nomCollecteurController
-                                                                          .text = '';
-                                                                      _prenomCollecteurController
-                                                                          .text = '';
-                                                                      print(
-                                                                          "Collecteur Added");
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    }).catchError((error) =>
-                                                                            print("Failed to add user: $error"));
+                                                                              .id)
+                                                                          .set({
+                                                                        'nomCollecteur':
+                                                                            _nomCollecteurController.text,
+                                                                        'prenomCollecteur':
+                                                                            _prenomCollecteurController.text,
+                                                                        'siteCollecteur':
+                                                                            _siteCollecteur,
+                                                                        'datedeNaissance': DateFormat('yMd')
+                                                                            .format(date)
+                                                                            .toString(),
+                                                                        'idCollecteur': _collecteur
+                                                                            .doc()
+                                                                            .id
+                                                                      }).then(
+                                                                              (value) {
+                                                                        _nomCollecteurController.text =
+                                                                            '';
+                                                                        _prenomCollecteurController.text =
+                                                                            '';
+                                                                        print(
+                                                                            "Collecteur Added");
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      }).catchError((error) =>
+                                                                              print("Failed to add user: $error"));
+                                                                    }
                                                                   },
                                                                   child: Row(
                                                                     children: [
