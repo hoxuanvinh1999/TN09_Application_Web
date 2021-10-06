@@ -18,6 +18,10 @@ class _CollecteurPageState extends State<CollecteurPage> {
   List<String> list_site = ['Bordeaux', 'Etc', 'ectcect'];
   TextEditingController _nomCollecteurController = TextEditingController();
   TextEditingController _prenomCollecteurController = TextEditingController();
+  TextEditingController _nomModifyCollecteurController =
+      TextEditingController();
+  TextEditingController _prenomModifyCollecteurController =
+      TextEditingController();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference _collecteur =
       FirebaseFirestore.instance.collection("Collecteur");
@@ -631,7 +635,9 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                               icon: const Icon(Icons.edit),
                                               tooltip: 'Modify Collecteur',
                                               onPressed: () {
-                                                //update later
+                                                showSignUpDialog(
+                                                    context: context,
+                                                    dataCollecteur: collecteur);
                                               },
                                             ),
                                           )
@@ -656,5 +662,277 @@ class _CollecteurPageState extends State<CollecteurPage> {
         ),
       ),
     );
+  }
+
+  showSignUpDialog(
+      {required BuildContext context, required Map dataCollecteur}) {
+    String siteModifyCollecteur = dataCollecteur['siteCollecteur'];
+    _nomModifyCollecteurController.text = dataCollecteur['nomCollecteur'];
+    _prenomModifyCollecteurController.text = dataCollecteur['prenomCollecteur'];
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              height: 600,
+              width: 800,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'Modify Collecteur',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    height: 400,
+                    color: Colors.green,
+                    child: Form(
+                        key: _modifyCollecteurKeyForm,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 400,
+                              color: Colors.red,
+                              child: TextFormField(
+                                controller: _nomModifyCollecteurController,
+                                decoration: InputDecoration(
+                                  labelText: 'Nom* :',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'This can not be null';
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 400,
+                              color: Colors.red,
+                              child: TextFormField(
+                                controller: _prenomModifyCollecteurController,
+                                decoration: InputDecoration(
+                                  labelText: 'Prenom* :',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'This can not be null';
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 400,
+                              height: 50,
+                              color: Colors.red,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.place,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text('Site',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(width: 10),
+                                  //dropdown have bug
+                                  DropdownButton<String>(
+                                      onChanged: (String? changedValue) {
+                                        setState(() {
+                                          _siteCollecteur = changedValue!;
+                                          print(
+                                              '$_siteCollecteur  $changedValue');
+                                        });
+                                      },
+                                      value: _siteCollecteur,
+                                      items: list_site.map((String value) {
+                                        return new DropdownMenuItem<String>(
+                                          value: value,
+                                          child: new Text(value),
+                                        );
+                                      }).toList()),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              //Date de naissance still bug
+                              width: 400,
+                              height: 100,
+                              color: Colors.blue,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today_rounded,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text('Date de Naissance',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    height: 50,
+                                    width: 150,
+                                    color: Colors.red,
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          pickDate(context);
+                                        },
+                                        child: Text(
+                                          DateFormat('yMd')
+                                              .format(date)
+                                              .toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        )),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        )),
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                _nomModifyCollecteurController.text = '';
+                                _prenomModifyCollecteurController.text = '';
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                //Update data
+                                await _collecteur
+                                    .where('idCollecteur',
+                                        isEqualTo:
+                                            dataCollecteur['idCollecteur'])
+                                    .limit(1)
+                                    .get()
+                                    .then((QuerySnapshot querySnapshot) {
+                                  querySnapshot.docs.forEach((doc) {
+                                    _collecteur.doc(doc.id).update({
+                                      'nomCollecteur':
+                                          _nomModifyCollecteurController.text,
+                                      'prenomCollecteur':
+                                          _prenomModifyCollecteurController
+                                              .text,
+                                      'siteCollecteur': _siteCollecteur,
+                                      'datedeNaissance': DateFormat('yMd')
+                                          .format(date)
+                                          .toString(),
+                                    }).then((value) {
+                                      _nomModifyCollecteurController.text = '';
+                                      _prenomModifyCollecteurController.text =
+                                          '';
+                                      print("Collecteur Update");
+                                      Navigator.of(context).pop();
+                                    }).catchError((error) =>
+                                        print("Failed to update user: $error"));
+                                  });
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
