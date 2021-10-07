@@ -13,6 +13,13 @@ class ContenantPage extends StatefulWidget {
 
 class _ContenantPageState extends State<ContenantPage> {
   final auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference _contenant =
+      FirebaseFirestore.instance.collection("Contenant");
+  Stream<QuerySnapshot> _contenantStream = FirebaseFirestore.instance
+      .collection("Contenant")
+      .orderBy('barCodeContenant')
+      .snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +128,7 @@ class _ContenantPageState extends State<ContenantPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 100,
+                                  width: 80,
                                 ),
                                 Text(
                                   'Type',
@@ -162,6 +169,124 @@ class _ContenantPageState extends State<ContenantPage> {
                             )
                           ],
                         )),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: _contenantStream,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Something went wrong');
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        // print('$snapshot');
+                        return Column(
+                          children: snapshot.data!.docs
+                              .map((DocumentSnapshot document) {
+                            Map<String, dynamic> contenant =
+                                document.data()! as Map<String, dynamic>;
+                            // print('$contenant');
+                            return Container(
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 100,
+                                          height: 50,
+                                          color: Colors.green,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                contenant['barCodeContenant'],
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 60,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 100,
+                                          height: 50,
+                                          color: Colors.green,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                contenant['typeContenant'],
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 50,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 100,
+                                          height: 50,
+                                          color: Colors.green,
+                                          child: Text(
+                                            contenant['statusContenant'],
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 100,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.green,
+                                          child: IconButton(
+                                            icon: const Icon(Icons.download),
+                                            tooltip: 'Modify Contenant',
+                                            onPressed: () {
+                                              // showModifyContenantDialog(
+                                              //     context: context,
+                                              //     dataContenant: contenant);
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    const Divider(
+                                      thickness: 5,
+                                    ),
+                                  ],
+                                ));
+                          }).toList(),
+                        );
+                      },
+                    ),
                   ]),
                 ))
           ],
