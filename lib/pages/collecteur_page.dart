@@ -15,7 +15,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
   final _createCollecteurKeyForm = GlobalKey<FormState>();
   final _modifyCollecteurKeyForm = GlobalKey<FormState>();
   String _siteCollecteur = 'Bordeaux';
-  List<String> list_site = ['Bordeaux', 'Etc', 'ectcect'];
+  List<String> list_site = ['Bordeaux', 'Paris', 'Lille'];
   TextEditingController _nomCollecteurController = TextEditingController();
   TextEditingController _prenomCollecteurController = TextEditingController();
   TextEditingController _nomModifyCollecteurController =
@@ -635,7 +635,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                               icon: const Icon(Icons.edit),
                                               tooltip: 'Modify Collecteur',
                                               onPressed: () {
-                                                showSignUpDialog(
+                                                showModifyCollecteurDialog(
                                                     context: context,
                                                     dataCollecteur: collecteur);
                                               },
@@ -664,7 +664,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
     );
   }
 
-  showSignUpDialog(
+  showModifyCollecteurDialog(
       {required BuildContext context, required Map dataCollecteur}) {
     String siteModifyCollecteur = dataCollecteur['siteCollecteur'];
     _nomModifyCollecteurController.text = dataCollecteur['nomCollecteur'];
