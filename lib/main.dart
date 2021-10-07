@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
+import 'package:tn09_app_web_demo/pages/contenant_page.dart';
 import 'package:tn09_app_web_demo/pages/vehicule_page.dart';
 
 void main() {
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: VehiculePage(),
+      home: ContenantPage(),
     );
   }
 }
