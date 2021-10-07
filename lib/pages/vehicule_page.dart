@@ -24,7 +24,7 @@ class _VehiculePageState extends State<VehiculePage> {
               alignment: Alignment(-0.9, 0),
               child: Container(
                   margin: EdgeInsets.only(left: 20),
-                  width: 600,
+                  width: 800,
                   height: 600,
                   color: Colors.green,
                   child: Column(
@@ -52,7 +52,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 280,
+                                  width: 500,
                                 ),
                                 Container(
                                     width: 150,
@@ -100,6 +100,75 @@ class _VehiculePageState extends State<VehiculePage> {
                           ],
                         ),
                       ),
+                      Container(
+                          color: Colors.red,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Icon(
+                                    FontAwesomeIcons.truck,
+                                    size: 17,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Nom Vehicule',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                  ),
+                                  Text(
+                                    'Immatriculation',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 150,
+                                  ),
+                                  Text(
+                                    'Site',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 150,
+                                  ),
+                                  Icon(
+                                    FontAwesomeIcons.sortNumericDown,
+                                    size: 17,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              const Divider(
+                                thickness: 5,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              )
+                            ],
+                          )),
                     ],
                   )),
             )
