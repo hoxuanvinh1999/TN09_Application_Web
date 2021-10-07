@@ -222,7 +222,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                           SizedBox(
                                             width: 20,
                                           ),
-                                          buildIcon(
+                                          buildVehiculeIcon(
                                               icontype:
                                                   vehicule['typeVehicule'],
                                               iconcolor:
@@ -745,7 +745,8 @@ class _VehiculePageState extends State<VehiculePage> {
             ));
   }
 
-  Widget buildIcon({required String icontype, required String iconcolor}) {
+  Widget buildVehiculeIcon(
+      {required String icontype, required String iconcolor}) {
     switch (icontype) {
       case 'camion':
         {
