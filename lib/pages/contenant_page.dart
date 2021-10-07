@@ -250,20 +250,30 @@ class _ContenantPageState extends State<ContenantPage> {
                                           width: 50,
                                         ),
                                         Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 100,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: Text(
-                                            contenant['statusContenant'],
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
+                                            alignment: Alignment(-1, 0.15),
+                                            width: 150,
+                                            height: 50,
+                                            color: Colors.green,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                buildStatusIcon(
+                                                    iconstatus: contenant[
+                                                        'statusContenant']),
+                                                Text(
+                                                  contenant['statusContenant'],
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            )),
                                         SizedBox(
-                                          width: 100,
+                                          width: 50,
                                         ),
                                         Container(
                                           alignment: Alignment(-1, 0.15),
@@ -550,5 +560,35 @@ class _ContenantPageState extends State<ContenantPage> {
             ),
           );
         });
+  }
+
+  Widget buildStatusIcon({required String iconstatus}) {
+    switch (iconstatus) {
+      case 'Disponible':
+        {
+          return Icon(
+            FontAwesomeIcons.check,
+            size: 17,
+            color: Colors.black,
+          );
+        }
+      case 'PasDisponible':
+        {
+          return Icon(
+            FontAwesomeIcons.times,
+            size: 17,
+            color: Colors.black,
+          );
+        }
+      default:
+        {
+          return Icon(
+            FontAwesomeIcons.question,
+            size: 17,
+            color: Colors.black,
+          );
+          ;
+        }
+    }
   }
 }
