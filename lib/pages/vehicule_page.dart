@@ -12,7 +12,7 @@ class VehiculePage extends StatefulWidget {
 }
 
 class _VehiculePageState extends State<VehiculePage> {
-  String _siteCollecteur = 'Bordeaux';
+  String _siteVehicule = 'Bordeaux';
   List<String> list_site = ['Bordeaux', 'Paris', 'Lille'];
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
@@ -193,9 +193,9 @@ class _VehiculePageState extends State<VehiculePage> {
                           return Column(
                             children: snapshot.data!.docs
                                 .map((DocumentSnapshot document) {
-                              Map<String, dynamic> collecteur =
+                              Map<String, dynamic> vehicule =
                                   document.data()! as Map<String, dynamic>;
-                              // print('$collecteur');
+                              // print('$vehicule');
                               return Container(
                                   color: Colors.white,
                                   child: Column(
@@ -211,6 +211,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                           Icon(
                                             FontAwesomeIcons.truck,
                                             size: 17,
+                                            color: Color(int.parse(
+                                                vehicule['colorIconVehicule'])),
                                           ),
                                           SizedBox(
                                             width: 10,
@@ -223,7 +225,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  collecteur['nomVehicule'],
+                                                  vehicule['nomVehicule'],
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 15,
@@ -244,7 +246,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  collecteur[
+                                                  vehicule[
                                                       'numeroImmatriculation'],
                                                   style: TextStyle(
                                                     color: Colors.black,
@@ -273,7 +275,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  collecteur['siteVehicule'],
+                                                  vehicule['siteVehicule'],
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 15,
@@ -297,7 +299,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  collecteur['orderVehicule'],
+                                                  vehicule['orderVehicule'],
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 15,
@@ -317,11 +319,11 @@ class _VehiculePageState extends State<VehiculePage> {
                                             color: Colors.green,
                                             child: IconButton(
                                               icon: const Icon(Icons.edit),
-                                              tooltip: 'Modify Collecteur',
+                                              tooltip: 'Modify Vehicule',
                                               onPressed: () {
                                                 // showSignUpDialog(
                                                 //     context: context,
-                                                //     dataCollecteur: collecteur);
+                                                //     dataVehicule: vehicule);
                                               },
                                             ),
                                           )
