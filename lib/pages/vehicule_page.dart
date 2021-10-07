@@ -14,6 +14,7 @@ class VehiculePage extends StatefulWidget {
 
 class _VehiculePageState extends State<VehiculePage> {
   final _createVehiculeKeyForm = GlobalKey<FormState>();
+  final _modifyVehiculeKeyForm = GlobalKey<FormState>();
   String _siteVehicule = 'Bordeaux';
   int _orderVehicule = 1;
   List<String> list_site = ['Bordeaux', 'Paris', 'Lille'];
@@ -23,6 +24,10 @@ class _VehiculePageState extends State<VehiculePage> {
   TextEditingController _numeroImmatriculationVehicule =
       TextEditingController();
   TextEditingController _typeVehiculeController = TextEditingController();
+  TextEditingController _nomModifyVehiculeController = TextEditingController();
+  TextEditingController _numeroModifyImmatriculationVehicule =
+      TextEditingController();
+  TextEditingController _typeModifyVehiculeController = TextEditingController();
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
   Stream<QuerySnapshot> _vehiculeStream = FirebaseFirestore.instance
@@ -330,9 +335,9 @@ class _VehiculePageState extends State<VehiculePage> {
                                               icon: const Icon(Icons.edit),
                                               tooltip: 'Modify Vehicule',
                                               onPressed: () {
-                                                // showSignUpDialog(
-                                                //     context: context,
-                                                //     dataVehicule: vehicule);
+                                                showModifyVehiculeDialog(
+                                                    context: context,
+                                                    dataVehicule: vehicule);
                                               },
                                             ),
                                           )
@@ -557,7 +562,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                         alignment: Alignment(-0.8, 0),
                                         width: 150,
                                         decoration: BoxDecoration(
-                                            color: Colors.yellow,
+                                            //bug color not change
+                                            color: _colorVehicule,
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         child: GestureDetector(
@@ -775,5 +781,372 @@ class _VehiculePageState extends State<VehiculePage> {
           ;
         }
     }
+  }
+
+  showModifyVehiculeDialog(
+      {required BuildContext context, required Map dataVehicule}) {
+    String _siteModifyVehicule = dataVehicule['siteVehicule'];
+    int _orderModifyVehicule = int.parse(dataVehicule['orderVehicule']);
+    _nomModifyVehiculeController.text = dataVehicule['nomVehicule'];
+    _numeroModifyImmatriculationVehicule.text =
+        dataVehicule['numeroImmatriculation'];
+    _typeModifyVehiculeController.text = dataVehicule['typeVehicule'];
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              height: 800,
+              width: 800,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                        height: 80,
+                        alignment: Alignment(-0.9, 0),
+                        color: Colors.blue,
+                        child: Text(
+                          'Modify Vehicule',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                        )),
+                    Divider(
+                      thickness: 5,
+                    ),
+                    Container(
+                      height: 450,
+                      color: Colors.green,
+                      child: Form(
+                          key: _modifyVehiculeKeyForm,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _nomModifyVehiculeController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Nom Vehicule* :',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller:
+                                      _numeroModifyImmatriculationVehicule,
+                                  decoration: InputDecoration(
+                                    labelText: 'Immatriculation* :',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _typeModifyVehiculeController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Type* :',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                height: 50,
+                                color: Colors.red,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.place,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('Site',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600)),
+                                    SizedBox(width: 10),
+                                    //dropdown have bug
+                                    DropdownButton<String>(
+                                        onChanged: (String? changedValue) {
+                                          setState(() {
+                                            _siteModifyVehicule = changedValue!;
+                                            // print(
+                                            //     '$_siteVehicule  $changedValue');
+                                          });
+                                        },
+                                        value: _siteModifyVehicule,
+                                        items: list_site.map((String value) {
+                                          return new DropdownMenuItem<String>(
+                                            value: value,
+                                            child: new Text(value),
+                                          );
+                                        }).toList()),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                height: 50,
+                                color: Colors.red,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.sortNumericDown,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('Order',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600)),
+                                    SizedBox(width: 10),
+                                    //dropdown have bug
+                                    DropdownButton<int>(
+                                        onChanged: (int? changedValue) {
+                                          setState(() {
+                                            _orderModifyVehicule =
+                                                changedValue!;
+                                            // print(
+                                            //     '$_orderVehicule  $changedValue');
+                                          });
+                                        },
+                                        value: _orderModifyVehicule,
+                                        items: list_order.map((int value) {
+                                          return new DropdownMenuItem<int>(
+                                            value: value,
+                                            child: new Text('$value'),
+                                          );
+                                        }).toList()),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                height: 50,
+                                color: Colors.red,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.fillDrip,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('Color',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600)),
+                                    SizedBox(width: 10),
+                                    Container(
+                                        alignment: Alignment(-0.8, 0),
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            //bug color not change
+                                            color: _colorVehicule,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            pickColor(context);
+                                          },
+                                          child: Text(
+                                            'Pick Color',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          )),
+                    ),
+                    Divider(
+                      thickness: 5,
+                    ),
+                    Container(
+                      width: 800,
+                      height: 80,
+                      color: Colors.red,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 400,
+                          ),
+                          Container(
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.circular(10)),
+                              margin: const EdgeInsets.only(
+                                  right: 10, top: 20, bottom: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _nomModifyVehiculeController.text = '';
+                                  _numeroModifyImmatriculationVehicule.text =
+                                      '';
+                                  _siteModifyVehicule = 'Bordeaux';
+                                  _typeModifyVehiculeController.text = '';
+                                  _orderModifyVehicule = 1;
+                                  _colorVehicule = Colors.red;
+                                  Navigator.of(context).pop();
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          Container(
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.circular(10)),
+                              margin: const EdgeInsets.only(
+                                  right: 10, top: 20, bottom: 20),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  if (_modifyVehiculeKeyForm.currentState!
+                                      .validate()) {
+                                    if (_typeVehiculeController.text == '') {
+                                      _typeVehiculeController.text = 'null';
+                                    }
+                                    await _vehicule
+                                        .where('idVehicule',
+                                            isEqualTo:
+                                                dataVehicule['idVehicule'])
+                                        .limit(1)
+                                        .get()
+                                        .then((QuerySnapshot querySnapshot) {
+                                      querySnapshot.docs.forEach((doc) {
+                                        _vehicule.doc(doc.id).update({
+                                          'nomVehicule':
+                                              _nomModifyVehiculeController.text,
+                                          'numeroImmatriculation':
+                                              _numeroModifyImmatriculationVehicule
+                                                  .text,
+                                          'siteVehicule': _siteModifyVehicule,
+                                          'typeVehicule':
+                                              _typeModifyVehiculeController.text
+                                                  .toLowerCase(),
+                                          'orderVehicule':
+                                              _orderModifyVehicule.toString(),
+                                          'colorIconVehicule': _colorVehicule
+                                              .toString()
+                                              .substring(6, 16),
+                                        }).then((value) {
+                                          _nomModifyVehiculeController.text =
+                                              '';
+                                          _numeroModifyImmatriculationVehicule
+                                              .text = '';
+                                          _typeModifyVehiculeController.text =
+                                              '';
+                                          _colorVehicule = Colors.red;
+                                          print("Vehicule MOdified");
+                                          Navigator.of(context).pop();
+                                        }).catchError((error) => print(
+                                            "Failed to update user: $error"));
+                                      });
+                                    });
+                                  }
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Save',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
