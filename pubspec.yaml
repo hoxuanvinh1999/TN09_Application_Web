@@ -45,6 +45,7 @@ dependencies:
   pluto_menu_bar: ^0.1.4
   get: ^4.3.8
   cloud_firestore: ^2.5.3
+  flutter_colorpicker: ^0.6.0
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class VehiculePage extends StatefulWidget {
   @override
@@ -17,9 +18,11 @@ class _VehiculePageState extends State<VehiculePage> {
   int _orderVehicule = 1;
   List<String> list_site = ['Bordeaux', 'Paris', 'Lille'];
   List<int> list_order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  Color _colorVehicule = Colors.red;
   TextEditingController _nomVehiculeController = TextEditingController();
   TextEditingController _numeroImmatriculationVehicule =
       TextEditingController();
+  TextEditingController _typeVehiculeController = TextEditingController();
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
   Stream<QuerySnapshot> _vehiculeStream = FirebaseFirestore.instance
@@ -39,7 +42,7 @@ class _VehiculePageState extends State<VehiculePage> {
               child: Container(
                   margin: EdgeInsets.only(left: 20),
                   width: 800,
-                  height: 600,
+                  height: 1000,
                   color: Colors.green,
                   child: Column(
                     children: [
@@ -214,12 +217,12 @@ class _VehiculePageState extends State<VehiculePage> {
                                           SizedBox(
                                             width: 20,
                                           ),
-                                          Icon(
-                                            FontAwesomeIcons.truck,
-                                            size: 17,
-                                            color: Color(int.parse(
-                                                vehicule['colorIconVehicule'])),
-                                          ),
+                                          buildIcon(
+                                              icontype:
+                                                  vehicule['typeVehicule'],
+                                              iconcolor:
+                                                  vehicule['colorIconVehicule']
+                                                      .toUpperCase()),
                                           SizedBox(
                                             width: 10,
                                           ),
@@ -362,279 +365,415 @@ class _VehiculePageState extends State<VehiculePage> {
         builder: (BuildContext context) {
           return Dialog(
             child: Container(
-              height: 600,
+              height: 800,
               width: 800,
               decoration: BoxDecoration(
                 color: Colors.white,
               ),
-              child: Column(
-                children: [
-                  Container(
-                      height: 80,
-                      alignment: Alignment(-0.9, 0),
-                      color: Colors.blue,
-                      child: Text(
-                        'New Vehicule',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      )),
-                  Divider(
-                    thickness: 5,
-                  ),
-                  Container(
-                    height: 400,
-                    color: Colors.green,
-                    child: Form(
-                        key: _createVehiculeKeyForm,
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 400,
-                              color: Colors.red,
-                              child: TextFormField(
-                                controller: _nomVehiculeController,
-                                decoration: InputDecoration(
-                                  labelText: 'Nom Vehicule* :',
-                                ),
-                                validator: (value) {
-                                  if (value == null ||
-                                      value.isEmpty ||
-                                      value == '') {
-                                    return 'This can not be null';
-                                  }
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: 400,
-                              color: Colors.red,
-                              child: TextFormField(
-                                controller: _numeroImmatriculationVehicule,
-                                decoration: InputDecoration(
-                                  labelText: 'Immatriculation* :',
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'This can not be null';
-                                  }
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: 400,
-                              color: Colors.red,
-                              child: TextFormField(
-                                controller: _typeVehiculeController,
-                                decoration: InputDecoration(
-                                  labelText: 'Type* :',
-                                ),
-                                validator: (value) {
-                                  if (value == null ||
-                                      value.isEmpty ||
-                                      value == '') {
-                                    return 'This can not be null';
-                                  }
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: 400,
-                              height: 50,
-                              color: Colors.red,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.place,
-                                    size: 30,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text('Site',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600)),
-                                  SizedBox(width: 10),
-                                  //dropdown have bug
-                                  DropdownButton<String>(
-                                      onChanged: (String? changedValue) {
-                                        setState(() {
-                                          _siteVehicule = changedValue!;
-                                          print(
-                                              '$_siteVehicule  $changedValue');
-                                        });
-                                      },
-                                      value: _siteVehicule,
-                                      items: list_site.map((String value) {
-                                        return new DropdownMenuItem<String>(
-                                          value: value,
-                                          child: new Text(value),
-                                        );
-                                      }).toList()),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: 400,
-                              height: 50,
-                              color: Colors.red,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.place,
-                                    size: 30,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text('Order',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600)),
-                                  SizedBox(width: 10),
-                                  //dropdown have bug
-                                  DropdownButton<int>(
-                                      onChanged: (int? changedValue) {
-                                        setState(() {
-                                          _orderVehicule = changedValue!;
-                                          print(
-                                              '$_orderVehicule  $changedValue');
-                                        });
-                                      },
-                                      value: _orderVehicule,
-                                      items: list_order.map((int value) {
-                                        return new DropdownMenuItem<int>(
-                                          value: value,
-                                          child: new Text('$value'),
-                                        );
-                                      }).toList()),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                          ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                        height: 80,
+                        alignment: Alignment(-0.9, 0),
+                        color: Colors.blue,
+                        child: Text(
+                          'New Vehicule',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
                         )),
-                  ),
-                  Divider(
-                    thickness: 5,
-                  ),
-                  Container(
-                    width: 800,
-                    height: 80,
-                    color: Colors.red,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 400,
-                        ),
-                        Container(
-                            width: 150,
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: const EdgeInsets.only(
-                                right: 10, top: 20, bottom: 20),
-                            child: GestureDetector(
-                              onTap: () {
-                                _nomVehiculeController.text = '';
-                                _numeroImmatriculationVehicule.text = '';
-                                Navigator.of(context).pop();
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                        Container(
-                            width: 150,
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: const EdgeInsets.only(
-                                right: 10, top: 20, bottom: 20),
-                            child: GestureDetector(
-                              onTap: () async {
-                                if (_createVehiculeKeyForm.currentState!
-                                    .validate()) {
-                                  await _vehicule.doc(_vehicule.doc().id).set({
-                                    'nomVehicule': _nomVehiculeController.text,
-                                    'numeroImmatriculation':
-                                        _numeroImmatriculationVehicule.text,
-                                    'siteVehicule': _siteVehicule,
-                                    'typeVehicule': _typeVehiculeController.text
-                                        .toLowerCase(),
-                                    'orderVehicule': _orderVehicule.toString(),
-                                    'idVehicule': _vehicule.doc().id
-                                  }).then((value) {
-                                    _nomVehiculeController.text = '';
-                                    _numeroImmatriculationVehicule.text = '';
-                                    _typeVehiculeController.text = '';
-                                    print("Vehicule Added");
-                                    Navigator.of(context).pop();
-                                  }).catchError((error) =>
-                                      print("Failed to add user: $error"));
-                                }
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Save',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                      ],
+                    Divider(
+                      thickness: 5,
                     ),
-                  ),
-                ],
+                    Container(
+                      height: 450,
+                      color: Colors.green,
+                      child: Form(
+                          key: _createVehiculeKeyForm,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _nomVehiculeController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Nom Vehicule* :',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _numeroImmatriculationVehicule,
+                                  decoration: InputDecoration(
+                                    labelText: 'Immatriculation* :',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _typeVehiculeController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Type* :',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                height: 50,
+                                color: Colors.red,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.place,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('Site',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600)),
+                                    SizedBox(width: 10),
+                                    //dropdown have bug
+                                    DropdownButton<String>(
+                                        onChanged: (String? changedValue) {
+                                          setState(() {
+                                            _siteVehicule = changedValue!;
+                                            // print(
+                                            //     '$_siteVehicule  $changedValue');
+                                          });
+                                        },
+                                        value: _siteVehicule,
+                                        items: list_site.map((String value) {
+                                          return new DropdownMenuItem<String>(
+                                            value: value,
+                                            child: new Text(value),
+                                          );
+                                        }).toList()),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                height: 50,
+                                color: Colors.red,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.sortNumericDown,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('Order',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600)),
+                                    SizedBox(width: 10),
+                                    //dropdown have bug
+                                    DropdownButton<int>(
+                                        onChanged: (int? changedValue) {
+                                          setState(() {
+                                            _orderVehicule = changedValue!;
+                                            // print(
+                                            //     '$_orderVehicule  $changedValue');
+                                          });
+                                        },
+                                        value: _orderVehicule,
+                                        items: list_order.map((int value) {
+                                          return new DropdownMenuItem<int>(
+                                            value: value,
+                                            child: new Text('$value'),
+                                          );
+                                        }).toList()),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                height: 50,
+                                color: Colors.red,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.fillDrip,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('Color',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600)),
+                                    SizedBox(width: 10),
+                                    Container(
+                                        alignment: Alignment(-0.8, 0),
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            color: Colors.yellow,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            pickColor(context);
+                                          },
+                                          child: Text(
+                                            'Pick Color',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          )),
+                    ),
+                    Divider(
+                      thickness: 5,
+                    ),
+                    Container(
+                      width: 800,
+                      height: 80,
+                      color: Colors.red,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 400,
+                          ),
+                          Container(
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.circular(10)),
+                              margin: const EdgeInsets.only(
+                                  right: 10, top: 20, bottom: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _nomVehiculeController.text = '';
+                                  _numeroImmatriculationVehicule.text = '';
+                                  _siteVehicule = 'Bordeaux';
+                                  _typeVehiculeController.text = '';
+                                  _orderVehicule = 1;
+                                  _colorVehicule = Colors.red;
+                                  Navigator.of(context).pop();
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          Container(
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.circular(10)),
+                              margin: const EdgeInsets.only(
+                                  right: 10, top: 20, bottom: 20),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  if (_createVehiculeKeyForm.currentState!
+                                      .validate()) {
+                                    if (_typeVehiculeController.text == '') {
+                                      _typeVehiculeController.text = 'null';
+                                    }
+                                    await _vehicule
+                                        .doc(_vehicule.doc().id)
+                                        .set({
+                                      'nomVehicule':
+                                          _nomVehiculeController.text,
+                                      'numeroImmatriculation':
+                                          _numeroImmatriculationVehicule.text,
+                                      'siteVehicule': _siteVehicule,
+                                      'typeVehicule': _typeVehiculeController
+                                          .text
+                                          .toLowerCase(),
+                                      'orderVehicule':
+                                          _orderVehicule.toString(),
+                                      'colorIconVehicule': _colorVehicule
+                                          .toString()
+                                          .substring(6, 16),
+                                      'idVehicule': _vehicule.doc().id
+                                    }).then((value) {
+                                      _nomVehiculeController.text = '';
+                                      _numeroImmatriculationVehicule.text = '';
+                                      _typeVehiculeController.text = '';
+                                      _colorVehicule = Colors.red;
+                                      print("Vehicule Added");
+                                      Navigator.of(context).pop();
+                                    }).catchError((error) => print(
+                                            "Failed to add user: $error"));
+                                  }
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Save',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
         });
+  }
+
+  pickColor(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Select Color For Icon Vehicule'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ColorPicker(
+                      pickerColor: _colorVehicule,
+                      onColorChanged: (color) {
+                        // print('color Vehicule: ${_colorVehicule.toString()}');
+                        // print('color : ${_colorVehicule.toString()}');
+                        setState(() {
+                          this._colorVehicule = color;
+                        });
+                      }),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextButton(
+                    child: Text(
+                      'Select',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () {
+                      // print('${_colorVehicule.toString()}');
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  Widget buildIcon({required String icontype, required String iconcolor}) {
+    switch (icontype) {
+      case 'camion':
+        {
+          return Icon(
+            FontAwesomeIcons.truck,
+            size: 17,
+            color: Color(int.parse(iconcolor)),
+          );
+        }
+      case 'velo':
+        {
+          return Icon(
+            FontAwesomeIcons.bicycle,
+            size: 17,
+            color: Color(int.parse(iconcolor)),
+          );
+        }
+      case 'voiture':
+        {
+          return Icon(
+            FontAwesomeIcons.car,
+            size: 17,
+            color: Color(int.parse(iconcolor)),
+          );
+        }
+      default:
+        {
+          return Icon(
+            FontAwesomeIcons.truck,
+            size: 17,
+            color: Color(int.parse(iconcolor)),
+          );
+          ;
+        }
+    }
   }
 }
