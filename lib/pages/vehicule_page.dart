@@ -12,6 +12,14 @@ class VehiculePage extends StatefulWidget {
 }
 
 class _VehiculePageState extends State<VehiculePage> {
+  String _siteCollecteur = 'Bordeaux';
+  List<String> list_site = ['Bordeaux', 'Paris', 'Lille'];
+  CollectionReference _vehicule =
+      FirebaseFirestore.instance.collection("Vehicule");
+  Stream<QuerySnapshot> _vehiculeStream = FirebaseFirestore.instance
+      .collection("Vehicule")
+      .orderBy('orderVehicule')
+      .snapshots();
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -139,7 +147,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 150,
+                                    width: 100,
                                   ),
                                   Text(
                                     'Site',
@@ -169,6 +177,168 @@ class _VehiculePageState extends State<VehiculePage> {
                               )
                             ],
                           )),
+                      StreamBuilder<QuerySnapshot>(
+                        stream: _vehiculeStream,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Something went wrong');
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          }
+                          // print('$snapshot');
+                          return Column(
+                            children: snapshot.data!.docs
+                                .map((DocumentSnapshot document) {
+                              Map<String, dynamic> collecteur =
+                                  document.data()! as Map<String, dynamic>;
+                              // print('$collecteur');
+                              return Container(
+                                  color: Colors.white,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Icon(
+                                            FontAwesomeIcons.truck,
+                                            size: 17,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            alignment: Alignment(-1, 0.15),
+                                            width: 100,
+                                            height: 50,
+                                            color: Colors.green,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  collecteur['nomVehicule'],
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 100,
+                                          ),
+                                          Container(
+                                            alignment: Alignment(-1, 0.15),
+                                            width: 100,
+                                            height: 50,
+                                            color: Colors.green,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  collecteur[
+                                                      'numeroImmatriculation'],
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 120,
+                                          ),
+                                          Container(
+                                            alignment: Alignment(-1, 0.15),
+                                            width: 150,
+                                            height: 50,
+                                            color: Colors.green,
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.place,
+                                                  color: Colors.black,
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  collecteur['siteVehicule'],
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 50,
+                                          ),
+                                          Container(
+                                            alignment: Alignment(-1, 0.15),
+                                            width: 30,
+                                            height: 50,
+                                            color: Colors.green,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  collecteur['orderVehicule'],
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 40,
+                                          ),
+                                          Container(
+                                            alignment: Alignment(-1, 0.15),
+                                            width: 50,
+                                            height: 50,
+                                            color: Colors.green,
+                                            child: IconButton(
+                                              icon: const Icon(Icons.edit),
+                                              tooltip: 'Modify Collecteur',
+                                              onPressed: () {
+                                                // showSignUpDialog(
+                                                //     context: context,
+                                                //     dataCollecteur: collecteur);
+                                              },
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      const Divider(
+                                        thickness: 5,
+                                      ),
+                                    ],
+                                  ));
+                            }).toList(),
+                          );
+                        },
+                      ),
                     ],
                   )),
             )
