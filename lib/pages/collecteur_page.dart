@@ -108,351 +108,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                         right: 10, top: 20, bottom: 20),
                                     child: GestureDetector(
                                       onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Dialog(
-                                                child: Container(
-                                                  height: 600,
-                                                  width: 800,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                          height: 80,
-                                                          alignment: Alignment(
-                                                              -0.9, 0),
-                                                          color: Colors.blue,
-                                                          child: Text(
-                                                            'New Collecteur',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 20,
-                                                            ),
-                                                          )),
-                                                      Divider(
-                                                        thickness: 5,
-                                                      ),
-                                                      Container(
-                                                        height: 400,
-                                                        color: Colors.green,
-                                                        child: Form(
-                                                            key:
-                                                                _createCollecteurKeyForm,
-                                                            child: Column(
-                                                              children: [
-                                                                Container(
-                                                                  width: 400,
-                                                                  color: Colors
-                                                                      .red,
-                                                                  child:
-                                                                      TextFormField(
-                                                                    controller:
-                                                                        _nomCollecteurController,
-                                                                    decoration:
-                                                                        InputDecoration(
-                                                                      labelText:
-                                                                          'Nom* :',
-                                                                    ),
-                                                                    validator:
-                                                                        (value) {
-                                                                      if (value ==
-                                                                              null ||
-                                                                          value
-                                                                              .isEmpty) {
-                                                                        return 'This can not be null';
-                                                                      }
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 20,
-                                                                ),
-                                                                Container(
-                                                                  width: 400,
-                                                                  color: Colors
-                                                                      .red,
-                                                                  child:
-                                                                      TextFormField(
-                                                                    controller:
-                                                                        _prenomCollecteurController,
-                                                                    decoration:
-                                                                        InputDecoration(
-                                                                      labelText:
-                                                                          'Prenom* :',
-                                                                    ),
-                                                                    validator:
-                                                                        (value) {
-                                                                      if (value ==
-                                                                              null ||
-                                                                          value
-                                                                              .isEmpty) {
-                                                                        return 'This can not be null';
-                                                                      }
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 20,
-                                                                ),
-                                                                Container(
-                                                                  width: 400,
-                                                                  height: 50,
-                                                                  color: Colors
-                                                                      .red,
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .place,
-                                                                        size:
-                                                                            30,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      Text(
-                                                                          'Site',
-                                                                          style: TextStyle(
-                                                                              fontSize: 16,
-                                                                              color: Colors.black,
-                                                                              fontWeight: FontWeight.w600)),
-                                                                      SizedBox(
-                                                                          width:
-                                                                              10),
-                                                                      //dropdown have bug
-                                                                      DropdownButton<
-                                                                              String>(
-                                                                          onChanged: (String?
-                                                                              changedValue) {
-                                                                            setState(() {
-                                                                              _siteCollecteur = changedValue!;
-                                                                              print('$_siteCollecteur  $changedValue');
-                                                                            });
-                                                                          },
-                                                                          value:
-                                                                              _siteCollecteur,
-                                                                          items:
-                                                                              list_site.map((String value) {
-                                                                            return new DropdownMenuItem<String>(
-                                                                              value: value,
-                                                                              child: new Text(value),
-                                                                            );
-                                                                          }).toList()),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 20,
-                                                                ),
-                                                                Container(
-                                                                  //Date de naissance still bug
-                                                                  width: 400,
-                                                                  height: 100,
-                                                                  color: Colors
-                                                                      .blue,
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .calendar_today_rounded,
-                                                                        size:
-                                                                            30,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      Text(
-                                                                          'Date de Naissance',
-                                                                          style: TextStyle(
-                                                                              fontSize: 16,
-                                                                              color: Colors.black,
-                                                                              fontWeight: FontWeight.w600)),
-                                                                      SizedBox(
-                                                                          width:
-                                                                              10),
-                                                                      Container(
-                                                                        height:
-                                                                            50,
-                                                                        width:
-                                                                            150,
-                                                                        color: Colors
-                                                                            .red,
-                                                                        child: ElevatedButton(
-                                                                            onPressed: () {
-                                                                              pickDate(context);
-                                                                            },
-                                                                            child: Text(
-                                                                              DateFormat('yMd').format(date).toString(),
-                                                                              style: TextStyle(color: Colors.black, fontSize: 15),
-                                                                            )),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            )),
-                                                      ),
-                                                      Divider(
-                                                        thickness: 5,
-                                                      ),
-                                                      Container(
-                                                        width: 800,
-                                                        height: 80,
-                                                        color: Colors.red,
-                                                        child: Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 400,
-                                                            ),
-                                                            Container(
-                                                                width: 150,
-                                                                decoration: BoxDecoration(
-                                                                    color: Colors
-                                                                        .yellow,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10)),
-                                                                margin:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        right:
-                                                                            10,
-                                                                        top: 20,
-                                                                        bottom:
-                                                                            20),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap: () {
-                                                                    _nomCollecteurController
-                                                                        .text = '';
-                                                                    _prenomCollecteurController
-                                                                        .text = '';
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                  },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .delete,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      Text(
-                                                                        'Cancel',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                )),
-                                                            Container(
-                                                                width: 150,
-                                                                decoration: BoxDecoration(
-                                                                    color: Colors
-                                                                        .yellow,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10)),
-                                                                margin:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        right:
-                                                                            10,
-                                                                        top: 20,
-                                                                        bottom:
-                                                                            20),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap:
-                                                                      () async {
-                                                                    if (_createCollecteurKeyForm
-                                                                        .currentState!
-                                                                        .validate()) {
-                                                                      await _collecteur
-                                                                          .doc(_collecteur
-                                                                              .doc()
-                                                                              .id)
-                                                                          .set({
-                                                                        'nomCollecteur':
-                                                                            _nomCollecteurController.text,
-                                                                        'prenomCollecteur':
-                                                                            _prenomCollecteurController.text,
-                                                                        'siteCollecteur':
-                                                                            _siteCollecteur,
-                                                                        'datedeNaissance': DateFormat('yMd')
-                                                                            .format(date)
-                                                                            .toString(),
-                                                                        'idCollecteur': _collecteur
-                                                                            .doc()
-                                                                            .id
-                                                                      }).then(
-                                                                              (value) {
-                                                                        _nomCollecteurController.text =
-                                                                            '';
-                                                                        _prenomCollecteurController.text =
-                                                                            '';
-                                                                        print(
-                                                                            "Collecteur Added");
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      }).catchError((error) =>
-                                                                              print("Failed to add user: $error"));
-                                                                    }
-                                                                  },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .add,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      Text(
-                                                                        'Save',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            });
+                                        showCreateCollecteur();
                                       },
                                       child: Row(
                                         children: [
@@ -664,6 +320,271 @@ class _CollecteurPageState extends State<CollecteurPage> {
     );
   }
 
+  showCreateCollecteur() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              height: 600,
+              width: 800,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'New Collecteur',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    height: 400,
+                    color: Colors.green,
+                    child: Form(
+                        key: _createCollecteurKeyForm,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 400,
+                              color: Colors.red,
+                              child: TextFormField(
+                                controller: _nomCollecteurController,
+                                decoration: InputDecoration(
+                                  labelText: 'Nom* :',
+                                ),
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value == '') {
+                                    return 'This can not be null';
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 400,
+                              color: Colors.red,
+                              child: TextFormField(
+                                controller: _prenomCollecteurController,
+                                decoration: InputDecoration(
+                                  labelText: 'Prenom* :',
+                                ),
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value == '') {
+                                    return 'This can not be null';
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 400,
+                              height: 50,
+                              color: Colors.red,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.place,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text('Site',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(width: 10),
+                                  //dropdown have bug
+                                  DropdownButton<String>(
+                                      onChanged: (String? changedValue) {
+                                        setState(() {
+                                          _siteCollecteur = changedValue!;
+                                          print(
+                                              '$_siteCollecteur  $changedValue');
+                                        });
+                                      },
+                                      value: _siteCollecteur,
+                                      items: list_site.map((String value) {
+                                        return new DropdownMenuItem<String>(
+                                          value: value,
+                                          child: new Text(value),
+                                        );
+                                      }).toList()),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              //Date de naissance still bug
+                              width: 400,
+                              height: 100,
+                              color: Colors.blue,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today_rounded,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text('Date de Naissance',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    height: 50,
+                                    width: 150,
+                                    color: Colors.red,
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          pickDate(context);
+                                        },
+                                        child: Text(
+                                          DateFormat('yMd')
+                                              .format(date)
+                                              .toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        )),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        )),
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                _nomCollecteurController.text = '';
+                                _prenomCollecteurController.text = '';
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (_createCollecteurKeyForm.currentState!
+                                    .validate()) {
+                                  await _collecteur
+                                      .doc(_collecteur.doc().id)
+                                      .set({
+                                    'nomCollecteur':
+                                        _nomCollecteurController.text,
+                                    'prenomCollecteur':
+                                        _prenomCollecteurController.text,
+                                    'siteCollecteur': _siteCollecteur,
+                                    'datedeNaissance': DateFormat('yMd')
+                                        .format(date)
+                                        .toString(),
+                                    'idCollecteur': _collecteur.doc().id
+                                  }).then((value) {
+                                    _nomCollecteurController.text = '';
+                                    _prenomCollecteurController.text = '';
+                                    print("Collecteur Added");
+                                    Navigator.of(context).pop();
+                                  }).catchError((error) =>
+                                          print("Failed to add user: $error"));
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   showModifyCollecteurDialog(
       {required BuildContext context, required Map dataCollecteur}) {
     String siteModifyCollecteur = dataCollecteur['siteCollecteur'];
@@ -711,7 +632,9 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   labelText: 'Nom* :',
                                 ),
                                 validator: (value) {
-                                  if (value == null || value.isEmpty) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value == '') {
                                     return 'This can not be null';
                                   }
                                 },
@@ -729,7 +652,9 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   labelText: 'Prenom* :',
                                 ),
                                 validator: (value) {
-                                  if (value == null || value.isEmpty) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value == '') {
                                     return 'This can not be null';
                                   }
                                 },
