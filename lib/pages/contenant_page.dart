@@ -12,6 +12,13 @@ class ContenantPage extends StatefulWidget {
 }
 
 class _ContenantPageState extends State<ContenantPage> {
+  final _createContenantKeyForm = GlobalKey<FormState>();
+  String _typeContenant = 'Bac 120L';
+  List<String> list_type = ['Bac 120L', 'Bac 100L', 'Bac 80L'];
+  TextEditingController _barCodeContenantController = TextEditingController();
+  TextEditingController _statusContenantController = TextEditingController();
+  String _statusContenant = 'Disponible';
+  // int id = 1;
   final auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference _contenant =
@@ -71,7 +78,7 @@ class _ContenantPageState extends State<ContenantPage> {
                                       right: 10, top: 20, bottom: 20),
                                   child: GestureDetector(
                                     onTap: () {
-                                      //Update Later
+                                      showCreateContenant();
                                     },
                                     child: Row(
                                       children: [
@@ -293,5 +300,255 @@ class _ContenantPageState extends State<ContenantPage> {
         ),
       ),
     );
+  }
+
+  showCreateContenant() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              height: 600,
+              width: 800,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'New Contenant',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    height: 400,
+                    color: Colors.green,
+                    child: Form(
+                        key: _createContenantKeyForm,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 400,
+                              color: Colors.red,
+                              child: TextFormField(
+                                controller: _barCodeContenantController,
+                                decoration: InputDecoration(
+                                  labelText: 'Code-barres*:',
+                                ),
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value == '') {
+                                    return 'This can not be null';
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 400,
+                              height: 50,
+                              color: Colors.red,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.place,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text('Type',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(width: 10),
+                                  //dropdown have bug
+                                  DropdownButton<String>(
+                                      onChanged: (String? changedValue) {
+                                        setState(() {
+                                          _typeContenant = changedValue!;
+                                          // print(
+                                          //     '$_typeContenant  $changedValue');
+                                        });
+                                      },
+                                      value: _typeContenant,
+                                      items: list_type.map((String value) {
+                                        return new DropdownMenuItem<String>(
+                                          value: value,
+                                          child: new Text(value),
+                                        );
+                                      }).toList()),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Container(
+                              width: 600,
+                              height: 50,
+                              color: Colors.red,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Actuellement*: ',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  //bug with Radio
+                                  Radio(
+                                    value: 1,
+                                    groupValue: _statusContenant,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _statusContenant = 'Disponible';
+                                        // id = 1;
+                                        // print('$_statusContenant');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'Disponible',
+                                    style: new TextStyle(fontSize: 17.0),
+                                  ),
+                                  Radio(
+                                    value: 2,
+                                    groupValue: _statusContenant,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _statusContenant = 'PasDisponible';
+                                        // id = 2;
+                                        // print('$_statusContenant');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'PasDisponible',
+                                    style: new TextStyle(
+                                      fontSize: 17.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        )),
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                _barCodeContenantController.text = '';
+                                _typeContenant = 'Bac 120L';
+                                _statusContenant = 'Disponible';
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (_createContenantKeyForm.currentState!
+                                    .validate()) {
+                                  await _contenant
+                                      .doc(_contenant.doc().id)
+                                      .set({
+                                    'barCodeContenant':
+                                        _barCodeContenantController.text,
+                                    'typeContenant': _typeContenant,
+                                    'statusContenant': _statusContenant,
+                                    'idContenant': _contenant.doc().id
+                                  }).then((value) {
+                                    _barCodeContenantController.text = '';
+                                    _typeContenant = 'Bac 120L';
+                                    _statusContenant = 'Disponible';
+                                    print("Contenant Added");
+                                    Navigator.of(context).pop();
+                                  }).catchError((error) =>
+                                          print("Failed to add user: $error"));
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
