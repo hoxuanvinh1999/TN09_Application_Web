@@ -33,7 +33,7 @@ class _ContenantPageState extends State<ContenantPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            header(),
+            header(context: context),
             menu(context: context),
             SizedBox(height: 20),
             Align(

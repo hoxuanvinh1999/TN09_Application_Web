@@ -57,11 +57,12 @@ class _CollecteurPageState extends State<CollecteurPage> {
 
   @override
   Widget build(BuildContext context) {
+    // inputData();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            header(),
+            header(context: context),
             menu(context: context),
             SizedBox(height: 20),
             Align(

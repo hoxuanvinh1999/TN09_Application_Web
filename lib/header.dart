@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 
-Widget header() {
+Widget header({required BuildContext context}) {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final User? user = auth.currentUser;
   final uid = user!.uid;
