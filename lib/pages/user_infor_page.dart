@@ -330,9 +330,13 @@ class _UserInforPageState extends State<UserInforPage> {
       currentuser.updatePassword(newPassword).then((_) async {
         Fluttertoast.showToast(
             msg: 'Successfully changed password', gravity: ToastGravity.TOP);
-        await FirebaseAuth.instance.signOut();
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginPage()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserInforPage()),
+        ).then((value) => setState(() {}));
+        // await FirebaseAuth.instance.signOut();
+        // Navigator.of(context).pushReplacement(
+        //     MaterialPageRoute(builder: (context) => LoginPage()));
       }).catchError((error) {
         Fluttertoast.showToast(
             msg: "Password can't be changed" + ': ' + error.toString(),
