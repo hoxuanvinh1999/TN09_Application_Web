@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:tn09_app_web_demo/pages/user_infor_page.dart';
 
 Widget header({required BuildContext context}) {
@@ -69,7 +71,14 @@ Widget header({required BuildContext context}) {
                             height: 5,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () async {
+                              Fluttertoast.showToast(
+                                  msg: 'Logged Out', gravity: ToastGravity.TOP);
+                              await FirebaseAuth.instance.signOut();
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()));
+                            },
                             child: Container(
                                 color: Colors.red,
                                 child: Row(
