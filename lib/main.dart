@@ -4,6 +4,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 import 'package:tn09_app_web_demo/pages/contenant_page.dart';
+import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/user_infor_page.dart';
 import 'package:tn09_app_web_demo/pages/vehicule_page.dart';
 
