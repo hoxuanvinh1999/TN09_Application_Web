@@ -80,7 +80,7 @@ class _PartenairePageState extends State<PartenairePage> {
                                       width: 10,
                                     ),
                                     Text(
-                                      'New Parenaire',
+                                      'New Partenaire',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 15,
