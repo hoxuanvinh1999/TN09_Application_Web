@@ -3,6 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 
 Widget header() {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User? user = auth.currentUser;
+  final uid = user!.uid;
+  // print('User in Header: $user');
+  String? displayName;
+  if (user.displayName == null) {
+    displayName = 'User Name';
+  } else {
+    displayName = user.displayName;
+  }
+  print(('$displayName'));
+
   return Container(
     width: double.infinity,
     height: 80,
@@ -20,7 +32,7 @@ Widget header() {
                 Image.asset('images/logo_user.png'),
                 SizedBox(width: 10),
                 Text(
-                  'User Name Here',
+                  displayName!,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
