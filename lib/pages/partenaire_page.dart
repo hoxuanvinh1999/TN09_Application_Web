@@ -12,6 +12,12 @@ class PartenairePage extends StatefulWidget {
 }
 
 class _PartenairePageState extends State<PartenairePage> {
+  CollectionReference _partenaire =
+      FirebaseFirestore.instance.collection("Vehicule");
+  Stream<QuerySnapshot> _partenaireStream = FirebaseFirestore.instance
+      .collection("Partenaire")
+      .orderBy('nomPartenaire')
+      .snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,7 +162,207 @@ class _PartenairePageState extends State<PartenairePage> {
                         )
                       ],
                     )),
+                StreamBuilder<QuerySnapshot>(
+                  stream: _partenaireStream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+                    // print('$snapshot');
+                    return Column(
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> partenaire =
+                            document.data()! as Map<String, dynamic>;
+                        // print('$vehicule');
+                        return Container(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    buildTypePartenaireIcon(
+                                        typePartenaire:
+                                            partenaire['typePartenaire']),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    buildStatusPartenaireIcon(
+                                        actifPartenaire:
+                                            partenaire['actifPartenaire']),
+                                    SizedBox(
+                                      width: 120,
+                                    ),
+                                    Container(
+                                      alignment: Alignment(-1, 0.15),
+                                      width: 100,
+                                      height: 50,
+                                      color: Colors.green,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            partenaire['nomPartenaire'],
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 320,
+                                    ),
+                                    Container(
+                                        alignment: Alignment(-1, 0.15),
+                                        width: 50,
+                                        height: 50,
+                                        color: Colors.green,
+                                        child: contactPartenaire(
+                                            idContactPartenaire: partenaire[
+                                                'idContactPartenaire']))
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                const Divider(
+                                  thickness: 5,
+                                ),
+                              ],
+                            ));
+                      }).toList(),
+                    );
+                  },
+                ),
               ]))),
     ])));
+  }
+
+  Widget buildTypePartenaireIcon({required String typePartenaire}) {
+    // print('$typePartenaire');
+    switch (typePartenaire) {
+      case 'PRIVE':
+        {
+          return Tooltip(
+            message: 'PRIVE',
+            child: Icon(
+              FontAwesomeIcons.building,
+              size: 17,
+            ),
+          );
+        }
+
+      case 'PUBLIC':
+        {
+          return Tooltip(
+            message: 'PUBLIC',
+            child: Icon(
+              FontAwesomeIcons.city,
+              size: 17,
+            ),
+          );
+        }
+      case 'EXPERIMENTATION':
+        {
+          return Tooltip(
+            message: 'EXPERIMENTATION',
+            child: Icon(
+              FontAwesomeIcons.flask,
+              size: 17,
+            ),
+          );
+        }
+      default:
+        {
+          return Tooltip(
+            message: 'AUTRES',
+            child: Icon(
+              FontAwesomeIcons.flag,
+              size: 17,
+            ),
+          );
+        }
+    }
+  }
+
+  Widget buildStatusPartenaireIcon({required String actifPartenaire}) {
+    // print('$typePartenaire');
+    switch (actifPartenaire) {
+      case 'true':
+        {
+          return Tooltip(
+            message: 'Actif',
+            child: Icon(
+              FontAwesomeIcons.check,
+              size: 17,
+            ),
+          );
+        }
+
+      case 'false':
+        {
+          return Tooltip(
+            message: 'PasActif',
+            child: Icon(
+              FontAwesomeIcons.times,
+              size: 17,
+            ),
+          );
+        }
+      default:
+        {
+          return Tooltip(
+            message: 'PasActif',
+            child: Icon(
+              FontAwesomeIcons.times,
+              size: 17,
+            ),
+          );
+        }
+    }
+  }
+
+  Widget contactPartenaire({required idContactPartenaire}) {
+    switch (idContactPartenaire) {
+      case 'null':
+        {
+          return IconButton(
+            icon: const Icon(
+              FontAwesomeIcons.plus,
+              size: 17,
+            ),
+            tooltip: 'Add Contact',
+            onPressed: () {
+              //addContactPartenaire();
+            },
+          );
+        }
+      default:
+        {
+          return IconButton(
+            icon: const Icon(
+              FontAwesomeIcons.user,
+              size: 17,
+            ),
+            tooltip: 'View Contact',
+            onPressed: () {
+              //viewContactPartenaire();
+            },
+          );
+        }
+    }
   }
 }
