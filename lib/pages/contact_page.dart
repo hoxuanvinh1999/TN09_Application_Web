@@ -12,6 +12,12 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
+  CollectionReference _contact =
+      FirebaseFirestore.instance.collection("Contact");
+  Stream<QuerySnapshot> _contactStream = FirebaseFirestore.instance
+      .collection("Contact")
+      .orderBy('nomContact')
+      .snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,6 +170,133 @@ class _ContactPageState extends State<ContactPage> {
                         )
                       ],
                     )),
+                StreamBuilder<QuerySnapshot>(
+                  stream: _contactStream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+                    // print('$snapshot');
+                    return Column(
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> contact =
+                            document.data()! as Map<String, dynamic>;
+                        // print('$vehicule');
+                        return Container(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      alignment: Alignment(-1, 0.15),
+                                      width: 200,
+                                      height: 50,
+                                      color: Colors.green,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            FontAwesomeIcons.user,
+                                            size: 17,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            contact['nomContact'] +
+                                                ' ' +
+                                                contact['prenomContact'],
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 50,
+                                    ),
+                                    Container(
+                                      alignment: Alignment(-1, 0.15),
+                                      width: 300,
+                                      height: 50,
+                                      color: Colors.green,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            FontAwesomeIcons.envelope,
+                                            size: 17,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            contact['emailContact'],
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      alignment: Alignment(-1, 0.15),
+                                      width: 300,
+                                      height: 50,
+                                      color: Colors.green,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            FontAwesomeIcons.phone,
+                                            size: 17,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            contact['telephoneContact'],
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                const Divider(
+                                  thickness: 5,
+                                ),
+                              ],
+                            ));
+                      }).toList(),
+                    );
+                  },
+                ),
               ]))),
     ])));
   }
