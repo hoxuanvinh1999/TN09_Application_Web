@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
+import 'package:tn09_app_web_demo/pages/forget_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -118,7 +119,10 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               GestureDetector(
                                   onTap: () {
-                                    // print('Clicked');
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgetPasswordPage()));
                                   },
                                   child: Text(
                                     'Forget Password',
