@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
+import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,6 +19,9 @@ class _UserInforPageState extends State<UserInforPage> {
   final _changeUserDisplayKeyForm = GlobalKey<FormState>();
   final _changePasswordKeyForm = GlobalKey<FormState>();
   TextEditingController _displaynameController = TextEditingController();
+  TextEditingController _currentPasswordController = TextEditingController();
+  TextEditingController _newPasswordController = TextEditingController();
+  TextEditingController _checknewPasswordController = TextEditingController();
   String check = '';
 
   void inputData() {
@@ -57,7 +62,7 @@ class _UserInforPageState extends State<UserInforPage> {
                       children: [
                         SizedBox(width: 20),
                         Icon(
-                          Icons.people,
+                          FontAwesomeIcons.user,
                           color: Colors.black,
                         ),
                         SizedBox(
@@ -127,6 +132,9 @@ class _UserInforPageState extends State<UserInforPage> {
                             final User? currentuser = auth.currentUser;
                             await currentuser!
                                 .updateDisplayName(_displaynameController.text);
+                            Fluttertoast.showToast(
+                                msg: "Changed User name",
+                                gravity: ToastGravity.TOP);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -153,12 +161,192 @@ class _UserInforPageState extends State<UserInforPage> {
             Container(
               margin: EdgeInsets.only(left: 20),
               width: 600,
-              height: 400,
+              height: 600,
               color: Colors.green,
+              child: Column(
+                children: [
+                  Container(
+                    height: 50,
+                    color: Colors.blue,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20),
+                        Icon(
+                          FontAwesomeIcons.key,
+                          color: Colors.black,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Change Password',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  const Divider(
+                    thickness: 5,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                      color: Colors.yellow,
+                      height: 300,
+                      width: 400,
+                      child: Form(
+                          key: _changePasswordKeyForm,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 300,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  obscureText: true,
+                                  controller: _currentPasswordController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Current Password:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Divider(
+                                thickness: 3,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                width: 300,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  obscureText: true,
+                                  controller: _newPasswordController,
+                                  decoration: InputDecoration(
+                                    labelText: 'New Password:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                width: 300,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  obscureText: true,
+                                  controller: _checknewPasswordController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Confirm Password:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    } else if (_checknewPasswordController
+                                            .text !=
+                                        _newPasswordController.text) {
+                                      return 'Does not match the new password';
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ))),
+                  Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      width: 150,
+                      decoration: BoxDecoration(
+                          color: Colors.yellow,
+                          borderRadius: BorderRadius.circular(10)),
+                      margin:
+                          const EdgeInsets.only(right: 10, top: 20, bottom: 20),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_changePasswordKeyForm.currentState!.validate()) {
+                            final User? currentuser = auth.currentUser;
+                            changePassword(
+                                currentPassword:
+                                    _currentPasswordController.text,
+                                newPassword: _newPasswordController.text);
+                          }
+                        },
+                        child: Text(
+                          'Change',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )),
+                ],
+              ),
             ),
           ],
         )
       ],
     )));
+  }
+
+  void changePassword(
+      {required String currentPassword, required newPassword}) async {
+    User? currentuser = auth.currentUser;
+    String email = currentuser!.email!;
+
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: currentPassword,
+      );
+
+      currentuser.updatePassword(newPassword).then((_) async {
+        Fluttertoast.showToast(
+            msg: 'Successfully changed password', gravity: ToastGravity.TOP);
+        await FirebaseAuth.instance.signOut();
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LoginPage()));
+      }).catchError((error) {
+        Fluttertoast.showToast(
+            msg: "Password can't be changed" + ': ' + error.toString(),
+            gravity: ToastGravity.TOP);
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(
+            msg: 'No user found for that email', gravity: ToastGravity.TOP);
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(
+            msg: 'Wrong password provided for that user',
+            gravity: ToastGravity.TOP);
+      }
+    }
   }
 }
