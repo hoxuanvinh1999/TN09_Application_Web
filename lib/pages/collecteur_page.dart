@@ -12,6 +12,7 @@ class CollecteurPage extends StatefulWidget {
 }
 
 class _CollecteurPageState extends State<CollecteurPage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final _createCollecteurKeyForm = GlobalKey<FormState>();
   final _modifyCollecteurKeyForm = GlobalKey<FormState>();
   String _siteCollecteur = 'Bordeaux';
