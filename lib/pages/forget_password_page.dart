@@ -11,6 +11,8 @@ class ForgetPasswordPage extends StatefulWidget {
 }
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
+  String _email = '';
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -78,7 +80,9 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    setState(() {});
+                                    setState(() {
+                                      _email = value.trim();
+                                    });
                                   },
                                 ),
                               ),
@@ -86,7 +90,28 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                 height: 20,
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  if (_email == null ||
+                                      _email.isEmpty ||
+                                      _email == '') {
+                                    Fluttertoast.showToast(
+                                        msg: 'Please input your email',
+                                        gravity: ToastGravity.TOP);
+                                  } else if (!checkEmail(_email)) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Please input a correct email',
+                                        gravity: ToastGravity.TOP);
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            'Password reset instructions have been sent to email!',
+                                        gravity: ToastGravity.TOP);
+                                    auth.sendPasswordResetEmail(email: _email);
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage()));
+                                  }
+                                },
                                 child: Container(
                                   alignment: Alignment.center,
                                   width: 300,
@@ -116,5 +141,11 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         ),
                       ]))))),
     );
+  }
+
+  bool checkEmail(String checkmail) {
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(checkmail);
   }
 }
