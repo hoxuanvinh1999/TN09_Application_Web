@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/header.dart';
@@ -8,12 +9,16 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 
-class CreatePartenairePage extends StatefulWidget {
+class ViewPartenairePage extends StatefulWidget {
+  Map partenaire;
+  ViewPartenairePage({
+    required this.partenaire,
+  });
   @override
-  _CreatePartenairePageState createState() => _CreatePartenairePageState();
+  _ViewPartenairePageState createState() => _ViewPartenairePageState();
 }
 
-class _CreatePartenairePageState extends State<CreatePartenairePage> {
+class _ViewPartenairePageState extends State<ViewPartenairePage> {
   CollectionReference _partenaire =
       FirebaseFirestore.instance.collection("Partenaire");
   Stream<QuerySnapshot> _partenaireStream = FirebaseFirestore.instance
@@ -27,9 +32,16 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
   String _typePartenaire = 'PRIVE';
   List<String> list_type = ['PRIVE', 'PUBLIC', 'EXPERIMENTATION', 'AUTRES'];
   String _actifPartenaire = 'true';
+  void inputData() {
+    _nomPartenaireController.text = widget.partenaire['nomPartenaire'];
+    _notePartenaireController.text = widget.partenaire['notePartenaire'];
+    _siretPartenaireController.text = widget.partenaire['siretPartenaire'];
+    _typePartenaire = widget.partenaire['typePartenaire'];
+  }
 
   @override
   Widget build(BuildContext context) {
+    inputData();
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -63,7 +75,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                             width: 10,
                           ),
                           Text(
-                            'Create New Partenaire',
+                            'Partenaire',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -290,44 +302,8 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 250,
+                        width: 400,
                       ),
-                      Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                              color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: const EdgeInsets.only(
-                              right: 10, top: 20, bottom: 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              _nomPartenaireController.text = '';
-                              _notePartenaireController.text = '';
-                              _siretPartenaireController.text = '';
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => PartenairePage()));
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Cancel',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
@@ -339,37 +315,56 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                             onTap: () async {
                               if (_createPartenaireKeyForm.currentState!
                                   .validate()) {
-                                if (_siretPartenaireController.text.isEmpty) {
-                                  _siretPartenaireController.text = '';
-                                }
-                                if (_notePartenaireController.text.isEmpty) {
-                                  _siretPartenaireController.text = '';
-                                }
                                 await _partenaire
-                                    .doc(_partenaire.doc().id)
-                                    .set({
-                                  'nomPartenaire':
-                                      _nomPartenaireController.text,
-                                  'notePartenaire':
-                                      _notePartenaireController.text,
-                                  'siretPartenaire':
-                                      _siretPartenaireController.text,
-                                  'idContactPartenaire': 'null',
-                                  'actifPartenaire': _actifPartenaire,
-                                  'typePartenaire': _typePartenaire,
-                                  'idPartenaire': _partenaire.doc().id
-                                }).then((value) {
-                                  _nomPartenaireController.text = '';
-                                  _notePartenaireController.text = '';
-                                  _siretPartenaireController.text = '';
-                                  print("Partenaire Added");
-                                  //Will Navigator to other page later
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PartenairePage()));
-                                }).catchError((error) =>
-                                        print("Failed to add user: $error"));
+                                    .where('idPartenaire',
+                                        isEqualTo:
+                                            widget.partenaire['idPartenaire'])
+                                    .limit(1)
+                                    .get()
+                                    .then((QuerySnapshot querySnapshot) {
+                                  querySnapshot.docs.forEach((doc) {
+                                    _partenaire.doc(doc.id).update({
+                                      'nomPartenaire':
+                                          _nomPartenaireController.text,
+                                      'notePartenaire':
+                                          _notePartenaireController.text,
+                                      'siretPartenaire':
+                                          _siretPartenaireController.text,
+                                      'idContactPartenaire': 'null',
+                                      'actifPartenaire': _actifPartenaire,
+                                      'typePartenaire': _typePartenaire,
+                                    }).then((value) async {
+                                      await _partenaire
+                                          .where('idPartenaire',
+                                              isEqualTo: widget
+                                                  .partenaire['idPartenaire'])
+                                          .limit(1)
+                                          .get()
+                                          .then((QuerySnapshot querySnapshot) {
+                                        querySnapshot.docs.forEach((doc) {
+                                          Map<String, dynamic> next_partenaire =
+                                              doc.data()!
+                                                  as Map<String, dynamic>;
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Update Information Partenaire",
+                                              gravity: ToastGravity.TOP);
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ViewPartenairePage(
+                                                      partenaire:
+                                                          next_partenaire,
+                                                    )),
+                                          ).then((value) => setState(() {}));
+                                        });
+                                      });
+                                    }).catchError((error) =>
+                                        print("Failed to update user: $error"));
+                                  });
+                                });
                               }
                             },
                             child: Row(
@@ -382,7 +377,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                   width: 10,
                                 ),
                                 Text(
-                                  'Create',
+                                  'Update',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,

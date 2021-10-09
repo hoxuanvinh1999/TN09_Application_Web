@@ -7,6 +7,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 
 class PartenairePage extends StatefulWidget {
   @override
@@ -228,7 +229,14 @@ class _PartenairePageState extends State<PartenairePage> {
                                                   recognizer:
                                                       TapGestureRecognizer()
                                                         ..onTap = () {
-                                                          //
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          ViewPartenairePage(
+                                                                            partenaire:
+                                                                                partenaire,
+                                                                          )));
                                                         }),
                                             ],
                                           ),

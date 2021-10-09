@@ -1112,7 +1112,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                           _typeModifyVehiculeController.text =
                                               '';
                                           _colorVehicule = Colors.red;
-                                          print("Vehicule MOdified");
+                                          print("Vehicule Modified");
                                           Navigator.of(context).pop();
                                         }).catchError((error) => print(
                                             "Failed to update user: $error"));
