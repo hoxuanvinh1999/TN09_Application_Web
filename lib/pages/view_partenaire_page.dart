@@ -49,6 +49,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       menu(context: context),
       SizedBox(height: 20),
       Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
               margin: EdgeInsets.only(left: 20),
@@ -390,7 +391,272 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     ],
                   ),
                 ),
-              ]))
+              ])),
+          SizedBox(
+            width: 50,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: 600,
+                height: 300,
+                color: Colors.green,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 60,
+                      color: Colors.blue,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: 20),
+                              Icon(
+                                FontAwesomeIcons.mapMarker,
+                                size: 17,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Adresses',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 300,
+                              ),
+                              Container(
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                      color: Colors.yellow,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                    right: 10,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      //Update later
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'New Adresse',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          const Divider(
+                            thickness: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 600,
+                    height: 300,
+                    color: Colors.green,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 60,
+                          color: Colors.blue,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(width: 20),
+                                  Icon(
+                                    FontAwesomeIcons.calendar,
+                                    size: 17,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Fréquences de passage',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                  ),
+                                  Container(
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                          color: Colors.yellow,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      margin: const EdgeInsets.only(
+                                        right: 10,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          //Update later
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              'New Frequence',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              const Divider(
+                                thickness: 5,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 600,
+                    height: 300,
+                    color: Colors.green,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 60,
+                          color: Colors.blue,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(width: 20),
+                                  Icon(
+                                    FontAwesomeIcons.boxOpen,
+                                    size: 17,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Contenants et matières',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                  ),
+                                  Container(
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                          color: Colors.yellow,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      margin: const EdgeInsets.only(
+                                        right: 10,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          //Update later
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              'New Contenant',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              const Divider(
+                                thickness: 5,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ],
       )
     ])));
