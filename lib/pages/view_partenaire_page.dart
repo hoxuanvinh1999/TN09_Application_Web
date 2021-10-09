@@ -48,9 +48,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       header(context: context),
       menu(context: context),
       SizedBox(height: 20),
-      Align(
-          alignment: Alignment(-0.9, 0),
-          child: Container(
+      Row(
+        children: [
+          Container(
               margin: EdgeInsets.only(left: 20),
               width: 600,
               height: 800,
@@ -390,7 +390,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     ],
                   ),
                 ),
-              ])))
+              ]))
+        ],
+      )
     ])));
   }
 }
