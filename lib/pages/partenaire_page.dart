@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -205,23 +206,29 @@ class _PartenairePageState extends State<PartenairePage> {
                                       width: 120,
                                     ),
                                     Container(
-                                      alignment: Alignment(-1, 0.15),
-                                      width: 100,
-                                      height: 50,
-                                      color: Colors.green,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            partenaire['nomPartenaire'],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                        alignment: Alignment(-1, 0.15),
+                                        width: 100,
+                                        height: 50,
+                                        color: Colors.green,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: partenaire[
+                                                      'nomPartenaire'],
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          //
+                                                        }),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
+                                        )),
                                     SizedBox(
                                       width: 320,
                                     ),
