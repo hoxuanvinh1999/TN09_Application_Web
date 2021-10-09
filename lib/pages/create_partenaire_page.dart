@@ -21,7 +21,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
       .orderBy('nomPartenaire')
       .snapshots();
   final _createPartenaireKeyForm = GlobalKey<FormState>();
-  TextEditingController _nomPartenaiceController = TextEditingController();
+  TextEditingController _nomPartenaireController = TextEditingController();
   TextEditingController _notePartenaireController = TextEditingController();
   TextEditingController _siretPartenaireController = TextEditingController();
   String _typePartenaire = 'PRIVE';
@@ -136,7 +136,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
-                              controller: _nomPartenaiceController,
+                              controller: _nomPartenaireController,
                               decoration: InputDecoration(
                                 labelText: 'Nom* :',
                               ),
@@ -301,7 +301,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                               right: 10, top: 20, bottom: 20),
                           child: GestureDetector(
                             onTap: () {
-                              _nomPartenaiceController.text = '';
+                              _nomPartenaireController.text = '';
                               _notePartenaireController.text = '';
                               _siretPartenaireController.text = '';
                               Navigator.of(context).pushReplacement(
@@ -343,7 +343,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                     .doc(_partenaire.doc().id)
                                     .set({
                                   'nomPartenaire':
-                                      _nomPartenaiceController.text,
+                                      _nomPartenaireController.text,
                                   'notePartenaire':
                                       _notePartenaireController.text,
                                   'siretPartenaire':
@@ -353,7 +353,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                   'typePartenaire': _typePartenaire,
                                   'idPartenaire': _partenaire.doc().id
                                 }).then((value) {
-                                  _nomPartenaiceController.text = '';
+                                  _nomPartenaireController.text = '';
                                   _notePartenaireController.text = '';
                                   _siretPartenaireController.text = '';
                                   print("Partenaire Added");
