@@ -47,6 +47,7 @@ class _UserInforPageState extends State<UserInforPage> {
         menu(context: context),
         SizedBox(height: 20),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               margin: EdgeInsets.only(left: 20),
