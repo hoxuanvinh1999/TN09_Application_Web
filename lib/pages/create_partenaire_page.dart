@@ -40,7 +40,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
           alignment: Alignment(-0.9, 0),
           child: Container(
               margin: EdgeInsets.only(left: 20),
-              width: 800,
+              width: 600,
               height: 800,
               color: Colors.green,
               child: Column(children: [
@@ -290,7 +290,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 400,
+                        width: 250,
                       ),
                       Container(
                           width: 150,
