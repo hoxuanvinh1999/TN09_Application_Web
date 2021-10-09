@@ -15,7 +15,7 @@ class PartenairePage extends StatefulWidget {
 
 class _PartenairePageState extends State<PartenairePage> {
   CollectionReference _partenaire =
-      FirebaseFirestore.instance.collection("Vehicule");
+      FirebaseFirestore.instance.collection("Partenaire");
   Stream<QuerySnapshot> _partenaireStream = FirebaseFirestore.instance
       .collection("Partenaire")
       .orderBy('nomPartenaire')
@@ -211,7 +211,7 @@ class _PartenairePageState extends State<PartenairePage> {
                                     ),
                                     Container(
                                         alignment: Alignment(-1, 0.15),
-                                        width: 100,
+                                        width: 300,
                                         height: 50,
                                         color: Colors.green,
                                         child: RichText(
@@ -234,7 +234,7 @@ class _PartenairePageState extends State<PartenairePage> {
                                           ),
                                         )),
                                     SizedBox(
-                                      width: 320,
+                                      width: 120,
                                     ),
                                     Container(
                                         alignment: Alignment(-1, 0.15),
