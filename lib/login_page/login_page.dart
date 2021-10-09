@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/forget_password_page.dart';
+import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -328,8 +329,8 @@ class _LoginPageState extends State<LoginPage> {
 
   _signinAnonymous() async {
     await auth.signInAnonymously();
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => CreatePartenairePage()));
   }
 
   _signin(String _email, String _password) async {

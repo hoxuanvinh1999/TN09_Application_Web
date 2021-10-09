@@ -44,7 +44,7 @@ class _PartenairePageState extends State<PartenairePage> {
                         children: [
                           SizedBox(width: 20),
                           Icon(
-                            FontAwesomeIcons.building,
+                            FontAwesomeIcons.flag,
                             size: 17,
                           ),
                           SizedBox(
