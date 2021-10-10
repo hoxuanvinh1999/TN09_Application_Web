@@ -65,6 +65,31 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   TextEditingController _surfacepassageAdresseController =
       TextEditingController();
 
+  //for modify Adresse
+  final _modifyAdressesKeyForm = GlobalKey<FormState>();
+  TextEditingController _nomPartenaireAdresseModifyController =
+      TextEditingController();
+  TextEditingController _ligne1AdresseModifyController =
+      TextEditingController();
+  TextEditingController _ligne2AdresseModifyController =
+      TextEditingController();
+  TextEditingController _codepostalAdresseModifyController =
+      TextEditingController();
+  TextEditingController _villeAdresseModifyController = TextEditingController();
+  TextEditingController _paysAdresseModifyController = TextEditingController();
+  TextEditingController _latitudeAdresseModifyController =
+      TextEditingController();
+  TextEditingController _longitudeAdresseModifyController =
+      TextEditingController();
+  TextEditingController _etageAdresseModifyController = TextEditingController();
+  TextEditingController _noteAdresseModifyController = TextEditingController();
+  TextEditingController _tarifpassageAdresseModifyController =
+      TextEditingController();
+  TextEditingController _tempspassageAdresseModifyController =
+      TextEditingController();
+  TextEditingController _surfacepassageAdresseModifyController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     inputData();
@@ -569,6 +594,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                   .locationArrow,
                                                               size: 15,
                                                             ),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
                                                             Text(
                                                               adresse[
                                                                   'nomPartenaireAdresse'],
@@ -600,7 +628,11 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             child:
                                                                 GestureDetector(
                                                               onTap: () {
-                                                                //Update later
+                                                                showModifyAdressDialog(
+                                                                    context:
+                                                                        context,
+                                                                    dataAdresse:
+                                                                        adresse);
                                                               },
                                                               child: Row(
                                                                 children: [
@@ -665,7 +697,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                       width: 10,
                                                     ),
                                                     Text(
-                                                      adresse['ligne1Adress'] +
+                                                      adresse['ligne1Adresse'] +
                                                           ' ' +
                                                           adresse[
                                                               'codepostalAdresse'] +
@@ -994,6 +1026,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
 
   showCreateAdressesDialog() {
     _nomPartenaireAdresseController.text = widget.partenaire['nomPartenaire'];
+    _latitudeAdresseController.text = '';
+    _latitudeAdresseController.text = '';
     _etageAdresseController.text = '0';
     _noteAdresseController.text = '';
     TabController adressesTabController;
@@ -1272,7 +1306,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     groupValue: _passagesAdresse,
                                     onChanged: (val) {
                                       setState(() {
-                                        _ascenseurAdresse = 'true';
+                                        _passagesAdresse = 'true';
                                         // id = 1;
                                         print('$_passagesAdresse');
                                       });
@@ -1289,7 +1323,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       setState(() {
                                         _passagesAdresse = 'false';
                                         // id = 2;
-                                        print('$_ascenseurAdresse');
+                                        print('$_passagesAdresse');
                                       });
                                     },
                                   ),
@@ -1504,9 +1538,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                   await _adresse.doc(_adresse.doc().id).set({
                                     'nomPartenaireAdresse':
                                         _nomPartenaireAdresseController.text,
-                                    'ligne1Adress':
+                                    'ligne1Adresse':
                                         _ligne1AdresseController.text,
-                                    'ligne2Adress':
+                                    'ligne2Adresse':
                                         _ligne2AdresseController.text,
                                     'codepostalAdresse':
                                         _codepostalAdresseController.text,
@@ -1519,7 +1553,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                         _longitudeAdresseController.text,
                                     'etageAdresse':
                                         _etageAdresseController.text,
-                                    '_ascenseurAdresse': _ascenseurAdresse,
+                                    'ascenseurAdresse': _ascenseurAdresse,
                                     'noteAdresse': _noteAdresseController.text,
                                     'passagesAdresse': _passagesAdresse,
                                     'facturationAdresse': _facturationAdresse,
@@ -1532,40 +1566,1150 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     'idPartenaireAdresse':
                                         widget.partenaire['idPartenaire'],
                                     'idAdresse': _adresse.doc().id
-                                  }).then((value) {
-                                    _nomPartenaireAdresseController.text = '';
-                                    _ligne1AdresseController.text = '';
-                                    _ligne2AdresseController.text = '';
-                                    _codepostalAdresseController.text = '';
-                                    _villeAdresseController.text = '';
-                                    _paysAdresseController.text = '';
-                                    _latitudeAdresseController.text = '';
-                                    _longitudeAdresseController.text = '';
-                                    _etageAdresseController.text = '0';
-                                    _ascenseurAdresse = 'true';
-                                    _noteAdresseController.text = '';
-                                    _passagesAdresse = 'true';
-                                    _facturationAdresse = 'true';
-                                    _tarifpassageAdresseController.text = '';
-                                    _tempspassageAdresseController.text = '';
-                                    _surfacepassageAdresseController.text = '';
-                                    print("Adresse Added");
-                                    Fluttertoast.showToast(
-                                        msg: "Adresse Added",
-                                        gravity: ToastGravity.TOP);
+                                  }).then((value) async {
+                                    await _partenaire
+                                        .where('idPartenaire',
+                                            isEqualTo: widget
+                                                .partenaire['idPartenaire'])
+                                        .limit(1)
+                                        .get()
+                                        .then((QuerySnapshot querySnapshot) {
+                                      querySnapshot.docs.forEach((doc) {
+                                        Map<String, dynamic> next_partenaire =
+                                            doc.data()! as Map<String, dynamic>;
+                                        print("Adresse Added");
+                                        Fluttertoast.showToast(
+                                            msg: "Adresse Added",
+                                            gravity: ToastGravity.TOP);
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ViewPartenairePage(
-                                                partenaire: widget.partenaire,
-                                              )),
-                                    ).then((value) => setState(() {}));
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViewPartenairePage(
+                                                    partenaire: next_partenaire,
+                                                  )),
+                                        ).then((value) => setState(() {}));
+                                      });
+                                    });
                                   }).catchError((error) =>
                                       print("Failed to add user: $error"));
                                 }
                               },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ]),
+          ));
+        });
+  }
+
+  showModifyAdressDialog(
+      {required BuildContext context, required Map dataAdresse}) {
+    _nomPartenaireAdresseModifyController.text =
+        dataAdresse['nomPartenaireAdresse'];
+    _ligne1AdresseModifyController.text = dataAdresse['ligne1Adresse'];
+    _ligne2AdresseModifyController.text = dataAdresse['ligne2Adresse'];
+    _codepostalAdresseModifyController.text = dataAdresse['codepostalAdresse'];
+    _villeAdresseModifyController.text = dataAdresse['villeAdresse'];
+    _paysAdresseModifyController.text = dataAdresse['paysAdresse'];
+    _latitudeAdresseModifyController.text = dataAdresse['latitudeAdresse'];
+    _longitudeAdresseModifyController.text = dataAdresse['longitudeAdresse'];
+    _etageAdresseModifyController.text = dataAdresse['etageAdresse'];
+    String _ascenseurModifyAdresse = dataAdresse['ascenseurAdresse'];
+    _noteAdresseModifyController.text = dataAdresse['noteAdresse'];
+    String _passagesModifyAdresse = dataAdresse['passagesAdresse'];
+    String _facturationModifyAdresse = dataAdresse['facturationAdresse'];
+    _tarifpassageAdresseModifyController.text =
+        dataAdresse['tarifpassageAdresse'];
+    _tempspassageAdresseModifyController.text =
+        dataAdresse['tempspassageAdresse'];
+    _surfacepassageAdresseModifyController.text =
+        dataAdresse['surfacepassageAdresse'];
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: Container(
+            height: 800,
+            width: 800,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'Modify Adresses ' +
+                            dataAdresse['nomPartenaireAdresse'],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 50,
+                      ),
+                      ElevatedButton(
+                        onPressed: null,
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.mapMarker,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Localisation',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showModifyHoraireAdresse(
+                              context: context, dataAdresse: dataAdresse);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.clock,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Horaires',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showModifyContactAdresse(
+                              context: context, dataAdresse: dataAdresse);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.users,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Contact',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 380,
+                    color: Colors.green,
+                    child: Form(
+                        key: _modifyAdressesKeyForm,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller:
+                                      _nomPartenaireAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Nom Adresse:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _ligne1AdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Adresse 1*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _ligne2AdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Adresse 2:',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller:
+                                      _codepostalAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Code Postal*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _villeAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Ville*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _paysAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Pays*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _latitudeAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Latitude:',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _longitudeAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Longitude:',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _etageAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Étage*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Ascenseur: ',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  //bug with Radio
+                                  Radio(
+                                    value: 1,
+                                    groupValue: _ascenseurModifyAdresse,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _ascenseurModifyAdresse = 'true';
+                                        // id = 1;
+                                        // print('$_ascenseurModifyAdresse');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'Oui',
+                                    style: new TextStyle(fontSize: 17.0),
+                                  ),
+                                  Radio(
+                                    value: 2,
+                                    groupValue: _ascenseurModifyAdresse,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _ascenseurModifyAdresse = 'false';
+                                        // id = 2;
+                                        // print('$_ascenseurModifyAdresse');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'Non',
+                                    style: new TextStyle(
+                                      fontSize: 17.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                  width: 400,
+                                  color: Colors.red,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: TextField(
+                                      controller: _noteAdresseModifyController,
+                                      maxLines: 4,
+                                      decoration: InputDecoration.collapsed(
+                                          hintText: "Note"),
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Passages: ',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  //bug with Radio
+                                  Radio(
+                                    value: 1,
+                                    groupValue: _passagesModifyAdresse,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _passagesModifyAdresse = 'true';
+                                        // id = 1;
+                                        print('true $_passagesModifyAdresse');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'Oui',
+                                    style: new TextStyle(fontSize: 17.0),
+                                  ),
+                                  Radio(
+                                    value: 2,
+                                    groupValue: _passagesModifyAdresse,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _passagesModifyAdresse = 'false';
+                                        // id = 2;
+                                        print('false $_passagesModifyAdresse');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'Non',
+                                    style: new TextStyle(
+                                      fontSize: 17.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Facturation: ',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  //bug with Radio
+                                  Radio(
+                                    value: 1,
+                                    groupValue: _facturationModifyAdresse,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _facturationModifyAdresse = 'true';
+                                        // id = 1;
+                                        // print('$_facturationAdresse');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'Oui',
+                                    style: new TextStyle(fontSize: 17.0),
+                                  ),
+                                  Radio(
+                                    value: 2,
+                                    groupValue: _facturationModifyAdresse,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _facturationModifyAdresse = 'false';
+                                        // id = 2;
+                                        // print('$_facturationAdresse');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'Non',
+                                    style: new TextStyle(
+                                      fontSize: 17.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller:
+                                      _tarifpassageAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Prix du passage',
+                                  ),
+                                  validator: (value) {
+                                    if (!value!.isEmpty &&
+                                        double.tryParse(value) == null) {
+                                      return 'Please input a true number';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller:
+                                      _tempspassageAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Temps sur place',
+                                  ),
+                                  validator: (value) {
+                                    if (!value!.isEmpty &&
+                                        double.tryParse(value) == null) {
+                                      return 'Please input a true number';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller:
+                                      _surfacepassageAdresseModifyController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Surface plancher',
+                                  ),
+                                  validator: (value) {
+                                    if (!value!.isEmpty &&
+                                        double.tryParse(value) == null) {
+                                      return 'Please input a true number';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (_modifyAdressesKeyForm.currentState!
+                                    .validate()) {
+                                  await _adresse
+                                      .where('idAdresse',
+                                          isEqualTo: dataAdresse['idAdresse'])
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      _adresse.doc(doc.id).update({
+                                        'nomPartenaireAdresse':
+                                            _nomPartenaireAdresseModifyController
+                                                .text,
+                                        'ligne1Adresse':
+                                            _ligne1AdresseModifyController.text,
+                                        'ligne2Adresse':
+                                            _ligne2AdresseModifyController.text,
+                                        'codepostalAdresse':
+                                            _codepostalAdresseModifyController
+                                                .text,
+                                        'villeAdresse':
+                                            _villeAdresseModifyController.text,
+                                        'paysAdresse':
+                                            _paysAdresseModifyController.text,
+                                        'latitudeAdresse':
+                                            _latitudeAdresseModifyController
+                                                .text,
+                                        'longitudeAdresse':
+                                            _longitudeAdresseModifyController
+                                                .text,
+                                        'etageAdresse':
+                                            _etageAdresseModifyController.text,
+                                        'ascenseurAdresse':
+                                            _ascenseurModifyAdresse,
+                                        'noteAdresse':
+                                            _noteAdresseModifyController.text,
+                                        'passagesAdresse':
+                                            _passagesModifyAdresse,
+                                        'facturationAdresse':
+                                            _facturationModifyAdresse,
+                                        'tarifpassageAdresse':
+                                            _tarifpassageAdresseModifyController
+                                                .text,
+                                        'tempspassageAdresse':
+                                            _tempspassageAdresseModifyController
+                                                .text,
+                                        'surfacepassageAdresse':
+                                            _surfacepassageAdresseModifyController
+                                                .text,
+                                      }).then((value) async {
+                                        await _partenaire
+                                            .where('idPartenaire',
+                                                isEqualTo: widget
+                                                    .partenaire['idPartenaire'])
+                                            .limit(1)
+                                            .get()
+                                            .then(
+                                                (QuerySnapshot querySnapshot) {
+                                          querySnapshot.docs.forEach((doc) {
+                                            Map<String, dynamic>
+                                                next_partenaire = doc.data()!
+                                                    as Map<String, dynamic>;
+                                            print("Adresse Modified");
+                                            Fluttertoast.showToast(
+                                                msg: "Adresse Modified",
+                                                gravity: ToastGravity.TOP);
+
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ViewPartenairePage(
+                                                        partenaire:
+                                                            next_partenaire,
+                                                      )),
+                                            ).then((value) => setState(() {}));
+                                          });
+                                        });
+                                      }).catchError((error) => print(
+                                          "Failed to update user: $error"));
+                                    });
+                                  });
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ]),
+          ));
+        });
+  }
+
+  showModifyHoraireAdresse(
+      {required BuildContext context, required Map dataAdresse}) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: Container(
+            height: 800,
+            width: 800,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'Modify Adresses ' +
+                            dataAdresse['nomPartenaireAdresse'],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 50,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showModifyAdressDialog(
+                              context: context, dataAdresse: dataAdresse);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.mapMarker,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Localisation',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: null,
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.clock,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Horaires',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showModifyContactAdresse(
+                              context: context, dataAdresse: dataAdresse);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.users,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Contact',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 380,
+                    color: Colors.green,
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ]),
+          ));
+        });
+  }
+
+  showModifyContactAdresse(
+      {required BuildContext context, required Map dataAdresse}) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: Container(
+            height: 800,
+            width: 800,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'Modify Adresses ' +
+                            dataAdresse['nomPartenaireAdresse'],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 50,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showModifyAdressDialog(
+                              context: context, dataAdresse: dataAdresse);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.mapMarker,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Localisation',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showModifyHoraireAdresse(
+                              context: context, dataAdresse: dataAdresse);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.clock,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Horaires',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: null,
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.users,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Contact',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 380,
+                    color: Colors.green,
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {},
                               child: Row(
                                 children: [
                                   Icon(
