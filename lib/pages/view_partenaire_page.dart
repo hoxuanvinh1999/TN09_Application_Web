@@ -470,7 +470,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
-                                      showCreateAdresses();
+                                      showCreateAdressesDialog();
                                     },
                                     child: Row(
                                       children: [
