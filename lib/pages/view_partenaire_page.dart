@@ -992,7 +992,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     return text == '' ? 'Inconnu' : text;
   }
 
-  showCreateAdresses() {
+  showCreateAdressesDialog() {
     _nomPartenaireAdresseController.text = widget.partenaire['nomPartenaire'];
     _etageAdresseController.text = '0';
     _noteAdresseController.text = '';
