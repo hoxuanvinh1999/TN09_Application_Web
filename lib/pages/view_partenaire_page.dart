@@ -503,6 +503,305 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                         ],
                       ),
                     ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("Adresse")
+                            .where('idPartenaireAdresse',
+                                isEqualTo: widget.partenaire['idPartenaire'])
+                            .snapshots(),
+                        //Can not use OrderBy and where together
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text(
+                                'Something went wrong + ${snapshot.error.toString()} + ${widget.partenaire['idPartenaire'].toString()}');
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          }
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: snapshot.data!.docs
+                                .map((DocumentSnapshot document) {
+                              Map<String, dynamic> adresse =
+                                  document.data()! as Map<String, dynamic>;
+                              // print('$contenant');
+                              return Container(
+                                width: 600,
+                                height: 300,
+                                color: Colors.red,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 20),
+                                    Container(
+                                      color: Colors.white,
+                                      width: 550,
+                                      height: 200,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                height: 40,
+                                                width: 550,
+                                                color: Colors.blue,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            Icon(
+                                                              FontAwesomeIcons
+                                                                  .locationArrow,
+                                                              size: 15,
+                                                            ),
+                                                            Text(
+                                                              adresse[
+                                                                  'nomPartenaireAdresse'],
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Container(
+                                                            width: 150,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .yellow,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              right: 10,
+                                                            ),
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                //Update later
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.add,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  Text(
+                                                                    'Modify Adresse',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Container(
+                                            height: 100,
+                                            width: 550,
+                                            color: Colors.green,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 16,
+                                                    ),
+                                                    Icon(
+                                                      FontAwesomeIcons
+                                                          .mapMarker,
+                                                      size: 15,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      adresse['ligne1Adress'] +
+                                                          ' ' +
+                                                          adresse[
+                                                              'codepostalAdresse'] +
+                                                          ' ' +
+                                                          adresse[
+                                                              'villeAdresse'],
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 16,
+                                                    ),
+                                                    Icon(
+                                                      FontAwesomeIcons.clock,
+                                                      size: 15,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      'Durée ' +
+                                                          isInconnu(
+                                                              text: adresse[
+                                                                  'tempspassageAdresse']),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    Icon(
+                                                      FontAwesomeIcons
+                                                          .moneyCheckAlt,
+                                                      size: 15,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      'Tarif ' +
+                                                          isInconnu(
+                                                              text: adresse[
+                                                                  'tarifpassageAdresse']) +
+                                                          ' €',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    Icon(
+                                                      FontAwesomeIcons
+                                                          .truckLoading,
+                                                      size: 15,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      'Surface ' +
+                                                          isInconnu(
+                                                              text: adresse[
+                                                                  'surfacepassageAdresse']) +
+                                                          ' €',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 16,
+                                                      ),
+                                                      Icon(
+                                                        FontAwesomeIcons
+                                                            .exclamationTriangle,
+                                                        size: 15,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        isInconnu(
+                                                            text: adresse[
+                                                                'noteAdresse']),
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        })
                   ],
                 ),
               ),
@@ -687,6 +986,10 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
         ],
       )
     ])));
+  }
+
+  isInconnu({required String text}) {
+    return text == '' ? 'Inconnu' : text;
   }
 
   showCreateAdresses() {
