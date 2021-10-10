@@ -19,6 +19,7 @@ class ViewPartenairePage extends StatefulWidget {
 }
 
 class _ViewPartenairePageState extends State<ViewPartenairePage> {
+  //forPartenaire
   CollectionReference _partenaire =
       FirebaseFirestore.instance.collection("Partenaire");
   Stream<QuerySnapshot> _partenaireStream = FirebaseFirestore.instance
@@ -400,7 +401,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
             children: [
               Container(
                 width: 600,
-                height: 300,
+                height: 200 +
+                    300 * double.parse(widget.partenaire['nombredeAdresses']),
                 color: Colors.green,
                 child: Column(
                   children: [

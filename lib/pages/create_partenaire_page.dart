@@ -357,6 +357,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                   'idContactPartenaire': 'null',
                                   'actifPartenaire': _actifPartenaire,
                                   'typePartenaire': _typePartenaire,
+                                  'nombredeAdresses': '0',
                                   'idPartenaire': _partenaire.doc().id
                                 }).then((value) {
                                   _nomPartenaireController.text = '';
