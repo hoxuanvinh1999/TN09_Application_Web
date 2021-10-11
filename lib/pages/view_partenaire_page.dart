@@ -37,7 +37,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     _nomPartenaireController.text = widget.partenaire['nomPartenaire'];
     _notePartenaireController.text = widget.partenaire['notePartenaire'];
     _siretPartenaireController.text = widget.partenaire['siretPartenaire'];
-    _typePartenaire = widget.partenaire['typePartenaire'];
   }
 
   //for Adresse
