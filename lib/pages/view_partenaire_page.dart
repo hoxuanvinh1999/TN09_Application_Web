@@ -861,8 +861,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                   Container(
                     width: 600,
                     height: 100 +
-                        double.parse(widget.partenaire['nombredeFrequence']) *
-                            200,
+                        300 *
+                            double.parse(
+                                widget.partenaire['nombredeFrequence']),
                     color: Colors.green,
                     child: Column(
                       children: [
@@ -875,28 +876,33 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 height: 10,
                               ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(width: 20),
-                                  Icon(
-                                    FontAwesomeIcons.calendar,
-                                    size: 17,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Fréquences de passage',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(width: 20),
+                                        Icon(
+                                          FontAwesomeIcons.calendar,
+                                          size: 17,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Fréquences de passage',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 200,
-                                  ),
                                   Container(
-                                      width: 150,
+                                      width: 180,
                                       decoration: BoxDecoration(
                                           color: Colors.yellow,
                                           borderRadius:
@@ -2676,16 +2682,17 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     'siretPartenaire':
                                         _siretPartenaireController.text,
                                     'idContactFrequence': 'null',
-                                    'idVehicule': 'null',
+                                    'idVehiculeFrequence': 'null',
                                     'idAdresseFrequence':
                                         dataAdresse['idAdresse'],
                                     'nomAdresseFrequence':
                                         dataAdresse['nomPartenaireAdresse'],
-                                    'idPartenaire':
+                                    'idPartenaireFrequence':
                                         widget.partenaire['idPartenaire'],
                                     'dureeFrequence': (toMinute(timeEnd) -
                                             toMinute(timeStart))
                                         .toString(),
+                                    'tarifFrequence': 'null',
                                     'idFrequence': _partenaire.doc().id
                                   }).then((value) async {
                                     await _partenaire
