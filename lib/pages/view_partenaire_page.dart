@@ -65,6 +65,10 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   TextEditingController _surfacepassageAdresseController =
       TextEditingController();
 
+  isInconnu({required String text}) {
+    return text == '' ? 'Inconnu' : text;
+  }
+
   //for modify Adresse
   final _modifyAdressesKeyForm = GlobalKey<FormState>();
   TextEditingController _nomPartenaireAdresseModifyController =
@@ -734,7 +738,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                       'Durée ' +
                                                           isInconnu(
                                                               text: adresse[
-                                                                  'tempspassageAdresse']),
+                                                                  'tempspassageAdresse']) +
+                                                          ' min',
                                                       style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 15,
@@ -843,7 +848,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                 children: [
                   Container(
                     width: 600,
-                    height: 300,
+                    height: 100 +
+                        double.parse(widget.partenaire['nombredeFrequence']) *
+                            200,
                     color: Colors.green,
                     child: Column(
                       children: [
@@ -1018,10 +1025,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
         ],
       )
     ])));
-  }
-
-  isInconnu({required String text}) {
-    return text == '' ? 'Inconnu' : text;
   }
 
   showCreateAdressesDialog() {
