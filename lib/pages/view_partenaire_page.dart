@@ -2741,6 +2741,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     TimeOfDay timeStart = TimeOfDay.now();
     TimeOfDay timeEnd = TimeOfDay.now();
     TextEditingController _frequenceTextController = TextEditingController();
+    TextEditingController _frequenceTarifController = TextEditingController();
+    _frequenceTarifController.text = dataAdresse['tarifpassageAdresse'];
 
     Future pickTimeStart(
         {required BuildContext context, required TimeOfDay time}) async {
@@ -2774,6 +2776,37 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
 
     double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
     double toMinute(TimeOfDay myTime) => myTime.hour * 60.0 + myTime.minute;
+
+    DateTime dateMinimale = DateTime.now();
+    DateTime dateMaximale = DateTime.now();
+
+    Future pickDateMinimale(BuildContext context) async {
+      final initialDate = DateTime.now();
+      final newDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year - 10),
+        lastDate: DateTime(DateTime.now().year + 10),
+      );
+
+      if (newDate == null) return;
+
+      setState(() => dateMinimale = newDate);
+    }
+
+    Future pickDateMaximale(BuildContext context) async {
+      final initialDate = DateTime.now();
+      final newDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year - 10),
+        lastDate: DateTime(DateTime.now().year + 10),
+      );
+
+      if (newDate == null) return;
+
+      setState(() => dateMaximale = newDate);
+    }
 
     return showDialog(
         context: context,
@@ -2899,83 +2932,121 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                   Container(
                     height: 380,
                     color: Colors.green,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 50,
-                        ),
-                        ButtonWidget(
-                          icon: Icons.calendar_today,
-                          text: 'StartTime: ' +
-                              //     '${timeStart.hour}:${timeStart.minute}'
-                              getTimeText(time: timeStart),
-                          onClicked: () =>
-                              pickTimeStart(context: context, time: timeStart),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        ButtonWidget(
-                          icon: Icons.calendar_today,
-                          text: 'EndTime: ' +
-                              // '${timeEnd.hour}:${timeEnd.minute}'
-                              getTimeText(time: timeEnd),
-                          onClicked: () =>
-                              pickTimeEnd(context: context, time: timeEnd),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: 400,
-                          color: Colors.red,
-                          child: TextFormField(
-                            controller: _frequenceTextController,
-                            decoration: InputDecoration(
-                              labelText: 'Frequence*(Toutes les X semaines) : ',
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 50,
+                          ),
+                          ButtonWidget(
+                            icon: Icons.calendar_today,
+                            text: 'StartTime: ' +
+                                //     '${timeStart.hour}:${timeStart.minute}'
+                                getTimeText(time: timeStart),
+                            onClicked: () => pickTimeStart(
+                                context: context, time: timeStart),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ButtonWidget(
+                            icon: Icons.calendar_today,
+                            text: 'EndTime: ' +
+                                // '${timeEnd.hour}:${timeEnd.minute}'
+                                getTimeText(time: timeEnd),
+                            onClicked: () =>
+                                pickTimeEnd(context: context, time: timeEnd),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ButtonWidget(
+                            icon: Icons.calendar_today,
+                            text: 'DateMinimale: ' +
+                                DateFormat('yMd')
+                                    .format(dateMinimale)
+                                    .toString(),
+                            onClicked: () => pickDateMinimale(context),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ButtonWidget(
+                            icon: Icons.calendar_today,
+                            text: 'DateMaximale: ' +
+                                DateFormat('yMd')
+                                    .format(dateMaximale)
+                                    .toString(),
+                            onClicked: () => pickDateMinimale(context),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: 400,
+                            color: Colors.red,
+                            child: TextFormField(
+                              controller: _frequenceTextController,
+                              decoration: InputDecoration(
+                                labelText:
+                                    'Frequence*(Toutes les X semaines) : ',
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: 400,
-                          height: 50,
-                          color: Colors.red,
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.place,
-                                size: 30,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text('Type',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(width: 10),
-                              //dropdown have bug
-                              DropdownButton<String>(
-                                  onChanged: (String? changedValue) {
-                                    setState(() {
-                                      _jour = changedValue!;
-                                    });
-                                  },
-                                  value: _jour,
-                                  items: list_jour.map((String value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(value),
-                                    );
-                                  }).toList()),
-                            ],
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
-                      ],
+                          Container(
+                            width: 400,
+                            color: Colors.red,
+                            child: TextFormField(
+                              controller: _frequenceTarifController,
+                              decoration: InputDecoration(
+                                labelText: 'Tarif : ',
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: 400,
+                            height: 50,
+                            color: Colors.red,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 30,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('Jour',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(width: 10),
+                                //dropdown have bug
+                                DropdownButton<String>(
+                                    onChanged: (String? changedValue) {
+                                      setState(() {
+                                        _jour = changedValue!;
+                                      });
+                                    },
+                                    value: _jour,
+                                    items: list_jour.map((String value) {
+                                      return new DropdownMenuItem<String>(
+                                        value: value,
+                                        child: new Text(value),
+                                      );
+                                    }).toList()),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Divider(
@@ -3033,7 +3104,12 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 right: 10, top: 20, bottom: 20),
                             child: GestureDetector(
                               onTap: () async {
-                                if (!_frequenceTextController.text.isEmpty &&
+                                if (_frequenceTextController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please Input a frequence",
+                                      gravity: ToastGravity.TOP);
+                                } else if (!_frequenceTextController
+                                        .text.isEmpty &&
                                     int.tryParse(
                                             _frequenceTextController.text) ==
                                         null) {
@@ -3041,6 +3117,15 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       msg:
                                           "Please Input a real Number for frequence",
                                       gravity: ToastGravity.TOP);
+                                } else if (dateMaximale.isAfter(dateMinimale)) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please check your day",
+                                      gravity: ToastGravity.TOP);
+                                } else if (!_frequenceTarifController
+                                        .text.isEmpty &&
+                                    int.tryParse(
+                                            _frequenceTarifController.text) ==
+                                        null) {
                                 } else if (toDouble(timeStart) >
                                     toDouble(timeEnd)) {
                                   Fluttertoast.showToast(
@@ -3082,7 +3167,14 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     'dureeFrequence': (toMinute(timeEnd) -
                                             toMinute(timeStart))
                                         .toString(),
-                                    'tarifFrequence': 'null',
+                                    'tarifFrequence':
+                                        _frequenceTarifController.text,
+                                    'dateMinimaleFrequence': DateFormat('yMd')
+                                        .format(dateMinimale)
+                                        .toString(),
+                                    'dateMaximaleFrequence': DateFormat('yMd')
+                                        .format(dateMaximale)
+                                        .toString(),
                                     'idFrequence': _partenaire.doc().id
                                   }).then((value) async {
                                     await _partenaire
