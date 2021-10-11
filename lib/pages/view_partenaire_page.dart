@@ -106,6 +106,92 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     'Samedi',
     'Dimanche',
   ];
+  String titleFrequence(
+      {required String frequence, required String jourFrequence}) {
+    if (frequence == '1') {
+      return jourFrequence + ' chaque semaine';
+    } else {
+      return jourFrequence + ' toutes les ' + frequence + ' semaines';
+    }
+  }
+
+  Widget buildVehiculeFrequence({required idVehiculeFrequence}) {
+    if (idVehiculeFrequence == 'null') {
+      return Container(
+        width: 550,
+        height: 20,
+        color: Colors.green,
+        child: Row(
+          children: [
+            SizedBox(width: 20),
+            Icon(
+              FontAwesomeIcons.truck,
+              size: 15,
+              color: Colors.red,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Inconnu',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("Vehicule")
+            .where('idVehicule', isEqualTo: idVehiculeFrequence)
+            .snapshots(),
+        //Can not use OrderBy and where together
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> vehicule =
+                  document.data()! as Map<String, dynamic>;
+              return Container(
+                width: 550,
+                height: 20,
+                color: Colors.green,
+                child: Row(
+                  children: [
+                    SizedBox(width: 20),
+                    buildVehiculeIcon(
+                        icontype: vehicule['typeVehicule'],
+                        iconcolor: vehicule['colorIconVehicule'].toUpperCase(),
+                        sizeIcon: 15.0),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      vehicule['nomVehicule'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -946,6 +1032,309 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                             ],
                           ),
                         ),
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection("Frequence")
+                                .where('idPartenaireFrequence',
+                                    isEqualTo:
+                                        widget.partenaire['idPartenaire'])
+                                .snapshots(),
+                            //Can not use OrderBy and where together
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return Text(
+                                    'Something went wrong + ${snapshot.error.toString()} + ${widget.partenaire['idPartenaire'].toString()}');
+                              }
+
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              }
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: snapshot.data!.docs
+                                    .map((DocumentSnapshot document) {
+                                  Map<String, dynamic> frequence =
+                                      document.data()! as Map<String, dynamic>;
+                                  // print('$contenant');
+                                  return Container(
+                                    width: 600,
+                                    height: 300,
+                                    color: Colors.red,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 20),
+                                        Container(
+                                          color: Colors.white,
+                                          width: 550,
+                                          height: 200,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    height: 40,
+                                                    width: 550,
+                                                    color: Colors.blue,
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 8,
+                                                                ),
+                                                                Icon(
+                                                                  FontAwesomeIcons
+                                                                      .check,
+                                                                  size: 15,
+                                                                  color: Colors
+                                                                      .green,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                                Text(
+                                                                  titleFrequence(
+                                                                      frequence:
+                                                                          frequence[
+                                                                              'frequence'],
+                                                                      jourFrequence:
+                                                                          frequence[
+                                                                              'jourfrequence']),
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                )
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                                width: 180,
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors
+                                                                        .yellow,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10)),
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  right: 10,
+                                                                ),
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    // Update Later
+                                                                  },
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .add,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      Text(
+                                                                        'Modify Frequence',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Container(
+                                                height: 120,
+                                                width: 550,
+                                                color: Colors.green,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 16,
+                                                        ),
+                                                        Icon(
+                                                          FontAwesomeIcons
+                                                              .locationArrow,
+                                                          size: 15,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          frequence[
+                                                              'nomAdresseFrequence'],
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    buildVehiculeFrequence(
+                                                        idVehiculeFrequence:
+                                                            frequence[
+                                                                'idVehiculeFrequence']),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 16,
+                                                        ),
+                                                        Icon(
+                                                          FontAwesomeIcons
+                                                              .clock,
+                                                          size: 15,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          'Durée ' +
+                                                              frequence[
+                                                                  'dureeFrequence'] +
+                                                              ' min',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Icon(
+                                                          FontAwesomeIcons
+                                                              .moneyCheckAlt,
+                                                          size: 15,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          'Tarif ' +
+                                                              isInconnu(
+                                                                  text: frequence[
+                                                                      'tarifFrequence']) +
+                                                              ' €',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 16,
+                                                          ),
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .calendarWeek,
+                                                            size: 15,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .greaterThanEqual,
+                                                            size: 15,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            'Write Later',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ]),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              );
+                            })
                       ],
                     ),
                   )
