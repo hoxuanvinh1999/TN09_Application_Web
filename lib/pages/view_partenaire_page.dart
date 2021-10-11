@@ -120,7 +120,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       return 'Select Time';
     } else {
       final hour = time.hour.toString().padLeft(2, '0');
-      final minute = time.minute.toString().padRight(2, '0');
+      final minute = time.minute.toString().padLeft(2, '0');
       return '$hour:$minute';
     }
   }
@@ -130,7 +130,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       return 'Select Time';
     } else {
       final day = date.day.toString().padLeft(2, '0');
-      final month = date.month.toString().padRight(2, '0');
+      final month = date.month.toString().padLeft(2, '0');
       final year = date.year.toString();
       return '${day}/${month}/${year}';
     }
@@ -1163,7 +1163,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                 child:
                                                                     GestureDetector(
                                                                   onTap: () {
-                                                                    // Update Later
+                                                                    modifyFrequence(
+                                                                        dataFrequence:
+                                                                            frequence);
                                                                   },
                                                                   child: Row(
                                                                     children: [
@@ -1336,7 +1338,39 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             width: 5,
                                                           ),
                                                           Text(
-                                                            'Write Later',
+                                                            frequence[
+                                                                'dateMinimaleFrequence'],
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 20,
+                                                          ),
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .calendarWeek,
+                                                            size: 15,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .lessThanEqual,
+                                                            size: 15,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            frequence[
+                                                                'dateMaximaleFrequence'],
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -2993,7 +3027,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 DateFormat('yMd')
                                     .format(dateMaximale)
                                     .toString(),
-                            onClicked: () => pickDateMinimale(context),
+                            onClicked: () => pickDateMaximale(context),
                           ),
                           SizedBox(
                             height: 20,
@@ -3198,7 +3232,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       msg:
                                           "Please Input a real Number for frequence",
                                       gravity: ToastGravity.TOP);
-                                } else if (dateMaximale.isAfter(dateMinimale)) {
+                                } else if (dateMinimale.isAfter(dateMaximale)) {
                                   Fluttertoast.showToast(
                                       msg: "Please check your day",
                                       gravity: ToastGravity.TOP);
@@ -3258,14 +3292,15 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     'dureeFrequence': (toMinute(timeEnd) -
                                             toMinute(timeStart))
                                         .toString(),
+                                    'startFrequence':
+                                        getTimeText(time: timeStart),
+                                    'endFrequence': getTimeText(time: timeEnd),
                                     'tarifFrequence':
                                         _frequenceTarifController.text,
-                                    'dateMinimaleFrequence': DateFormat('yMd')
-                                        .format(dateMinimale)
-                                        .toString(),
-                                    'dateMaximaleFrequence': DateFormat('yMd')
-                                        .format(dateMaximale)
-                                        .toString(),
+                                    'dateMinimaleFrequence':
+                                        getDateText(date: dateMinimale),
+                                    'dateMaximaleFrequence':
+                                        getDateText(date: dateMaximale),
                                     'idFrequence': _partenaire.doc().id
                                   }).then((value) async {
                                     await _partenaire
@@ -3295,6 +3330,489 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     });
                                   }).catchError((error) => print(
                                           "Failed to update user: $error"));
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ]),
+          ));
+        });
+  }
+
+  modifyFrequence({required Map dataFrequence}) {
+    String choiceVehicule = 'check';
+    String idVehiculeFrequence = '';
+    String _jour = dataFrequence['jourfrequence'];
+    TimeOfDay timeStart = TimeOfDay(
+        hour: int.parse(dataFrequence['startFrequence'].substring(0, 2)),
+        minute: int.parse(dataFrequence['startFrequence'].substring(3)));
+    TimeOfDay timeEnd = TimeOfDay(
+        hour: int.parse(dataFrequence['endFrequence'].substring(0, 2)),
+        minute: int.parse(dataFrequence['endFrequence'].substring(3)));
+    TextEditingController _frequenceTextController =
+        TextEditingController(text: dataFrequence['frequence']);
+    TextEditingController _frequenceTarifController =
+        TextEditingController(text: dataFrequence['tarifFrequence']);
+
+    Future pickTimeStart(
+        {required BuildContext context, required TimeOfDay time}) async {
+      final newTime = await showTimePicker(context: context, initialTime: time);
+
+      if (newTime == null) {
+        return;
+      }
+      setState(() => timeStart = newTime);
+    }
+
+    Future pickTimeEnd(
+        {required BuildContext context, required TimeOfDay time}) async {
+      final newTime = await showTimePicker(context: context, initialTime: time);
+
+      if (newTime == null) {
+        return;
+      }
+      setState(() => timeEnd = newTime);
+    }
+
+    double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
+    double toMinute(TimeOfDay myTime) => myTime.hour * 60.0 + myTime.minute;
+
+    // DateTime dateMinimale = DateTime(
+    //     int.parse(dataFrequence['dateMinimaleFrequence'].substring(6)),
+    //     int.parse(dataFrequence['dateMinimaleFrequence'].substring(3, 5)),
+    //     int.parse(dataFrequence['dateMinimaleFrequence'].substring(0, 2)));
+    // DateTime dateMaximale = DateTime(
+    //     int.parse(dataFrequence['dateMaximaleFrequence'].substring(6)),
+    //     int.parse(dataFrequence['dateMaximaleFrequence'].substring(3, 5)),
+    //     int.parse(dataFrequence['dateMaximaleFrequence'].substring(0, 2)));
+    DateTime dateMinimale = DateTime.now();
+    DateTime dateMaximale = DateTime.now();
+
+    Future pickDateMinimale(BuildContext context) async {
+      final newDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year - 10),
+        lastDate: DateTime(DateTime.now().year + 10),
+      );
+
+      if (newDate == null) return;
+
+      setState(() => dateMinimale = newDate);
+    }
+
+    Future pickDateMaximale(BuildContext context) async {
+      final newDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year - 10),
+        lastDate: DateTime(DateTime.now().year + 10),
+      );
+
+      if (newDate == null) return;
+
+      setState(() => dateMaximale = newDate);
+    }
+
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: Container(
+            height: 800,
+            width: 800,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'Modify Frequence ' +
+                            dataFrequence['nomAdresseFrequence'],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 380,
+                    color: Colors.green,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 50,
+                          ),
+                          ButtonWidget(
+                            icon: Icons.calendar_today,
+                            text: 'StartTime: ' +
+                                //     '${timeStart.hour}:${timeStart.minute}'
+                                getTimeText(time: timeStart),
+                            onClicked: () => pickTimeStart(
+                                context: context, time: timeStart),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ButtonWidget(
+                            icon: Icons.calendar_today,
+                            text: 'EndTime: ' +
+                                // '${timeEnd.hour}:${timeEnd.minute}'
+                                getTimeText(time: timeEnd),
+                            onClicked: () =>
+                                pickTimeEnd(context: context, time: timeEnd),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ButtonWidget(
+                            icon: Icons.calendar_today,
+                            text: 'DateMinimale: ' +
+                                DateFormat('yMd')
+                                    .format(dateMinimale)
+                                    .toString(),
+                            onClicked: () => pickDateMinimale(context),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ButtonWidget(
+                            icon: Icons.calendar_today,
+                            text: 'DateMaximale: ' +
+                                DateFormat('yMd')
+                                    .format(dateMaximale)
+                                    .toString(),
+                            onClicked: () => pickDateMaximale(context),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: 400,
+                            color: Colors.red,
+                            child: TextFormField(
+                              controller: _frequenceTextController,
+                              decoration: InputDecoration(
+                                labelText:
+                                    'Frequence*(Toutes les X semaines) : ',
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: 400,
+                            color: Colors.red,
+                            child: TextFormField(
+                              controller: _frequenceTarifController,
+                              decoration: InputDecoration(
+                                labelText: 'Tarif : ',
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: 400,
+                            height: 50,
+                            color: Colors.red,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.calendar,
+                                  size: 30,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('Jour',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(width: 10),
+                                //dropdown have bug
+                                DropdownButton<String>(
+                                    onChanged: (String? changedValue) {
+                                      setState(() {
+                                        _jour = changedValue!;
+                                      });
+                                    },
+                                    value: _jour,
+                                    items: list_jour.map((String value) {
+                                      return new DropdownMenuItem<String>(
+                                        value: value,
+                                        child: new Text(value),
+                                      );
+                                    }).toList()),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: 400,
+                            height: 50,
+                            color: Colors.red,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.truck,
+                                  size: 30,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('Vehicule',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(width: 10),
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("Vehicule")
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text('Something went wrong');
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+                                      return DropdownButton(
+                                        onChanged: (String? changedValue) {
+                                          setState(() {
+                                            choiceVehicule = changedValue!;
+                                          });
+                                        },
+                                        value: choiceVehicule,
+                                        items: snapshot.data!.docs
+                                            .map((DocumentSnapshot document) {
+                                          Map<String, dynamic> vehicule =
+                                              document.data()!
+                                                  as Map<String, dynamic>;
+
+                                          return DropdownMenuItem<String>(
+                                            value: vehicule[
+                                                'numeroImmatriculation'],
+                                            child: new Text(vehicule[
+                                                    'nomVehicule'] +
+                                                ' ' +
+                                                vehicule[
+                                                    'numeroImmatriculation']),
+                                          );
+                                        }).toList(),
+                                      );
+                                    }),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                print(getTimeText(time: timeStart));
+                                print(getTimeText(time: timeEnd));
+                                print('$choiceVehicule');
+                                print('$_jour');
+                                print(
+                                    '${DateFormat('yMd').format(dateMaximale).toString()}');
+                                print(
+                                    '${DateFormat('yMd').format(dateMinimale).toString()}');
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (_frequenceTextController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please Input a frequence",
+                                      gravity: ToastGravity.TOP);
+                                } else if (!_frequenceTextController
+                                        .text.isEmpty &&
+                                    int.tryParse(
+                                            _frequenceTextController.text) ==
+                                        null) {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Please Input a real Number for frequence",
+                                      gravity: ToastGravity.TOP);
+                                } else if (dateMinimale.isAfter(dateMaximale)) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please check your day",
+                                      gravity: ToastGravity.TOP);
+                                } else if (!_frequenceTarifController
+                                        .text.isEmpty &&
+                                    int.tryParse(
+                                            _frequenceTarifController.text) ==
+                                        null) {
+                                } else if (toDouble(timeStart) >
+                                    toDouble(timeEnd)) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please check your time",
+                                      gravity: ToastGravity.TOP);
+                                } else {
+                                  await _vehicule
+                                      .where('numeroImmatriculation',
+                                          isEqualTo: choiceVehicule)
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      idVehiculeFrequence = doc['idVehicule'];
+                                    });
+                                  });
+                                  await _frequence
+                                      .where('idFrequence',
+                                          isEqualTo:
+                                              dataFrequence['idFrequence'])
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      _frequence.doc(doc.id).update({
+                                        'frequence':
+                                            _frequenceTextController.text,
+                                        'jourfrequence': _jour,
+                                        'siretPartenaire':
+                                            _siretPartenaireController.text,
+                                        'idContactFrequence': 'null',
+                                        'idVehiculeFrequence':
+                                            idVehiculeFrequence,
+                                        'dureeFrequence': (toMinute(timeEnd) -
+                                                toMinute(timeStart))
+                                            .toString(),
+                                        'startFrequence':
+                                            getTimeText(time: timeStart),
+                                        'endFrequence':
+                                            getTimeText(time: timeEnd),
+                                        'tarifFrequence':
+                                            _frequenceTarifController.text,
+                                        'dateMinimaleFrequence':
+                                            getDateText(date: dateMinimale),
+                                        'dateMaximaleFrequence':
+                                            getDateText(date: dateMaximale),
+                                      }).then((value) async {
+                                        await _partenaire
+                                            .where('idPartenaire',
+                                                isEqualTo: widget
+                                                    .partenaire['idPartenaire'])
+                                            .limit(1)
+                                            .get()
+                                            .then(
+                                                (QuerySnapshot querySnapshot) {
+                                          querySnapshot.docs.forEach((doc) {
+                                            Map<String, dynamic>
+                                                next_partenaire = doc.data()!
+                                                    as Map<String, dynamic>;
+                                            print("Frequence Modified");
+                                            Fluttertoast.showToast(
+                                                msg: "Frequence Modified",
+                                                gravity: ToastGravity.TOP);
+
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ViewPartenairePage(
+                                                        partenaire:
+                                                            next_partenaire,
+                                                      )),
+                                            ).then((value) => setState(() {}));
+                                          });
+                                        });
+                                      }).catchError((error) => print(
+                                          "Failed to update user: $error"));
+                                    });
+                                  });
                                 }
                               },
                               child: Row(
