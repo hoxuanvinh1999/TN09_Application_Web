@@ -93,6 +93,18 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       TextEditingController();
   TextEditingController _surfacepassageAdresseModifyController =
       TextEditingController();
+  //For frequence
+  CollectionReference _frequence =
+      FirebaseFirestore.instance.collection("Frequence");
+  List<String> list_jour = [
+    'Lundi',
+    'Mardi',
+    'Mercredi',
+    'Jeudi',
+    'Vendredi',
+    'Samedi',
+    'Dimanche',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -2329,6 +2341,44 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
 
   showModifyHoraireAdresse(
       {required BuildContext context, required Map dataAdresse}) {
+    String _jour = 'Lundi';
+    TimeOfDay timeStart = TimeOfDay.now();
+    TimeOfDay timeEnd = TimeOfDay.now();
+    TextEditingController _frequenceTextController = TextEditingController();
+
+    Future pickTimeStart(
+        {required BuildContext context, required TimeOfDay time}) async {
+      final newTime = await showTimePicker(context: context, initialTime: time);
+
+      if (newTime == null) {
+        return;
+      }
+      setState(() => timeStart = newTime);
+    }
+
+    Future pickTimeEnd(
+        {required BuildContext context, required TimeOfDay time}) async {
+      final newTime = await showTimePicker(context: context, initialTime: time);
+
+      if (newTime == null) {
+        return;
+      }
+      setState(() => timeEnd = newTime);
+    }
+
+    String getTimeText({required TimeOfDay time}) {
+      if (time == null) {
+        return 'Select Time';
+      } else {
+        final hour = time.hour.toString().padLeft(2, '0');
+        final minute = time.minute.toString().padRight(2, '0');
+        return '$hour:$minute';
+      }
+    }
+
+    double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
+    double toMinute(TimeOfDay myTime) => myTime.hour * 60.0 + myTime.minute;
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -2453,6 +2503,84 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                   Container(
                     height: 380,
                     color: Colors.green,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 50,
+                        ),
+                        ButtonWidget(
+                          icon: Icons.calendar_today,
+                          text: 'StartTime: ' +
+                              //     '${timeStart.hour}:${timeStart.minute}'
+                              getTimeText(time: timeStart),
+                          onClicked: () =>
+                              pickTimeStart(context: context, time: timeStart),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        ButtonWidget(
+                          icon: Icons.calendar_today,
+                          text: 'EndTime: ' +
+                              // '${timeEnd.hour}:${timeEnd.minute}'
+                              getTimeText(time: timeEnd),
+                          onClicked: () =>
+                              pickTimeEnd(context: context, time: timeEnd),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: 400,
+                          color: Colors.red,
+                          child: TextFormField(
+                            controller: _frequenceTextController,
+                            decoration: InputDecoration(
+                              labelText: 'Frequence*(Toutes les X semaines) : ',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: 400,
+                          height: 50,
+                          color: Colors.red,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.place,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text('Type',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600)),
+                              SizedBox(width: 10),
+                              //dropdown have bug
+                              DropdownButton<String>(
+                                  onChanged: (String? changedValue) {
+                                    setState(() {
+                                      _jour = changedValue!;
+                                    });
+                                  },
+                                  value: _jour,
+                                  items: list_jour.map((String value) {
+                                    return new DropdownMenuItem<String>(
+                                      value: value,
+                                      child: new Text(value),
+                                    );
+                                  }).toList()),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Divider(
                     thickness: 5,
@@ -2475,6 +2603,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 right: 10, top: 20, bottom: 20),
                             child: GestureDetector(
                               onTap: () {
+                                print(getTimeText(time: timeStart));
+                                print(getTimeText(time: timeEnd));
+                                print('$_jour');
                                 Navigator.of(context).pop();
                               },
                               child: Row(
@@ -2505,7 +2636,87 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                             margin: const EdgeInsets.only(
                                 right: 10, top: 20, bottom: 20),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () async {
+                                if (!_frequenceTextController.text.isEmpty &&
+                                    int.tryParse(
+                                            _frequenceTextController.text) ==
+                                        null) {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Please Input a real Number for frequence",
+                                      gravity: ToastGravity.TOP);
+                                } else if (toDouble(timeStart) >
+                                    toDouble(timeEnd)) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please check your time",
+                                      gravity: ToastGravity.TOP);
+                                } else {
+                                  await _partenaire
+                                      .where('idPartenaire',
+                                          isEqualTo:
+                                              widget.partenaire['idPartenaire'])
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      _partenaire.doc(doc.id).update({
+                                        'nombredeFrequence': (int.parse(
+                                                    widget.partenaire[
+                                                        'nombredeFrequence']) +
+                                                1)
+                                            .toString(),
+                                      });
+                                    });
+                                  });
+                                  await _frequence
+                                      .doc(_frequence.doc().id)
+                                      .set({
+                                    'frequence': _frequenceTextController.text,
+                                    'jourfrequence': _jour,
+                                    'siretPartenaire':
+                                        _siretPartenaireController.text,
+                                    'idContactFrequence': 'null',
+                                    'idVehicule': 'null',
+                                    'idAdresseFrequence':
+                                        dataAdresse['idAdresse'],
+                                    'nomAdresseFrequence':
+                                        dataAdresse['nomPartenaireAdresse'],
+                                    'idPartenaire':
+                                        widget.partenaire['idPartenaire'],
+                                    'dureeFrequence': (toMinute(timeEnd) -
+                                            toMinute(timeStart))
+                                        .toString(),
+                                    'idFrequence': _partenaire.doc().id
+                                  }).then((value) async {
+                                    await _partenaire
+                                        .where('idPartenaire',
+                                            isEqualTo: widget
+                                                .partenaire['idPartenaire'])
+                                        .limit(1)
+                                        .get()
+                                        .then((QuerySnapshot querySnapshot) {
+                                      querySnapshot.docs.forEach((doc) {
+                                        Map<String, dynamic> next_partenaire =
+                                            doc.data()! as Map<String, dynamic>;
+                                        print("Frequence Added");
+                                        Fluttertoast.showToast(
+                                            msg: "Frequence Added",
+                                            gravity: ToastGravity.TOP);
+
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViewPartenairePage(
+                                                    partenaire: next_partenaire,
+                                                  )),
+                                        ).then((value) => setState(() {}));
+                                      });
+                                    });
+                                  }).catchError((error) => print(
+                                          "Failed to update user: $error"));
+                                }
+                              },
                               child: Row(
                                 children: [
                                   Icon(
