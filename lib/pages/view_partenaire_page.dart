@@ -2124,7 +2124,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                       ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pop();
-                          showModifyHoraireAdresse(
+                          showAddFrequenceAdresse(
                               context: context, dataAdresse: dataAdresse);
                         },
                         child: Row(
@@ -2738,7 +2738,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
         });
   }
 
-  showModifyHoraireAdresse(
+  showAddFrequenceAdresse(
       {required BuildContext context, required Map dataAdresse}) async {
     String choiceVehicule = 'check';
     String idVehiculeFrequence = '';
@@ -3384,7 +3384,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                       ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pop();
-                          showModifyHoraireAdresse(
+                          showAddFrequenceAdresse(
                               context: context, dataAdresse: dataAdresse);
                         },
                         child: Row(
