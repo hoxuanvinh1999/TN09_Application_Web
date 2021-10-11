@@ -8,6 +8,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 
 class ViewPartenairePage extends StatefulWidget {
   Map partenaire;
