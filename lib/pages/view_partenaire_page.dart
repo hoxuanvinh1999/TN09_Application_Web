@@ -115,6 +115,27 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     }
   }
 
+  String getTimeText({required TimeOfDay time}) {
+    if (time == null) {
+      return 'Select Time';
+    } else {
+      final hour = time.hour.toString().padLeft(2, '0');
+      final minute = time.minute.toString().padRight(2, '0');
+      return '$hour:$minute';
+    }
+  }
+
+  String getDateText({required DateTime date}) {
+    if (date == null) {
+      return 'Select Time';
+    } else {
+      final day = date.day.toString().padLeft(2, '0');
+      final month = date.month.toString().padRight(2, '0');
+      final year = date.year.toString();
+      return '${day}/${month}/${year}';
+    }
+  }
+
   // for Vehicule
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection('Vehicule');
@@ -2767,16 +2788,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
         return;
       }
       setState(() => timeEnd = newTime);
-    }
-
-    String getTimeText({required TimeOfDay time}) {
-      if (time == null) {
-        return 'Select Time';
-      } else {
-        final hour = time.hour.toString().padLeft(2, '0');
-        final minute = time.minute.toString().padRight(2, '0');
-        return '$hour:$minute';
-      }
     }
 
     double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
