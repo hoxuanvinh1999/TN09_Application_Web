@@ -6,6 +6,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
 class VehiculePage extends StatefulWidget {
   @override
@@ -227,7 +228,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                                   vehicule['typeVehicule'],
                                               iconcolor:
                                                   vehicule['colorIconVehicule']
-                                                      .toUpperCase()),
+                                                      .toUpperCase(),
+                                              sizeIcon: 17.0),
                                           SizedBox(
                                             width: 10,
                                           ),
@@ -743,45 +745,6 @@ class _VehiculePageState extends State<VehiculePage> {
                 ],
               ),
             ));
-  }
-
-  Widget buildVehiculeIcon(
-      {required String icontype, required String iconcolor}) {
-    switch (icontype) {
-      case 'camion':
-        {
-          return Icon(
-            FontAwesomeIcons.truck,
-            size: 17,
-            color: Color(int.parse(iconcolor)),
-          );
-        }
-      case 'velo':
-        {
-          return Icon(
-            FontAwesomeIcons.bicycle,
-            size: 17,
-            color: Color(int.parse(iconcolor)),
-          );
-        }
-      case 'voiture':
-        {
-          return Icon(
-            FontAwesomeIcons.car,
-            size: 17,
-            color: Color(int.parse(iconcolor)),
-          );
-        }
-      default:
-        {
-          return Icon(
-            FontAwesomeIcons.truck,
-            size: 17,
-            color: Color(int.parse(iconcolor)),
-          );
-          ;
-        }
-    }
   }
 
   showModifyVehiculeDialog(
