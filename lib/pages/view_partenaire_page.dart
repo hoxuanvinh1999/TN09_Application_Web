@@ -115,6 +115,10 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     }
   }
 
+  // for Vehicule
+  CollectionReference _vehicule =
+      FirebaseFirestore.instance.collection('Vehicule');
+
   Widget buildVehiculeFrequence({required idVehiculeFrequence}) {
     if (idVehiculeFrequence == 'null') {
       return Container(
@@ -149,7 +153,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
             .collection("Vehicule")
             .where('idVehicule', isEqualTo: idVehiculeFrequence)
             .snapshots(),
-        //Can not use OrderBy and where together
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -2736,7 +2739,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   }
 
   showModifyHoraireAdresse(
-      {required BuildContext context, required Map dataAdresse}) {
+      {required BuildContext context, required Map dataAdresse}) async {
+    String choiceVehicule = 'check';
+    String idVehiculeFrequence = '';
     String _jour = 'Lundi';
     TimeOfDay timeStart = TimeOfDay.now();
     TimeOfDay timeEnd = TimeOfDay.now();
@@ -3045,6 +3050,70 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: 400,
+                            height: 50,
+                            color: Colors.red,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.truck,
+                                  size: 30,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('Vehicule',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(width: 10),
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("Vehicule")
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text('Something went wrong');
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+                                      return DropdownButton(
+                                        onChanged: (String? changedValue) {
+                                          setState(() {
+                                            choiceVehicule = changedValue!;
+                                          });
+                                        },
+                                        value: choiceVehicule,
+                                        items: snapshot.data!.docs
+                                            .map((DocumentSnapshot document) {
+                                          Map<String, dynamic> vehicule =
+                                              document.data()!
+                                                  as Map<String, dynamic>;
+
+                                          return DropdownMenuItem<String>(
+                                            value: vehicule[
+                                                'numeroImmatriculation'],
+                                            child: new Text(vehicule[
+                                                    'nomVehicule'] +
+                                                ' ' +
+                                                vehicule[
+                                                    'numeroImmatriculation']),
+                                          );
+                                        }).toList(),
+                                      );
+                                    }),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -3072,6 +3141,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                               onTap: () {
                                 print(getTimeText(time: timeStart));
                                 print(getTimeText(time: timeEnd));
+                                print('$choiceVehicule');
                                 print('$_jour');
                                 Navigator.of(context).pop();
                               },
@@ -3149,6 +3219,16 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       });
                                     });
                                   });
+                                  await _vehicule
+                                      .where('numeroImmatriculation',
+                                          isEqualTo: choiceVehicule)
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      idVehiculeFrequence = doc['idVehicule'];
+                                    });
+                                  });
                                   await _frequence
                                       .doc(_frequence.doc().id)
                                       .set({
@@ -3157,7 +3237,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     'siretPartenaire':
                                         _siretPartenaireController.text,
                                     'idContactFrequence': 'null',
-                                    'idVehiculeFrequence': 'null',
+                                    'idVehiculeFrequence': idVehiculeFrequence,
                                     'idAdresseFrequence':
                                         dataAdresse['idAdresse'],
                                     'nomAdresseFrequence':
