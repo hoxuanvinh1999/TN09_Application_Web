@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/forget_password_page.dart';
+import 'package:tn09_app_web_demo/login_page/verify_email_page.dart';
 import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 
@@ -361,7 +362,7 @@ class _LoginPageState extends State<LoginPage> {
       Fluttertoast.showToast(
           msg: 'Sign Up Successed', gravity: ToastGravity.TOP);
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+          MaterialPageRoute(builder: (context) => VerifyScreen()));
     } on FirebaseAuthException catch (error) {
       //String msgerror = 'Error sign up';
       Fluttertoast.showToast(
