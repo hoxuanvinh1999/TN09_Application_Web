@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/forget_password_page.dart';
 import 'package:tn09_app_web_demo/login_page/verify_email_page.dart';
+import 'package:tn09_app_web_demo/pages/contact_page.dart';
 import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 
@@ -332,7 +333,7 @@ class _LoginPageState extends State<LoginPage> {
   _signinAnonymous() async {
     await auth.signInAnonymously();
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => PartenairePage()));
+        MaterialPageRoute(builder: (context) => ContactPage()));
   }
 
   _signin(String _email, String _password) async {

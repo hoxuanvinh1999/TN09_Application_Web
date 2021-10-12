@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,6 +7,8 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/create_contact_page.dart';
+import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 
 class ContactPage extends StatefulWidget {
   @override
@@ -278,14 +281,14 @@ class _ContactPageState extends State<ContactPage> {
                                               ),
                                               Row(
                                                 children: [
-                                          Icon(
-                                            FontAwesomeIcons.phone,
-                                            size: 17,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
+                                                  Icon(
+                                                    FontAwesomeIcons.phone,
+                                                    size: 17,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
                                                     contact[
                                                         'telephone1Contact'],
                                                     style: TextStyle(
@@ -312,16 +315,95 @@ class _ContactPageState extends State<ContactPage> {
                                                   Text(
                                                     contact[
                                                         'telephone2Contact'],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                            ),
-                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          )
                                         ],
                                       ),
                                     ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      alignment: Alignment(-1, 0.15),
+                                      width: 280,
+                                      height: 50,
+                                      color: Colors.green,
+                                      child: StreamBuilder<QuerySnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("Partenaire")
+                                              .where('idContactPartenaire',
+                                                  isEqualTo:
+                                                      contact['idContact'])
+                                              .snapshots(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  snapshot) {
+                                            if (snapshot.hasError) {
+                                              return Text(
+                                                  'Something went wrong');
+                                            }
+
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircularProgressIndicator();
+                                            }
+                                            return Column(
+                                              children: snapshot.data!.docs.map(
+                                                  (DocumentSnapshot document) {
+                                                Map<String, dynamic>
+                                                    partenaire =
+                                                    document.data()!
+                                                        as Map<String, dynamic>;
+
+                                                return Row(
+                                                  children: [
+                                                    Icon(
+                                                      FontAwesomeIcons.flag,
+                                                      size: 17,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        children: <TextSpan>[
+                                                          TextSpan(
+                                                              text: partenaire[
+                                                                  'nomPartenaire'],
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                              recognizer:
+                                                                  TapGestureRecognizer()
+                                                                    ..onTap =
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pushReplacement(
+                                                                              MaterialPageRoute(builder: (context) => ViewPartenairePage(partenaire: partenaire)));
+                                                                    }),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                );
+                                              }).toList(),
+                                            );
+                                          }),
+                                    )
                                   ],
                                 ),
                                 SizedBox(
@@ -339,4 +421,7 @@ class _ContactPageState extends State<ContactPage> {
               ]))),
     ])));
   }
+
+  CollectionReference _partenaire =
+      FirebaseFirestore.instance.collection("Contact");
 }
