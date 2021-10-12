@@ -935,7 +935,7 @@ class _PartenairePageState extends State<PartenairePage> {
         recoitRapport = convertBool(check: dataContact['recoitRapport']);
         recoitFacture = convertBool(check: dataContact['recoitFacture']);
         accessExtranet = convertBool(check: dataContact['accessExtranet']);
-        isPrincipal = convertBool(check: dataPartenaire['isPrincipal']);
+        isPrincipal = convertBool(check: dataContact['isPrincipal']);
       });
     });
 
