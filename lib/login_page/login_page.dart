@@ -333,7 +333,7 @@ class _LoginPageState extends State<LoginPage> {
   _signinAnonymous() async {
     await auth.signInAnonymously();
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => ContactPage()));
+        MaterialPageRoute(builder: (context) => PartenairePage()));
   }
 
   _signin(String _email, String _password) async {
