@@ -191,8 +191,10 @@ class _ContactPageState extends State<ContactPage> {
                           snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> contact =
                             document.data()! as Map<String, dynamic>;
-                        // print('$vehicule');
                         return Container(
+                            height: 50 +
+                                double.parse(contact['nombredePartenaire']) *
+                                    50,
                             color: Colors.white,
                             child: Column(
                               children: [
@@ -269,6 +271,13 @@ class _ContactPageState extends State<ContactPage> {
                                       color: Colors.green,
                                       child: Row(
                                         children: [
+                                          Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Row(
+                                                children: [
                                           Icon(
                                             FontAwesomeIcons.phone,
                                             size: 17,
@@ -277,11 +286,37 @@ class _ContactPageState extends State<ContactPage> {
                                             width: 10,
                                           ),
                                           Text(
-                                            contact['telephone1Contact'],
+                                                    contact[
+                                                        'telephone1Contact'],
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    FontAwesomeIcons.phone,
+                                                    size: 17,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    contact[
+                                                        'telephone2Contact'],
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
-                                              fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                             ),
                                           ),
                                         ],
