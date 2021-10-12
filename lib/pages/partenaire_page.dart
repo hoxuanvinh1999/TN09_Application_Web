@@ -15,6 +15,10 @@ class PartenairePage extends StatefulWidget {
 }
 
 class _PartenairePageState extends State<PartenairePage> {
+  //for controll table
+  CollectionReference _contactpartenaire =
+      FirebaseFirestore.instance.collection("ContactPartenaire");
+  //For Partenaire
   CollectionReference _partenaire =
       FirebaseFirestore.instance.collection("Partenaire");
   Stream<QuerySnapshot> _partenaireStream = FirebaseFirestore.instance
@@ -250,8 +254,7 @@ class _PartenairePageState extends State<PartenairePage> {
                                         height: 50,
                                         color: Colors.green,
                                         child: contactPartenaire(
-                                            idContactPartenaire: partenaire[
-                                                'idContactPartenaire']))
+                                            dataPartenaire: partenaire))
                                   ],
                                 ),
                                 SizedBox(
@@ -354,8 +357,8 @@ class _PartenairePageState extends State<PartenairePage> {
     }
   }
 
-  Widget contactPartenaire({required idContactPartenaire}) {
-    switch (idContactPartenaire) {
+  Widget contactPartenaire({required dataPartenaire}) {
+    switch (dataPartenaire['idContactPartenaire']) {
       case 'null':
         {
           return IconButton(
@@ -365,7 +368,7 @@ class _PartenairePageState extends State<PartenairePage> {
             ),
             tooltip: 'Add Contact',
             onPressed: () {
-              //addContactPartenaire();
+              addContactPartenaire(dataPartenaire: dataPartenaire);
             },
           );
         }
@@ -381,6 +384,430 @@ class _PartenairePageState extends State<PartenairePage> {
               //viewContactPartenaire();
             },
           );
+        }
+    }
+  }
+
+  //For Create Contact
+  CollectionReference _contact =
+      FirebaseFirestore.instance.collection("Contact");
+  TextEditingController _nomContactController = TextEditingController();
+  TextEditingController _prenomContractController = TextEditingController();
+  TextEditingController _telephone1ContactController = TextEditingController();
+  TextEditingController _telephone2ContactController = TextEditingController();
+  TextEditingController _emailContactController = TextEditingController();
+  TextEditingController _passwordContactController = TextEditingController();
+  TextEditingController _noteContactController = TextEditingController();
+  final _createContactKeyForm = GlobalKey<FormState>();
+  bool isPrincipal = true;
+  bool recoitRapport = false;
+  bool recoitFacture = false;
+  bool accessEtranet = false;
+
+  addContactPartenaire({required Map dataPartenaire}) {
+    if (dataPartenaire['idContactPartenaire'] == 'null') {
+      isPrincipal = true;
+    }
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              height: 600,
+              width: 800,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'New Contact',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    height: 400,
+                    width: 500,
+                    color: Colors.green,
+                    child: Form(
+                        key: _createContactKeyForm,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _nomContactController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Nom*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _prenomContractController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Prenom*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _telephone1ContactController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Telephone 1:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _telephone2ContactController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Telephone2:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _emailContactController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Email:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Container(
+                                    width: 310,
+                                    color: Colors.red,
+                                    child: TextFormField(
+                                      controller: _passwordContactController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Password:',
+                                      ),
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty ||
+                                            value == '') {
+                                          return 'This can not be null';
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        FontAwesomeIcons.syncAlt,
+                                        size: 17,
+                                        color: Colors.black,
+                                      )),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        FontAwesomeIcons.copy,
+                                        size: 17,
+                                        color: Colors.black,
+                                      ))
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                  width: 400,
+                                  color: Colors.red,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: TextField(
+                                      controller: _noteContactController,
+                                      maxLines: 4,
+                                      decoration: InputDecoration.collapsed(
+                                          hintText: "Note"),
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Recoit Facture',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Switch(
+                                    value: recoitFacture,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        recoitFacture = !recoitFacture;
+                                        print('recoitFacture $recoitFacture');
+                                      });
+                                    },
+                                    activeTrackColor: Colors.lightGreenAccent,
+                                    activeColor: Colors.green,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Recoit Rapport',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Switch(
+                                    value: recoitRapport,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        recoitRapport = !recoitRapport;
+                                        print('recoitRapport $recoitRapport');
+                                      });
+                                    },
+                                    activeTrackColor: Colors.lightGreenAccent,
+                                    activeColor: Colors.green,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Access Etranet',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Switch(
+                                    value: accessEtranet,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        accessEtranet = !accessEtranet;
+                                        print('accessEtranet $accessEtranet');
+                                      });
+                                    },
+                                    activeTrackColor: Colors.lightGreenAccent,
+                                    activeColor: Colors.green,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {},
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget buildStatusIcon({required String iconstatus}) {
+    switch (iconstatus) {
+      case 'Disponible':
+        {
+          return Icon(
+            FontAwesomeIcons.check,
+            size: 17,
+            color: Colors.black,
+          );
+        }
+      case 'PasDisponible':
+        {
+          return Icon(
+            FontAwesomeIcons.times,
+            size: 17,
+            color: Colors.black,
+          );
+        }
+      default:
+        {
+          return Icon(
+            FontAwesomeIcons.question,
+            size: 17,
+            color: Colors.black,
+          );
+          ;
         }
     }
   }
