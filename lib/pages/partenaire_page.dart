@@ -7,6 +7,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 
 class PartenairePage extends StatefulWidget {
@@ -388,9 +389,40 @@ class _PartenairePageState extends State<PartenairePage> {
     }
   }
 
+  Widget buildStatusIcon({required String iconstatus}) {
+    switch (iconstatus) {
+      case 'Disponible':
+        {
+          return Icon(
+            FontAwesomeIcons.check,
+            size: 17,
+            color: Colors.black,
+          );
+        }
+      case 'PasDisponible':
+        {
+          return Icon(
+            FontAwesomeIcons.times,
+            size: 17,
+            color: Colors.black,
+          );
+        }
+      default:
+        {
+          return Icon(
+            FontAwesomeIcons.question,
+            size: 17,
+            color: Colors.black,
+          );
+          ;
+        }
+    }
+  }
+
   //For Create Contact
   CollectionReference _contact =
       FirebaseFirestore.instance.collection("Contact");
+  final _createContactKeyForm = GlobalKey<FormState>();
   TextEditingController _nomContactController = TextEditingController();
   TextEditingController _prenomContractController = TextEditingController();
   TextEditingController _telephone1ContactController = TextEditingController();
@@ -398,13 +430,23 @@ class _PartenairePageState extends State<PartenairePage> {
   TextEditingController _emailContactController = TextEditingController();
   TextEditingController _passwordContactController = TextEditingController();
   TextEditingController _noteContactController = TextEditingController();
-  final _createContactKeyForm = GlobalKey<FormState>();
   bool isPrincipal = true;
   bool recoitRapport = false;
   bool recoitFacture = false;
   bool accessEtranet = false;
 
   addContactPartenaire({required Map dataPartenaire}) {
+    _nomContactController.text = '';
+    _prenomContractController.text = '';
+    _telephone1ContactController.text = '';
+    _telephone2ContactController.text = '';
+    _emailContactController.text = '';
+    _passwordContactController.text = '';
+    _noteContactController.text = '';
+    isPrincipal = false;
+    recoitRapport = false;
+    recoitFacture = false;
+    accessEtranet = false;
     if (dataPartenaire['idContactPartenaire'] == 'null') {
       isPrincipal = true;
     }
@@ -492,10 +534,12 @@ class _PartenairePageState extends State<PartenairePage> {
                                     labelText: 'Telephone 1:',
                                   ),
                                   validator: (value) {
-                                    if (value == null ||
-                                        value.isEmpty ||
-                                        value == '') {
-                                      return 'This can not be null';
+                                    if (!checkTelephone(
+                                            _telephone1ContactController
+                                                .text) &&
+                                        _telephone1ContactController
+                                            .text.isNotEmpty) {
+                                      return 'Telephone format is: 0xxxxxxxxx';
                                     }
                                   },
                                 ),
@@ -512,10 +556,12 @@ class _PartenairePageState extends State<PartenairePage> {
                                     labelText: 'Telephone2:',
                                   ),
                                   validator: (value) {
-                                    if (value == null ||
-                                        value.isEmpty ||
-                                        value == '') {
-                                      return 'This can not be null';
+                                    if (!checkTelephone(
+                                            _telephone2ContactController
+                                                .text) &&
+                                        _telephone2ContactController
+                                            .text.isNotEmpty) {
+                                      return 'Telephone format is: 0xxxxxxxxx';
                                     }
                                   },
                                 ),
@@ -751,7 +797,10 @@ class _PartenairePageState extends State<PartenairePage> {
                             margin: const EdgeInsets.only(
                                 right: 10, top: 20, bottom: 20),
                             child: GestureDetector(
-                              onTap: () async {},
+                              onTap: () async {
+                                if (_createContactKeyForm.currentState!
+                                    .validate()) {}
+                              },
                               child: Row(
                                 children: [
                                   Icon(
@@ -780,35 +829,5 @@ class _PartenairePageState extends State<PartenairePage> {
             ),
           );
         });
-  }
-
-  Widget buildStatusIcon({required String iconstatus}) {
-    switch (iconstatus) {
-      case 'Disponible':
-        {
-          return Icon(
-            FontAwesomeIcons.check,
-            size: 17,
-            color: Colors.black,
-          );
-        }
-      case 'PasDisponible':
-        {
-          return Icon(
-            FontAwesomeIcons.times,
-            size: 17,
-            color: Colors.black,
-          );
-        }
-      default:
-        {
-          return Icon(
-            FontAwesomeIcons.question,
-            size: 17,
-            color: Colors.black,
-          );
-          ;
-        }
-    }
   }
 }

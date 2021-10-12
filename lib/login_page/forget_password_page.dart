@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
+import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   @override
@@ -156,11 +157,5 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         ),
                       ]))))),
     );
-  }
-
-  bool checkEmail(String checkmail) {
-    return RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(checkmail);
   }
 }
