@@ -1,13 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
+import 'package:tn09_app_web_demo/pages/math_function/generate_password.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 
 class PartenairePage extends StatefulWidget {
@@ -433,7 +437,8 @@ class _PartenairePageState extends State<PartenairePage> {
   bool isPrincipal = true;
   bool recoitRapport = false;
   bool recoitFacture = false;
-  bool accessEtranet = false;
+  bool accessExtranet = false;
+  String idNewContact = '';
 
   addContactPartenaire({required Map dataPartenaire}) {
     _nomContactController.text = '';
@@ -446,7 +451,8 @@ class _PartenairePageState extends State<PartenairePage> {
     isPrincipal = false;
     recoitRapport = false;
     recoitFacture = false;
-    accessEtranet = false;
+    accessExtranet = false;
+    idNewContact = '';
     if (dataPartenaire['idContactPartenaire'] == 'null') {
       isPrincipal = true;
     }
@@ -578,10 +584,11 @@ class _PartenairePageState extends State<PartenairePage> {
                                     labelText: 'Email:',
                                   ),
                                   validator: (value) {
-                                    if (value == null ||
-                                        value.isEmpty ||
-                                        value == '') {
-                                      return 'This can not be null';
+                                    if (!checkEmail(
+                                            _emailContactController.text) &&
+                                        _emailContactController
+                                            .text.isNotEmpty) {
+                                      return 'Please Input a true Email';
                                     }
                                   },
                                 ),
@@ -599,24 +606,22 @@ class _PartenairePageState extends State<PartenairePage> {
                                     width: 310,
                                     color: Colors.red,
                                     child: TextFormField(
+                                      readOnly: true,
                                       controller: _passwordContactController,
                                       decoration: InputDecoration(
                                         labelText: 'Password:',
                                       ),
-                                      validator: (value) {
-                                        if (value == null ||
-                                            value.isEmpty ||
-                                            value == '') {
-                                          return 'This can not be null';
-                                        }
-                                      },
                                     ),
                                   ),
                                   SizedBox(
                                     width: 20,
                                   ),
                                   IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        final password = generatePassword();
+                                        _passwordContactController.text =
+                                            password;
+                                      },
                                       icon: Icon(
                                         FontAwesomeIcons.syncAlt,
                                         size: 17,
@@ -626,7 +631,19 @@ class _PartenairePageState extends State<PartenairePage> {
                                     width: 10,
                                   ),
                                   IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        final data = ClipboardData(
+                                            text: _passwordContactController
+                                                .text);
+                                        Clipboard.setData(data);
+
+                                        Fluttertoast.showToast(
+                                            msg: "Password Copy",
+                                            gravity: ToastGravity.TOP);
+
+                                        ScaffoldMessenger.of(context)
+                                          ..removeCurrentSnackBar();
+                                      },
                                       icon: Icon(
                                         FontAwesomeIcons.copy,
                                         size: 17,
@@ -727,11 +744,11 @@ class _PartenairePageState extends State<PartenairePage> {
                                     width: 20,
                                   ),
                                   Switch(
-                                    value: accessEtranet,
+                                    value: accessExtranet,
                                     onChanged: (value) {
                                       setState(() {
-                                        accessEtranet = !accessEtranet;
-                                        print('accessEtranet $accessEtranet');
+                                        accessExtranet = !accessExtranet;
+                                        print('accessExtranet $accessExtranet');
                                       });
                                     },
                                     activeTrackColor: Colors.lightGreenAccent,
@@ -799,7 +816,67 @@ class _PartenairePageState extends State<PartenairePage> {
                             child: GestureDetector(
                               onTap: () async {
                                 if (_createContactKeyForm.currentState!
-                                    .validate()) {}
+                                    .validate()) {
+                                  idNewContact = _contact.doc().id.toString();
+                                  await _contact.doc(idNewContact).set({
+                                    'nomContact': _nomContactController.text,
+                                    'prenomContact':
+                                        _prenomContractController.text,
+                                    'telephone1Contact':
+                                        _telephone1ContactController.text,
+                                    'telephone2Contact':
+                                        _telephone2ContactController.text,
+                                    'noteContact': _noteContactController.text,
+                                    'emailContact':
+                                        _emailContactController.text,
+                                    'passwordContact':
+                                        _passwordContactController.text,
+                                    'accessExtranet': accessExtranet.toString(),
+                                    'recoitFacture': recoitFacture.toString(),
+                                    'recoitRapport': recoitRapport.toString(),
+                                    'isPrincipal': isPrincipal.toString(),
+                                    'nombredePartenaire': '1',
+                                    'idContact': idNewContact
+                                  }).then((value) {
+                                    print("Contact Added");
+                                    Fluttertoast.showToast(
+                                        msg: "Contact Added",
+                                        gravity: ToastGravity.TOP);
+                                  }).catchError((error) =>
+                                      print("Failed to add user: $error"));
+                                  await _partenaire
+                                      .where('idPartenaire',
+                                          isEqualTo:
+                                              dataPartenaire['idPartenaire'])
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      _partenaire.doc(doc.id).update({
+                                        'nombredeContact': (int.parse(
+                                                    dataPartenaire[
+                                                        'nombredeContact']) +
+                                                1)
+                                            .toString(),
+                                        'idContactPartenaire': idNewContact,
+                                      });
+                                    });
+                                  });
+                                  await _contactpartenaire
+                                      .doc(_contact.doc().id)
+                                      .set({
+                                    'idPartenaire':
+                                        dataPartenaire['idPartenaire'],
+                                    'idContact': idNewContact,
+                                  }).then((value) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PartenairePage()));
+                                  }).catchError((error) =>
+                                          print("Failed to add user: $error"));
+                                }
                               },
                               child: Row(
                                 children: [

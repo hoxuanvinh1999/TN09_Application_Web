@@ -273,7 +273,7 @@ class _ContactPageState extends State<ContactPage> {
                                             width: 10,
                                           ),
                                           Text(
-                                            contact['telephoneContact'],
+                                            contact['telephone1Contact'],
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
