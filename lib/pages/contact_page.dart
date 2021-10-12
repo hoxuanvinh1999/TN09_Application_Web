@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tn09_app_web_demo/pages/create_contact_page.dart';
 
 class ContactPage extends StatefulWidget {
   @override
@@ -68,7 +69,10 @@ class _ContactPageState extends State<ContactPage> {
                                   right: 10, top: 20, bottom: 20),
                               child: GestureDetector(
                                 onTap: () {
-                                  //Update later
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CreateContactPage()));
                                 },
                                 child: Row(
                                   children: [
