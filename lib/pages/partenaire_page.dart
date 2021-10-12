@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
+import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/generate_password.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 
@@ -386,7 +388,7 @@ class _PartenairePageState extends State<PartenairePage> {
             ),
             tooltip: 'View Contact',
             onPressed: () {
-              //viewContactPartenaire();
+              viewContactPartenaire(dataPartenaire: dataPartenaire);
             },
           );
         }
@@ -784,6 +786,10 @@ class _PartenairePageState extends State<PartenairePage> {
                                 right: 10, top: 20, bottom: 20),
                             child: GestureDetector(
                               onTap: () {
+                                print('recoitFacture $recoitFacture');
+                                print('recoitRapport $recoitRapport');
+                                print('accessExtranet $accessExtranet');
+                                print('isPrincipal $isPrincipal');
                                 Navigator.of(context).pop();
                               },
                               child: Row(
@@ -876,6 +882,472 @@ class _PartenairePageState extends State<PartenairePage> {
                                                 PartenairePage()));
                                   }).catchError((error) =>
                                           print("Failed to add user: $error"));
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  //For View(and Modify) Contact
+  final _modifyContactKeyForm = GlobalKey<FormState>();
+  viewContactPartenaire({required Map dataPartenaire}) async {
+    await _contact
+        .where('idContact', isEqualTo: dataPartenaire['idContactPartenaire'])
+        .limit(1)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        Map<String, dynamic> dataContact = doc.data()! as Map<String, dynamic>;
+        // print('$dataContact');
+        _nomContactController.text = dataContact['nomContact'];
+        _prenomContractController.text = dataContact['prenomContact'];
+        _telephone1ContactController.text = dataContact['telephone1Contact'];
+        _telephone2ContactController.text = dataContact['telephone2Contact'];
+        _emailContactController.text = dataContact['emailContact'];
+        _passwordContactController.text = dataContact['passwordContact'];
+        _noteContactController.text = dataContact['noteContact'];
+        recoitRapport = convertBool(check: dataContact['recoitRapport']);
+        recoitFacture = convertBool(check: dataContact['recoitFacture']);
+        accessExtranet = convertBool(check: dataContact['accessExtranet']);
+        isPrincipal = convertBool(check: dataPartenaire['isPrincipal']);
+      });
+    });
+
+    // print('${_nomContactController.text}');
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              height: 600,
+              width: 800,
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                      height: 80,
+                      alignment: Alignment(-0.9, 0),
+                      color: Colors.blue,
+                      child: Text(
+                        'View Contact Information',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      )),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    height: 400,
+                    width: 500,
+                    color: Colors.green,
+                    child: Form(
+                        key: _modifyContactKeyForm,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _nomContactController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Nom*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _prenomContractController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Prenom*:',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == '') {
+                                      return 'This can not be null';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _telephone1ContactController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Telephone 1:',
+                                  ),
+                                  validator: (value) {
+                                    if (!checkTelephone(
+                                            _telephone1ContactController
+                                                .text) &&
+                                        _telephone1ContactController
+                                            .text.isNotEmpty) {
+                                      return 'Telephone format is: 0xxxxxxxxx';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _telephone2ContactController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Telephone2:',
+                                  ),
+                                  validator: (value) {
+                                    if (!checkTelephone(
+                                            _telephone2ContactController
+                                                .text) &&
+                                        _telephone2ContactController
+                                            .text.isNotEmpty) {
+                                      return 'Telephone format is: 0xxxxxxxxx';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: TextFormField(
+                                  controller: _emailContactController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Email:',
+                                  ),
+                                  validator: (value) {
+                                    if (!checkEmail(
+                                            _emailContactController.text) &&
+                                        _emailContactController
+                                            .text.isNotEmpty) {
+                                      return 'Please Input a true Email';
+                                    }
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Container(
+                                    width: 310,
+                                    color: Colors.red,
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: _passwordContactController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Password:',
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        final password = generatePassword();
+                                        _passwordContactController.text =
+                                            password;
+                                      },
+                                      icon: Icon(
+                                        FontAwesomeIcons.syncAlt,
+                                        size: 17,
+                                        color: Colors.black,
+                                      )),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        final data = ClipboardData(
+                                            text: _passwordContactController
+                                                .text);
+                                        Clipboard.setData(data);
+
+                                        Fluttertoast.showToast(
+                                            msg: "Password Copy",
+                                            gravity: ToastGravity.TOP);
+
+                                        ScaffoldMessenger.of(context)
+                                          ..removeCurrentSnackBar();
+                                      },
+                                      icon: Icon(
+                                        FontAwesomeIcons.copy,
+                                        size: 17,
+                                        color: Colors.black,
+                                      ))
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                  width: 400,
+                                  color: Colors.red,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: TextField(
+                                      controller: _noteContactController,
+                                      maxLines: 4,
+                                      decoration: InputDecoration.collapsed(
+                                          hintText: "Note"),
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Recoit Facture',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Switch(
+                                    value: recoitFacture,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        recoitFacture = !recoitFacture;
+                                        print('recoitFacture $recoitFacture');
+                                      });
+                                    },
+                                    activeTrackColor: Colors.lightGreenAccent,
+                                    activeColor: Colors.green,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Recoit Rapport',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Switch(
+                                    value: recoitRapport,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        recoitRapport = !recoitRapport;
+                                        print('recoitRapport $recoitRapport');
+                                      });
+                                    },
+                                    activeTrackColor: Colors.lightGreenAccent,
+                                    activeColor: Colors.green,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Access Etranet',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Switch(
+                                    value: accessExtranet,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        accessExtranet = !accessExtranet;
+                                        print('accessExtranet $accessExtranet');
+                                      });
+                                    },
+                                    activeTrackColor: Colors.lightGreenAccent,
+                                    activeColor: Colors.green,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                print('recoitFacture $recoitFacture');
+                                print('recoitRapport $recoitRapport');
+                                print('accessExtranet $accessExtranet');
+                                print('isPrincipal $isPrincipal');
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (_modifyContactKeyForm.currentState!
+                                    .validate()) {
+                                  await _contact
+                                      .where('idContact',
+                                          isEqualTo: dataPartenaire[
+                                              'idContactPartenaire'])
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      _contact.doc(doc.id).update({
+                                        'nomContact':
+                                            _nomContactController.text,
+                                        'prenomContact':
+                                            _prenomContractController.text,
+                                        'telephone1Contact':
+                                            _telephone1ContactController.text,
+                                        'telephone2Contact':
+                                            _telephone2ContactController.text,
+                                        'noteContact':
+                                            _noteContactController.text,
+                                        'emailContact':
+                                            _emailContactController.text,
+                                        'passwordContact':
+                                            _passwordContactController.text,
+                                        'accessExtranet':
+                                            accessExtranet.toString(),
+                                        'recoitFacture':
+                                            recoitFacture.toString(),
+                                        'recoitRapport':
+                                            recoitRapport.toString(),
+                                      }).then((value) {
+                                        print("Contact Modified");
+                                        Fluttertoast.showToast(
+                                            msg: "Contact Modified",
+                                            gravity: ToastGravity.TOP);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PartenairePage()));
+                                      }).catchError((error) => print(
+                                          "Failed to update user: $error"));
+                                    });
+                                  });
                                 }
                               },
                               child: Row(
