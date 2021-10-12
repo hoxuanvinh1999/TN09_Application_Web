@@ -7,7 +7,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/widget/bool_icon.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
@@ -40,6 +42,13 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     _notePartenaireController.text = widget.partenaire['notePartenaire'];
     _siretPartenaireController.text = widget.partenaire['siretPartenaire'];
   }
+
+  // For Relation Table
+  CollectionReference _contactpartenaire =
+      FirebaseFirestore.instance.collection("ContactPartenaire");
+  // For Contact
+  CollectionReference _contact =
+      FirebaseFirestore.instance.collection("Contact");
 
   //for Adresse
   CollectionReference _adresse =
@@ -229,74 +238,36 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 600,
-              height: 800,
-              color: Colors.green,
-              child: Column(children: [
-                Container(
-                  height: 60,
-                  color: Colors.blue,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 20),
-                          Icon(
-                            FontAwesomeIcons.flag,
-                            size: 17,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Partenaire',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      const Divider(
-                        thickness: 5,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
+          Column(children: [
+            Container(
+                margin: EdgeInsets.only(left: 20),
+                width: 600,
+                height: 800,
+                color: Colors.green,
+                child: Column(children: [
+                  Container(
                     height: 60,
-                    color: Colors.red,
+                    color: Colors.blue,
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 5,
+                          height: 10,
                         ),
                         Row(
                           children: [
-                            SizedBox(
-                              width: 20,
-                            ),
+                            SizedBox(width: 20),
                             Icon(
-                              FontAwesomeIcons.cog,
-                              size: 15,
+                              FontAwesomeIcons.flag,
+                              size: 17,
                             ),
                             SizedBox(
                               width: 10,
                             ),
                             Text(
-                              ' Informations et paramètres',
+                              'Partenaire',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 15,
+                                fontSize: 17,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -309,267 +280,687 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                           thickness: 5,
                         ),
                       ],
-                    )),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 400,
-                  width: 800,
-                  color: Colors.blue,
-                  child: Form(
-                      key: _createPartenaireKeyForm,
+                    ),
+                  ),
+                  Container(
+                      height: 60,
+                      color: Colors.red,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 400,
-                            color: Colors.red,
-                            child: TextFormField(
-                              controller: _nomPartenaireController,
-                              decoration: InputDecoration(
-                                labelText: 'Nom* :',
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
                               ),
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty ||
-                                    value == '') {
-                                  return 'This can not be null';
-                                }
-                              },
-                            ),
+                              Icon(
+                                FontAwesomeIcons.cog,
+                                size: 15,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                ' Informations et paramètres',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 5,
                           ),
-                          Container(
-                            width: 400,
-                            color: Colors.red,
-                            child: TextFormField(
-                              controller: _siretPartenaireController,
-                              decoration: InputDecoration(
-                                labelText: 'SIRET :',
+                          const Divider(
+                            thickness: 5,
+                          ),
+                        ],
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 400,
+                    width: 800,
+                    color: Colors.blue,
+                    child: Form(
+                        key: _createPartenaireKeyForm,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 400,
+                              color: Colors.red,
+                              child: TextFormField(
+                                controller: _nomPartenaireController,
+                                decoration: InputDecoration(
+                                  labelText: 'Nom* :',
+                                ),
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value == '') {
+                                    return 'This can not be null';
+                                  }
+                                },
                               ),
-                              validator: (value) {
-                                if (value != '' &&
-                                    !value!.isEmpty &&
-                                    value.length != 14) {
-                                  return 'It must be 14 characters long';
-                                }
-                              },
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 400,
-                            height: 50,
-                            color: Colors.red,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.place,
-                                  size: 30,
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 400,
+                              color: Colors.red,
+                              child: TextFormField(
+                                controller: _siretPartenaireController,
+                                decoration: InputDecoration(
+                                  labelText: 'SIRET :',
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('Type',
+                                validator: (value) {
+                                  if (value != '' &&
+                                      !value!.isEmpty &&
+                                      value.length != 14) {
+                                    return 'It must be 14 characters long';
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 400,
+                              height: 50,
+                              color: Colors.red,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.place,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text('Type',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600)),
+                                  SizedBox(width: 10),
+                                  //dropdown have bug
+                                  DropdownButton<String>(
+                                      onChanged: (String? changedValue) {
+                                        setState(() {
+                                          _typePartenaire = changedValue!;
+                                          // print(
+                                          //     '$_typePartenaire  $changedValue');
+                                        });
+                                      },
+                                      value: _typePartenaire,
+                                      items: list_type.map((String value) {
+                                        return new DropdownMenuItem<String>(
+                                          value: value,
+                                          child: new Text(value),
+                                        );
+                                      }).toList()),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 400,
+                              height: 50,
+                              color: Colors.red,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Actif*: ',
                                     style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.black,
-                                        fontWeight: FontWeight.w600)),
-                                SizedBox(width: 10),
-                                //dropdown have bug
-                                DropdownButton<String>(
-                                    onChanged: (String? changedValue) {
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  //bug with Radio
+                                  Radio(
+                                    value: 'true',
+                                    groupValue: _actifPartenaire,
+                                    onChanged: (val) {
                                       setState(() {
-                                        _typePartenaire = changedValue!;
-                                        // print(
-                                        //     '$_typePartenaire  $changedValue');
+                                        _actifPartenaire = 'true';
+                                        // id = 1;
+                                        // print('$_actifPartenaire');
                                       });
                                     },
-                                    value: _typePartenaire,
-                                    items: list_type.map((String value) {
-                                      return new DropdownMenuItem<String>(
-                                        value: value,
-                                        child: new Text(value),
-                                      );
-                                    }).toList()),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 400,
-                            height: 50,
-                            color: Colors.red,
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Actif*: ',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                //bug with Radio
-                                Radio(
-                                  value: 'true',
-                                  groupValue: _actifPartenaire,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      _actifPartenaire = 'true';
-                                      // id = 1;
-                                      // print('$_actifPartenaire');
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  'Actif',
-                                  style: new TextStyle(fontSize: 17.0),
-                                ),
-                                Radio(
-                                  value: 'false',
-                                  groupValue: _actifPartenaire,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      _actifPartenaire = 'false';
-                                      // id = 2;
-                                      // print('$_actifPartenaire');
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  'PasActif',
-                                  style: new TextStyle(
-                                    fontSize: 17.0,
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    'Actif',
+                                    style: new TextStyle(fontSize: 17.0),
+                                  ),
+                                  Radio(
+                                    value: 'false',
+                                    groupValue: _actifPartenaire,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _actifPartenaire = 'false';
+                                        // id = 2;
+                                        // print('$_actifPartenaire');
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'PasActif',
+                                    style: new TextStyle(
+                                      fontSize: 17.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                                width: 400,
+                                color: Colors.red,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: TextField(
+                                    controller: _notePartenaireController,
+                                    maxLines: 4,
+                                    decoration: InputDecoration.collapsed(
+                                        hintText: "Note"),
+                                  ),
+                                )),
+                          ],
+                        )),
+                  ),
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    width: 800,
+                    height: 80,
+                    color: Colors.red,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(
+                                right: 10, top: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (_createPartenaireKeyForm.currentState!
+                                    .validate()) {
+                                  await _partenaire
+                                      .where('idPartenaire',
+                                          isEqualTo:
+                                              widget.partenaire['idPartenaire'])
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      _partenaire.doc(doc.id).update({
+                                        'nomPartenaire':
+                                            _nomPartenaireController.text,
+                                        'notePartenaire':
+                                            _notePartenaireController.text,
+                                        'siretPartenaire':
+                                            _siretPartenaireController.text,
+                                        'idContactPartenaire': 'null',
+                                        'actifPartenaire': _actifPartenaire,
+                                        'typePartenaire': _typePartenaire,
+                                      }).then((value) async {
+                                        await _partenaire
+                                            .where('idPartenaire',
+                                                isEqualTo: widget
+                                                    .partenaire['idPartenaire'])
+                                            .limit(1)
+                                            .get()
+                                            .then(
+                                                (QuerySnapshot querySnapshot) {
+                                          querySnapshot.docs.forEach((doc) {
+                                            Map<String, dynamic>
+                                                next_partenaire = doc.data()!
+                                                    as Map<String, dynamic>;
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Update Information Partenaire",
+                                                gravity: ToastGravity.TOP);
+
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ViewPartenairePage(
+                                                        partenaire:
+                                                            next_partenaire,
+                                                      )),
+                                            ).then((value) => setState(() {}));
+                                          });
+                                        });
+                                      }).catchError((error) => print(
+                                          "Failed to update user: $error"));
+                                    });
+                                  });
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Update',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ])),
+            SizedBox(height: 20),
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              height: 200 +
+                  100 * double.parse(widget.partenaire['nombredeContact']),
+              width: 600,
+              color: Colors.green,
+              child: Column(
+                children: [
+                  Container(
+                    height: 60,
+                    color: Colors.blue,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 20),
+                            Icon(
+                              FontAwesomeIcons.users,
+                              size: 17,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Contact',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        const Divider(
+                          thickness: 5,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      height: 60,
+                      color: Colors.red,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Icon(
+                                FontAwesomeIcons.users,
+                                size: 15,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Contact',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 150,
+                              ),
+                              Text(
+                                'Principal',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Text(
+                                'Rapports',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Text(
+                                'Factures',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Text(
+                                'Accès',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 5,
                           ),
-                          Container(
-                              width: 400,
-                              color: Colors.red,
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: TextField(
-                                  controller: _notePartenaireController,
-                                  maxLines: 4,
-                                  decoration: InputDecoration.collapsed(
-                                      hintText: "Note"),
-                                ),
-                              )),
+                          const Divider(
+                            thickness: 5,
+                          ),
                         ],
                       )),
-                ),
-                Divider(
-                  thickness: 5,
-                ),
-                Container(
-                  width: 800,
-                  height: 80,
-                  color: Colors.red,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 400,
-                      ),
-                      Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                              color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: const EdgeInsets.only(
-                              right: 10, top: 20, bottom: 20),
-                          child: GestureDetector(
-                            onTap: () async {
-                              if (_createPartenaireKeyForm.currentState!
-                                  .validate()) {
-                                await _partenaire
-                                    .where('idPartenaire',
-                                        isEqualTo:
-                                            widget.partenaire['idPartenaire'])
-                                    .limit(1)
-                                    .get()
-                                    .then((QuerySnapshot querySnapshot) {
-                                  querySnapshot.docs.forEach((doc) {
-                                    _partenaire.doc(doc.id).update({
-                                      'nomPartenaire':
-                                          _nomPartenaireController.text,
-                                      'notePartenaire':
-                                          _notePartenaireController.text,
-                                      'siretPartenaire':
-                                          _siretPartenaireController.text,
-                                      'idContactPartenaire': 'null',
-                                      'actifPartenaire': _actifPartenaire,
-                                      'typePartenaire': _typePartenaire,
-                                    }).then((value) async {
-                                      await _partenaire
-                                          .where('idPartenaire',
-                                              isEqualTo: widget
-                                                  .partenaire['idPartenaire'])
-                                          .limit(1)
-                                          .get()
-                                          .then((QuerySnapshot querySnapshot) {
-                                        querySnapshot.docs.forEach((doc) {
-                                          Map<String, dynamic> next_partenaire =
-                                              doc.data()!
-                                                  as Map<String, dynamic>;
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "Update Information Partenaire",
-                                              gravity: ToastGravity.TOP);
-
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ViewPartenairePage(
-                                                      partenaire:
-                                                          next_partenaire,
-                                                    )),
-                                          ).then((value) => setState(() {}));
-                                        });
-                                      });
-                                    }).catchError((error) =>
-                                        print("Failed to update user: $error"));
-                                  });
-                                });
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Update',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ],
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-              ])),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("ContactPartenaire")
+                        .where('idPartenaire',
+                            isEqualTo: widget.partenaire['idPartenaire'])
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Something went wrong');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      return Column(
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          Map<String, dynamic> link_contactpartenaire =
+                              document.data()! as Map<String, dynamic>;
+
+                          return Container(
+                            color: Colors.white,
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection("Contact")
+                                  .where('idContact',
+                                      isEqualTo:
+                                          link_contactpartenaire['idContact'])
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Something went wrong');
+                                }
+
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                return Column(
+                                  children: snapshot.data!.docs
+                                      .map((DocumentSnapshot document) {
+                                    Map<String, dynamic> dataContact = document
+                                        .data()! as Map<String, dynamic>;
+
+                                    return Column(children: [
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(width: 20),
+                                          Text(
+                                            dataContact['nomContact'] +
+                                                ' ' +
+                                                dataContact['prenomContact'],
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(width: 150),
+                                          IconButton(
+                                            icon: buildBoolIcon(
+                                                check: convertBool(
+                                                    check: dataContact[
+                                                        'isPrincipal']),
+                                                sizeIcon: 15),
+                                            tooltip: 'Change',
+                                            onPressed: () async {
+                                              if (convertBool(
+                                                  check: dataContact[
+                                                      'isPrincipal'])) {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "It's already principale",
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                await _contactpartenaire
+                                                    .where('idPartenaire',
+                                                        isEqualTo:
+                                                            widget.partenaire[
+                                                                'idPartenaire'])
+                                                    .get()
+                                                    .then((QuerySnapshot
+                                                        querySnapshot) {
+                                                  querySnapshot.docs.forEach(
+                                                      (datacontactpartenaire) async {
+                                                    await _contact
+                                                        .where('idContact',
+                                                            isEqualTo:
+                                                                datacontactpartenaire[
+                                                                    'idContact'])
+                                                        .limit(1)
+                                                        .get()
+                                                        .then((QuerySnapshot
+                                                            querySnapshot) {
+                                                      querySnapshot.docs.forEach(
+                                                          (insidedatacontact) {
+                                                        print('here');
+                                                        _contact
+                                                            .doc(
+                                                                insidedatacontact
+                                                                    .id)
+                                                            .update({
+                                                          'isPrincipal': (!convertBool(
+                                                                  check: insidedatacontact[
+                                                                      'isPrincipal']))
+                                                              .toString(),
+                                                        });
+                                                      });
+                                                    });
+                                                  });
+                                                });
+                                                Fluttertoast.showToast(
+                                                    msg: "Information Modified",
+                                                    gravity: ToastGravity.TOP);
+                                              }
+                                            },
+                                          ),
+                                          SizedBox(width: 50),
+                                          IconButton(
+                                            icon: buildBoolIcon(
+                                                check: convertBool(
+                                                    check: dataContact[
+                                                        'recoitRapport']),
+                                                sizeIcon: 15),
+                                            tooltip: 'Change',
+                                            onPressed: () async {
+                                              await _contact
+                                                  .where('idContact',
+                                                      isEqualTo: dataContact[
+                                                          'idContact'])
+                                                  .limit(1)
+                                                  .get()
+                                                  .then((QuerySnapshot
+                                                      querySnapshot) {
+                                                querySnapshot.docs
+                                                    .forEach((doc) {
+                                                  _contact.doc(doc.id).update({
+                                                    'recoitRapport': (!convertBool(
+                                                            check: dataContact[
+                                                                'recoitRapport']))
+                                                        .toString(),
+                                                  }).then((value) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "Information Modified",
+                                                        gravity:
+                                                            ToastGravity.TOP);
+                                                  }).catchError((error) => print(
+                                                      "Failed to update user: $error"));
+                                                });
+                                              });
+                                            },
+                                          ),
+                                          SizedBox(width: 50),
+                                          IconButton(
+                                            icon: buildBoolIcon(
+                                                check: convertBool(
+                                                    check: dataContact[
+                                                        'recoitFacture']),
+                                                sizeIcon: 15),
+                                            tooltip: 'Change',
+                                            onPressed: () async {
+                                              await _contact
+                                                  .where('idContact',
+                                                      isEqualTo: dataContact[
+                                                          'idContact'])
+                                                  .limit(1)
+                                                  .get()
+                                                  .then((QuerySnapshot
+                                                      querySnapshot) {
+                                                querySnapshot.docs
+                                                    .forEach((doc) {
+                                                  _contact.doc(doc.id).update({
+                                                    'recoitFacture': (!convertBool(
+                                                            check: dataContact[
+                                                                'recoitFacture']))
+                                                        .toString(),
+                                                  }).then((value) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "Information Modified",
+                                                        gravity:
+                                                            ToastGravity.TOP);
+                                                  }).catchError((error) => print(
+                                                      "Failed to update user: $error"));
+                                                });
+                                              });
+                                            },
+                                          ),
+                                          SizedBox(width: 50),
+                                          IconButton(
+                                            icon: buildBoolIcon(
+                                                check: convertBool(
+                                                    check: dataContact[
+                                                        'accessExtranet']),
+                                                sizeIcon: 15),
+                                            tooltip: 'Change',
+                                            onPressed: () async {
+                                              await _contact
+                                                  .where('idContact',
+                                                      isEqualTo: dataContact[
+                                                          'idContact'])
+                                                  .limit(1)
+                                                  .get()
+                                                  .then((QuerySnapshot
+                                                      querySnapshot) {
+                                                querySnapshot.docs
+                                                    .forEach((doc) {
+                                                  _contact.doc(doc.id).update({
+                                                    'accessExtranet': (!convertBool(
+                                                            check: dataContact[
+                                                                'accessExtranet']))
+                                                        .toString(),
+                                                  }).then((value) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "Information Modified",
+                                                        gravity:
+                                                            ToastGravity.TOP);
+                                                  }).catchError((error) => print(
+                                                      "Failed to update user: $error"));
+                                                });
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                    ]);
+                                  }).toList(),
+                                );
+                              },
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            )
+          ]),
           SizedBox(
             width: 50,
           ),
