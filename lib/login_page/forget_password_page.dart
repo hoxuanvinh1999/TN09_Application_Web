@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -90,7 +91,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                 height: 20,
                               ),
                               GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   if (_email == null ||
                                       _email.isEmpty ||
                                       _email == '') {
@@ -102,14 +103,28 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                         msg: 'Please input a correct email',
                                         gravity: ToastGravity.TOP);
                                   } else {
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            'Password reset instructions have been sent to email!',
-                                        gravity: ToastGravity.TOP);
-                                    auth.sendPasswordResetEmail(email: _email);
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) => LoginPage()));
+                                    QuerySnapshot query =
+                                        await FirebaseFirestore.instance
+                                            .collection('User')
+                                            .where('email', isEqualTo: _email)
+                                            .get();
+                                    if (query.docs.isEmpty) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'There are no accounts with this email, you may be signing up for a new account',
+                                          gravity: ToastGravity.TOP);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'Password reset instructions have been sent to email!',
+                                          gravity: ToastGravity.TOP);
+                                      auth.sendPasswordResetEmail(
+                                          email: _email);
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage()));
+                                    }
                                   }
                                 },
                                 child: Container(
