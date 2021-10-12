@@ -807,13 +807,37 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             isEqualTo:
                                                                 datacontactpartenaire[
                                                                     'idContact'])
+                                                        .where('isPrincipal',
+                                                            isEqualTo: 'true')
                                                         .limit(1)
                                                         .get()
                                                         .then((QuerySnapshot
                                                             querySnapshot) {
                                                       querySnapshot.docs.forEach(
                                                           (insidedatacontact) {
-                                                        print('here');
+                                                        _contact
+                                                            .doc(
+                                                                insidedatacontact
+                                                                    .id)
+                                                            .update({
+                                                          'isPrincipal': (!convertBool(
+                                                                  check: insidedatacontact[
+                                                                      'isPrincipal']))
+                                                              .toString(),
+                                                        });
+                                                      });
+                                                    });
+                                                    await _contact
+                                                        .where('idContact',
+                                                            isEqualTo:
+                                                                dataContact[
+                                                                    'idContact'])
+                                                        .limit(1)
+                                                        .get()
+                                                        .then((QuerySnapshot
+                                                            querySnapshot) {
+                                                      querySnapshot.docs.forEach(
+                                                          (insidedatacontact) {
                                                         _contact
                                                             .doc(
                                                                 insidedatacontact
