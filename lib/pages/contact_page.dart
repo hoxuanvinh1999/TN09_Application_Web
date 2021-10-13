@@ -27,7 +27,7 @@ class _ContactPageState extends State<ContactPage> {
       FirebaseFirestore.instance.collection("Contact");
   Stream<QuerySnapshot> _contactStream = FirebaseFirestore.instance
       .collection("Contact")
-      .orderBy('nomContact')
+      .where('idContact', isNotEqualTo: 'null')
       .snapshots();
   // null Map
   Map<String, String> nullPartenaire = {};
@@ -44,7 +44,7 @@ class _ContactPageState extends State<ContactPage> {
           child: Container(
               margin: EdgeInsets.only(left: 20),
               width: 1200,
-              height: 1000,
+              height: 1500,
               color: Colors.green,
               child: Column(children: [
                 Container(
@@ -186,267 +186,283 @@ class _ContactPageState extends State<ContactPage> {
                         )
                       ],
                     )),
-                StreamBuilder<QuerySnapshot>(
-                  stream: _contactStream,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Something went wrong');
-                    }
+                Container(
+                  height: 1000,
+                  child: SingleChildScrollView(
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: _contactStream,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Something went wrong');
+                        }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    }
-                    // print('$snapshot');
-                    return Column(
-                      children:
-                          snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> contact =
-                            document.data()! as Map<String, dynamic>;
-                        return Container(
-                            height: 50 +
-                                double.parse(contact['nombredePartenaire']) *
-                                    50,
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        // print('$snapshot');
+                        return Column(
+                          children: snapshot.data!.docs
+                              .map((DocumentSnapshot document) {
+                            Map<String, dynamic> contact =
+                                document.data()! as Map<String, dynamic>;
+                            return Container(
+                                height:
+                                    // 50 +
+                                    //     double.parse(contact['nombredePartenaire']) *
+                                    //         50,
+                                    100,
+                                color: Colors.white,
+                                child: Column(
                                   children: [
                                     SizedBox(
-                                      width: 20,
+                                      height: 5,
                                     ),
-                                    Container(
-                                      alignment: Alignment(-1, 0.15),
-                                      width: 200,
-                                      height: 50,
-                                      color: Colors.green,
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            FontAwesomeIcons.user,
-                                            size: 17,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: <TextSpan>[
-                                                TextSpan(
-                                                    text: limitString(
-                                                        text: contact[
-                                                                'nomContact'] +
-                                                            ' ' +
-                                                            contact[
-                                                                'prenomContact'],
-                                                        limit_long: 15),
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () {
-                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                builder: (context) => ViewContactPage(
-                                                                    partenaire:
-                                                                        nullPartenaire,
-                                                                    from:
-                                                                        'contactpage',
-                                                                    dataContact:
-                                                                        contact)));
-                                                          }),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 50,
-                                    ),
-                                    Container(
-                                      alignment: Alignment(-1, 0.15),
-                                      width: 300,
-                                      height: 50,
-                                      color: Colors.green,
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            FontAwesomeIcons.envelope,
-                                            size: 17,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            contact['emailContact'],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Container(
-                                      alignment: Alignment(-1, 0.15),
-                                      width: 300,
-                                      height: 50,
-                                      color: Colors.green,
-                                      child: Row(
-                                        children: [
-                                          Column(
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 200,
+                                          height: 50,
+                                          color: Colors.green,
+                                          child: Row(
                                             children: [
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    FontAwesomeIcons.phone,
-                                                    size: 17,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    contact[
-                                                        'telephone1Contact'],
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
+                                              Icon(
+                                                FontAwesomeIcons.user,
+                                                size: 17,
                                               ),
                                               SizedBox(
-                                                height: 5,
+                                                width: 10,
                                               ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    FontAwesomeIcons.phone,
-                                                    size: 17,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    contact[
-                                                        'telephone2Contact'],
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                        text: limitString(
+                                                            text: contact[
+                                                                    'nomContact'] +
+                                                                ' ' +
+                                                                contact[
+                                                                    'prenomContact'],
+                                                            limit_long: 15),
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        recognizer:
+                                                            TapGestureRecognizer()
+                                                              ..onTap = () {
+                                                                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                    builder: (context) => ViewContactPage(
+                                                                        partenaire:
+                                                                            nullPartenaire,
+                                                                        from:
+                                                                            'contactpage',
+                                                                        dataContact:
+                                                                            contact)));
+                                                              }),
+                                                  ],
+                                                ),
                                               ),
                                             ],
-                                          )
-                                        ],
-                                      ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 50,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 300,
+                                          height: 50,
+                                          color: Colors.green,
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                FontAwesomeIcons.envelope,
+                                                size: 17,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                contact['emailContact'],
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 300,
+                                          height: 50,
+                                          color: Colors.green,
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        FontAwesomeIcons.phone,
+                                                        size: 17,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        contact[
+                                                            'telephone1Contact'],
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        FontAwesomeIcons.phone,
+                                                        size: 17,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        contact[
+                                                            'telephone2Contact'],
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 280,
+                                          height: 50,
+                                          color: Colors.green,
+                                          child: SingleChildScrollView(
+                                            child: StreamBuilder<QuerySnapshot>(
+                                                stream: _partenaire
+                                                    .where(
+                                                        'idContactPartenaire',
+                                                        isEqualTo: contact[
+                                                            'idContact'])
+                                                    .snapshots(),
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<QuerySnapshot>
+                                                        snapshot) {
+                                                  if (snapshot.hasError) {
+                                                    return Text(
+                                                        'Something went wrong');
+                                                  }
+
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return CircularProgressIndicator();
+                                                  }
+                                                  return Column(
+                                                    children: snapshot
+                                                        .data!.docs
+                                                        .map((DocumentSnapshot
+                                                            document) {
+                                                      Map<String, dynamic>
+                                                          partenaire =
+                                                          document.data()!
+                                                              as Map<String,
+                                                                  dynamic>;
+
+                                                      return Row(
+                                                        children: [
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .flag,
+                                                            size: 17,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              children: <
+                                                                  TextSpan>[
+                                                                TextSpan(
+                                                                    text: partenaire[
+                                                                        'nomPartenaire'],
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .red,
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold),
+                                                                    recognizer:
+                                                                        TapGestureRecognizer()
+                                                                          ..onTap =
+                                                                              () {
+                                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ViewPartenairePage(partenaire: partenaire)));
+                                                                          }),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      );
+                                                    }).toList(),
+                                                  );
+                                                }),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                     SizedBox(
-                                      width: 20,
+                                      height: 5,
                                     ),
-                                    Container(
-                                      alignment: Alignment(-1, 0.15),
-                                      width: 280,
-                                      height: 50,
-                                      color: Colors.green,
-                                      child: StreamBuilder<QuerySnapshot>(
-                                          stream: _partenaire
-                                              .where('idContactPartenaire',
-                                                  isEqualTo:
-                                                      contact['idContact'])
-                                              .snapshots(),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<QuerySnapshot>
-                                                  snapshot) {
-                                            if (snapshot.hasError) {
-                                              return Text(
-                                                  'Something went wrong');
-                                            }
-
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return CircularProgressIndicator();
-                                            }
-                                            return Column(
-                                              children: snapshot.data!.docs.map(
-                                                  (DocumentSnapshot document) {
-                                                Map<String, dynamic>
-                                                    partenaire =
-                                                    document.data()!
-                                                        as Map<String, dynamic>;
-
-                                                return Row(
-                                                  children: [
-                                                    Icon(
-                                                      FontAwesomeIcons.flag,
-                                                      size: 17,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        children: <TextSpan>[
-                                                          TextSpan(
-                                                              text: partenaire[
-                                                                  'nomPartenaire'],
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .red,
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                              recognizer:
-                                                                  TapGestureRecognizer()
-                                                                    ..onTap =
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pushReplacement(
-                                                                              MaterialPageRoute(builder: (context) => ViewPartenairePage(partenaire: partenaire)));
-                                                                    }),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                );
-                                              }).toList(),
-                                            );
-                                          }),
-                                    )
+                                    const Divider(
+                                      thickness: 5,
+                                    ),
                                   ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                const Divider(
-                                  thickness: 5,
-                                ),
-                              ],
-                            ));
-                      }).toList(),
-                    );
-                  },
-                ),
+                                ));
+                          }).toList(),
+                        );
+                      },
+                    ),
+                  ),
+                )
               ]))),
     ])));
   }
