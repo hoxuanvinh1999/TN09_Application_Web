@@ -2469,6 +2469,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                         _surfacepassageAdresseController.text,
                                     'idPartenaireAdresse':
                                         widget.partenaire['idPartenaire'],
+                                    'nombredeContact': '0',
                                     'idAdresse': _adresse.doc().id
                                   }).then((value) async {
                                     await _partenaire
