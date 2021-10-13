@@ -7,7 +7,9 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/create_contact_page.dart';
+import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 
 class ContactPage extends StatefulWidget {
@@ -27,6 +29,8 @@ class _ContactPageState extends State<ContactPage> {
       .collection("Contact")
       .orderBy('nomContact')
       .snapshots();
+  // null Map
+  Map<String, String> nullPartenaire = {};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -228,14 +232,35 @@ class _ContactPageState extends State<ContactPage> {
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          Text(
-                                            contact['nomContact'] +
-                                                ' ' +
-                                                contact['prenomContact'],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
+                                          RichText(
+                                            text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: limitString(
+                                                        text: contact[
+                                                                'nomContact'] +
+                                                            ' ' +
+                                                            contact[
+                                                                'prenomContact'],
+                                                        limit_long: 15),
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {
+                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                builder: (context) => ViewContactPage(
+                                                                    partenaire:
+                                                                        nullPartenaire,
+                                                                    from:
+                                                                        'contactpage',
+                                                                    dataContact:
+                                                                        contact)));
+                                                          }),
+                                              ],
                                             ),
                                           ),
                                         ],
