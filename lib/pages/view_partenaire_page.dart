@@ -4305,6 +4305,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
         });
   }
 
+  // for control table
+  CollectionReference _contactadresse =
+      FirebaseFirestore.instance.collection("ContactAdresse");
   showModifyContactAdresse(
       {required BuildContext context, required Map dataAdresse}) {
     return showDialog(
@@ -4312,7 +4315,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
         builder: (BuildContext context) {
           return Dialog(
               child: Container(
-            height: 800,
+            height: 600 + 200 * double.parse(dataAdresse['nombredeContact']),
             width: 800,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -4429,8 +4432,443 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     height: 10,
                   ),
                   Container(
-                    height: 380,
+                    height: 200,
+                    width: 600,
                     color: Colors.green,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: _contactadresse
+                          .where('idAdresse',
+                              isEqualTo: dataAdresse['idAdresse'])
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        // print('snapshot ${snapshot.data}');
+                        if (snapshot.hasError) {
+                          return Text('Something went wrong');
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: snapshot.data!.docs.map((DocumentSnapshot
+                                document_link_contactadresse) {
+                              Map<String, dynamic> link_contactadresse =
+                                  document_link_contactadresse.data()!
+                                      as Map<String, dynamic>;
+                              // print('link_contactadresse $link_contactadresse');
+                              return Container(
+                                color: Colors.white,
+                                child: StreamBuilder<QuerySnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection("Contact")
+                                      .where('idContact',
+                                          isEqualTo:
+                                              link_contactadresse['idContact'])
+                                      .snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Something went wrong');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    return Column(
+                                      children: snapshot.data!.docs
+                                          .map((DocumentSnapshot document) {
+                                        Map<String, dynamic> insidedataContact =
+                                            document.data()!
+                                                as Map<String, dynamic>;
+
+                                        // print(
+                                        //     'insidedataContact $insidedataContact');
+                                        return Column(children: [
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                  width: 400,
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(width: 20),
+                                                      RichText(
+                                                        text: TextSpan(
+                                                          children: <TextSpan>[
+                                                            TextSpan(
+                                                                text: limitString(
+                                                                    text: insidedataContact[
+                                                                            'nomContact'] +
+                                                                        ' ' +
+                                                                        insidedataContact[
+                                                                            'prenomContact'],
+                                                                    limit_long:
+                                                                        15),
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                                recognizer:
+                                                                    TapGestureRecognizer()
+                                                                      ..onTap =
+                                                                          () {
+                                                                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                            builder: (context) => ViewContactPage(
+                                                                                partenaire: widget.partenaire,
+                                                                                from: 'viewpartenairepage',
+                                                                                dataContact: insidedataContact)));
+                                                                      }),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 50,
+                                                      ),
+                                                      Icon(
+                                                        FontAwesomeIcons.phone,
+                                                        color: Colors.black,
+                                                        size: 15,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        insidedataContact[
+                                                            'telephone1Contact'],
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      )
+                                                    ],
+                                                  )),
+                                              Container(
+                                                width: 50,
+                                                child: IconButton(
+                                                  onPressed: () async {
+                                                    await _adresse
+                                                        .where('idAdresse',
+                                                            isEqualTo:
+                                                                dataAdresse[
+                                                                    'idAdresse'])
+                                                        .limit(1)
+                                                        .get()
+                                                        .then((QuerySnapshot
+                                                            querySnapshot) {
+                                                      querySnapshot.docs
+                                                          .forEach((doc) {
+                                                        _adresse
+                                                            .doc(doc.id)
+                                                            .update({
+                                                          'nombredeContact':
+                                                              (int.parse(doc[
+                                                                          'nombredeContact']) -
+                                                                      1)
+                                                                  .toString(),
+                                                        });
+                                                      });
+                                                    });
+                                                    _contactadresse
+                                                        .where("idContact",
+                                                            isEqualTo:
+                                                                insidedataContact[
+                                                                    'idContact'])
+                                                        .where('idAdresse',
+                                                            isEqualTo:
+                                                                dataAdresse[
+                                                                    'idAdresse'])
+                                                        .get()
+                                                        .then((value) {
+                                                      value.docs.forEach((doc) {
+                                                        _contactadresse
+                                                            .doc(doc.id)
+                                                            .delete()
+                                                            .then((value) {
+                                                          Fluttertoast.showToast(
+                                                              msg:
+                                                                  "Contact Added",
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .TOP);
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          showModifyContactAdresse(
+                                                              context: context,
+                                                              dataAdresse:
+                                                                  dataAdresse);
+                                                        });
+                                                      });
+                                                    });
+                                                  },
+                                                  icon: const Icon(
+                                                    FontAwesomeIcons.minus,
+                                                    size: 15,
+                                                  ),
+                                                  tooltip: 'Remove Contact',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                        ]);
+                                      }).toList(),
+                                    );
+                                  },
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: 600,
+                    height: 100,
+                    color: Colors.blue,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: _contactpartenaire
+                          .where('idPartenaire',
+                              isEqualTo: widget.partenaire['idPartenaire'])
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        // print('snapshot ${snapshot.data}');
+                        if (snapshot.hasError) {
+                          return Text('Something went wrong');
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: snapshot.data!.docs.map((DocumentSnapshot
+                                document_link_contactpartenaire) {
+                              Map<String, dynamic> link_contactpartenaire =
+                                  document_link_contactpartenaire.data()!
+                                      as Map<String, dynamic>;
+                              // print('link_contactadresse $link_contactadresse');
+                              return Container(
+                                color: Colors.green,
+                                child: StreamBuilder<QuerySnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection("Contact")
+                                      .where('idContact',
+                                          isEqualTo: link_contactpartenaire[
+                                              'idContact'])
+                                      .snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Something went wrong');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    return Column(
+                                      children: snapshot.data!.docs.map(
+                                          (DocumentSnapshot document_contact) {
+                                        Map<String, dynamic> insidedataContact =
+                                            document_contact.data()!
+                                                as Map<String, dynamic>;
+
+                                        // print(
+                                        //     'insidedataContact $insidedataContact');
+                                        return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                      width: 300,
+                                                      child: Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 20,
+                                                          ),
+                                                          Text(
+                                                            limitString(
+                                                                text: insidedataContact[
+                                                                        'nomContact'] +
+                                                                    ' ' +
+                                                                    insidedataContact[
+                                                                        'prenomContact'],
+                                                                limit_long: 15),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .phone,
+                                                            color: Colors.black,
+                                                            size: 15,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            insidedataContact[
+                                                                'telephone1Contact'],
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ],
+                                                      )),
+                                                  Container(
+                                                      width: 100,
+                                                      child: Row(children: [
+                                                        IconButton(
+                                                          onPressed: () async {
+                                                            QuerySnapshot query = await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'ContactAdresse')
+                                                                .where(
+                                                                    'idContact',
+                                                                    isEqualTo:
+                                                                        insidedataContact[
+                                                                            'idContact'])
+                                                                .where(
+                                                                    'idAdresse',
+                                                                    isEqualTo:
+                                                                        dataAdresse[
+                                                                            'idAdresse'])
+                                                                .get();
+                                                            if (query
+                                                                .docs.isEmpty) {
+                                                              await _adresse
+                                                                  .where(
+                                                                      'idAdresse',
+                                                                      isEqualTo:
+                                                                          dataAdresse[
+                                                                              'idAdresse'])
+                                                                  .limit(1)
+                                                                  .get()
+                                                                  .then((QuerySnapshot
+                                                                      querySnapshot) {
+                                                                querySnapshot
+                                                                    .docs
+                                                                    .forEach(
+                                                                        (doc) {
+                                                                  _adresse
+                                                                      .doc(doc
+                                                                          .id)
+                                                                      .update({
+                                                                    'nombredeContact':
+                                                                        (int.parse(doc['nombredeContact']) +
+                                                                                1)
+                                                                            .toString(),
+                                                                  });
+                                                                });
+                                                              });
+                                                              await _contactadresse
+                                                                  .doc(
+                                                                      _contactadresse
+                                                                          .doc()
+                                                                          .id)
+                                                                  .set({
+                                                                'idAdresse':
+                                                                    dataAdresse[
+                                                                        'idAdresse'],
+                                                                'idContact':
+                                                                    insidedataContact[
+                                                                        'idContact']
+                                                              }).then((value) {
+                                                                print(
+                                                                    "Contact Added");
+                                                                Fluttertoast.showToast(
+                                                                    msg:
+                                                                        "Contact Added",
+                                                                    gravity:
+                                                                        ToastGravity
+                                                                            .TOP);
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                                showModifyContactAdresse(
+                                                                    context:
+                                                                        context,
+                                                                    dataAdresse:
+                                                                        dataAdresse);
+                                                              }).catchError(
+                                                                      (error) =>
+                                                                          print(
+                                                                              "Failed to add user: $error"));
+                                                            } else {
+                                                              Fluttertoast.showToast(
+                                                                  msg:
+                                                                      'It has been added already',
+                                                                  gravity:
+                                                                      ToastGravity
+                                                                          .TOP);
+                                                            }
+                                                          },
+                                                          icon: const Icon(
+                                                            FontAwesomeIcons
+                                                                .plus,
+                                                            size: 15,
+                                                          ),
+                                                          tooltip:
+                                                              'Add Contact',
+                                                        ),
+                                                      ]))
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                            ]);
+                                      }).toList(),
+                                    );
+                                  },
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   Divider(
                     thickness: 5,
@@ -4442,7 +4880,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 400,
+                          width: 600,
                         ),
                         Container(
                             width: 150,
@@ -4466,35 +4904,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                   ),
                                   Text(
                                     'Cancel',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                        Container(
-                            width: 150,
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: const EdgeInsets.only(
-                                right: 10, top: 20, bottom: 20),
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Save',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15,
