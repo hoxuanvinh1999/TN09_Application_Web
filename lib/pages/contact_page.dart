@@ -31,6 +31,9 @@ class _ContactPageState extends State<ContactPage> {
       .snapshots();
   // null Map
   Map<String, String> nullPartenaire = {};
+  // for partenaire
+  CollectionReference _contactpartenaire =
+      FirebaseFirestore.instance.collection("ContactPartenaire");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -370,83 +373,132 @@ class _ContactPageState extends State<ContactPage> {
                                           width: 20,
                                         ),
                                         Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 280,
                                           height: 50,
+                                          width: 200,
                                           color: Colors.green,
-                                          child: SingleChildScrollView(
-                                            child: StreamBuilder<QuerySnapshot>(
-                                                stream: _partenaire
-                                                    .where(
-                                                        'idContactPartenaire',
-                                                        isEqualTo: contact[
-                                                            'idContact'])
-                                                    .snapshots(),
-                                                builder: (BuildContext context,
-                                                    AsyncSnapshot<QuerySnapshot>
-                                                        snapshot) {
-                                                  if (snapshot.hasError) {
-                                                    return Text(
-                                                        'Something went wrong');
-                                                  }
+                                          child: StreamBuilder<QuerySnapshot>(
+                                            stream: _contactpartenaire
+                                                .where('idContact',
+                                                    isEqualTo:
+                                                        contact['idContact'])
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              // print('snapshot ${snapshot.data}');
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Something went wrong');
+                                              }
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              return SingleChildScrollView(
+                                                child: Column(
+                                                  children: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_link_contactpartenaire) {
+                                                    Map<String, dynamic>
+                                                        link_contactpartenaire =
+                                                        document_link_contactpartenaire
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    // print('link_contactadresse $link_contactadresse');
+                                                    return Container(
+                                                      color: Colors.green,
+                                                      child: StreamBuilder<
+                                                          QuerySnapshot>(
+                                                        stream: FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                "Partenaire")
+                                                            .where(
+                                                                'idPartenaire',
+                                                                isEqualTo:
+                                                                    link_contactpartenaire[
+                                                                        'idPartenaire'])
+                                                            .snapshots(),
+                                                        builder: (BuildContext
+                                                                context,
+                                                            AsyncSnapshot<
+                                                                    QuerySnapshot>
+                                                                snapshot) {
+                                                          if (snapshot
+                                                              .hasError) {
+                                                            return Text(
+                                                                'Something went wrong');
+                                                          }
 
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.waiting) {
-                                                    return CircularProgressIndicator();
-                                                  }
-                                                  return Column(
-                                                    children: snapshot
-                                                        .data!.docs
-                                                        .map((DocumentSnapshot
-                                                            document) {
-                                                      Map<String, dynamic>
-                                                          partenaire =
-                                                          document.data()!
-                                                              as Map<String,
-                                                                  dynamic>;
+                                                          if (snapshot
+                                                                  .connectionState ==
+                                                              ConnectionState
+                                                                  .waiting) {
+                                                            return CircularProgressIndicator();
+                                                          }
+                                                          return Column(
+                                                            children: snapshot
+                                                                .data!.docs
+                                                                .map((DocumentSnapshot
+                                                                    document_partenaire) {
+                                                              Map<String,
+                                                                      dynamic>
+                                                                  insidedataPartenaire =
+                                                                  document_partenaire
+                                                                          .data()!
+                                                                      as Map<
+                                                                          String,
+                                                                          dynamic>;
 
-                                                      return Row(
-                                                        children: [
-                                                          Icon(
-                                                            FontAwesomeIcons
-                                                                .flag,
-                                                            size: 17,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              children: <
-                                                                  TextSpan>[
-                                                                TextSpan(
-                                                                    text: partenaire[
-                                                                        'nomPartenaire'],
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .red,
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold),
-                                                                    recognizer:
-                                                                        TapGestureRecognizer()
-                                                                          ..onTap =
-                                                                              () {
-                                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ViewPartenairePage(partenaire: partenaire)));
-                                                                          }),
-                                                              ],
-                                                            ),
-                                                          )
-                                                        ],
-                                                      );
-                                                    }).toList(),
-                                                  );
-                                                }),
+                                                              // print(
+                                                              //     'insidedataContact $insidedataContact');
+                                                              return Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        RichText(
+                                                                          text:
+                                                                              TextSpan(
+                                                                            children: <TextSpan>[
+                                                                              TextSpan(
+                                                                                  text: limitString(text: insidedataPartenaire['nomPartenaire'], limit_long: 15),
+                                                                                  style: TextStyle(color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold),
+                                                                                  recognizer: TapGestureRecognizer()
+                                                                                    ..onTap = () {
+                                                                                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ViewPartenairePage(partenaire: insidedataPartenaire)));
+                                                                                    }),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                  ]);
+                                                            }).toList(),
+                                                          );
+                                                        },
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              );
+                                            },
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                     SizedBox(
