@@ -820,10 +820,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                 insidedatacontact
                                                                     .id)
                                                             .update({
-                                                          'isPrincipal': (!convertBool(
-                                                                  check: insidedatacontact[
-                                                                      'isPrincipal']))
-                                                              .toString(),
+                                                          'isPrincipal':
+                                                              'false',
                                                         });
                                                       });
                                                     });
@@ -843,10 +841,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                 insidedatacontact
                                                                     .id)
                                                             .update({
-                                                          'isPrincipal': (!convertBool(
-                                                                  check: insidedatacontact[
-                                                                      'isPrincipal']))
-                                                              .toString(),
+                                                          'isPrincipal': 'true',
                                                         });
                                                       });
                                                     });
