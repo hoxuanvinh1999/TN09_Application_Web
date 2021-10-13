@@ -10,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
-import 'package:tn09_app_web_demo/pages/view_contact_partenaire.dart';
+import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/bool_icon.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
@@ -45,6 +45,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     _siretPartenaireController.text = widget.partenaire['siretPartenaire'];
   }
 
+  Map<String, String> test = {};
   // For Relation Table
   CollectionReference _contactpartenaire =
       FirebaseFirestore.instance.collection("ContactPartenaire");
@@ -791,6 +792,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                     partenaire:
                                                                         widget
                                                                             .partenaire,
+                                                                    from:
+                                                                        'viewpartenairepage',
                                                                     dataContact:
                                                                         dataContact)));
                                                           }),
