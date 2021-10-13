@@ -8,6 +8,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
+import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/bool_icon.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
@@ -766,16 +767,20 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                         children: [
                                           SizedBox(width: 20),
                                           Text(
-                                            dataContact['nomContact'] +
-                                                ' ' +
-                                                dataContact['prenomContact'],
+                                            limitString(
+                                                text:
+                                                    dataContact['nomContact'] +
+                                                        ' ' +
+                                                        dataContact[
+                                                            'prenomContact'],
+                                                limit_long: 15),
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          SizedBox(width: 150),
+                                          SizedBox(width: 100),
                                           IconButton(
                                             icon: buildBoolIcon(
                                                 check: convertBool(
