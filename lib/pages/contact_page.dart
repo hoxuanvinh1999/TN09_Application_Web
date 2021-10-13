@@ -508,15 +508,15 @@ class _ContactPageState extends State<ContactPage> {
                                             children: [
                                               IconButton(
                                                 onPressed: () {
-                                                  showModifyContactAdresse(
+                                                  showEditPartenaireDialog(
                                                       context: context,
                                                       dataContact: contact);
                                                 },
                                                 icon: const Icon(
-                                                  FontAwesomeIcons.plus,
+                                                  FontAwesomeIcons.edit,
                                                   size: 15,
                                                 ),
-                                                tooltip: 'Add Partenaire',
+                                                tooltip: 'Edit Partenaire',
                                               ),
                                             ],
                                           ),
@@ -541,7 +541,7 @@ class _ContactPageState extends State<ContactPage> {
     ])));
   }
 
-  showModifyContactAdresse(
+  showEditPartenaireDialog(
       {required BuildContext context, required Map dataContact}) {
     return showDialog(
         context: context,
@@ -732,7 +732,7 @@ class _ContactPageState extends State<ContactPage> {
                                                                       .TOP);
                                                           Navigator.of(context)
                                                               .pop();
-                                                          showModifyContactAdresse(
+                                                          showEditPartenaireDialog(
                                                               context: context,
                                                               dataContact:
                                                                   dataContact);
@@ -883,7 +883,7 @@ class _ContactPageState extends State<ContactPage> {
                                                       gravity:
                                                           ToastGravity.TOP);
                                                   Navigator.of(context).pop();
-                                                  showModifyContactAdresse(
+                                                  showEditPartenaireDialog(
                                                       context: context,
                                                       dataContact: dataContact);
                                                 }).catchError((error) => print(
@@ -896,10 +896,10 @@ class _ContactPageState extends State<ContactPage> {
                                               }
                                             },
                                             icon: const Icon(
-                                              FontAwesomeIcons.edit,
+                                              FontAwesomeIcons.plus,
                                               size: 15,
                                             ),
-                                            tooltip: 'Edit Partenaire',
+                                            tooltip: 'Add Partenaire',
                                           ),
                                         ]))
                                   ],
