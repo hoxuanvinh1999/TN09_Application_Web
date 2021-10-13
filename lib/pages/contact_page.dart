@@ -16,6 +16,11 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
+  // for partenaire
+  CollectionReference _partenaire =
+      FirebaseFirestore.instance.collection("Partenaire");
+
+  //For contact
   CollectionReference _contact =
       FirebaseFirestore.instance.collection("Contact");
   Stream<QuerySnapshot> _contactStream = FirebaseFirestore.instance
@@ -338,8 +343,7 @@ class _ContactPageState extends State<ContactPage> {
                                       height: 50,
                                       color: Colors.green,
                                       child: StreamBuilder<QuerySnapshot>(
-                                          stream: FirebaseFirestore.instance
-                                              .collection("Partenaire")
+                                          stream: _partenaire
                                               .where('idContactPartenaire',
                                                   isEqualTo:
                                                       contact['idContact'])
@@ -421,7 +425,4 @@ class _ContactPageState extends State<ContactPage> {
               ]))),
     ])));
   }
-
-  CollectionReference _partenaire =
-      FirebaseFirestore.instance.collection("Contact");
 }

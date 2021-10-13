@@ -81,7 +81,7 @@ class _CreateContactPageState extends State<CreateContactPage> {
                             width: 10,
                           ),
                           Text(
-                            'Create New Partenaire',
+                            'Create New Contact',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
