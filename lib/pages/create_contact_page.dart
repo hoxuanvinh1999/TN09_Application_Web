@@ -531,31 +531,35 @@ class _CreateContactPageState extends State<CreateContactPage> {
                               if (_createContactKeyForm.currentState!
                                   .validate()) {
                                 idNewContact = _contact.doc().id.toString();
-                                await _partenaire
-                                    .where('idPartenaire',
-                                        isEqualTo: choiceIdPartenaire)
-                                    .limit(1)
-                                    .get()
-                                    .then((QuerySnapshot querySnapshot) {
-                                  querySnapshot.docs.forEach((doc) {
-                                    if (doc['nombredeContact'] == '0') {
-                                      newIdContactPartenaire = idNewContact;
-                                      isPrincipal = true;
-                                    } else {
-                                      newIdContactPartenaire =
-                                          doc['idContactPartenaire'];
-                                      isPrincipal = false;
-                                    }
-                                    _partenaire.doc(doc.id).update({
-                                      'nombredeContact':
-                                          (int.parse(doc['nombredeContact']) +
-                                                  1)
-                                              .toString(),
-                                      'idContactPartenaire':
-                                          newIdContactPartenaire,
+                                String nombredePartenaire = '0';
+                                if (choiceIdPartenaire != 'null') {
+                                  nombredePartenaire = '1';
+                                  await _partenaire
+                                      .where('idPartenaire',
+                                          isEqualTo: choiceIdPartenaire)
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      if (doc['nombredeContact'] == '0') {
+                                        newIdContactPartenaire = idNewContact;
+                                        isPrincipal = true;
+                                      } else {
+                                        newIdContactPartenaire =
+                                            doc['idContactPartenaire'];
+                                        isPrincipal = false;
+                                      }
+                                      _partenaire.doc(doc.id).update({
+                                        'nombredeContact':
+                                            (int.parse(doc['nombredeContact']) +
+                                                    1)
+                                                .toString(),
+                                        'idContactPartenaire':
+                                            newIdContactPartenaire,
+                                      });
                                     });
                                   });
-                                });
+                                }
                                 await _contact.doc(idNewContact).set({
                                   'nomContact': _nomContactController.text,
                                   'prenomContact':
@@ -572,7 +576,7 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                   'recoitFacture': recoitFacture.toString(),
                                   'recoitRapport': recoitRapport.toString(),
                                   'isPrincipal': isPrincipal.toString(),
-                                  'nombredePartenaire': '1',
+                                  'nombredePartenaire': nombredePartenaire,
                                   'idContact': idNewContact
                                 }).then((value) {
                                   print("Contact Added");
