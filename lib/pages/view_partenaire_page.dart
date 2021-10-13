@@ -850,6 +850,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                         });
                                                       });
                                                     });
+                                                    String
+                                                        newPrincipalContactId =
+                                                        '';
                                                     await _contact
                                                         .where('idContact',
                                                             isEqualTo:
@@ -861,12 +864,35 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             querySnapshot) {
                                                       querySnapshot.docs.forEach(
                                                           (insidedatacontact) {
+                                                        newPrincipalContactId =
+                                                            insidedatacontact[
+                                                                'idContact'];
                                                         _contact
                                                             .doc(
                                                                 insidedatacontact
                                                                     .id)
                                                             .update({
                                                           'isPrincipal': 'true',
+                                                        });
+                                                      });
+                                                    });
+                                                    //update principal contact inside partenaire
+                                                    await _partenaire
+                                                        .where('idPartenaire',
+                                                            isEqualTo: widget
+                                                                    .partenaire[
+                                                                'idPartenaire'])
+                                                        .limit(1)
+                                                        .get()
+                                                        .then((QuerySnapshot
+                                                            querySnapshot) {
+                                                      querySnapshot.docs
+                                                          .forEach((doc) {
+                                                        _partenaire
+                                                            .doc(doc.id)
+                                                            .update({
+                                                          'idContactPartenaire':
+                                                              newPrincipalContactId,
                                                         });
                                                       });
                                                     });
