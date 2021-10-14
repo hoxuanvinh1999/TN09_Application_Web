@@ -197,6 +197,9 @@ class _PartenairePageState extends State<PartenairePage> {
                         Map<String, dynamic> partenaire =
                             document.data()! as Map<String, dynamic>;
                         // print('$vehicule');
+                        if (partenaire['idPartenaire'] == 'null') {
+                          return SizedBox.shrink();
+                        }
                         return Container(
                             color: Colors.white,
                             child: Column(
