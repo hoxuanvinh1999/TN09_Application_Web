@@ -32,9 +32,10 @@ class _ContactPageState extends State<ContactPage> {
       .snapshots();
   // null Map
   Map<String, String> nullPartenaire = {};
-  // for partenaire
+  // for control table contactpartenaire
   CollectionReference _contactpartenaire =
       FirebaseFirestore.instance.collection("ContactPartenaire");
+  String isPrincipal = 'true';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -708,6 +709,7 @@ class _ContactPageState extends State<ContactPage> {
                                                         });
                                                       });
                                                     });
+
                                                     _contactpartenaire
                                                         .where("idContact",
                                                             isEqualTo:
@@ -719,7 +721,40 @@ class _ContactPageState extends State<ContactPage> {
                                                                     'idPartenaire'])
                                                         .get()
                                                         .then((value) {
-                                                      value.docs.forEach((doc) {
+                                                      value.docs
+                                                          .forEach((doc) async {
+                                                        await _partenaire
+                                                            .where(
+                                                                'idPartenaire',
+                                                                isEqualTo:
+                                                                    insidedataPartenaire[
+                                                                        'idPartenaire'])
+                                                            .limit(1)
+                                                            .get()
+                                                            .then((QuerySnapshot
+                                                                querySnapshot) {
+                                                          querySnapshot.docs
+                                                              .forEach((doc) {
+                                                            if (doc['nombredeContact'] ==
+                                                                '1') {
+                                                              _partenaire
+                                                                  .doc(doc.id)
+                                                                  .update({
+                                                                'idContactPartenaire':
+                                                                    'null',
+                                                              });
+                                                            }
+                                                            _partenaire
+                                                                .doc(doc.id)
+                                                                .update({
+                                                              'nombredeContact':
+                                                                  (int.parse(doc[
+                                                                              'nombredeContact']) -
+                                                                          1)
+                                                                      .toString(),
+                                                            });
+                                                          });
+                                                        });
                                                         _contactpartenaire
                                                             .doc(doc.id)
                                                             .delete()
@@ -866,6 +901,41 @@ class _ContactPageState extends State<ContactPage> {
                                                     });
                                                   });
                                                 });
+                                                await _partenaire
+                                                    .where('idPartenaire',
+                                                        isEqualTo:
+                                                            insidedataPartenaire[
+                                                                'idPartenaire'])
+                                                    .limit(1)
+                                                    .get()
+                                                    .then((QuerySnapshot
+                                                        querySnapshot) {
+                                                  querySnapshot.docs
+                                                      .forEach((doc) {
+                                                    if (doc['nombredeContact'] ==
+                                                        '0') {
+                                                      isPrincipal = 'true';
+                                                      _partenaire
+                                                          .doc(doc.id)
+                                                          .update({
+                                                        'idContactPartenaire':
+                                                            dataContact[
+                                                                'idContact'],
+                                                      });
+                                                    } else {
+                                                      isPrincipal = 'false';
+                                                    }
+                                                    _partenaire
+                                                        .doc(doc.id)
+                                                        .update({
+                                                      'nombredeContact':
+                                                          (int.parse(doc[
+                                                                      'nombredeContact']) +
+                                                                  1)
+                                                              .toString(),
+                                                    });
+                                                  });
+                                                });
                                                 await _contactpartenaire
                                                     .doc(_contactpartenaire
                                                         .doc()
@@ -875,7 +945,8 @@ class _ContactPageState extends State<ContactPage> {
                                                       dataContact['idContact'],
                                                   'idPartenaire':
                                                       insidedataPartenaire[
-                                                          'idPartenaire']
+                                                          'idPartenaire'],
+                                                  'isPrincipal': isPrincipal,
                                                 }).then((value) {
                                                   print("Partenaire Added");
                                                   Fluttertoast.showToast(

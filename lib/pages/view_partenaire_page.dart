@@ -801,108 +801,161 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                             ),
                                           ),
                                           SizedBox(width: 100),
+                                          Container(
+                                            height: 50,
+                                            width: 50,
+                                            color: Colors.blue,
+                                            child: StreamBuilder<QuerySnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection(
+                                                      "ContactPartenaire")
+                                                  .where('idPartenaire',
+                                                      isEqualTo:
+                                                          widget.partenaire[
+                                                              'idPartenaire'])
+                                                  .where('idContact',
+                                                      isEqualTo: dataContact[
+                                                          'idContact'])
+                                                  .limit(1)
+                                                  .snapshots(),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<QuerySnapshot>
+                                                      snapshot) {
+                                                if (snapshot.hasError) {
+                                                  return Text(
+                                                      'Something went wrong');
+                                                }
+
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return CircularProgressIndicator();
+                                                }
+                                                // print('$snapshot');
+                                                return Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_link_contactpartenaire) {
+                                                    Map<String, dynamic>
+                                                        link_datacontactpartenaire =
+                                                        document_link_contactpartenaire
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    // print('$contenant');
+                                                    return Container(
+                                                        color: Colors.white,
+                                                        child: Column(
+                                                          children: [
                                           IconButton(
                                             icon: buildBoolIcon(
                                                 check: convertBool(
-                                                    check: dataContact[
+                                                                      check: link_datacontactpartenaire[
                                                         'isPrincipal']),
                                                 sizeIcon: 15),
                                             tooltip: 'Change',
-                                            onPressed: () async {
+                                                              onPressed:
+                                                                  () async {
                                               if (convertBool(
-                                                  check: dataContact[
+                                                                    check: link_datacontactpartenaire[
                                                       'isPrincipal'])) {
                                                 Fluttertoast.showToast(
                                                     msg:
                                                         "It's already principale",
-                                                    gravity: ToastGravity.TOP);
+                                                                      gravity:
+                                                                          ToastGravity
+                                                                              .TOP);
                                               } else {
                                                 await _contactpartenaire
-                                                    .where('idPartenaire',
-                                                        isEqualTo:
-                                                            widget.partenaire[
+                                                                      .where(
+                                                                          'idPartenaire',
+                                                                          isEqualTo: widget.partenaire[
                                                                 'idPartenaire'])
+                                                                      // .where(
+                                                                      //     'idContact',
+                                                                      //     isNotEqualTo: dataContact[
+                                                                      //         'idContact'])
                                                     .get()
                                                     .then((QuerySnapshot
                                                         querySnapshot) {
-                                                  querySnapshot.docs.forEach(
-                                                      (datacontactpartenaire) async {
-                                                    await _contact
-                                                        .where('idContact',
-                                                            isEqualTo:
-                                                                datacontactpartenaire[
-                                                                    'idContact'])
-                                                        .where('isPrincipal',
-                                                            isEqualTo: 'true')
-                                                        .limit(1)
-                                                        .get()
-                                                        .then((QuerySnapshot
-                                                            querySnapshot) {
-                                                      querySnapshot.docs.forEach(
-                                                          (insidedatacontact) {
-                                                        _contact
-                                                            .doc(
-                                                                insidedatacontact
+                                                                    querySnapshot
+                                                                        .docs
+                                                                        .forEach(
+                                                                            (doc) {
+                                                                      _contactpartenaire
+                                                                          .doc(doc
                                                                     .id)
                                                             .update({
                                                           'isPrincipal':
-                                                              'false',
+                                                                            'false'
                                                         });
                                                       });
                                                     });
-                                                    String
-                                                        newPrincipalContactId =
-                                                        '';
-                                                    await _contact
-                                                        .where('idContact',
-                                                            isEqualTo:
-                                                                dataContact[
+                                                                  await _contactpartenaire
+                                                                      .where(
+                                                                          'idContact',
+                                                                          isEqualTo: dataContact[
                                                                     'idContact'])
-                                                        .limit(1)
+                                                                      .where(
+                                                                          'idPartenaire',
+                                                                          isEqualTo: widget.partenaire[
+                                                                              'idPartenaire'])
                                                         .get()
                                                         .then((QuerySnapshot
                                                             querySnapshot) {
-                                                      querySnapshot.docs.forEach(
-                                                          (insidedatacontact) {
-                                                        newPrincipalContactId =
-                                                            insidedatacontact[
-                                                                'idContact'];
-                                                        _contact
-                                                            .doc(
-                                                                insidedatacontact
+                                                                    querySnapshot
+                                                                        .docs
+                                                                        .forEach(
+                                                                            (doc) {
+                                                                      _contactpartenaire
+                                                                          .doc(doc
                                                                     .id)
                                                             .update({
-                                                          'isPrincipal': 'true',
+                                                                        'isPrincipal':
+                                                                            'true'
                                                         });
                                                       });
                                                     });
+
                                                     //update principal contact inside partenaire
                                                     await _partenaire
-                                                        .where('idPartenaire',
-                                                            isEqualTo: widget
-                                                                    .partenaire[
+                                                                      .where(
+                                                                          'idPartenaire',
+                                                                          isEqualTo: widget.partenaire[
                                                                 'idPartenaire'])
                                                         .limit(1)
                                                         .get()
                                                         .then((QuerySnapshot
                                                             querySnapshot) {
-                                                      querySnapshot.docs
-                                                          .forEach((doc) {
+                                                                    querySnapshot
+                                                                        .docs
+                                                                        .forEach(
+                                                                            (doc) {
                                                         _partenaire
-                                                            .doc(doc.id)
+                                                                          .doc(doc
+                                                                              .id)
                                                             .update({
                                                           'idContactPartenaire':
-                                                              newPrincipalContactId,
-                                                        });
-                                                      });
+                                                                            link_contactpartenaire['idContact']
                                                     });
                                                   });
                                                 });
                                                 Fluttertoast.showToast(
-                                                    msg: "Information Modified",
-                                                    gravity: ToastGravity.TOP);
+                                                                      msg:
+                                                                          "Information Modified",
+                                                                      gravity:
+                                                                          ToastGravity
+                                                                              .TOP);
                                               }
                                             },
+                                          ),
+                                                          ],
+                                                        ));
+                                                  }).toList(),
+                                                );
+                                              },
+                                            ),
                                           ),
                                           SizedBox(width: 50),
                                           IconButton(

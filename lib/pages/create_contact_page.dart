@@ -559,6 +559,13 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                       });
                                     });
                                   });
+                                  await _contactpartenaire
+                                      .doc(_contactpartenaire.doc().id)
+                                      .set({
+                                    'idPartenaire': choiceIdPartenaire,
+                                    'idContact': idNewContact,
+                                    'isPrincipal': isPrincipal.toString(),
+                                  });
                                 }
                                 await _contact.doc(idNewContact).set({
                                   'nomContact': _nomContactController.text,

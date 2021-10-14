@@ -874,6 +874,7 @@ class _PartenairePageState extends State<PartenairePage> {
                                     'idPartenaire':
                                         dataPartenaire['idPartenaire'],
                                     'idContact': idNewContact,
+                                    'isPrincipal': 'true'
                                   }).then((value) {
                                     Navigator.push(
                                         context,
