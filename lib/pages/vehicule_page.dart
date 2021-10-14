@@ -211,6 +211,9 @@ class _VehiculePageState extends State<VehiculePage> {
                               Map<String, dynamic> vehicule =
                                   document.data()! as Map<String, dynamic>;
                               // print('$vehicule');
+                              if (vehicule['orderVehicule'] == '0') {
+                                return SizedBox.shrink();
+                              }
                               return Container(
                                   color: Colors.white,
                                   child: Column(
