@@ -8,6 +8,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
+import 'package:tn09_app_web_demo/pages/math_function/is_numeric_function.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
@@ -151,7 +152,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   // for Vehicule
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection('Vehicule');
-
+  //for Contenant
+  CollectionReference _contenant =
+      FirebaseFirestore.instance.collection("Contenant");
   Widget buildVehiculeFrequence({required idVehiculeFrequence}) {
     if (idVehiculeFrequence == 'null') {
       return Container(
@@ -1920,7 +1923,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     width: 600,
                     height: 300 +
                         double.parse(widget.partenaire['nombredeAdresses']) *
-                            200,
+                            500,
                     color: Colors.green,
                     child: Column(
                       children: [
@@ -2022,10 +2025,16 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     .map((DocumentSnapshot document) {
                                   Map<String, dynamic> adresse =
                                       document.data()! as Map<String, dynamic>;
+                                  TextEditingController
+                                      _typeContenantController =
+                                      TextEditingController();
+                                  TextEditingController _quality =
+                                      TextEditingController();
+                                  String choiceType = 'None';
                                   // print('$contenant');
                                   return Container(
                                     width: 600,
-                                    height: 300,
+                                    height: 600,
                                     color: Colors.red,
                                     child: Column(
                                       children: [
@@ -2033,7 +2042,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                         Container(
                                           color: Colors.white,
                                           width: 550,
-                                          height: 200,
+                                          height: 500,
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -2142,6 +2151,541 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                               SizedBox(
                                                 height: 5,
                                               ),
+                                              Container(
+                                                width: 500,
+                                                height: 200,
+                                                color: Colors.red,
+                                                child: StreamBuilder<
+                                                        QuerySnapshot>(
+                                                    stream: FirebaseFirestore
+                                                        .instance
+                                                        .collection("Contenant")
+                                                        .where(
+                                                            'idAdresseContenant',
+                                                            isEqualTo: adresse[
+                                                                'idAdresse'])
+                                                        .snapshots(),
+                                                    builder: (BuildContext
+                                                            context,
+                                                        AsyncSnapshot<
+                                                                QuerySnapshot>
+                                                            snapshot) {
+                                                      if (snapshot.hasError) {
+                                                        return Text(
+                                                            'Something went wrong');
+                                                      }
+
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return CircularProgressIndicator();
+                                                      }
+                                                      return SingleChildScrollView(
+                                                        child: Column(
+                                                          children: snapshot
+                                                              .data!.docs
+                                                              .map((DocumentSnapshot
+                                                                  document_contenant) {
+                                                            Map<String, dynamic>
+                                                                insidedataContenant =
+                                                                document_contenant
+                                                                        .data()!
+                                                                    as Map<
+                                                                        String,
+                                                                        dynamic>;
+
+                                                            return SingleChildScrollView(
+                                                              child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height: 5,
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        ),
+                                                                        Text(
+                                                                            insidedataContenant['typeContenant'] +
+                                                                                ' ' +
+                                                                                insidedataContenant['barCodeContenant'],
+                                                                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              20,
+                                                                        ),
+                                                                        IconButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              await _contenant.where('idContenant', isEqualTo: insidedataContenant['idContenant']).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                querySnapshot.docs.forEach((doc) {
+                                                                                  _contenant.doc(doc.id).update({
+                                                                                    'idAdresseContenant': 'null',
+                                                                                  });
+                                                                                });
+                                                                              });
+                                                                              String typeConenant = insidedataContenant['typeContenant'].replaceAll(' ', '').toLowerCase();
+                                                                              await _contenantadresse.where('idAdresse', isEqualTo: adresse['idAdresse']).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                querySnapshot.docs.forEach((doc) {
+                                                                                  int check_type_exist = 0;
+                                                                                  int save_position = 0;
+                                                                                  for (int i = 1; i <= int.parse(doc['nombredetype']); i++) {
+                                                                                    if (typeConenant == doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))) {
+                                                                                      print('${doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))}');
+                                                                                      check_type_exist = 1;
+                                                                                      save_position = i;
+                                                                                    }
+                                                                                  }
+
+                                                                                  String _quality = doc['${save_position.toString()}'].substring(doc['$save_position'].indexOf('/') + 1);
+                                                                                  _contenantadresse.doc(doc.id).update({
+                                                                                    '${save_position.toString()}': typeConenant + '/' + (int.parse(_quality) - 1).toString(),
+                                                                                  }).then((value) {
+                                                                                    print("Contenant Updated");
+                                                                                    Fluttertoast.showToast(msg: "Contenant Updated", gravity: ToastGravity.TOP);
+                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                });
+                                                                              });
+                                                                            },
+                                                                            icon:
+                                                                                Icon(FontAwesomeIcons.minus, size: 15))
+                                                                      ],
+                                                                    ),
+                                                                  ]),
+                                                            );
+                                                          }).toList(),
+                                                        ),
+                                                      );
+                                                    }),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Container(
+                                                width: 500,
+                                                height: 200,
+                                                color: Colors.red,
+                                                child: StreamBuilder<
+                                                    QuerySnapshot>(
+                                                  stream: FirebaseFirestore
+                                                      .instance
+                                                      .collection("Contenant")
+                                                      .where(
+                                                          'idAdresseContenant',
+                                                          isEqualTo: 'null')
+                                                      .snapshots(),
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<
+                                                                  QuerySnapshot>
+                                                              snapshot) {
+                                                    if (snapshot.hasError) {
+                                                      return Text(
+                                                          'Something went wrong');
+                                                    }
+
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return CircularProgressIndicator();
+                                                    }
+                                                    return SingleChildScrollView(
+                                                      child: Column(
+                                                        children: snapshot
+                                                            .data!.docs
+                                                            .map((DocumentSnapshot
+                                                                document_contenant) {
+                                                          Map<String, dynamic>
+                                                              insidedataContenant =
+                                                              document_contenant
+                                                                      .data()!
+                                                                  as Map<String,
+                                                                      dynamic>;
+
+                                                          return Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Text(
+                                                                        insidedataContenant['typeContenant'] +
+                                                                            ' ' +
+                                                                            insidedataContenant[
+                                                                                'barCodeContenant'],
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold)),
+                                                                    SizedBox(
+                                                                      width: 20,
+                                                                    ),
+                                                                    IconButton(
+                                                                        onPressed:
+                                                                            () async {
+                                                                          await _contenant
+                                                                              .where('idContenant', isEqualTo: insidedataContenant['idContenant'])
+                                                                              .limit(1)
+                                                                              .get()
+                                                                              .then((QuerySnapshot querySnapshot) {
+                                                                            querySnapshot.docs.forEach((doc) {
+                                                                              _contenant.doc(doc.id).update({
+                                                                                'idAdresseContenant': adresse['idAdresse'],
+                                                                              });
+                                                                            });
+                                                                          });
+                                                                          String
+                                                                              typeConenant =
+                                                                              insidedataContenant['typeContenant'].replaceAll(' ', '').toLowerCase();
+                                                                          QuerySnapshot query = await FirebaseFirestore
+                                                                              .instance
+                                                                              .collection('TypeContenant')
+                                                                              .where('nomTypeContenant', isEqualTo: typeConenant)
+                                                                              .get();
+
+                                                                          await _contenantadresse
+                                                                              .where('idAdresse', isEqualTo: adresse['idAdresse'])
+                                                                              .limit(1)
+                                                                              .get()
+                                                                              .then((QuerySnapshot querySnapshot) {
+                                                                            querySnapshot.docs.forEach((doc) {
+                                                                              int check_type_exist = 0;
+                                                                              int save_position = 0;
+                                                                              for (int i = 1; i <= int.parse(doc['nombredetype']); i++) {
+                                                                                if (typeConenant == doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))) {
+                                                                                  print('${doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))}');
+                                                                                  check_type_exist = 1;
+                                                                                  save_position = i;
+                                                                                }
+                                                                              }
+
+                                                                              if (check_type_exist == 1) {
+                                                                                String _quality = doc['${save_position.toString()}'].substring(doc['$save_position'].indexOf('/') + 1);
+                                                                                _contenantadresse.doc(doc.id).update({
+                                                                                  '${save_position.toString()}': typeConenant + '/' + (int.parse(_quality) + 1).toString(),
+                                                                                }).then((value) {
+                                                                                  print("Contenant Updated");
+                                                                                  Fluttertoast.showToast(msg: "Contenant Updated", gravity: ToastGravity.TOP);
+                                                                                }).catchError((error) => print("Failed to add user: $error"));
+                                                                              } else {
+                                                                                _contenantadresse.doc(doc.id).update({
+                                                                                  '${int.parse(doc['nombredetype']) + 1}': typeConenant + '/' + '1',
+                                                                                  'nombredetype': (int.parse(doc['nombredetype']) + 1).toString(),
+                                                                                }).then((value) {
+                                                                                  print("Contenant Added");
+                                                                                  Fluttertoast.showToast(msg: "Contenant Added", gravity: ToastGravity.TOP);
+                                                                                }).catchError((error) => print("Failed to add user: $error"));
+                                                                              }
+                                                                            });
+                                                                          });
+                                                                        },
+                                                                        icon: Icon(
+                                                                            FontAwesomeIcons
+                                                                                .plus,
+                                                                            size:
+                                                                                15))
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                              ]);
+                                                        }).toList(),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                              // Test After
+                                              // Container(
+                                              //     width: 500,
+                                              //     height: 200,
+                                              //     color: Colors.red,
+                                              //     child: Column(
+                                              //       children: [
+                                              //         Container(
+                                              //           height: 40,
+                                              //           color: Colors.blue,
+                                              //           child: Column(
+                                              //             children: [
+                                              //               SizedBox(
+                                              //                 height: 3,
+                                              //               ),
+                                              //               Row(
+                                              //                 children: [
+                                              //                   SizedBox(
+                                              //                       width: 20),
+                                              //                   Icon(
+                                              //                     FontAwesomeIcons
+                                              //                         .boxOpen,
+                                              //                     size: 15,
+                                              //                   ),
+                                              //                   SizedBox(
+                                              //                     width: 10,
+                                              //                   ),
+                                              //                   Text(
+                                              //                     'Update New Contenant',
+                                              //                     style:
+                                              //                         TextStyle(
+                                              //                       color: Colors
+                                              //                           .black,
+                                              //                       fontSize:
+                                              //                           15,
+                                              //                       fontWeight:
+                                              //                           FontWeight
+                                              //                               .bold,
+                                              //                     ),
+                                              //                   ),
+                                              //                 ],
+                                              //               ),
+                                              //               SizedBox(
+                                              //                 height: 3,
+                                              //               ),
+                                              //               const Divider(
+                                              //                 thickness: 5,
+                                              //               ),
+                                              //             ],
+                                              //           ),
+                                              //         ),
+                                              //         Container(
+                                              //             width: 500,
+                                              //             child: Form(
+                                              //                 child: Row(
+                                              //               children: [
+                                              //                 SizedBox(
+                                              //                     width: 10),
+                                              //                 // Container(
+                                              //                 //   width: 120,
+                                              //                 //   color:
+                                              //                 //       Colors.red,
+                                              //                 //   child: StreamBuilder<
+                                              //                 //           QuerySnapshot>(
+                                              //                 //       stream: FirebaseFirestore
+                                              //                 //           .instance
+                                              //                 //           .collection(
+                                              //                 //               "TypeContenant")
+                                              //                 //           .snapshots(),
+                                              //                 //       builder: (BuildContext
+                                              //                 //               context,
+                                              //                 //           AsyncSnapshot<QuerySnapshot>
+                                              //                 //               snapshot) {
+                                              //                 //         if (snapshot
+                                              //                 //             .hasError) {
+                                              //                 //           return Text(
+                                              //                 //               'Something went wrong');
+                                              //                 //         }
+
+                                              //                 //         if (snapshot
+                                              //                 //                 .connectionState ==
+                                              //                 //             ConnectionState
+                                              //                 //                 .waiting) {
+                                              //                 //           return CircularProgressIndicator();
+                                              //                 //         }
+                                              //                 //         return DropdownButton(
+                                              //                 //           onChanged:
+                                              //                 //               (String?
+                                              //                 //                   changedValue) {
+                                              //                 //             setState(
+                                              //                 //                 () {
+                                              //                 //               choiceType =
+                                              //                 //                   changedValue!;
+                                              //                 //             });
+                                              //                 //           },
+                                              //                 //           value:
+                                              //                 //               choiceType,
+                                              //                 //           items: snapshot
+                                              //                 //               .data!
+                                              //                 //               .docs
+                                              //                 //               .map((DocumentSnapshot
+                                              //                 //                   document) {
+                                              //                 //             Map<String, dynamic>
+                                              //                 //                 typecontenant =
+                                              //                 //                 document.data()! as Map<String, dynamic>;
+
+                                              //                 //             return DropdownMenuItem<
+                                              //                 //                 String>(
+                                              //                 //               value:
+                                              //                 //                   typecontenant['nomTypeContenant'],
+                                              //                 //               child:
+                                              //                 //                   Text(typecontenant['nomTypeContenant']),
+                                              //                 //             );
+                                              //                 //           }).toList(),
+                                              //                 //         );
+                                              //                 //       }),
+                                              //                 // ),
+                                              //                 Container(
+                                              //                   width: 100,
+                                              //                   color:
+                                              //                       Colors.red,
+                                              //                   child:
+                                              //                       TextFormField(
+                                              //                     controller:
+                                              //                         _typeContenantController,
+                                              //                     decoration:
+                                              //                         InputDecoration(
+                                              //                       labelText:
+                                              //                           'Type',
+                                              //                     ),
+                                              //                   ),
+                                              //                 ),
+                                              //                 SizedBox(
+                                              //                     width: 20),
+                                              //                 Container(
+                                              //                   width: 100,
+                                              //                   color:
+                                              //                       Colors.red,
+                                              //                   child:
+                                              //                       TextFormField(
+                                              //                     controller:
+                                              //                         _quality,
+                                              //                     decoration:
+                                              //                         InputDecoration(
+                                              //                       labelText:
+                                              //                           'Nombre',
+                                              //                     ),
+                                              //                   ),
+                                              //                 ),
+                                              //                 SizedBox(
+                                              //                     width: 20),
+                                              //                 Container(
+                                              //                   width: 100,
+                                              //                   color:
+                                              //                       Colors.red,
+                                              //                   child:
+                                              //                       IconButton(
+                                              //                     onPressed:
+                                              //                         () async {
+                                              //                       QuerySnapshot query = await FirebaseFirestore
+                                              //                           .instance
+                                              //                           .collection(
+                                              //                               'TypeContenant')
+                                              //                           .where(
+                                              //                               'nomTypeContenant',
+                                              //                               isEqualTo:
+                                              //                                   _typeContenantController.text.toLowerCase())
+                                              //                           .get();
+                                              //                       if (
+                                              //                           //(choiceType ==
+                                              //                           //     'None'
+                                              //                           _typeContenantController.text.isEmpty ||
+                                              //                               _typeContenantController.text ==
+                                              //                                   '') {
+                                              //                         Fluttertoast.showToast(
+                                              //                             msg:
+                                              //                                 'Please Input a type',
+                                              //                             gravity:
+                                              //                                 ToastGravity.TOP);
+                                              //                       } else if (query
+                                              //                           .docs
+                                              //                           .isEmpty) {
+                                              //                         Fluttertoast.showToast(
+                                              //                             msg:
+                                              //                                 'Please Write an available type',
+                                              //                             gravity:
+                                              //                                 ToastGravity.TOP);
+                                              //                       } else if (_quality
+                                              //                               .text
+                                              //                               .isEmpty ||
+                                              //                           !isNumericUsing_tryParse(_quality
+                                              //                               .text) ||
+                                              //                           _quality.text ==
+                                              //                               '0') {
+                                              //                         Fluttertoast.showToast(
+                                              //                             msg:
+                                              //                                 'Please Input a real number',
+                                              //                             gravity:
+                                              //                                 ToastGravity.TOP);
+                                              //                       } else {
+                                              //                         await _contenantadresse
+                                              //                             .where(
+                                              //                                 'idAdresse',
+                                              //                                 isEqualTo: adresse[
+                                              //                                     'idAdresse'])
+                                              //                             .limit(
+                                              //                                 1)
+                                              //                             .get()
+                                              //                             .then((QuerySnapshot
+                                              //                                 querySnapshot) {
+                                              //                           querySnapshot
+                                              //                               .docs
+                                              //                               .forEach((doc) {
+                                              //                             int check_type_exist =
+                                              //                                 0;
+                                              //                             int save_position =
+                                              //                                 0;
+                                              //                             for (int i = 1;
+                                              //                                 i <= int.parse(doc['nombredetype']);
+                                              //                                 i++) {
+                                              //                               if (_typeContenantController.text.toLowerCase() ==
+                                              //                                   doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))) {
+                                              //                                 print('${doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))}');
+                                              //                                 check_type_exist = 1;
+                                              //                                 save_position = i;
+                                              //                               }
+                                              //                             }
+                                              //                             if (check_type_exist ==
+                                              //                                 1) {
+                                              //                               _contenantadresse.doc(doc.id).update({
+                                              //                                 '${save_position.toString()}': _typeContenantController.text.toLowerCase() + '/' + _quality.text,
+                                              //                               }).then(
+                                              //                                   (value) {
+                                              //                                 print("Contenant Updated");
+                                              //                                 _quality.text = '0';
+                                              //                                 _typeContenantController.text = '';
+                                              //                                 Fluttertoast.showToast(msg: "Contenant Updated", gravity: ToastGravity.TOP);
+                                              //                               }).catchError((error) =>
+                                              //                                   print("Failed to add user: $error"));
+                                              //                             } else {
+                                              //                               _contenantadresse.doc(doc.id).update({
+                                              //                                 '${int.parse(doc['nombredetype']) + 1}': _typeContenantController.text.toLowerCase() + '/' + _quality.text,
+                                              //                                 'nombredetype': (int.parse(doc['nombredetype']) + 1).toString(),
+                                              //                               }).then(
+                                              //                                   (value) {
+                                              //                                 print("Contenant Added");
+                                              //                                 _quality.text = '0';
+                                              //                                 _typeContenantController.text = '';
+                                              //                                 Fluttertoast.showToast(msg: "Contenant Added", gravity: ToastGravity.TOP);
+                                              //                               }).catchError((error) =>
+                                              //                                   print("Failed to add user: $error"));
+                                              //                             }
+                                              //                           });
+                                              //                         });
+                                              //                       }
+                                              //                     },
+                                              //                     icon:
+                                              //                         const Icon(
+                                              //                       FontAwesomeIcons
+                                              //                           .plus,
+                                              //                       size: 15,
+                                              //                     ),
+                                              //                   ),
+                                              //                 ),
+                                              //               ],
+                                              //             )))
+                                              //       ],
+                                              //     )),
                                             ],
                                           ),
                                         )
