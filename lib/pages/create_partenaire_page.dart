@@ -345,9 +345,8 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                 if (_notePartenaireController.text.isEmpty) {
                                   _siretPartenaireController.text = '';
                                 }
-                                await _partenaire
-                                    .doc(_partenaire.doc().id)
-                                    .set({
+                                String newIdPartenaire = _partenaire.doc().id;
+                                await _partenaire.doc(newIdPartenaire).set({
                                   'nomPartenaire':
                                       _nomPartenaireController.text,
                                   'notePartenaire':
@@ -359,7 +358,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                   'typePartenaire': _typePartenaire,
                                   'nombredeAdresses': '0',
                                   'nombredeFrequence': '0',
-                                  'idPartenaire': _partenaire.doc().id
+                                  'idPartenaire': newIdPartenaire
                                 }).then((value) {
                                   _nomPartenaireController.text = '';
                                   _notePartenaireController.text = '';

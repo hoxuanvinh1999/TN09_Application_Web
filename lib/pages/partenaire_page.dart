@@ -823,7 +823,7 @@ class _PartenairePageState extends State<PartenairePage> {
                               onTap: () async {
                                 if (_createContactKeyForm.currentState!
                                     .validate()) {
-                                  idNewContact = _contact.doc().id.toString();
+                                  idNewContact = _contact.doc().id;
                                   await _contact.doc(idNewContact).set({
                                     'nomContact': _nomContactController.text,
                                     'prenomContact':

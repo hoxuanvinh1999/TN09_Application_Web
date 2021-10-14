@@ -536,9 +536,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                               onTap: () async {
                                 if (_createCollecteurKeyForm.currentState!
                                     .validate()) {
-                                  await _collecteur
-                                      .doc(_collecteur.doc().id)
-                                      .set({
+                                  String newIdCollecteur = _collecteur.doc().id;
+                                  await _collecteur.doc(newIdCollecteur).set({
                                     'nomCollecteur':
                                         _nomCollecteurController.text,
                                     'prenomCollecteur':
@@ -547,7 +546,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                     'datedeNaissance': DateFormat('yMd')
                                         .format(date)
                                         .toString(),
-                                    'idCollecteur': _collecteur.doc().id
+                                    'idCollecteur': newIdCollecteur,
                                   }).then((value) {
                                     _nomCollecteurController.text = '';
                                     _prenomCollecteurController.text = '';

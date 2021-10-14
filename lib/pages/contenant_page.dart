@@ -514,14 +514,13 @@ class _ContenantPageState extends State<ContenantPage> {
                               onTap: () async {
                                 if (_createContenantKeyForm.currentState!
                                     .validate()) {
-                                  await _contenant
-                                      .doc(_contenant.doc().id)
-                                      .set({
+                                  String newIdContenant = _contenant.doc().id;
+                                  await _contenant.doc(newIdContenant).set({
                                     'barCodeContenant':
                                         _barCodeContenantController.text,
                                     'typeContenant': _typeContenant,
                                     'statusContenant': _statusContenant,
-                                    'idContenant': _contenant.doc().id
+                                    'idContenant': newIdContenant
                                   }).then((value) {
                                     _barCodeContenantController.text = '';
                                     _typeContenant = 'Bac 120L';

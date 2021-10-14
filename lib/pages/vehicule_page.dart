@@ -653,9 +653,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                     if (_typeVehiculeController.text == '') {
                                       _typeVehiculeController.text = 'null';
                                     }
-                                    await _vehicule
-                                        .doc(_vehicule.doc().id)
-                                        .set({
+                                    String newidVehicule = _vehicule.doc().id;
+                                    await _vehicule.doc(newidVehicule).set({
                                       'nomVehicule':
                                           _nomVehiculeController.text,
                                       'numeroImmatriculation':
@@ -669,7 +668,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                       'colorIconVehicule': _colorVehicule
                                           .toString()
                                           .substring(6, 16),
-                                      'idVehicule': _vehicule.doc().id
+                                      'idVehicule': newidVehicule
                                     }).then((value) {
                                       _nomVehiculeController.text = '';
                                       _numeroImmatriculationVehicule.text = '';
@@ -677,8 +676,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                       _colorVehicule = Colors.red;
                                       print("Vehicule Added");
                                       Navigator.of(context).pop();
-                                    }).catchError((error) => print(
-                                            "Failed to add user: $error"));
+                                    }).catchError((error) =>
+                                        print("Failed to add user: $error"));
                                   }
                                 },
                                 child: Row(

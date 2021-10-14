@@ -3736,9 +3736,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       idVehiculeFrequence = doc['idVehicule'];
                                     });
                                   });
-                                  await _frequence
-                                      .doc(_frequence.doc().id)
-                                      .set({
+                                  String newIdFrequence = _frequence.doc().id;
+                                  await _frequence.doc(newIdFrequence).set({
                                     'frequence': _frequenceTextController.text,
                                     'jourfrequence': _jour,
                                     'siretPartenaire':
@@ -3763,7 +3762,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                         getDateText(date: dateMinimale),
                                     'dateMaximaleFrequence':
                                         getDateText(date: dateMaximale),
-                                    'idFrequence': _partenaire.doc().id
+                                    'idFrequence': newIdFrequence
                                   }).then((value) async {
                                     await _partenaire
                                         .where('idPartenaire',
