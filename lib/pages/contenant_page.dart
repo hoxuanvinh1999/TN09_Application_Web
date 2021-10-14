@@ -529,7 +529,7 @@ class _ContenantPageState extends State<ContenantPage> {
                                     print("Contenant Added");
                                     Navigator.of(context).pop();
                                   }).catchError((error) =>
-                                          print("Failed to add user: $error"));
+                                      print("Failed to add user: $error"));
                                 }
                               },
                               child: Row(

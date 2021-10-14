@@ -848,108 +848,108 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                         color: Colors.white,
                                                         child: Column(
                                                           children: [
-                                          IconButton(
-                                            icon: buildBoolIcon(
-                                                check: convertBool(
+                                                            IconButton(
+                                                              icon: buildBoolIcon(
+                                                                  check: convertBool(
                                                                       check: link_datacontactpartenaire[
-                                                        'isPrincipal']),
-                                                sizeIcon: 15),
-                                            tooltip: 'Change',
+                                                                          'isPrincipal']),
+                                                                  sizeIcon: 15),
+                                                              tooltip: 'Change',
                                                               onPressed:
                                                                   () async {
-                                              if (convertBool(
+                                                                if (convertBool(
                                                                     check: link_datacontactpartenaire[
-                                                      'isPrincipal'])) {
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "It's already principale",
+                                                                        'isPrincipal'])) {
+                                                                  Fluttertoast.showToast(
+                                                                      msg:
+                                                                          "It's already principale",
                                                                       gravity:
                                                                           ToastGravity
                                                                               .TOP);
-                                              } else {
-                                                await _contactpartenaire
-                                                                      .where(
-                                                                          'idPartenaire',
-                                                                          isEqualTo: widget.partenaire[
-                                                                'idPartenaire'])
-                                                                      // .where(
-                                                                      //     'idContact',
-                                                                      //     isNotEqualTo: dataContact[
-                                                                      //         'idContact'])
-                                                    .get()
-                                                    .then((QuerySnapshot
-                                                        querySnapshot) {
-                                                                    querySnapshot
-                                                                        .docs
-                                                                        .forEach(
-                                                                            (doc) {
-                                                                      _contactpartenaire
-                                                                          .doc(doc
-                                                                    .id)
-                                                            .update({
-                                                          'isPrincipal':
-                                                                            'false'
-                                                        });
-                                                      });
-                                                    });
+                                                                } else {
                                                                   await _contactpartenaire
-                                                                      .where(
-                                                                          'idContact',
-                                                                          isEqualTo: dataContact[
-                                                                    'idContact'])
                                                                       .where(
                                                                           'idPartenaire',
                                                                           isEqualTo: widget.partenaire[
                                                                               'idPartenaire'])
-                                                        .get()
-                                                        .then((QuerySnapshot
-                                                            querySnapshot) {
+                                                                      // .where(
+                                                                      //     'idContact',
+                                                                      //     isNotEqualTo: dataContact[
+                                                                      //         'idContact'])
+                                                                      .get()
+                                                                      .then((QuerySnapshot
+                                                                          querySnapshot) {
                                                                     querySnapshot
                                                                         .docs
                                                                         .forEach(
                                                                             (doc) {
                                                                       _contactpartenaire
                                                                           .doc(doc
-                                                                    .id)
-                                                            .update({
+                                                                              .id)
+                                                                          .update({
                                                                         'isPrincipal':
-                                                                            'true'
-                                                        });
-                                                      });
-                                                    });
-
-                                                    //update principal contact inside partenaire
-                                                    await _partenaire
+                                                                            'false'
+                                                                      });
+                                                                    });
+                                                                  });
+                                                                  await _contactpartenaire
+                                                                      .where(
+                                                                          'idContact',
+                                                                          isEqualTo: dataContact[
+                                                                              'idContact'])
                                                                       .where(
                                                                           'idPartenaire',
                                                                           isEqualTo: widget.partenaire[
-                                                                'idPartenaire'])
-                                                        .limit(1)
-                                                        .get()
-                                                        .then((QuerySnapshot
-                                                            querySnapshot) {
+                                                                              'idPartenaire'])
+                                                                      .get()
+                                                                      .then((QuerySnapshot
+                                                                          querySnapshot) {
                                                                     querySnapshot
                                                                         .docs
                                                                         .forEach(
                                                                             (doc) {
-                                                        _partenaire
+                                                                      _contactpartenaire
                                                                           .doc(doc
                                                                               .id)
-                                                            .update({
-                                                          'idContactPartenaire':
+                                                                          .update({
+                                                                        'isPrincipal':
+                                                                            'true'
+                                                                      });
+                                                                    });
+                                                                  });
+
+                                                                  //update principal contact inside partenaire
+                                                                  await _partenaire
+                                                                      .where(
+                                                                          'idPartenaire',
+                                                                          isEqualTo: widget.partenaire[
+                                                                              'idPartenaire'])
+                                                                      .limit(1)
+                                                                      .get()
+                                                                      .then((QuerySnapshot
+                                                                          querySnapshot) {
+                                                                    querySnapshot
+                                                                        .docs
+                                                                        .forEach(
+                                                                            (doc) {
+                                                                      _partenaire
+                                                                          .doc(doc
+                                                                              .id)
+                                                                          .update({
+                                                                        'idContactPartenaire':
                                                                             link_contactpartenaire['idContact']
-                                                    });
-                                                  });
-                                                });
-                                                Fluttertoast.showToast(
+                                                                      });
+                                                                    });
+                                                                  });
+                                                                  Fluttertoast.showToast(
                                                                       msg:
                                                                           "Information Modified",
                                                                       gravity:
                                                                           ToastGravity
                                                                               .TOP);
-                                              }
-                                            },
-                                          ),
+                                                                }
+                                                              },
+                                                            ),
                                                           ],
                                                         ));
                                                   }).toList(),
@@ -1918,7 +1918,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                 children: [
                   Container(
                     width: 600,
-                    height: 300,
+                    height: 300 +
+                        double.parse(widget.partenaire['nombredeAdresses']) *
+                            200,
                     color: Colors.green,
                     child: Column(
                       children: [
@@ -1995,6 +1997,160 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                             ],
                           ),
                         ),
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection("Adresse")
+                                .where('idPartenaireAdresse',
+                                    isEqualTo:
+                                        widget.partenaire['idPartenaire'])
+                                .snapshots(),
+                            //Can not use OrderBy and where together
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return Text(
+                                    'Something went wrong + ${snapshot.error.toString()} + ${widget.partenaire['idPartenaire'].toString()}');
+                              }
+
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              }
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: snapshot.data!.docs
+                                    .map((DocumentSnapshot document) {
+                                  Map<String, dynamic> adresse =
+                                      document.data()! as Map<String, dynamic>;
+                                  // print('$contenant');
+                                  return Container(
+                                    width: 600,
+                                    height: 300,
+                                    color: Colors.red,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 20),
+                                        Container(
+                                          color: Colors.white,
+                                          width: 550,
+                                          height: 200,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    height: 40,
+                                                    width: 550,
+                                                    color: Colors.blue,
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 8,
+                                                                ),
+                                                                Icon(
+                                                                  FontAwesomeIcons
+                                                                      .locationArrow,
+                                                                  size: 15,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                                Text(
+                                                                  adresse[
+                                                                      'nomPartenaireAdresse'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                                width: 150,
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors
+                                                                        .yellow,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10)),
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  right: 10,
+                                                                ),
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    // AddContenantAdressDialog(
+                                                                    //     context:
+                                                                    //         context,
+                                                                    //     dataAdresse:
+                                                                    //         adresse);
+                                                                  },
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .add,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      Text(
+                                                                        'Add Contenant',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              );
+                            })
                       ],
                     ),
                   )
@@ -3842,8 +3998,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                         ).then((value) => setState(() {}));
                                       });
                                     });
-                                  }).catchError((error) => print(
-                                          "Failed to update user: $error"));
+                                  }).catchError((error) =>
+                                      print("Failed to update user: $error"));
                                 }
                               },
                               child: Row(

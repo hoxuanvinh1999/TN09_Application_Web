@@ -553,7 +553,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                     print("Collecteur Added");
                                     Navigator.of(context).pop();
                                   }).catchError((error) =>
-                                          print("Failed to add user: $error"));
+                                      print("Failed to add user: $error"));
                                 }
                               },
                               child: Row(

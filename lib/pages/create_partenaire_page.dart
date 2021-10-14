@@ -371,7 +371,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                           builder: (context) =>
                                               PartenairePage()));
                                 }).catchError((error) =>
-                                        print("Failed to add user: $error"));
+                                    print("Failed to add user: $error"));
                               }
                             },
                             child: Row(

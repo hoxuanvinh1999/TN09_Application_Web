@@ -582,7 +582,6 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                   'accessExtranet': accessExtranet.toString(),
                                   'recoitFacture': recoitFacture.toString(),
                                   'recoitRapport': recoitRapport.toString(),
-                                  'isPrincipal': isPrincipal.toString(),
                                   'nombredePartenaire': nombredePartenaire,
                                   'idContact': idNewContact
                                 }).then((value) {
@@ -590,20 +589,12 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                   Fluttertoast.showToast(
                                       msg: "Contact Added",
                                       gravity: ToastGravity.TOP);
-                                }).catchError((error) =>
-                                    print("Failed to add user: $error"));
-                                await _contactpartenaire
-                                    .doc(_contact.doc().id)
-                                    .set({
-                                  'idPartenaire': choiceIdPartenaire,
-                                  'idContact': idNewContact,
-                                }).then((value) {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => ContactPage()));
                                 }).catchError((error) =>
-                                        print("Failed to add user: $error"));
+                                    print("Failed to add user: $error"));
                               }
                             },
                             child: Row(

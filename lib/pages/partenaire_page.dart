@@ -843,7 +843,6 @@ class _PartenairePageState extends State<PartenairePage> {
                                     'accessExtranet': accessExtranet.toString(),
                                     'recoitFacture': recoitFacture.toString(),
                                     'recoitRapport': recoitRapport.toString(),
-                                    'isPrincipal': isPrincipal.toString(),
                                     'nombredePartenaire': '1',
                                     'idContact': idNewContact
                                   }).then((value) {
