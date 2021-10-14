@@ -2163,6 +2163,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     ])));
   }
 
+  //for Adresse
+  CollectionReference _contenantadresse =
+      FirebaseFirestore.instance.collection("ContenantAdresse");
   showCreateAdressesDialog() {
     _nomPartenaireAdresseController.text = widget.partenaire['nomPartenaire'];
     _latitudeAdresseController.text = '';
@@ -2674,7 +2677,13 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       });
                                     });
                                   });
-                                  await _adresse.doc(_adresse.doc().id).set({
+                                  String newidAdresse = _adresse.doc().id;
+                                  await _contenantadresse
+                                      .doc(newidAdresse)
+                                      .set({
+                                    'idAdresse': newidAdresse,
+                                  });
+                                  await _adresse.doc(newidAdresse).set({
                                     'nomPartenaireAdresse':
                                         _nomPartenaireAdresseController.text,
                                     'ligne1Adresse':
@@ -2705,7 +2714,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     'idPartenaireAdresse':
                                         widget.partenaire['idPartenaire'],
                                     'nombredeContact': '0',
-                                    'idAdresse': _adresse.doc().id
+                                    'idAdresse': newidAdresse,
                                   }).then((value) async {
                                     await _partenaire
                                         .where('idPartenaire',
