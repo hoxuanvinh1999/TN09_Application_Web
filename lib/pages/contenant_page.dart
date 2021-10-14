@@ -521,6 +521,7 @@ class _ContenantPageState extends State<ContenantPage> {
                                     'typeContenant': _typeContenant,
                                     'statusContenant': _statusContenant,
                                     'idAdresse': 'null',
+                                    'idAdresseContenant': 'null',
                                     'idContenant': newIdContenant
                                   }).then((value) {
                                     _barCodeContenantController.text = '';
