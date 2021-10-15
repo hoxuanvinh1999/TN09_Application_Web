@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/header.dart';
+import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/contact_page.dart';
@@ -53,6 +54,91 @@ class _CreateContactPageState extends State<CreateContactPage> {
             child: Column(children: [
       header(context: context),
       menu(context: context),
+      Container(
+          color: Colors.yellow,
+          width: double.infinity,
+          height: 40,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 40,
+              ),
+              Icon(
+                FontAwesomeIcons.home,
+                size: 12,
+              ),
+              SizedBox(width: 5),
+              RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Home',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                          }),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(
+                FontAwesomeIcons.chevronCircleRight,
+                size: 12,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Contact',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => ContactPage()));
+                          }),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(
+                FontAwesomeIcons.chevronCircleRight,
+                size: 12,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Create Contact',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
       SizedBox(height: 20),
       Align(
           alignment: Alignment(-0.9, 0),
