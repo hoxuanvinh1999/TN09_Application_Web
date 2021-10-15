@@ -23,7 +23,7 @@ class CreateTypeContenantPage extends StatefulWidget {
 }
 
 class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
-  //For Create Contenant
+  //For Create Type Contenant
   CollectionReference _typecontenant =
       FirebaseFirestore.instance.collection("TypeContenant");
   final _createContenantKeyForm = GlobalKey<FormState>();

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/header.dart';
@@ -13,8 +14,6 @@ class ContenantPage extends StatefulWidget {
 
 class _ContenantPageState extends State<ContenantPage> {
   final _createContenantKeyForm = GlobalKey<FormState>();
-  String _typeContenant = 'Bac 120L';
-  List<String> list_type = ['Bac 120L', 'Bac 100L', 'Bac 80L'];
   TextEditingController _barCodeContenantController = TextEditingController();
   TextEditingController _statusContenantController = TextEditingController();
   String _statusContenant = 'Disponible';
@@ -27,6 +26,10 @@ class _ContenantPageState extends State<ContenantPage> {
       .collection("Contenant")
       .orderBy('barCodeContenant')
       .snapshots();
+  //For Type Contenant
+  CollectionReference _typecontenant =
+      FirebaseFirestore.instance.collection("TypeContenant");
+  String nombre = '0';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -313,6 +316,7 @@ class _ContenantPageState extends State<ContenantPage> {
   }
 
   showCreateContenant() {
+    String choiceTypeContenant = 'None';
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -386,21 +390,43 @@ class _ContenantPageState extends State<ContenantPage> {
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(width: 10),
                                   //dropdown have bug
-                                  DropdownButton<String>(
-                                      onChanged: (String? changedValue) {
-                                        setState(() {
-                                          _typeContenant = changedValue!;
-                                          // print(
-                                          //     '$_typeContenant  $changedValue');
-                                        });
-                                      },
-                                      value: _typeContenant,
-                                      items: list_type.map((String value) {
-                                        return new DropdownMenuItem<String>(
-                                          value: value,
-                                          child: new Text(value),
+                                  StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("TypeContenant")
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Text('Something went wrong');
+                                        }
+
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                        }
+                                        return DropdownButton(
+                                          onChanged: (String? changedValue) {
+                                            setState(() {
+                                              choiceTypeContenant =
+                                                  changedValue!;
+                                            });
+                                          },
+                                          value: choiceTypeContenant,
+                                          items: snapshot.data!.docs.map(
+                                              (DocumentSnapshot
+                                                  document_typecontenant) {
+                                            Map<String, dynamic> typecontenant =
+                                                document_typecontenant.data()!
+                                                    as Map<String, dynamic>;
+                                            return DropdownMenuItem<String>(
+                                              value: document_typecontenant.id,
+                                              child: new Text(
+                                                  document_typecontenant.id),
+                                            );
+                                          }).toList(),
                                         );
-                                      }).toList()),
+                                      }),
                                 ],
                               ),
                             ),
@@ -479,8 +505,9 @@ class _ContenantPageState extends State<ContenantPage> {
                             child: GestureDetector(
                               onTap: () {
                                 _barCodeContenantController.text = '';
-                                _typeContenant = 'Bac 120L';
+                                choiceTypeContenant = 'None';
                                 _statusContenant = 'Disponible';
+                                nombre = '0';
                                 Navigator.of(context).pop();
                               },
                               child: Row(
@@ -515,22 +542,46 @@ class _ContenantPageState extends State<ContenantPage> {
                                 if (_createContenantKeyForm.currentState!
                                     .validate()) {
                                   String newIdContenant = _contenant.doc().id;
-                                  await _contenant.doc(newIdContenant).set({
-                                    'barCodeContenant':
-                                        _barCodeContenantController.text,
-                                    'typeContenant': _typeContenant,
-                                    'statusContenant': _statusContenant,
-                                    'idAdresse': 'null',
-                                    'idAdresseContenant': 'null',
-                                    'idContenant': newIdContenant
-                                  }).then((value) {
-                                    _barCodeContenantController.text = '';
-                                    _typeContenant = 'Bac 120L';
-                                    _statusContenant = 'Disponible';
-                                    print("Contenant Added");
-                                    Navigator.of(context).pop();
-                                  }).catchError((error) =>
-                                      print("Failed to add user: $error"));
+                                  if (choiceTypeContenant == 'None') {
+                                    Fluttertoast.showToast(
+                                        msg: "Please choice a Type Contenant",
+                                        gravity: ToastGravity.TOP);
+                                  } else {
+                                    DocumentReference doc_ref =
+                                        FirebaseFirestore.instance
+                                            .collection("TypeContenant")
+                                            .doc(choiceTypeContenant);
+
+                                    DocumentSnapshot docSnap =
+                                        await doc_ref.get();
+                                    await _typecontenant
+                                        .doc(choiceTypeContenant)
+                                        .update({
+                                      'nombre':
+                                          (int.parse(docSnap['nombre']) + 1)
+                                              .toString()
+                                    });
+                                    await _contenant.doc(newIdContenant).set({
+                                      'barCodeContenant':
+                                          _barCodeContenantController.text,
+                                      'typeContenant': choiceTypeContenant,
+                                      'statusContenant': _statusContenant,
+                                      'idAdresse': 'null',
+                                      'idAdresseContenant': 'null',
+                                      'idContenant': newIdContenant
+                                    }).then((value) {
+                                      _barCodeContenantController.text = '';
+                                      choiceTypeContenant = 'None';
+                                      _statusContenant = 'Disponible';
+                                      nombre = '0';
+                                      print("Contenant Added");
+                                      Fluttertoast.showToast(
+                                          msg: "Contenant Added",
+                                          gravity: ToastGravity.TOP);
+                                      Navigator.of(context).pop();
+                                    }).catchError((error) =>
+                                        print("Failed to add user: $error"));
+                                  }
                                 }
                               },
                               child: Row(
