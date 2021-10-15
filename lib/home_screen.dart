@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'dart:async';
@@ -24,6 +26,40 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             header(context: context),
             menu(context: context),
+            Container(
+                color: Colors.yellow,
+                width: double.infinity,
+                height: 40,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Icon(
+                      FontAwesomeIcons.home,
+                      size: 12,
+                    ),
+                    SizedBox(width: 5),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: 'Home',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeScreen()));
+                                }),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
           ],
         ),
       ),
