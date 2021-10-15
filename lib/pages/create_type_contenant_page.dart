@@ -14,6 +14,7 @@ import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
 import 'package:tn09_app_web_demo/pages/math_function/generate_password.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_numeric_function.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/type_contenant_page.dart';
 
 class CreateTypeContenantPage extends StatefulWidget {
   @override
@@ -396,16 +397,18 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                                     'pesee': pesee.toString(),
                                     'collecte': collecte.toString(),
                                     'prepare': prepare.toString(),
+                                    'nombre': '0',
                                     'idTypeContenant': idNewTypeContenant
                                   }).then((value) {
                                     print("Type Contenant Added");
                                     Fluttertoast.showToast(
                                         msg: "Type Contenant Added",
                                         gravity: ToastGravity.TOP);
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => ContactPage()));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                TypeContenantPage()));
                                   }).catchError((error) =>
                                           print("Failed to add user: $error"));
                                 }
