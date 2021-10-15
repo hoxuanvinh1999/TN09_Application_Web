@@ -3226,6 +3226,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       .doc(newidAdresse)
                                       .set({
                                     'idAdresse': newidAdresse,
+                                    'nombredetype': '0'
                                   });
                                   await _adresse.doc(newidAdresse).set({
                                     'nomPartenaireAdresse':
