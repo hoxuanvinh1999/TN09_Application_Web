@@ -132,6 +132,29 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                   ],
                 ),
               ),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(
+                FontAwesomeIcons.chevronCircleRight,
+                size: 12,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Create New Type Contenant',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
             ],
           )),
       SizedBox(height: 20),
