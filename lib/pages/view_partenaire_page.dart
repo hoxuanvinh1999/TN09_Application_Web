@@ -2070,15 +2070,14 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                 ),
                                                                 Icon(
                                                                   FontAwesomeIcons
-                                                                      .locationArrow,
+                                                                      .boxOpen,
                                                                   size: 15,
                                                                 ),
                                                                 SizedBox(
                                                                   width: 10,
                                                                 ),
                                                                 Text(
-                                                                  adresse[
-                                                                      'nomPartenaireAdresse'],
+                                                                  'Informations sur les contenant',
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -2092,55 +2091,56 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                 ),
                                                               ],
                                                             ),
-                                                            Container(
-                                                                width: 150,
-                                                                decoration: BoxDecoration(
-                                                                    color: Colors
-                                                                        .yellow,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10)),
-                                                                margin:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                  right: 10,
-                                                                ),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap: () {
-                                                                    // AddContenantAdressDialog(
-                                                                    //     context:
-                                                                    //         context,
-                                                                    //     dataAdresse:
-                                                                    //         adresse);
-                                                                  },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .add,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      Text(
-                                                                        'Add Contenant',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                )),
+                                                            // This is a Button
+                                                            // Container(
+                                                            //     width: 150,
+                                                            //     decoration: BoxDecoration(
+                                                            //         color: Colors
+                                                            //             .yellow,
+                                                            //         borderRadius:
+                                                            //             BorderRadius.circular(
+                                                            //                 10)),
+                                                            //     margin:
+                                                            //         const EdgeInsets
+                                                            //             .only(
+                                                            //       right: 10,
+                                                            //     ),
+                                                            //     child:
+                                                            //         GestureDetector(
+                                                            //       onTap: () {
+                                                            //         // AddContenantAdressDialog(
+                                                            //         //     context:
+                                                            //         //         context,
+                                                            //         //     dataAdresse:
+                                                            //         //         adresse);
+                                                            //       },
+                                                            //       child: Row(
+                                                            //         children: [
+                                                            //           Icon(
+                                                            //             Icons
+                                                            //                 .add,
+                                                            //             color: Colors
+                                                            //                 .white,
+                                                            //           ),
+                                                            //           SizedBox(
+                                                            //             width:
+                                                            //                 10,
+                                                            //           ),
+                                                            //           Text(
+                                                            //             'Add Contenant',
+                                                            //             style:
+                                                            //                 TextStyle(
+                                                            //               color:
+                                                            //                   Colors.black,
+                                                            //               fontSize:
+                                                            //                   15,
+                                                            //               fontWeight:
+                                                            //                   FontWeight.bold,
+                                                            //             ),
+                                                            //           ),
+                                                            //         ],
+                                                            //       ),
+                                                            //     )),
                                                           ],
                                                         ),
                                                       ],
@@ -2152,8 +2152,103 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                 height: 5,
                                               ),
                                               Container(
+                                                height: 40,
                                                 width: 500,
-                                                height: 200,
+                                                color: Colors.blue,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            Icon(
+                                                              FontAwesomeIcons
+                                                                  .locationArrow,
+                                                              size: 15,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Text(
+                                                              'A collecter',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        //This is a button
+                                                        // Container(
+                                                        //     width: 150,
+                                                        //     decoration: BoxDecoration(
+                                                        //         color: Colors
+                                                        //             .yellow,
+                                                        //         borderRadius:
+                                                        //             BorderRadius
+                                                        //                 .circular(
+                                                        //                     10)),
+                                                        //     margin:
+                                                        //         const EdgeInsets
+                                                        //             .only(
+                                                        //       right: 10,
+                                                        //     ),
+                                                        //     child:
+                                                        //         GestureDetector(
+                                                        //       onTap: () {
+                                                        //         // AddContenantAdressDialog(
+                                                        //         //     context:
+                                                        //         //         context,
+                                                        //         //     dataAdresse:
+                                                        //         //         adresse);
+                                                        //       },
+                                                        //       child: Row(
+                                                        //         children: [
+                                                        //           Icon(
+                                                        //             Icons.add,
+                                                        //             color: Colors
+                                                        //                 .white,
+                                                        //           ),
+                                                        //           SizedBox(
+                                                        //             width: 10,
+                                                        //           ),
+                                                        //           Text(
+                                                        //             'Add Contenant',
+                                                        //             style:
+                                                        //                 TextStyle(
+                                                        //               color: Colors
+                                                        //                   .black,
+                                                        //               fontSize:
+                                                        //                   15,
+                                                        //               fontWeight:
+                                                        //                   FontWeight
+                                                        //                       .bold,
+                                                        //             ),
+                                                        //           ),
+                                                        //         ],
+                                                        //       ),
+                                                        //     )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 500,
+                                                height: 150,
                                                 color: Colors.red,
                                                 child: StreamBuilder<
                                                         QuerySnapshot>(
@@ -2208,55 +2303,62 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                       height: 5,
                                                                     ),
                                                                     Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
                                                                       children: [
-                                                                        SizedBox(
+                                                                        Container(
+                                                                            width:
+                                                                                200,
+                                                                            child:
+                                                                                Row(children: [
+                                                                              SizedBox(
+                                                                                width: 10,
+                                                                              ),
+                                                                              Text(limitString(text: insidedataContenant['typeContenant'] + ' ' + insidedataContenant['barCodeContenant'], limit_long: 30), style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
+                                                                            ])),
+                                                                        Container(
                                                                           width:
-                                                                              10,
-                                                                        ),
-                                                                        Text(
-                                                                            insidedataContenant['typeContenant'] +
-                                                                                ' ' +
-                                                                                insidedataContenant['barCodeContenant'],
-                                                                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              20,
-                                                                        ),
-                                                                        IconButton(
-                                                                            onPressed:
-                                                                                () async {
-                                                                              await _contenant.where('idContenant', isEqualTo: insidedataContenant['idContenant']).limit(1).get().then((QuerySnapshot querySnapshot) {
-                                                                                querySnapshot.docs.forEach((doc) {
-                                                                                  _contenant.doc(doc.id).update({
-                                                                                    'idAdresseContenant': 'null',
-                                                                                  });
-                                                                                });
-                                                                              });
-                                                                              String typeConenant = insidedataContenant['typeContenant'].replaceAll(' ', '').toLowerCase();
-                                                                              await _contenantadresse.where('idAdresse', isEqualTo: adresse['idAdresse']).limit(1).get().then((QuerySnapshot querySnapshot) {
-                                                                                querySnapshot.docs.forEach((doc) {
-                                                                                  int check_type_exist = 0;
-                                                                                  int save_position = 0;
-                                                                                  for (int i = 1; i <= int.parse(doc['nombredetype']); i++) {
-                                                                                    if (typeConenant == doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))) {
-                                                                                      print('${doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))}');
-                                                                                      check_type_exist = 1;
-                                                                                      save_position = i;
-                                                                                    }
-                                                                                  }
+                                                                              80,
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              IconButton(
+                                                                                  onPressed: () async {
+                                                                                    await _contenant.where('idContenant', isEqualTo: insidedataContenant['idContenant']).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                      querySnapshot.docs.forEach((doc) {
+                                                                                        _contenant.doc(doc.id).update({
+                                                                                          'idAdresseContenant': 'null',
+                                                                                        });
+                                                                                      });
+                                                                                    });
+                                                                                    String typeConenant = insidedataContenant['typeContenant'].replaceAll(' ', '').toLowerCase();
+                                                                                    await _contenantadresse.where('idAdresse', isEqualTo: adresse['idAdresse']).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                      querySnapshot.docs.forEach((doc) {
+                                                                                        int check_type_exist = 0;
+                                                                                        int save_position = 0;
+                                                                                        for (int i = 1; i <= int.parse(doc['nombredetype']); i++) {
+                                                                                          if (typeConenant == doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))) {
+                                                                                            print('${doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))}');
+                                                                                            check_type_exist = 1;
+                                                                                            save_position = i;
+                                                                                          }
+                                                                                        }
 
-                                                                                  String _quality = doc['${save_position.toString()}'].substring(doc['$save_position'].indexOf('/') + 1);
-                                                                                  _contenantadresse.doc(doc.id).update({
-                                                                                    '${save_position.toString()}': typeConenant + '/' + (int.parse(_quality) - 1).toString(),
-                                                                                  }).then((value) {
-                                                                                    print("Contenant Updated");
-                                                                                    Fluttertoast.showToast(msg: "Contenant Updated", gravity: ToastGravity.TOP);
-                                                                                  }).catchError((error) => print("Failed to add user: $error"));
-                                                                                });
-                                                                              });
-                                                                            },
-                                                                            icon:
-                                                                                Icon(FontAwesomeIcons.minus, size: 15))
+                                                                                        String _quality = doc['${save_position.toString()}'].substring(doc['$save_position'].indexOf('/') + 1);
+                                                                                        _contenantadresse.doc(doc.id).update({
+                                                                                          '${save_position.toString()}': typeConenant + '/' + (int.parse(_quality) - 1).toString(),
+                                                                                        }).then((value) {
+                                                                                          print("Contenant Updated");
+                                                                                          Fluttertoast.showToast(msg: "Contenant Updated", gravity: ToastGravity.TOP);
+                                                                                        }).catchError((error) => print("Failed to add user: $error"));
+                                                                                      });
+                                                                                    });
+                                                                                  },
+                                                                                  icon: Icon(FontAwesomeIcons.minus, size: 15))
+                                                                            ],
+                                                                          ),
+                                                                        ),
                                                                       ],
                                                                     ),
                                                                   ]),
@@ -2270,8 +2372,103 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                 height: 5,
                                               ),
                                               Container(
+                                                height: 40,
                                                 width: 500,
-                                                height: 200,
+                                                color: Colors.blue,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            Icon(
+                                                              FontAwesomeIcons
+                                                                  .locationArrow,
+                                                              size: 15,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Text(
+                                                              'Availabe Contenant',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        //This is a button
+                                                        // Container(
+                                                        //     width: 150,
+                                                        //     decoration: BoxDecoration(
+                                                        //         color: Colors
+                                                        //             .yellow,
+                                                        //         borderRadius:
+                                                        //             BorderRadius
+                                                        //                 .circular(
+                                                        //                     10)),
+                                                        //     margin:
+                                                        //         const EdgeInsets
+                                                        //             .only(
+                                                        //       right: 10,
+                                                        //     ),
+                                                        //     child:
+                                                        //         GestureDetector(
+                                                        //       onTap: () {
+                                                        //         // AddContenantAdressDialog(
+                                                        //         //     context:
+                                                        //         //         context,
+                                                        //         //     dataAdresse:
+                                                        //         //         adresse);
+                                                        //       },
+                                                        //       child: Row(
+                                                        //         children: [
+                                                        //           Icon(
+                                                        //             Icons.add,
+                                                        //             color: Colors
+                                                        //                 .white,
+                                                        //           ),
+                                                        //           SizedBox(
+                                                        //             width: 10,
+                                                        //           ),
+                                                        //           Text(
+                                                        //             'Add Contenant',
+                                                        //             style:
+                                                        //                 TextStyle(
+                                                        //               color: Colors
+                                                        //                   .black,
+                                                        //               fontSize:
+                                                        //                   15,
+                                                        //               fontWeight:
+                                                        //                   FontWeight
+                                                        //                       .bold,
+                                                        //             ),
+                                                        //           ),
+                                                        //         ],
+                                                        //       ),
+                                                        //     )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 500,
+                                                height: 150,
                                                 color: Colors.red,
                                                 child: StreamBuilder<
                                                     QuerySnapshot>(
@@ -2323,89 +2520,79 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                   height: 10,
                                                                 ),
                                                                 Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
                                                                   children: [
-                                                                    SizedBox(
-                                                                      width: 10,
+                                                                    Container(
+                                                                      width:
+                                                                          200,
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ),
+                                                                          Text(
+                                                                              limitString(text: insidedataContenant['typeContenant'] + ' ' + insidedataContenant['barCodeContenant'], limit_long: 30),
+                                                                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                    Text(
-                                                                        insidedataContenant['typeContenant'] +
-                                                                            ' ' +
-                                                                            insidedataContenant[
-                                                                                'barCodeContenant'],
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold)),
-                                                                    SizedBox(
-                                                                      width: 20,
-                                                                    ),
-                                                                    IconButton(
-                                                                        onPressed:
-                                                                            () async {
-                                                                          await _contenant
-                                                                              .where('idContenant', isEqualTo: insidedataContenant['idContenant'])
-                                                                              .limit(1)
-                                                                              .get()
-                                                                              .then((QuerySnapshot querySnapshot) {
-                                                                            querySnapshot.docs.forEach((doc) {
-                                                                              _contenant.doc(doc.id).update({
-                                                                                'idAdresseContenant': adresse['idAdresse'],
-                                                                              });
-                                                                            });
-                                                                          });
-                                                                          String
-                                                                              typeConenant =
-                                                                              insidedataContenant['typeContenant'].replaceAll(' ', '').toLowerCase();
-                                                                          QuerySnapshot query = await FirebaseFirestore
-                                                                              .instance
-                                                                              .collection('TypeContenant')
-                                                                              .where('nomTypeContenant', isEqualTo: typeConenant)
-                                                                              .get();
+                                                                    Container(
+                                                                      width: 80,
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          IconButton(
+                                                                              onPressed: () async {
+                                                                                await _contenant.where('idContenant', isEqualTo: insidedataContenant['idContenant']).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                  querySnapshot.docs.forEach((doc) {
+                                                                                    _contenant.doc(doc.id).update({
+                                                                                      'idAdresseContenant': adresse['idAdresse'],
+                                                                                    });
+                                                                                  });
+                                                                                });
+                                                                                String typeConenant = insidedataContenant['typeContenant'].replaceAll(' ', '').toLowerCase();
+                                                                                QuerySnapshot query = await FirebaseFirestore.instance.collection('TypeContenant').where('nomTypeContenant', isEqualTo: typeConenant).get();
 
-                                                                          await _contenantadresse
-                                                                              .where('idAdresse', isEqualTo: adresse['idAdresse'])
-                                                                              .limit(1)
-                                                                              .get()
-                                                                              .then((QuerySnapshot querySnapshot) {
-                                                                            querySnapshot.docs.forEach((doc) {
-                                                                              int check_type_exist = 0;
-                                                                              int save_position = 0;
-                                                                              for (int i = 1; i <= int.parse(doc['nombredetype']); i++) {
-                                                                                if (typeConenant == doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))) {
-                                                                                  print('${doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))}');
-                                                                                  check_type_exist = 1;
-                                                                                  save_position = i;
-                                                                                }
-                                                                              }
+                                                                                await _contenantadresse.where('idAdresse', isEqualTo: adresse['idAdresse']).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                  querySnapshot.docs.forEach((doc) {
+                                                                                    int check_type_exist = 0;
+                                                                                    int save_position = 0;
+                                                                                    for (int i = 1; i <= int.parse(doc['nombredetype']); i++) {
+                                                                                      if (typeConenant == doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))) {
+                                                                                        print('${doc['${i.toString()}'].substring(0, doc['$i'].indexOf('/'))}');
+                                                                                        check_type_exist = 1;
+                                                                                        save_position = i;
+                                                                                      }
+                                                                                    }
 
-                                                                              if (check_type_exist == 1) {
-                                                                                String _quality = doc['${save_position.toString()}'].substring(doc['$save_position'].indexOf('/') + 1);
-                                                                                _contenantadresse.doc(doc.id).update({
-                                                                                  '${save_position.toString()}': typeConenant + '/' + (int.parse(_quality) + 1).toString(),
-                                                                                }).then((value) {
-                                                                                  print("Contenant Updated");
-                                                                                  Fluttertoast.showToast(msg: "Contenant Updated", gravity: ToastGravity.TOP);
-                                                                                }).catchError((error) => print("Failed to add user: $error"));
-                                                                              } else {
-                                                                                _contenantadresse.doc(doc.id).update({
-                                                                                  '${int.parse(doc['nombredetype']) + 1}': typeConenant + '/' + '1',
-                                                                                  'nombredetype': (int.parse(doc['nombredetype']) + 1).toString(),
-                                                                                }).then((value) {
-                                                                                  print("Contenant Added");
-                                                                                  Fluttertoast.showToast(msg: "Contenant Added", gravity: ToastGravity.TOP);
-                                                                                }).catchError((error) => print("Failed to add user: $error"));
-                                                                              }
-                                                                            });
-                                                                          });
-                                                                        },
-                                                                        icon: Icon(
-                                                                            FontAwesomeIcons
-                                                                                .plus,
-                                                                            size:
-                                                                                15))
+                                                                                    if (check_type_exist == 1) {
+                                                                                      String _quality = doc['${save_position.toString()}'].substring(doc['$save_position'].indexOf('/') + 1);
+                                                                                      _contenantadresse.doc(doc.id).update({
+                                                                                        '${save_position.toString()}': typeConenant + '/' + (int.parse(_quality) + 1).toString(),
+                                                                                      }).then((value) {
+                                                                                        print("Contenant Updated");
+                                                                                        Fluttertoast.showToast(msg: "Contenant Updated", gravity: ToastGravity.TOP);
+                                                                                      }).catchError((error) => print("Failed to add user: $error"));
+                                                                                    } else {
+                                                                                      _contenantadresse.doc(doc.id).update({
+                                                                                        '${int.parse(doc['nombredetype']) + 1}': typeConenant + '/' + '1',
+                                                                                        'nombredetype': (int.parse(doc['nombredetype']) + 1).toString(),
+                                                                                      }).then((value) {
+                                                                                        print("Contenant Added");
+                                                                                        Fluttertoast.showToast(msg: "Contenant Added", gravity: ToastGravity.TOP);
+                                                                                      }).catchError((error) => print("Failed to add user: $error"));
+                                                                                    }
+                                                                                  });
+                                                                                });
+                                                                              },
+                                                                              icon: Icon(FontAwesomeIcons.plus, size: 15))
+                                                                        ],
+                                                                      ),
+                                                                    )
                                                                   ],
                                                                 ),
                                                                 SizedBox(
