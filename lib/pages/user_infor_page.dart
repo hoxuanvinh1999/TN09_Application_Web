@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -45,6 +46,63 @@ class _UserInforPageState extends State<UserInforPage> {
       children: [
         header(context: context),
         menu(context: context),
+        Container(
+            color: Colors.yellow,
+            width: double.infinity,
+            height: 40,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 40,
+                ),
+                Icon(
+                  FontAwesomeIcons.home,
+                  size: 12,
+                ),
+                SizedBox(width: 5),
+                RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: 'Home',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()));
+                            }),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Icon(
+                  FontAwesomeIcons.chevronCircleRight,
+                  size: 12,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'User Infor',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )),
         SizedBox(height: 20),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
