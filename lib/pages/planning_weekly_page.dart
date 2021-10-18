@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
+import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
 class PlanningWeeklyPage extends StatefulWidget {
   DateTime thisDay;
@@ -25,8 +27,16 @@ class PlanningWeeklyPage extends StatefulWidget {
 
 class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  // for Vehicule
+  CollectionReference _vehicule =
+      FirebaseFirestore.instance.collection("Vehicule");
+  Stream<QuerySnapshot> _vehiculeStream = FirebaseFirestore.instance
+      .collection("Vehicule")
+      .orderBy('orderVehicule')
+      .snapshots();
   @override
   Widget build(BuildContext context) {
+    //For set up Date
     int currentDay = widget.thisDay.weekday;
     DateTime firstDayOfWeek =
         widget.thisDay.subtract(Duration(days: currentDay - 1)); //aka Monday
@@ -67,6 +77,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
     print('Sunday: $sunday');
     print('NextWeek: $nextWeek');
     print('PreviousWeek: $previousWeek');
+
+    //Pick Date Widget
     Future pickDate(BuildContext context) async {
       final initialDate = widget.thisDay;
       final newDate = await showDatePicker(
@@ -317,7 +329,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                   ),
                   Container(
                     height: 50,
-                    width: 1134,
+                    width:
+                        1134, // 8 part, each 140, 7 space between => 8*140+2*7 = 1134
                     color: Colors.white,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -412,9 +425,95 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                       ],
                     ),
                   ),
+                  Container(
+                    width: 1134,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: _vehiculeStream,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Something went wrong');
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        // print('$snapshot');
+                        return Column(
+                          children: snapshot.data!.docs
+                              .map((DocumentSnapshot document_vehicule) {
+                            Map<String, dynamic> dataVehicule =
+                                document_vehicule.data()!
+                                    as Map<String, dynamic>;
+                            // print('$collecteur');
+                            if (dataVehicule['orderVehicule'] == '0') {
+                              return SizedBox.shrink();
+                            }
+                            return Container(
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                            alignment: Alignment.center,
+                                            width: 140,
+                                            height: 50,
+                                            color: Color(int.parse(dataVehicule[
+                                                'colorIconVehicule'])),
+                                            child: Row(
+                                              children: [
+                                                buildVehiculeIcon(
+                                                    icontype: dataVehicule[
+                                                        'typeVehicule'],
+                                                    iconcolor: '0xff000000',
+                                                    sizeIcon: 17.0),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  dataVehicule['nomVehicule'] +
+                                                      dataVehicule[
+                                                          'numeroImmatriculation'],
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Container(
+                                          alignment: Alignment(-1, 0.15),
+                                          width: 140,
+                                          height: 50,
+                                          color: Colors.green,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    const Divider(
+                                      thickness: 5,
+                                    ),
+                                  ],
+                                ));
+                          }).toList(),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
