@@ -748,7 +748,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: 150,
+                                width: 120,
                               ),
                               Text(
                                 'Principal',
@@ -857,36 +857,39 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       Row(
                                         children: [
                                           SizedBox(width: 20),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: <TextSpan>[
-                                                TextSpan(
-                                                    text: limitString(
-                                                        text: dataContact[
-                                                                'nomContact'] +
-                                                            ' ' +
-                                                            dataContact[
-                                                                'prenomContact'],
-                                                        limit_long: 15),
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () {
-                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                builder: (context) => ViewContactPage(
-                                                                    partenaire:
-                                                                        widget
-                                                                            .partenaire,
-                                                                    from:
-                                                                        'viewpartenairepage',
-                                                                    dataContact:
-                                                                        dataContact)));
-                                                          }),
-                                              ],
+                                          Container(
+                                            width: 100,
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text: limitString(
+                                                          text: dataContact[
+                                                                  'nomContact'] +
+                                                              ' ' +
+                                                              dataContact[
+                                                                  'prenomContact'],
+                                                          limit_long: 15),
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      recognizer:
+                                                          TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                  builder: (context) => ViewContactPage(
+                                                                      partenaire:
+                                                                          widget
+                                                                              .partenaire,
+                                                                      from:
+                                                                          'viewpartenairepage',
+                                                                      dataContact:
+                                                                          dataContact)));
+                                                            }),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           SizedBox(width: 100),
@@ -1036,6 +1039,17 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                       gravity:
                                                                           ToastGravity
                                                                               .TOP);
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) =>
+                                                                            ViewPartenairePage(
+                                                                              partenaire: widget.partenaire,
+                                                                            )),
+                                                                  ).then((value) =>
+                                                                      setState(
+                                                                          () {}));
                                                                 }
                                                               },
                                                             ),
@@ -1150,6 +1164,155 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             ToastGravity.TOP);
                                                   }).catchError((error) => print(
                                                       "Failed to update user: $error"));
+                                                });
+                                              });
+                                            },
+                                          ),
+                                          SizedBox(width: 20),
+                                          IconButton(
+                                            icon: Icon(FontAwesomeIcons.trash,
+                                                size: 15),
+                                            tooltip: 'Remove',
+                                            onPressed: () async {
+                                              await _contact
+                                                  .where('idContact',
+                                                      isEqualTo: dataContact[
+                                                          'idContact'])
+                                                  .limit(1)
+                                                  .get()
+                                                  .then((QuerySnapshot
+                                                      querySnapshot) {
+                                                querySnapshot.docs
+                                                    .forEach((doc) {
+                                                  _contact.doc(doc.id).update({
+                                                    'nombredePartenaire':
+                                                        (int.parse(doc[
+                                                                    'nombredePartenaire']) -
+                                                                1)
+                                                            .toString(),
+                                                  });
+                                                });
+                                              });
+                                              await _partenaire
+                                                  .where('idPartenaire',
+                                                      isEqualTo:
+                                                          widget.partenaire[
+                                                              'idPartenaire'])
+                                                  .limit(1)
+                                                  .get()
+                                                  .then((QuerySnapshot
+                                                      querySnapshot) {
+                                                querySnapshot.docs
+                                                    .forEach((doc) {
+                                                  _partenaire
+                                                      .doc(doc.id)
+                                                      .update({
+                                                    'nombredeContact':
+                                                        (int.parse(doc[
+                                                                    'nombredeContact']) -
+                                                                1)
+                                                            .toString(),
+                                                  }).then((value) {
+                                                    if (doc['nombredeContact'] ==
+                                                        '0') {
+                                                      _partenaire
+                                                          .doc(doc.id)
+                                                          .update({
+                                                        'idContactPartenaire':
+                                                            'null',
+                                                      });
+                                                    }
+                                                  });
+                                                });
+                                              });
+                                              await _contactpartenaire
+                                                  .where('idContact',
+                                                      isEqualTo: dataContact[
+                                                          'idContact'])
+                                                  .where('idPartenaire',
+                                                      isEqualTo:
+                                                          widget.partenaire[
+                                                              'idPartenaire'])
+                                                  .limit(1)
+                                                  .get()
+                                                  .then((QuerySnapshot
+                                                      querySnapshot) {
+                                                querySnapshot.docs
+                                                    .forEach((doc) {
+                                                  _contactpartenaire
+                                                      .doc(doc.id)
+                                                      .delete()
+                                                      .then((value) async {
+                                                    await _adresse
+                                                        .where(
+                                                            'idPartenaireAdresse',
+                                                            isEqualTo: widget
+                                                                    .partenaire[
+                                                                'idPartenaire'])
+                                                        .get()
+                                                        .then((QuerySnapshot
+                                                            querySnapshot) {
+                                                      querySnapshot.docs.forEach(
+                                                          (docAdresse) async {
+                                                        QuerySnapshot query =
+                                                            await _contactadresse
+                                                                .where(
+                                                                    'idAdresse',
+                                                                    isEqualTo:
+                                                                        docAdresse[
+                                                                            'idAdresse'])
+                                                                .where(
+                                                                    'idContact',
+                                                                    isEqualTo:
+                                                                        dataContact[
+                                                                            'idContact'])
+                                                                .get();
+                                                        if (query
+                                                            .docs.isNotEmpty) {
+                                                          _adresse
+                                                              .doc(
+                                                                  docAdresse.id)
+                                                              .update({
+                                                            'nombredeContact':
+                                                                (int.parse(docAdresse[
+                                                                            'nombredeContact']) -
+                                                                        1)
+                                                                    .toString(),
+                                                          });
+                                                          await _contactadresse
+                                                              .where(
+                                                                  'idAdresse',
+                                                                  isEqualTo:
+                                                                      docAdresse[
+                                                                          'idAdresse'])
+                                                              .where(
+                                                                  'idContact',
+                                                                  isEqualTo:
+                                                                      dataContact[
+                                                                          'idContact'])
+                                                              .get()
+                                                              .then((QuerySnapshot
+                                                                  querySnapshot) {
+                                                            querySnapshot.docs
+                                                                .forEach(
+                                                                    (doccontactadresse) {
+                                                              _contactadresse
+                                                                  .doc(
+                                                                      doccontactadresse
+                                                                          .id)
+                                                                  .delete();
+                                                            });
+                                                          });
+                                                        }
+                                                      });
+                                                    });
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "Information Modified",
+                                                        gravity:
+                                                            ToastGravity.TOP);
+                                                  }).catchError((error) => print(
+                                                          "Failed to update user: $error"));
                                                 });
                                               });
                                             },
