@@ -289,11 +289,14 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                       margin: const EdgeInsets.only(
                                           right: 10, top: 20, bottom: 20),
                                       child: GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                          showActionSubMenu(context: context);
+                                        },
                                         child: Row(
                                           children: [
                                             Icon(
-                                              Icons.add,
+                                              FontAwesomeIcons
+                                                  .chevronCircleRight,
                                               color: Colors.white,
                                             ),
                                             SizedBox(
@@ -518,5 +521,99 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
         ),
       ),
     );
+  }
+
+  showActionSubMenu({required BuildContext context}) {
+    return showDialog(
+        barrierColor: null,
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            alignment: Alignment(1, -0.10),
+            children: [
+              GestureDetector(
+                onTap: () {
+                  // Navigator.of(context)
+                  //     .pushReplacement(MaterialPageRoute(
+                  //         builder: (context) => PlanningWeeklyPage(
+                  //               thisDay:
+                  //                   // DateTime.parse('2019-10-05 15:43:03.887'),
+                  //                   DateTime.now(),
+                  //             )));
+                },
+                child: Container(
+                    margin: EdgeInsets.only(left: 0),
+                    color: Colors.red,
+                    width: 100,
+                    height: 30,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10),
+                        Icon(
+                          FontAwesomeIcons.print,
+                          size: 12,
+                        ),
+                        SizedBox(width: 10),
+                        Text('Imprimer'),
+                      ],
+                    )),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Navigator.of(context)
+                  //     .pushReplacement(MaterialPageRoute(
+                  //         builder: (context) => PlanningWeeklyPage(
+                  //               thisDay:
+                  //                   // DateTime.parse('2019-10-05 15:43:03.887'),
+                  //                   DateTime.now(),
+                  //             )));
+                },
+                child: Container(
+                    margin: EdgeInsets.only(left: 0),
+                    color: Colors.red,
+                    width: 100,
+                    height: 30,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10),
+                        Icon(
+                          FontAwesomeIcons.cropAlt,
+                          size: 12,
+                        ),
+                        SizedBox(width: 10),
+                        Text('Vue Compacte'),
+                      ],
+                    )),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Navigator.of(context)
+                  //     .pushReplacement(MaterialPageRoute(
+                  //         builder: (context) => PlanningWeeklyPage(
+                  //               thisDay:
+                  //                   // DateTime.parse('2019-10-05 15:43:03.887'),
+                  //                   DateTime.now(),
+                  //             )));
+                },
+                child: Container(
+                    margin: EdgeInsets.only(left: 0),
+                    color: Colors.red,
+                    width: 100,
+                    height: 30,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10),
+                        Icon(
+                          FontAwesomeIcons.userClock,
+                          size: 12,
+                        ),
+                        SizedBox(width: 10),
+                        Text('Vue Collecteur'),
+                      ],
+                    )),
+              ),
+            ],
+          );
+        });
   }
 }
