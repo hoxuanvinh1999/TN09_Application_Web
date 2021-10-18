@@ -148,7 +148,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Planning Weekly',
+                            text: 'Semaine #$weeknumber',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 15,
