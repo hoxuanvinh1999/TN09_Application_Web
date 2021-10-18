@@ -24,7 +24,9 @@ showSubMenu3({required BuildContext context}) {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => PlanningWeeklyPage()));
+                            builder: (context) => PlanningWeeklyPage(
+                                  thisDay: DateTime.now(),
+                                )));
                       },
                       child: Container(
                           margin: EdgeInsets.only(left: 0),
