@@ -13,28 +13,29 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
+import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
-import 'package:tn09_app_web_demo/pages/view_planning_collecteur_page.dart';
-import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
-class PlanningWeeklyPage extends StatefulWidget {
+class ViewPlanningCollecteurPage extends StatefulWidget {
   DateTime thisDay;
-  PlanningWeeklyPage({
+  ViewPlanningCollecteurPage({
     required this.thisDay,
   });
   @override
-  _PlanningWeeklyPageState createState() => _PlanningWeeklyPageState();
+  _ViewPlanningCollecteurPageState createState() =>
+      _ViewPlanningCollecteurPageState();
 }
 
-class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
+class _ViewPlanningCollecteurPageState
+    extends State<ViewPlanningCollecteurPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  // for Vehicule
-  CollectionReference _vehicule =
-      FirebaseFirestore.instance.collection("Vehicule");
-  Stream<QuerySnapshot> _vehiculeStream = FirebaseFirestore.instance
-      .collection("Vehicule")
-      .orderBy('orderVehicule')
+  // for Collecteur
+  CollectionReference _collecteur =
+      FirebaseFirestore.instance.collection("Collecteur");
+  Stream<QuerySnapshot> _collecteurStream = FirebaseFirestore.instance
+      .collection("Collecteur")
+      .orderBy('nomCollecteur')
       .snapshots();
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
       if (newDate == null) return;
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => PlanningWeeklyPage(
+          builder: (context) => ViewPlanningCollecteurPage(
                 thisDay: newDate,
               )));
     }
@@ -190,14 +191,13 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                       children: [
                                         IconButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PlanningWeeklyPage(
-                                                                thisDay:
-                                                                    previousWeek,
-                                                              )));
+                                              Navigator.of(context).pushReplacement(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ViewPlanningCollecteurPage(
+                                                            thisDay:
+                                                                previousWeek,
+                                                          )));
                                             },
                                             icon: Icon(
                                               FontAwesomeIcons.stepBackward,
@@ -213,14 +213,12 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                             )),
                                         IconButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PlanningWeeklyPage(
-                                                                thisDay:
-                                                                    nextWeek,
-                                                              )));
+                                              Navigator.of(context).pushReplacement(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ViewPlanningCollecteurPage(
+                                                            thisDay: nextWeek,
+                                                          )));
                                             },
                                             icon: Icon(
                                               FontAwesomeIcons.stepForward,
@@ -346,7 +344,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           alignment: Alignment.center,
                           color: Colors.grey,
                           child: Text(
-                            'Vehicule',
+                            'Collecteur',
                             style: TextStyle(color: Colors.black, fontSize: 15),
                           ),
                         ),
@@ -523,26 +521,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           height: 50,
                           alignment: Alignment.center,
                           color: Colors.grey,
-                          child: RichText(
-                            text: TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: sunday,
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PlanningDailyPage(
-                                                        thisDay:
-                                                            lastDayOfWeek)));
-                                      }),
-                              ],
-                            ),
+                          child: Text(
+                            'Total',
+                            style: TextStyle(fontSize: 15),
                           ),
                         ),
                       ],
@@ -551,7 +532,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                   Container(
                     width: 1134,
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: _vehiculeStream,
+                      stream: _collecteurStream,
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
@@ -565,12 +546,12 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                         // print('$snapshot');
                         return Column(
                           children: snapshot.data!.docs
-                              .map((DocumentSnapshot document_vehicule) {
-                            Map<String, dynamic> dataVehicule =
-                                document_vehicule.data()!
+                              .map((DocumentSnapshot document_collecteur) {
+                            Map<String, dynamic> dataCollecteur =
+                                document_collecteur.data()!
                                     as Map<String, dynamic>;
                             // print('$collecteur');
-                            if (dataVehicule['orderVehicule'] == '0') {
+                            if (dataCollecteur['idCollecteur'] == 'null') {
                               return SizedBox.shrink();
                             }
                             return Container(
@@ -586,22 +567,24 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                             alignment: Alignment.center,
                                             width: 140,
                                             height: 50,
-                                            color: Color(int.parse(dataVehicule[
-                                                'colorIconVehicule'])),
+                                            color: Colors.green,
                                             child: Row(
                                               children: [
-                                                buildVehiculeIcon(
-                                                    icontype: dataVehicule[
-                                                        'typeVehicule'],
-                                                    iconcolor: '0xff000000',
-                                                    sizeIcon: 17.0),
+                                                Icon(
+                                                  FontAwesomeIcons.user,
+                                                  size: 15,
+                                                ),
                                                 SizedBox(
                                                   width: 5,
                                                 ),
                                                 Text(
-                                                  dataVehicule['nomVehicule'] +
-                                                      dataVehicule[
-                                                          'numeroImmatriculation'],
+                                                  limitString(
+                                                      text: dataCollecteur[
+                                                              'nomCollecteur'] +
+                                                          ' ' +
+                                                          dataCollecteur[
+                                                              'prenomCollecteur'],
+                                                      limit_long: 15),
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 15,
@@ -655,7 +638,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                 onTap: () {
                   // Navigator.of(context)
                   //     .pushReplacement(MaterialPageRoute(
-                  //         builder: (context) => PlanningWeeklyPage(
+                  //         builder: (context) => ViewPlanningCollecteurPage(
                   //               thisDay:
                   //                   // DateTime.parse('2019-10-05 15:43:03.887'),
                   //                   DateTime.now(),
@@ -682,7 +665,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                 onTap: () {
                   // Navigator.of(context)
                   //     .pushReplacement(MaterialPageRoute(
-                  //         builder: (context) => PlanningWeeklyPage(
+                  //         builder: (context) => ViewPlanningCollecteurPage(
                   //               thisDay:
                   //                   // DateTime.parse('2019-10-05 15:43:03.887'),
                   //                   DateTime.now(),
@@ -707,12 +690,13 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => ViewPlanningCollecteurPage(
-                            thisDay:
-                                // DateTime.parse('2019-10-05 15:43:03.887'),
-                                widget.thisDay,
-                          )));
+                  // Navigator.of(context)
+                  //     .pushReplacement(MaterialPageRoute(
+                  //         builder: (context) => ViewPlanningCollecteurPage(
+                  //               thisDay:
+                  //                   // DateTime.parse('2019-10-05 15:43:03.887'),
+                  //                   DateTime.now(),
+                  //             )));
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
