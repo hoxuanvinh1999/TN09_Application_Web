@@ -4456,7 +4456,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
 
   showAddFrequenceAdresse(
       {required BuildContext context, required Map dataAdresse}) async {
-    String choiceVehicule = 'null';
+    String choiceVehicule = 'None';
     String idVehiculeFrequence = '';
     String _jour = 'Lundi';
     TimeOfDay timeStart = TimeOfDay.now();
@@ -5021,7 +5021,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   }
 
   modifyFrequence({required Map dataFrequence}) {
-    String choiceVehicule = 'null';
+    String choiceVehicule = 'None';
     String idVehiculeFrequence = '';
     String _jour = dataFrequence['jourfrequence'];
     TimeOfDay timeStart = TimeOfDay(
