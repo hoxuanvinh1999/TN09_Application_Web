@@ -67,6 +67,22 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
     print('Sunday: $sunday');
     print('NextWeek: $nextWeek');
     print('PreviousWeek: $previousWeek');
+    Future pickDate(BuildContext context) async {
+      final initialDate = widget.thisDay;
+      final newDate = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: DateTime(DateTime.now().year - 25),
+        lastDate: DateTime(DateTime.now().year + 10),
+      );
+
+      if (newDate == null) return;
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => PlanningWeeklyPage(
+                thisDay: newDate,
+              )));
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -174,7 +190,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                               size: 15,
                                             )),
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              pickDate(context);
+                                            },
                                             icon: Icon(
                                               FontAwesomeIcons.calendar,
                                               size: 15,
