@@ -42,6 +42,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
         widget.thisDay.subtract(Duration(days: currentDay - 6));
     DateTime lastDayOfWeek =
         widget.thisDay.subtract(Duration(days: currentDay - 7)); //aka Sunday
+    DateTime nextWeek = widget.thisDay.subtract(Duration(days: currentDay - 8));
+    DateTime previousWeek =
+        widget.thisDay.subtract(Duration(days: currentDay + 1));
     int weeknumber = weekNumber(widget.thisDay);
     String monday = DateFormat('EEEE, d MMM').format(firstDayOfWeek);
     String tuesday = DateFormat('EEEE, d MMM').format(date_tuesday);
@@ -62,6 +65,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
     print('Friday: $friday');
     print('Saturday: $saturday');
     print('Sunday: $sunday');
+    print('NextWeek: $nextWeek');
+    print('PreviousWeek: $previousWeek');
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -154,7 +159,16 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                     child: Row(
                                       children: [
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              PlanningWeeklyPage(
+                                                                thisDay:
+                                                                    previousWeek,
+                                                              )));
+                                            },
                                             icon: Icon(
                                               FontAwesomeIcons.stepBackward,
                                               size: 15,
@@ -166,7 +180,16 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                               size: 15,
                                             )),
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              PlanningWeeklyPage(
+                                                                thisDay:
+                                                                    nextWeek,
+                                                              )));
+                                            },
                                             icon: Icon(
                                               FontAwesomeIcons.stepForward,
                                               size: 15,
@@ -271,6 +294,103 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                         SizedBox(
                           height: 10,
                         )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    width: 1134,
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 140,
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text(
+                            'Vehicule',
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Container(
+                          width: 140,
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text(
+                            monday,
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Container(
+                          width: 140,
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text(
+                            tuesday,
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Container(
+                          width: 140,
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text(
+                            wednesday,
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Container(
+                          width: 140,
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text(
+                            thursday,
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Container(
+                          width: 140,
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text(
+                            friday,
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Container(
+                          width: 140,
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text(
+                            saturday,
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Container(
+                          width: 140,
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Colors.grey,
+                          child: Text(
+                            sunday,
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
                       ],
                     ),
                   ),

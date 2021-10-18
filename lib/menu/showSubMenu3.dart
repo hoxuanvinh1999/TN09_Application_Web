@@ -25,7 +25,9 @@ showSubMenu3({required BuildContext context}) {
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => PlanningWeeklyPage(
-                                  thisDay: DateTime.now(),
+                                  thisDay:
+                                      // DateTime.parse('2019-10-05 15:43:03.887'),
+                                      DateTime.now(),
                                 )));
                       },
                       child: Container(
