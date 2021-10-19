@@ -491,29 +491,42 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                         right: 10, top: 20, bottom: 20),
                                     child: GestureDetector(
                                       onTap: () async {
-                                        if (newIdTournee == '') {
-                                          newIdTournee =
-                                              _tournee.doc().id.toString();
-                                          await _tournee.doc(newIdTournee).set({
-                                            'idCollecteur': choiceIdCollecteur,
-                                            'idVehicule': choiceIdVehicule,
-                                            'dateTournee':
-                                                getDateText(date: date),
-                                          });
+                                        if (choiceIdCollecteur == 'null' ||
+                                            choiceIdVehicule == 'null') {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please Select Collecteur and Vehicule",
+                                              gravity: ToastGravity.TOP);
                                         } else {
-                                          await _tournee
-                                              .doc(newIdTournee)
-                                              .update({
-                                            'idCollecteur': choiceIdCollecteur,
-                                            'idVehicule': choiceIdVehicule,
-                                            'dateTournee':
-                                                getDateText(date: date),
+                                          if (newIdTournee == '') {
+                                            newIdTournee =
+                                                _tournee.doc().id.toString();
+                                            await _tournee
+                                                .doc(newIdTournee)
+                                                .set({
+                                              'idCollecteur':
+                                                  choiceIdCollecteur,
+                                              'idVehicule': choiceIdVehicule,
+                                              'dateTournee':
+                                                  getDateText(date: date),
+                                              'isCreating': 'true',
+                                            });
+                                          } else {
+                                            await _tournee
+                                                .doc(newIdTournee)
+                                                .update({
+                                              'idCollecteur':
+                                                  choiceIdCollecteur,
+                                              'idVehicule': choiceIdVehicule,
+                                              'dateTournee':
+                                                  getDateText(date: date),
+                                            });
+                                          }
+                                          setState(() {
+                                            confirm = false;
+                                            confirm_color = Colors.grey;
                                           });
                                         }
-                                        setState(() {
-                                          confirm = false;
-                                          confirm_color = Colors.grey;
-                                        });
                                       },
                                       child: Row(
                                         children: [
@@ -788,7 +801,12 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                           print('$min_after');
                           print('$max_after');
                           print('$datelimit');
-                          if (choiceIdAdresse == 'null' ||
+                          if (confirm) {
+                            Fluttertoast.showToast(
+                                msg:
+                                    "Please Confirm Collecteur, Vehicule and Date before",
+                                gravity: ToastGravity.TOP);
+                          } else if (choiceIdAdresse == 'null' ||
                               choiceIdPartenaire == 'null') {
                             Fluttertoast.showToast(
                                 msg: "Please select Partenaire and Adresse",
@@ -920,7 +938,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
 
   addStepWidget({required int element}) {
     return Container(
-      height: 180,
+      height: 250,
       width: 600,
       color: Colors.blue,
       child: Column(
@@ -960,6 +978,16 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
               Text('idAdresse: ' + list_choiceIdAdresse[element])
             ],
           ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              Container(
+                width: 600,
+                height: 50,
+                color: Colors.red,
+              )
+            ],
+          )
         ],
       ),
     );
