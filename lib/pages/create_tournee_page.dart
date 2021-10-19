@@ -11,6 +11,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/contact_page.dart';
+import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 
 class CreateTourneePage extends StatefulWidget {
   @override
@@ -85,6 +86,12 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
       FirebaseFirestore.instance.collection("Adresse");
   // for count
   int _count = 0;
+  // For Tournee
+  CollectionReference _tournee =
+      FirebaseFirestore.instance.collection("Tournee");
+  bool confirm = true;
+  Color confirm_color = Colors.blue;
+  String newIdTournee = '';
   @override
   Widget build(BuildContext context) {
     // For the list view
@@ -241,9 +248,9 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                   height: 20,
                 ),
                 Container(
-                  height: 600,
+                  height: 400,
                   width: 800,
-                  color: Colors.blue,
+                  color: confirm_color,
                   child: Form(
                     key: _createTourneeKeyForm,
                     child: Column(
@@ -284,9 +291,13 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                     }
                                     return DropdownButton(
                                       onChanged: (String? changedValue) {
-                                        setState(() {
-                                          choiceIdCollecteur = changedValue!;
-                                        });
+                                        if (confirm) {
+                                          setState(() {
+                                            choiceIdCollecteur = changedValue!;
+                                          });
+                                        } else {
+                                          null;
+                                        }
                                       },
                                       value: choiceIdCollecteur,
                                       items: snapshot.data!.docs.map(
@@ -348,9 +359,13 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                     }
                                     return DropdownButton(
                                       onChanged: (String? changedValue) {
-                                        setState(() {
-                                          choiceIdVehicule = changedValue!;
-                                        });
+                                        if (confirm) {
+                                          setState(() {
+                                            choiceIdVehicule = changedValue!;
+                                          });
+                                        } else {
+                                          null;
+                                        }
                                       },
                                       value: choiceIdVehicule,
                                       items: snapshot.data!.docs.map(
@@ -401,12 +416,124 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                 color: Colors.red,
                                 child: ElevatedButton(
                                     onPressed: () {
-                                      pickDate(context);
+                                      if (confirm) {
+                                        pickDate(context);
+                                      } else {
+                                        null;
+                                      }
                                     },
                                     child: Text(
                                       DateFormat('yMd').format(date).toString(),
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 15),
+                                    )),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: 800,
+                          height: 80,
+                          color: Colors.red,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Visibility(
+                                visible: !confirm,
+                                child: Container(
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    margin: const EdgeInsets.only(
+                                        right: 10, top: 20, bottom: 20),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        setState(() {
+                                          confirm = true;
+                                          confirm_color = Colors.blue;
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'Change',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
+                              Visibility(
+                                visible: confirm,
+                                child: Container(
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    margin: const EdgeInsets.only(
+                                        right: 10, top: 20, bottom: 20),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        if (newIdTournee == '') {
+                                          newIdTournee =
+                                              _tournee.doc().id.toString();
+                                          await _tournee.doc(newIdTournee).set({
+                                            'idCollecteur': choiceIdCollecteur,
+                                            'idVehicule': choiceIdVehicule,
+                                            'dateTournee':
+                                                getDateText(date: date),
+                                          });
+                                        } else {
+                                          await _tournee
+                                              .doc(newIdTournee)
+                                              .update({
+                                            'idCollecteur': choiceIdCollecteur,
+                                            'idVehicule': choiceIdVehicule,
+                                            'dateTournee':
+                                                getDateText(date: date),
+                                          });
+                                        }
+                                        setState(() {
+                                          confirm = false;
+                                          confirm_color = Colors.grey;
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'Confirm',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     )),
                               )
                             ],
@@ -738,80 +865,6 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                     )),
                 SizedBox(
                   height: 20,
-                ),
-                Container(
-                  width: 800,
-                  height: 80,
-                  color: Colors.red,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 250,
-                      ),
-                      Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                              color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: const EdgeInsets.only(
-                              right: 10, top: 20, bottom: 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => ContactPage()));
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Cancel',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                      Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                              color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: const EdgeInsets.only(
-                              right: 10, top: 20, bottom: 20),
-                          child: GestureDetector(
-                            onTap: () async {},
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Create',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
                 ),
               ])))
     ])));
