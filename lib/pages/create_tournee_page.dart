@@ -12,6 +12,7 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/contact_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
+import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 
 class CreateTourneePage extends StatefulWidget {
   @override
@@ -926,7 +927,32 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
                           child: GestureDetector(
-                            onTap: () async {},
+                            onTap: () async {
+                              if (newIdTournee != '') {
+                                _tournee
+                                    .doc(newIdTournee)
+                                    .delete()
+                                    .then((value) {
+                                  Fluttertoast.showToast(
+                                      msg: 'Stop Creating Tournee',
+                                      gravity: ToastGravity.TOP);
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PlanningWeeklyPage(
+                                                thisDay: DateTime.now(),
+                                              )));
+                                }).catchError((error) =>
+                                        print("Failed to add user: $error"));
+                              } else {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PlanningWeeklyPage(
+                                              thisDay: DateTime.now(),
+                                            )));
+                              }
+                            },
                             child: Row(
                               children: [
                                 Icon(
@@ -958,7 +984,142 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
                           child: GestureDetector(
-                            onTap: () async {},
+                            onTap: () async {
+                              if (_count == 0) {
+                                Fluttertoast.showToast(
+                                    msg: "Please add a Etape",
+                                    gravity: ToastGravity.TOP);
+                              } else if (confirm) {
+                                Fluttertoast.showToast(
+                                    msg:
+                                        "Please select and confirm Collecteur and Vehicule",
+                                    gravity: ToastGravity.TOP);
+                              } else {
+                                bool all_etape_not_confirm = true;
+                                int check_all_etape = 0;
+                                while (all_etape_not_confirm &&
+                                    check_all_etape < _count) {
+                                  if (list_Etape_confirm[check_all_etape] ==
+                                      false) {
+                                    check_all_etape++;
+                                  } else {
+                                    all_etape_not_confirm = false;
+                                  }
+                                }
+                                if (all_etape_not_confirm) {
+                                  Fluttertoast.showToast(
+                                      msg: "You did not confirm any Etape",
+                                      gravity: ToastGravity.TOP);
+                                } else {
+                                  bool found_start = false;
+                                  int numberofEtape = 0;
+                                  int before = 0;
+                                  int end = 0;
+                                  String idEtapeStart = '';
+                                  for (int i = 0; i < _count; i++) {
+                                    if (!found_start) {
+                                      if (list_Etape_confirm[i]) {
+                                        found_start = true;
+                                        idEtapeStart = list_IdEtape[i];
+                                        numberofEtape++;
+                                        await _tournee
+                                            .doc(newIdTournee)
+                                            .update({
+                                          'idEtapeStart': idEtapeStart,
+                                        });
+                                        before = i;
+                                        await _etape.doc(list_IdEtape[i]).set({
+                                          'idEtape': list_IdEtape[i],
+                                          'idEtapebefore': 'null',
+                                          'idPartenaireEtape':
+                                              list_choiceIdPartenaire[i],
+                                          'idVehiculeEtape': choiceIdVehicule,
+                                          'idCollecteurEtape':
+                                              choiceIdCollecteur,
+                                          'idAdresseEtape':
+                                              list_choiceIdAdresse[i],
+                                          'nomAdresseEtape':
+                                              list_choiceNomPartenaireAdresse[
+                                                  i],
+                                          'latitudeEtape':
+                                              list_latitudeAdresse[i],
+                                          'longitude': list_longitudeAdresse[i],
+                                          'ligne1Adresse':
+                                              list_ligne1Adresse[i],
+                                          'idFrequenceEtape':
+                                              list_choiceIdFrequence[i],
+                                          'startFrequenceEtape':
+                                              list_startFrequence[i],
+                                          'endFrequenceEtape':
+                                              list_endFrequence[i],
+                                          'tarifFrequenceEtape':
+                                              list_tarifFrequence[i],
+                                          'jourEtape': getDateText(date: date),
+                                        });
+                                        end = i;
+                                      }
+                                    } else {
+                                      if (list_Etape_confirm[i]) {
+                                        numberofEtape++;
+                                        await _etape
+                                            .doc(list_IdEtape[before])
+                                            .update({
+                                          'idEtapeAfter': list_IdEtape[i],
+                                        });
+                                        await _etape.doc(list_IdEtape[i]).set({
+                                          'idEtape': list_IdEtape[i],
+                                          'idEtapebefore': list_IdEtape[before],
+                                          'idPartenaireEtape':
+                                              list_choiceIdPartenaire[i],
+                                          'idVehiculeEtape': choiceIdVehicule,
+                                          'idCollecteurEtape':
+                                              choiceIdCollecteur,
+                                          'idAdresseEtape':
+                                              list_choiceIdAdresse[i],
+                                          'nomAdresseEtape':
+                                              list_choiceNomPartenaireAdresse[
+                                                  i],
+                                          'latitudeEtape':
+                                              list_latitudeAdresse[i],
+                                          'longitude': list_longitudeAdresse[i],
+                                          'ligne1Adresse':
+                                              list_ligne1Adresse[i],
+                                          'idFrequenceEtape':
+                                              list_choiceIdFrequence[i],
+                                          'startFrequenceEtape':
+                                              list_startFrequence[i],
+                                          'endFrequenceEtape':
+                                              list_endFrequence[i],
+                                          'tarifFrequenceEtape':
+                                              list_tarifFrequence[i],
+                                          'jourEtape': getDateText(date: date),
+                                        });
+                                        before = i;
+                                        end = i;
+                                      }
+                                    }
+                                  }
+                                  await _etape.doc(list_IdEtape[end]).update({
+                                    'idEtapeAfter': 'null',
+                                  });
+                                  await _tournee.doc(newIdTournee).update({
+                                    'nombredeEtape': numberofEtape.toString(),
+                                    'isCreating': false.toString(),
+                                  }).then((value) {
+                                    Fluttertoast.showToast(
+                                        msg: "Finish Creating Tournee",
+                                        gravity: ToastGravity.TOP);
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PlanningWeeklyPage(
+                                                  thisDay: date,
+                                                )));
+                                  }).catchError((error) =>
+                                      print("Failed to add user: $error"));
+                                }
+                              }
+                            },
                             child: Row(
                               children: [
                                 Icon(
