@@ -1854,6 +1854,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     Map<String, dynamic> frequence = document
                                         .data()! as Map<String, dynamic>;
                                     // print('$contenant');
+                                    if (frequence['idFrequence'] == 'null') {
+                                      return SizedBox.shrink();
+                                    }
                                     return Container(
                                       width: 600,
                                       height: 300,
@@ -1908,7 +1911,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                             frequence[
                                                                                 'frequence'],
                                                                         jourFrequence:
-                                                                            frequence['jourfrequence']),
+                                                                            frequence['jourFrequence']),
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             15,
@@ -3680,6 +3683,27 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     'idAdresse': newidAdresse,
                                     'nombredetype': '0'
                                   });
+                                  await _frequence
+                                      .doc(_frequence.doc().id)
+                                      .set({
+                                    'frequence': 1,
+                                    'jourFrequence': 'Lundi',
+                                    'siretPartenaire': '',
+                                    'idContactFrequence': 'null',
+                                    'idVehiculeFrequence': 'null',
+                                    'idAdresseFrequence': newidAdresse,
+                                    'nomAdresseFrequence':
+                                        _nomPartenaireAdresseController.text,
+                                    'idPartenaireFrequence':
+                                        widget.partenaire['idPartenaire'],
+                                    'dureeFrequence': '0',
+                                    'startFrequence': '00:00',
+                                    'endFrequence': '00:00',
+                                    'tarifFrequence': '0',
+                                    'dateMinimaleFrequence': '19/10/2021',
+                                    'dateMaximaleFrequence': '19/10/2021',
+                                    'idFrequence': 'null'
+                                  });
                                   await _adresse.doc(newidAdresse).set({
                                     'nomPartenaireAdresse':
                                         _nomPartenaireAdresseController.text,
@@ -4954,7 +4978,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                   String newIdFrequence = _frequence.doc().id;
                                   await _frequence.doc(newIdFrequence).set({
                                     'frequence': _frequenceTextController.text,
-                                    'jourfrequence': _jour,
+                                    'jourFrequence': _jour,
                                     'siretPartenaire':
                                         _siretPartenaireController.text,
                                     'idContactFrequence': 'null',
@@ -5039,7 +5063,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   modifyFrequence({required Map dataFrequence}) {
     String choiceVehicule = 'None';
     String idVehiculeFrequence = '';
-    String _jour = dataFrequence['jourfrequence'];
+    String _jour = dataFrequence['jourFrequence'];
     TimeOfDay timeStart = TimeOfDay(
         hour: int.parse(dataFrequence['startFrequence'].substring(0, 2)),
         minute: int.parse(dataFrequence['startFrequence'].substring(3)));
@@ -5437,7 +5461,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       _frequence.doc(doc.id).update({
                                         'frequence':
                                             _frequenceTextController.text,
-                                        'jourfrequence': _jour,
+                                        'jourFrequence': _jour,
                                         'siretPartenaire':
                                             _siretPartenaireController.text,
                                         'idContactFrequence': 'null',
