@@ -130,7 +130,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
               child: Container(
                   margin: EdgeInsets.only(left: 20),
                   width: 600,
-                  height: 600,
+                  height: 800,
                   color: Colors.green,
                   child: Column(
                     children: [
@@ -249,128 +249,136 @@ class _CollecteurPageState extends State<CollecteurPage> {
                               )
                             ],
                           )),
-                      StreamBuilder<QuerySnapshot>(
-                        stream: _collecteurStream,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Something went wrong');
-                          }
+                      Container(
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: _collecteurStream,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Something went wrong');
+                            }
 
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          }
-                          // print('$snapshot');
-                          return Column(
-                            children: snapshot.data!.docs
-                                .map((DocumentSnapshot document) {
-                              Map<String, dynamic> collecteur =
-                                  document.data()! as Map<String, dynamic>;
-                              // print('$collecteur');
-                              return Container(
-                                  color: Colors.white,
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+                            // print('$snapshot');
+                            return SingleChildScrollView(
+                              child: Column(
+                                children: snapshot.data!.docs
+                                    .map((DocumentSnapshot document) {
+                                  Map<String, dynamic> collecteur =
+                                      document.data()! as Map<String, dynamic>;
+                                  // print('$collecteur');
+                                  return Container(
+                                      color: Colors.white,
+                                      child: Column(
                                         children: [
                                           SizedBox(
-                                            width: 20,
+                                            height: 5,
                                           ),
-                                          Container(
-                                            alignment: Alignment.topLeft,
-                                            width: 200,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 5,
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                width: 200,
+                                                height: 50,
+                                                color: Colors.green,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      collecteur[
+                                                          'nomCollecteur'],
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      collecteur[
+                                                          'prenomCollecteur'],
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  collecteur['nomCollecteur'],
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Text(
-                                                  collecteur[
-                                                      'prenomCollecteur'],
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 30,
-                                          ),
-                                          Container(
-                                            alignment: Alignment(-1, 0.15),
-                                            width: 200,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.place,
-                                                  color: Colors.black,
-                                                ),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  collecteur['siteCollecteur'],
-                                                  style: TextStyle(
+                                              ),
+                                              SizedBox(
+                                                width: 30,
+                                              ),
+                                              Container(
+                                                alignment: Alignment(-1, 0.15),
+                                                width: 200,
+                                                height: 50,
+                                                color: Colors.green,
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.place,
                                                       color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      collecteur[
+                                                          'siteCollecteur'],
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                              SizedBox(
+                                                width: 100,
+                                              ),
+                                              Container(
+                                                alignment: Alignment(-1, 0.15),
+                                                width: 50,
+                                                height: 50,
+                                                color: Colors.green,
+                                                child: IconButton(
+                                                  icon: const Icon(Icons.edit),
+                                                  tooltip: 'Modify Collecteur',
+                                                  onPressed: () {
+                                                    showModifyCollecteurDialog(
+                                                        context: context,
+                                                        dataCollecteur:
+                                                            collecteur);
+                                                  },
+                                                ),
+                                              )
+                                            ],
                                           ),
                                           SizedBox(
-                                            width: 100,
+                                            height: 5,
                                           ),
-                                          Container(
-                                            alignment: Alignment(-1, 0.15),
-                                            width: 50,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              tooltip: 'Modify Collecteur',
-                                              onPressed: () {
-                                                showModifyCollecteurDialog(
-                                                    context: context,
-                                                    dataCollecteur: collecteur);
-                                              },
-                                            ),
-                                          )
+                                          const Divider(
+                                            thickness: 5,
+                                          ),
                                         ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      const Divider(
-                                        thickness: 5,
-                                      ),
-                                    ],
-                                  ));
-                            }).toList(),
-                          );
-                        },
+                                      ));
+                                }).toList(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   )),
