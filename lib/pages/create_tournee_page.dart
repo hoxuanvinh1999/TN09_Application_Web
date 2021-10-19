@@ -12,7 +12,9 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/contact_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
+import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
+import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 
 class CreateTourneePage extends StatefulWidget {
   @override
@@ -77,6 +79,18 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
     if (newDate == null) return;
 
     setState(() => date = newDate);
+  }
+
+  // For Select Time
+  TimeOfDay timeStart = TimeOfDay.now();
+  Future pickTime(
+      {required BuildContext context, required TimeOfDay time}) async {
+    final newTime = await showTimePicker(context: context, initialTime: time);
+
+    if (newTime == null) {
+      return;
+    }
+    setState(() => timeStart = newTime);
   }
 
   //For Partenaire
@@ -254,7 +268,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                   height: 20,
                 ),
                 Container(
-                  height: 400,
+                  height: 500,
                   width: 800,
                   color: confirm_color,
                   child: Form(
@@ -441,6 +455,44 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                           height: 20,
                         ),
                         Container(
+                          width: 400,
+                          height: 100,
+                          color: Colors.red,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_today_rounded,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text('Date de Planning',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600)),
+                              SizedBox(width: 10),
+                              Container(
+                                height: 50,
+                                width: 200,
+                                color: Colors.red,
+                                child: ButtonWidget(
+                                  icon: Icons.calendar_today,
+                                  text: 'StartTime: ' +
+                                      //     '${timeStart.hour}:${timeStart.minute}'
+                                      getTimeText(time: timeStart),
+                                  onClicked: () => pickTime(
+                                      context: context, time: timeStart),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
                           width: 800,
                           height: 80,
                           color: Colors.red,
@@ -515,6 +567,8 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                               'idVehicule': choiceIdVehicule,
                                               'dateTournee':
                                                   getDateText(date: date),
+                                              'startTime':
+                                                  getTimeText(time: timeStart),
                                               'isCreating': 'true',
                                             });
                                           } else {
@@ -526,6 +580,8 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                               'idVehicule': choiceIdVehicule,
                                               'dateTournee':
                                                   getDateText(date: date),
+                                              'startTime':
+                                                  getTimeText(time: timeStart),
                                             });
                                           }
                                           setState(() {
@@ -769,6 +825,8 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                           late DateTime dateMaximale;
                           bool min_after = false;
                           bool max_after = false;
+                          bool time_start_after = false;
+                          bool time_end_after = false;
                           String datelimit = '';
                           await _frequence
                               .where('idFrequence',
@@ -802,6 +860,21 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                   DateFormat('yMd')
                                       .format(dateMaximale)
                                       .toString();
+                              TimeOfDay startTime = TimeOfDay(
+                                  hour: int.parse(
+                                      doc['startFrequence'].substring(0, 2)),
+                                  minute: int.parse(
+                                      doc['startFrequence'].substring(3)));
+                              TimeOfDay endTime = TimeOfDay(
+                                  hour: int.parse(
+                                      doc['endFrequence'].substring(0, 2)),
+                                  minute: int.parse(
+                                      doc['endFrequence'].substring(3)));
+                              if (startTime.hour < timeStart.hour) {
+                                time_start_after = true;
+                              } else if (startTime.minute < timeStart.minute) {
+                                time_start_after = true;
+                              }
                             });
                           });
                           print('$min_after');
@@ -829,6 +902,10 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                           } else if (min_after || max_after) {
                             Fluttertoast.showToast(
                                 msg: datelimit, gravity: ToastGravity.TOP);
+                          } else if (time_start_after) {
+                            Fluttertoast.showToast(
+                                msg: 'Please check your time',
+                                gravity: ToastGravity.TOP);
                           } else {
                             await _frequence
                                 .where('idFrequence',
