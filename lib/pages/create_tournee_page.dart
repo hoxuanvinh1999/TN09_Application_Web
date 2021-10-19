@@ -23,29 +23,60 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
   String choiceIdVehicule = 'null'; //for get idVehicule
   String choiceIdPartenaire = 'null'; //for get IdPartenaire
   String choiceIdAdresse = 'null'; //for get IdAdresse
+  String choiceIdFrequence = 'null'; // for get IdFrequence
   // String choiceNomPartenaire = 'None'; //for get NomPartenaire
   // String choiceNomPartenaireAdresse = 'None'; //for get NomPartenaireAdresse
+  // For save Partenaire information
   List<String> list_choiceIdPartenaire = [];
-  List<String> list_choiceIdAdresse = [];
   List<String> list_choiceNomPartenaire = [];
+  // For save Adresse Information
+  List<String> list_choiceIdAdresse = [];
   List<String> list_choiceNomPartenaireAdresse = [];
+  List<String> list_latitudeAdresse = [];
+  List<String> list_longitudeAdresse = [];
+  List<String> list_ligne1Adresse = [];
+  // For save Frequence Information
+  List<String> list_choiceIdFrequence = [];
+  List<String> list_startFrequence = [];
+  List<String> list_endFrequence = [];
+  List<String> list_tarifFrequence = [];
+
   //For collecteur
   CollectionReference _collecteur =
       FirebaseFirestore.instance.collection("Collecteur");
   //For Vehicule
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
+  // For Frequence
+  CollectionReference _frequence =
+      FirebaseFirestore.instance.collection("Frequence");
   // For select day
-  String _jour = 'Lundi';
-  List<String> list_jour = [
-    'Lundi',
-    'Mardi',
-    'Mercredi',
-    'Jeudi',
-    'Vendredi',
-    'Samedi',
-    'Dimanche',
-  ];
+  String _jourPlanning = '';
+
+  DateTime date = DateTime.now();
+
+  String getText() {
+    if (date == null) {
+      return 'Select Date';
+    } else {
+      return DateFormat('MM/dd/yyyy').format(date);
+      // return '${date.month}/${date.day}/${date.year}';
+    }
+  }
+
+  Future pickDate(BuildContext context) async {
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime(DateTime.now().year - 25),
+      lastDate: DateTime(DateTime.now().year + 10),
+    );
+
+    if (newDate == null) return;
+
+    setState(() => date = newDate);
+  }
+
   //For Partenaire
   CollectionReference _partenaire =
       FirebaseFirestore.instance.collection("Partenaire");
@@ -210,7 +241,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                   height: 20,
                 ),
                 Container(
-                  height: 300,
+                  height: 600,
                   width: 800,
                   color: Colors.blue,
                   child: Form(
@@ -347,43 +378,39 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                         ),
                         Container(
                           width: 400,
-                          height: 50,
+                          height: 100,
                           color: Colors.red,
                           child: Row(
                             children: [
                               Icon(
-                                FontAwesomeIcons.calendar,
+                                Icons.calendar_today_rounded,
                                 size: 30,
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text('Date',
+                              Text('Date de Planning',
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              DropdownButton<String>(
-                                  onChanged: (String? changedValue) {
-                                    setState(() {
-                                      _jour = changedValue!;
-                                    });
-                                  },
-                                  value: _jour,
-                                  items: list_jour.map((String value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(value),
-                                    );
-                                  }).toList()),
+                              SizedBox(width: 10),
+                              Container(
+                                height: 50,
+                                width: 150,
+                                color: Colors.red,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      pickDate(context);
+                                    },
+                                    child: Text(
+                                      DateFormat('yMd').format(date).toString(),
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 15),
+                                    )),
+                              )
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
                         ),
                       ],
                     ),
@@ -395,7 +422,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                 ),
                 Container(
                   width: 600,
-                  height: 200,
+                  height: 300,
                   child: Column(
                     children: [
                       Container(
@@ -499,6 +526,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                     onChanged: (String? changedValue) {
                                       setState(() {
                                         choiceIdAdresse = changedValue!;
+                                        choiceIdFrequence = 'null';
                                       });
                                     },
                                     value: choiceIdAdresse,
@@ -522,13 +550,134 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                       SizedBox(
                         height: 20,
                       ),
+                      Container(
+                        width: 400,
+                        height: 50,
+                        color: Colors.red,
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.flag,
+                              size: 30,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text('Frequence',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            StreamBuilder<QuerySnapshot>(
+                                stream: _frequence
+                                    .where('idAdresseFrequence',
+                                        isEqualTo: choiceIdAdresse)
+                                    .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text('Something went wrong');
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  }
+                                  return DropdownButton(
+                                    onChanged: (String? changedValue) {
+                                      setState(() {
+                                        choiceIdFrequence = changedValue!;
+                                      });
+                                    },
+                                    value: choiceIdFrequence,
+                                    items: snapshot.data!.docs.map(
+                                        (DocumentSnapshot document_frequence) {
+                                      Map<String, dynamic> dataFrequence =
+                                          document_frequence.data()!
+                                              as Map<String, dynamic>;
+
+                                      return DropdownMenuItem<String>(
+                                        value: dataFrequence['idFrequence'],
+                                        child: Text(dataFrequence[
+                                                'jourFrequence'] +
+                                            ' ' +
+                                            dataFrequence['startFrequence'] +
+                                            ' - ' +
+                                            dataFrequence['endFrequence']),
+                                      );
+                                    }).toList(),
+                                  );
+                                }),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       ElevatedButton(
                         onPressed: () async {
+                          late DateTime dateMinimale;
+                          late DateTime dateMaximale;
+                          bool min_after = false;
+                          bool max_after = false;
+                          String datelimit = '';
+                          await _frequence
+                              .where('idFrequence',
+                                  isEqualTo: choiceIdFrequence)
+                              .limit(1)
+                              .get()
+                              .then((QuerySnapshot querySnapshot) {
+                            querySnapshot.docs.forEach((doc) {
+                              _jourPlanning = doc['jourFrequence'];
+                              DateTime dateMinimale = DateTime(
+                                  int.parse(doc['dateMinimaleFrequence']
+                                      .substring(6)),
+                                  int.parse(doc['dateMinimaleFrequence']
+                                      .substring(3, 5)),
+                                  int.parse(doc['dateMinimaleFrequence']
+                                      .substring(0, 2)));
+                              DateTime dateMaximale = DateTime(
+                                  int.parse(doc['dateMaximaleFrequence']
+                                      .substring(6)),
+                                  int.parse(doc['dateMaximaleFrequence']
+                                      .substring(3, 5)),
+                                  int.parse(doc['dateMaximaleFrequence']
+                                      .substring(0, 2)));
+                              min_after = dateMinimale.isAfter(date);
+                              max_after = date.isAfter(dateMaximale);
+                              datelimit = 'Date Limit is: ' +
+                                  DateFormat('yMd')
+                                      .format(dateMinimale)
+                                      .toString() +
+                                  ' - ' +
+                                  DateFormat('yMd')
+                                      .format(dateMaximale)
+                                      .toString();
+                            });
+                          });
+                          print('$min_after');
+                          print('$max_after');
+                          print('$datelimit');
                           if (choiceIdAdresse == 'null' ||
                               choiceIdPartenaire == 'null') {
                             Fluttertoast.showToast(
-                                msg: "Please choice Partenaire and Adresse",
+                                msg: "Please select Partenaire and Adresse",
                                 gravity: ToastGravity.TOP);
+                          } else if (choiceIdFrequence == 'null') {
+                            Fluttertoast.showToast(
+                                msg: "Please select a Frequence",
+                                gravity: ToastGravity.TOP);
+                          } else if (checkday(check_date: date) !=
+                              _jourPlanning) {
+                            Fluttertoast.showToast(
+                                msg: "That Frequence is not in that day",
+                                gravity: ToastGravity.TOP);
+                          } else if (min_after || max_after) {
+                            Fluttertoast.showToast(
+                                msg: datelimit, gravity: ToastGravity.TOP);
                           } else {
                             await _partenaire
                                 .where('idPartenaire',
@@ -666,6 +815,54 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                 ),
               ])))
     ])));
+  }
+
+  String checkday({required DateTime check_date}) {
+    String result = '';
+    String check_date_format = DateFormat('EEEE').format(check_date);
+    switch (check_date_format) {
+      case 'Monday':
+        {
+          result = 'Lundi';
+          break;
+        }
+      case 'Tuesday':
+        {
+          result = 'Mardi';
+          break;
+        }
+      case 'Wednesday':
+        {
+          result = 'Mercredi';
+          break;
+        }
+      case 'Thursday':
+        {
+          result = 'Jeudi';
+          break;
+        }
+      case 'Friday':
+        {
+          result = 'Vendredi';
+          break;
+        }
+      case 'Saturday':
+        {
+          result = 'Samedi';
+          break;
+        }
+      case 'Sunday':
+        {
+          result = 'Dimanche';
+          break;
+        }
+      default:
+        {
+          result = 'Lundi';
+          break;
+        }
+    }
+    return result;
   }
 
   addStepWidget({required int element}) {
