@@ -10,6 +10,7 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
+import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_numeric_function.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
@@ -127,16 +128,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       return jourFrequence + ' chaque semaine';
     } else {
       return jourFrequence + ' toutes les ' + frequence + ' semaines';
-    }
-  }
-
-  String getTimeText({required TimeOfDay time}) {
-    if (time == null) {
-      return 'Select Time';
-    } else {
-      final hour = time.hour.toString().padLeft(2, '0');
-      final minute = time.minute.toString().padLeft(2, '0');
-      return '$hour:$minute';
     }
   }
 
