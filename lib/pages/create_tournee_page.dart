@@ -92,6 +92,11 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
   bool confirm = true;
   Color confirm_color = Colors.blue;
   String newIdTournee = '';
+  // For Step
+  CollectionReference _etape = FirebaseFirestore.instance.collection("Etape");
+  List<String> list_IdEtape = [];
+  List<bool> list_Etape_confirm = [];
+  List<Color> list_color_etape = [];
   @override
   Widget build(BuildContext context) {
     // For the list view
@@ -824,6 +829,20 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                             Fluttertoast.showToast(
                                 msg: datelimit, gravity: ToastGravity.TOP);
                           } else {
+                            await _frequence
+                                .where('idFrequence',
+                                    isEqualTo: choiceIdFrequence)
+                                .limit(1)
+                                .get()
+                                .then((QuerySnapshot querySnapshot) {
+                              querySnapshot.docs.forEach((doc) {
+                                list_choiceIdFrequence.add(doc['idFrequence']);
+                                list_startFrequence.add(doc['startFrequence']);
+                                list_endFrequence.add(doc['endFrequence']);
+                                list_tarifFrequence.add(doc['tarifFrequence']);
+                              });
+                            });
+
                             await _partenaire
                                 .where('idPartenaire',
                                     isEqualTo: choiceIdPartenaire)
@@ -846,8 +865,16 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                 list_choiceIdAdresse.add(doc['idAdresse']);
                                 list_choiceNomPartenaireAdresse
                                     .add(doc['nomPartenaireAdresse']);
+                                list_latitudeAdresse
+                                    .add(doc['latitudeAdresse']);
+                                list_longitudeAdresse
+                                    .add(doc['longitudeAdresse']);
+                                list_ligne1Adresse.add(doc['ligne1Adresse']);
                               });
                             });
+                            list_Etape_confirm.add(false);
+                            list_IdEtape.add(_etape.doc().id);
+                            list_color_etape.add(Colors.blue);
                             setState(() {
                               _count++;
                             });
@@ -875,7 +902,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                       ],
                     )),
                 Container(
-                    height: 600,
+                    height: 800,
                     child: SingleChildScrollView(
                       child: Column(
                         children: list_step,
@@ -883,6 +910,77 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                     )),
                 SizedBox(
                   height: 20,
+                ),
+                Container(
+                  width: 800,
+                  height: 80,
+                  color: Colors.red,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                          width: 150,
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(10)),
+                          margin: const EdgeInsets.only(
+                              right: 10, top: 20, bottom: 20),
+                          child: GestureDetector(
+                            onTap: () async {},
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Container(
+                          width: 200,
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(10)),
+                          margin: const EdgeInsets.only(
+                              right: 10, top: 20, bottom: 20),
+                          child: GestureDetector(
+                            onTap: () async {},
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Add New Planning',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
                 ),
               ])))
     ])));
@@ -938,15 +1036,16 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
 
   addStepWidget({required int element}) {
     return Container(
-      height: 250,
+      height: 320,
       width: 600,
-      color: Colors.blue,
+      color: list_color_etape[element],
       child: Column(
         children: [
+          SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 20),
-              Text('Element: ' + element.toString())
+              Text('Etape: ' + (element + 1).toString())
             ],
           ),
           SizedBox(height: 20),
@@ -968,14 +1067,24 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
           Row(
             children: [
               SizedBox(width: 20),
-              Text('idPartenaire: ' + list_choiceIdPartenaire[element])
+              Text('Adresse ' + list_ligne1Adresse[element])
             ],
           ),
           SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 20),
-              Text('idAdresse: ' + list_choiceIdAdresse[element])
+              Text('Duree ' +
+                  list_startFrequence[element] +
+                  ' - ' +
+                  list_endFrequence[element])
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              SizedBox(width: 20),
+              Text('Tarif ' + list_tarifFrequence[element])
             ],
           ),
           SizedBox(height: 20),
@@ -983,8 +1092,87 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
             children: [
               Container(
                 width: 600,
-                height: 50,
+                height: 80,
                 color: Colors.red,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Visibility(
+                      visible: list_Etape_confirm[element],
+                      child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(10)),
+                          margin: const EdgeInsets.only(
+                              right: 10, top: 20, bottom: 20),
+                          child: GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                list_Etape_confirm[element] = false;
+                                list_color_etape[element] = Colors.blue;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Remove',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ),
+                    Visibility(
+                      visible: !list_Etape_confirm[element],
+                      child: Container(
+                          width: 80,
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(10)),
+                          margin: const EdgeInsets.only(
+                              right: 10, top: 20, bottom: 20),
+                          child: GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                list_Etape_confirm[element] = true;
+                                list_color_etape[element] = Colors.grey;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Add',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    )
+                  ],
+                ),
               )
             ],
           )
