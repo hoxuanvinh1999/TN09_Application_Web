@@ -437,8 +437,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                 }
                                 String newIdPartenaire = _partenaire.doc().id;
                                 await _adresse.doc(_adresse.doc().id).set({
-                                  'nomPartenaireAdresse':
-                                      _nomPartenaireController.text + ' null',
+                                  'nomPartenaireAdresse': 'None',
                                   'ligne1Adresse': 'null',
                                   'ligne2Adresse': 'null',
                                   'codepostalAdresse': 'null',
