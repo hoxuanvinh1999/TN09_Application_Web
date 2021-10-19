@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,15 +21,45 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
   final _createTourneeKeyForm = GlobalKey<FormState>();
   String choiceIdCollecteur = 'null'; //for get idCollecteur
   String choiceIdVehicule = 'null'; //for get idVehicule
+  String choiceIdPartenaire = 'null'; //for get IdPartenaire
+  String choiceIdAdresse = 'null'; //for get IdAdresse
+  // String choiceNomPartenaire = 'None'; //for get NomPartenaire
+  // String choiceNomPartenaireAdresse = 'None'; //for get NomPartenaireAdresse
+  List<String> list_choiceIdPartenaire = [];
+  List<String> list_choiceIdAdresse = [];
+  List<String> list_choiceNomPartenaire = [];
+  List<String> list_choiceNomPartenaireAdresse = [];
   //For collecteur
   CollectionReference _collecteur =
       FirebaseFirestore.instance.collection("Collecteur");
   //For Vehicule
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
-
+  // For select day
+  String _jour = 'Lundi';
+  List<String> list_jour = [
+    'Lundi',
+    'Mardi',
+    'Mercredi',
+    'Jeudi',
+    'Vendredi',
+    'Samedi',
+    'Dimanche',
+  ];
+  //For Partenaire
+  CollectionReference _partenaire =
+      FirebaseFirestore.instance.collection("Partenaire");
+  //For Adresse
+  CollectionReference _adresse =
+      FirebaseFirestore.instance.collection("Adresse");
+  // for count
+  int _count = 0;
   @override
   Widget build(BuildContext context) {
+    // For the list view
+    List<Widget> list_step =
+        List.generate(_count, (int i) => addStepWidget(element: i));
+    ;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -97,7 +128,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
           child: Container(
               margin: EdgeInsets.only(left: 20),
               width: 600,
-              height: 1200,
+              height: 2000,
               color: Colors.green,
               child: Column(children: [
                 Container(
@@ -179,7 +210,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                   height: 20,
                 ),
                 Container(
-                  height: 800,
+                  height: 300,
                   width: 800,
                   color: Colors.blue,
                   child: Form(
@@ -269,6 +300,9 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                       fontSize: 16,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
+                              SizedBox(
+                                width: 10,
+                              ),
                               StreamBuilder<QuerySnapshot>(
                                   stream: _vehicule.snapshots(),
                                   builder: (BuildContext context,
@@ -307,13 +341,254 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                   }),
                             ],
                           ),
-                        )
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: 400,
+                          height: 50,
+                          color: Colors.red,
+                          child: Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.calendar,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text('Date',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              DropdownButton<String>(
+                                  onChanged: (String? changedValue) {
+                                    setState(() {
+                                      _jour = changedValue!;
+                                    });
+                                  },
+                                  value: _jour,
+                                  items: list_jour.map((String value) {
+                                    return new DropdownMenuItem<String>(
+                                      value: value,
+                                      child: new Text(value),
+                                    );
+                                  }).toList()),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                       ],
                     ),
                   ),
                 ),
+                // ignore: prefer_const_constructors
                 Divider(
                   thickness: 5,
+                ),
+                Container(
+                  width: 600,
+                  height: 200,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 400,
+                        height: 50,
+                        color: Colors.red,
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.flag,
+                              size: 30,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text('Partenaire',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            StreamBuilder<QuerySnapshot>(
+                                stream: _partenaire.snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text('Something went wrong');
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  }
+                                  return DropdownButton(
+                                    onChanged: (String? changedValue) {
+                                      setState(() {
+                                        choiceIdPartenaire = changedValue!;
+                                        choiceIdAdresse = 'null';
+                                      });
+                                    },
+                                    value: choiceIdPartenaire,
+                                    items: snapshot.data!.docs.map(
+                                        (DocumentSnapshot document_partenaire) {
+                                      Map<String, dynamic> dataPartenaire =
+                                          document_partenaire.data()!
+                                              as Map<String, dynamic>;
+
+                                      return DropdownMenuItem<String>(
+                                        value: dataPartenaire['idPartenaire'],
+                                        child: Text(
+                                            dataPartenaire['nomPartenaire']),
+                                      );
+                                    }).toList(),
+                                  );
+                                }),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        width: 400,
+                        height: 50,
+                        color: Colors.red,
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.mapMarker,
+                              size: 30,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text('Adresse',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            StreamBuilder<QuerySnapshot>(
+                                stream: _adresse
+                                    .where('idPartenaireAdresse',
+                                        isEqualTo: choiceIdPartenaire)
+                                    .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text('Something went wrong');
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  }
+                                  return DropdownButton(
+                                    onChanged: (String? changedValue) {
+                                      setState(() {
+                                        choiceIdAdresse = changedValue!;
+                                      });
+                                    },
+                                    value: choiceIdAdresse,
+                                    items: snapshot.data!.docs.map(
+                                        (DocumentSnapshot document_adresse) {
+                                      Map<String, dynamic> dataAdresse =
+                                          document_adresse.data()!
+                                              as Map<String, dynamic>;
+
+                                      return DropdownMenuItem<String>(
+                                        value: dataAdresse['idAdresse'],
+                                        child: Text(dataAdresse[
+                                            'nomPartenaireAdresse']),
+                                      );
+                                    }).toList(),
+                                  );
+                                }),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (choiceIdAdresse == 'null' ||
+                              choiceIdPartenaire == 'null') {
+                            Fluttertoast.showToast(
+                                msg: "Please choice Partenaire and Adresse",
+                                gravity: ToastGravity.TOP);
+                          } else {
+                            await _partenaire
+                                .where('idPartenaire',
+                                    isEqualTo: choiceIdPartenaire)
+                                .limit(1)
+                                .get()
+                                .then((QuerySnapshot querySnapshot) {
+                              querySnapshot.docs.forEach((doc) {
+                                list_choiceIdPartenaire
+                                    .add(doc['idPartenaire']);
+                                list_choiceNomPartenaire
+                                    .add(doc['nomPartenaire']);
+                              });
+                            });
+                            await _adresse
+                                .where('idAdresse', isEqualTo: choiceIdAdresse)
+                                .limit(1)
+                                .get()
+                                .then((QuerySnapshot querySnapshot) {
+                              querySnapshot.docs.forEach((doc) {
+                                list_choiceIdAdresse.add(doc['idAdresse']);
+                                list_choiceNomPartenaireAdresse
+                                    .add(doc['nomPartenaireAdresse']);
+                              });
+                            });
+                            setState(() {
+                              _count++;
+                            });
+                          }
+                        },
+                        child: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  thickness: 5,
+                ),
+                Container(
+                    width: 600,
+                    height: 50,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20),
+                        Text('Steps:',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600)),
+                      ],
+                    )),
+                Container(
+                    height: 600,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: list_step,
+                      ),
+                    )),
+                SizedBox(
+                  height: 20,
                 ),
                 Container(
                   width: 800,
@@ -391,5 +666,52 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                 ),
               ])))
     ])));
+  }
+
+  addStepWidget({required int element}) {
+    return Container(
+      height: 180,
+      width: 600,
+      color: Colors.blue,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(width: 20),
+              Text('Element: ' + element.toString())
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              SizedBox(width: 20),
+              Text('Nom Partenaire: ' + list_choiceNomPartenaire[element])
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              SizedBox(width: 20),
+              Text('Nom Partenaire Adresse: ' +
+                  list_choiceNomPartenaireAdresse[element])
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              SizedBox(width: 20),
+              Text('idPartenaire: ' + list_choiceIdPartenaire[element])
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              SizedBox(width: 20),
+              Text('idAdresse: ' + list_choiceIdAdresse[element])
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
