@@ -15,6 +15,10 @@ class CreatePartenairePage extends StatefulWidget {
 }
 
 class _CreatePartenairePageState extends State<CreatePartenairePage> {
+  // For Adresse
+  CollectionReference _adresse =
+      FirebaseFirestore.instance.collection("Adresse");
+  // For Partenaire
   CollectionReference _partenaire =
       FirebaseFirestore.instance.collection("Partenaire");
   Stream<QuerySnapshot> _partenaireStream = FirebaseFirestore.instance
@@ -432,6 +436,28 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                   _siretPartenaireController.text = '';
                                 }
                                 String newIdPartenaire = _partenaire.doc().id;
+                                await _adresse.doc(_adresse.doc().id).set({
+                                  'nomPartenaireAdresse':
+                                      _nomPartenaireController.text + ' null',
+                                  'ligne1Adresse': 'null',
+                                  'ligne2Adresse': 'null',
+                                  'codepostalAdresse': 'null',
+                                  'villeAdresse': 'null',
+                                  'paysAdresse': 'null',
+                                  'latitudeAdresse': '0',
+                                  'longitudeAdresse': '0',
+                                  'etageAdresse': 'null',
+                                  'ascenseurAdresse': 'false',
+                                  'noteAdresse': 'null',
+                                  'passagesAdresse': 'false',
+                                  'facturationAdresse': 'false',
+                                  'tarifpassageAdresse': '0',
+                                  'tempspassageAdresse': '0',
+                                  'surfacepassageAdresse': '0',
+                                  'idPartenaireAdresse': newIdPartenaire,
+                                  'nombredeContact': '0',
+                                  'idAdresse': 'null',
+                                });
                                 await _partenaire.doc(newIdPartenaire).set({
                                   'nomPartenaire':
                                       _nomPartenaireController.text,
