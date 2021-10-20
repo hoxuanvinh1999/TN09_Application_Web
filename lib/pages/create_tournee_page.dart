@@ -11,6 +11,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/contact_page.dart';
+import 'package:tn09_app_web_demo/pages/math_function/check_date.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
@@ -870,9 +871,8 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                       doc['endFrequence'].substring(0, 2)),
                                   minute: int.parse(
                                       doc['endFrequence'].substring(3)));
-                              if (startTime.hour < timeStart.hour) {
-                                time_start_after = true;
-                              } else if (startTime.minute < timeStart.minute) {
+                              if (startTime.hour < timeStart.hour &&
+                                  startTime.minute < timeStart.minute) {
                                 time_start_after = true;
                               }
                             });
@@ -1182,6 +1182,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                   await _tournee.doc(newIdTournee).update({
                                     'nombredeEtape': numberofEtape.toString(),
                                     'isCreating': false.toString(),
+                                    'jourTournee': _jourPlanning,
                                   }).then((value) {
                                     Fluttertoast.showToast(
                                         msg: "Finish Creating Tournee",
@@ -1222,54 +1223,6 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                 ),
               ])))
     ])));
-  }
-
-  String checkday({required DateTime check_date}) {
-    String result = '';
-    String check_date_format = DateFormat('EEEE').format(check_date);
-    switch (check_date_format) {
-      case 'Monday':
-        {
-          result = 'Lundi';
-          break;
-        }
-      case 'Tuesday':
-        {
-          result = 'Mardi';
-          break;
-        }
-      case 'Wednesday':
-        {
-          result = 'Mercredi';
-          break;
-        }
-      case 'Thursday':
-        {
-          result = 'Jeudi';
-          break;
-        }
-      case 'Friday':
-        {
-          result = 'Vendredi';
-          break;
-        }
-      case 'Saturday':
-        {
-          result = 'Samedi';
-          break;
-        }
-      case 'Sunday':
-        {
-          result = 'Dimanche';
-          break;
-        }
-      default:
-        {
-          result = 'Lundi';
-          break;
-        }
-    }
-    return result;
   }
 
   addStepWidget({required int element}) {
