@@ -16,6 +16,7 @@ import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_date.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
+import 'package:tn09_app_web_demo/pages/math_function/today_color.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/view_planning_collecteur_page.dart';
@@ -374,7 +375,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                 TextSpan(
                                     text: monday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: firstDayOfWeek),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -402,7 +404,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                 TextSpan(
                                     text: tuesday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: date_tuesday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -430,7 +433,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                 TextSpan(
                                     text: wednesday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: date_wednesday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -458,7 +462,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                 TextSpan(
                                     text: thursday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: date_thursday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -486,7 +491,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                 TextSpan(
                                     text: friday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color:
+                                            today_color(check_day: date_friday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -513,7 +519,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                 TextSpan(
                                     text: saturday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: date_saturday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -541,7 +548,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                 TextSpan(
                                     text: sunday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: lastDayOfWeek),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
