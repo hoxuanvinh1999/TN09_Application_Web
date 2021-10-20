@@ -563,6 +563,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                             await _tournee
                                                 .doc(newIdTournee)
                                                 .set({
+                                              'idTournee': newIdTournee,
                                               'idCollecteur':
                                                   choiceIdCollecteur,
                                               'idVehicule': choiceIdVehicule,
@@ -1107,6 +1108,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                         before = i;
                                         await _etape.doc(list_IdEtape[i]).set({
                                           'idEtape': list_IdEtape[i],
+                                          'idTourneeEtape': newIdTournee,
                                           'idEtapebefore': 'null',
                                           'idPartenaireEtape':
                                               list_choiceIdPartenaire[i],
@@ -1145,6 +1147,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                         });
                                         await _etape.doc(list_IdEtape[i]).set({
                                           'idEtape': list_IdEtape[i],
+                                          'idTourneeEtape': newIdTournee,
                                           'idEtapebefore': list_IdEtape[before],
                                           'idPartenaireEtape':
                                               list_choiceIdPartenaire[i],
