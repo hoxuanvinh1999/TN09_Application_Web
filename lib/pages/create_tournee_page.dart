@@ -1182,10 +1182,22 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                   await _etape.doc(list_IdEtape[end]).update({
                                     'idEtapeAfter': 'null',
                                   });
+                                  String colorTournee = '';
+                                  await _vehicule
+                                      .where('idVehicule',
+                                          isEqualTo: choiceIdVehicule)
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      colorTournee = doc['colorIconVehicule'];
+                                    });
+                                  });
                                   await _tournee.doc(newIdTournee).update({
                                     'nombredeEtape': numberofEtape.toString(),
                                     'isCreating': false.toString(),
                                     'jourTournee': _jourPlanning,
+                                    'colorTournee': colorTournee,
                                   }).then((value) {
                                     Fluttertoast.showToast(
                                         msg: "Finish Creating Tournee",
