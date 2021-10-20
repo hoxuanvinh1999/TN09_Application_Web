@@ -13,9 +13,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
+import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
+import 'package:tn09_app_web_demo/pages/math_function/today_color.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
+import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
+import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
 class ViewPlanningCollecteurPage extends StatefulWidget {
   DateTime thisDay;
@@ -37,6 +41,21 @@ class _ViewPlanningCollecteurPageState
       .collection("Collecteur")
       .orderBy('nomCollecteur')
       .snapshots();
+  // for Tournee
+  CollectionReference _tournee =
+      FirebaseFirestore.instance.collection("Tournee");
+  // for Etape
+  CollectionReference _etape = FirebaseFirestore.instance.collection("Etape");
+  // for Vehicule
+  CollectionReference _vehicule =
+      FirebaseFirestore.instance.collection("Vehicule");
+  // for control total data
+  bool show = false;
+  int i = -1;
+  List<int> list_nombredeEtape = [];
+  List<String> list_idCollecteur = [];
+  List<int> list_nombredeTournee = [];
+
   @override
   Widget build(BuildContext context) {
     //For set up Date
@@ -151,7 +170,38 @@ class _ViewPlanningCollecteurPageState
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Semaine #$weeknumber',
+                              text: 'Semaine #$weeknumber',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PlanningWeeklyPage(
+                                                thisDay: widget.thisDay,
+                                              )));
+                                }),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      FontAwesomeIcons.chevronCircleRight,
+                      size: 12,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'View Collecteur',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 15,
@@ -165,8 +215,8 @@ class _ViewPlanningCollecteurPageState
             SizedBox(height: 20),
             Container(
               width: 1200,
-              height: 1000,
-              color: Colors.green,
+              height: 3000,
+              color: Colors.yellow,
               child: Column(
                 children: [
                   Container(
@@ -360,7 +410,8 @@ class _ViewPlanningCollecteurPageState
                                 TextSpan(
                                     text: monday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: firstDayOfWeek),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -388,7 +439,8 @@ class _ViewPlanningCollecteurPageState
                                 TextSpan(
                                     text: tuesday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: date_tuesday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -416,7 +468,8 @@ class _ViewPlanningCollecteurPageState
                                 TextSpan(
                                     text: wednesday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: date_wednesday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -444,7 +497,8 @@ class _ViewPlanningCollecteurPageState
                                 TextSpan(
                                     text: thursday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: date_saturday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -472,7 +526,8 @@ class _ViewPlanningCollecteurPageState
                                 TextSpan(
                                     text: friday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color:
+                                            today_color(check_day: date_friday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -499,7 +554,8 @@ class _ViewPlanningCollecteurPageState
                                 TextSpan(
                                     text: saturday,
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: today_color(
+                                            check_day: date_saturday),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     recognizer: TapGestureRecognizer()
@@ -517,15 +573,14 @@ class _ViewPlanningCollecteurPageState
                         ),
                         SizedBox(width: 2),
                         Container(
-                          width: 140,
-                          height: 50,
-                          alignment: Alignment.center,
-                          color: Colors.grey,
-                          child: Text(
-                            'Total',
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ),
+                            width: 140,
+                            height: 50,
+                            alignment: Alignment.center,
+                            color: Colors.grey,
+                            child: Text(
+                              'Total',
+                              style: TextStyle(fontSize: 15),
+                            )),
                       ],
                     ),
                   ),
@@ -545,6 +600,7 @@ class _ViewPlanningCollecteurPageState
                         }
                         // print('$snapshot');
                         return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: snapshot.data!.docs
                               .map((DocumentSnapshot document_collecteur) {
                             Map<String, dynamic> dataCollecteur =
@@ -554,6 +610,7 @@ class _ViewPlanningCollecteurPageState
                             if (dataCollecteur['idCollecteur'] == 'null') {
                               return SizedBox.shrink();
                             }
+
                             return Container(
                                 color: Colors.white,
                                 child: Column(
@@ -566,7 +623,7 @@ class _ViewPlanningCollecteurPageState
                                         Container(
                                             alignment: Alignment.center,
                                             width: 140,
-                                            height: 50,
+                                            height: 500,
                                             color: Colors.green,
                                             child: Row(
                                               children: [
@@ -597,10 +654,1506 @@ class _ViewPlanningCollecteurPageState
                                           width: 2,
                                         ),
                                         Container(
-                                          alignment: Alignment(-1, 0.15),
                                           width: 140,
-                                          height: 50,
+                                          height: 500,
                                           color: Colors.green,
+                                          child: StreamBuilder<QuerySnapshot>(
+                                            stream: _tournee
+                                                .where('idCollecteur',
+                                                    isEqualTo: dataCollecteur[
+                                                        'idCollecteur'])
+                                                .where('dateTournee',
+                                                    isEqualTo: getDateText(
+                                                        date: firstDayOfWeek))
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Something went wrong');
+                                              }
+
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              // print('$snapshot');
+                                              i++;
+                                              return SingleChildScrollView(
+                                                child: Column(
+                                                  children: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_tournee_monday) {
+                                                    Map<String, dynamic>
+                                                        tournee_monday =
+                                                        document_tournee_monday
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    return Container(
+                                                        height: 150,
+                                                        width: 130,
+                                                        color: Colors.red,
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              height: 20,
+                                                              width: 130,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              child: Text(
+                                                                'Tournee: ' +
+                                                                    limitString(
+                                                                        text: tournee_monday[
+                                                                            'idTournee'],
+                                                                        limit_long:
+                                                                            6),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Container(
+                                                              height: 20,
+                                                              width: 120,
+                                                              color:
+                                                                  Colors.white,
+                                                              child: StreamBuilder<
+                                                                  QuerySnapshot>(
+                                                                stream: _vehicule
+                                                                    .where(
+                                                                        'idVehicule',
+                                                                        isEqualTo:
+                                                                            tournee_monday['idVehicule'])
+                                                                    .limit(1)
+                                                                    .snapshots(),
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            QuerySnapshot>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                      .hasError) {
+                                                                    return Text(
+                                                                        'Something went wrong');
+                                                                  }
+
+                                                                  if (snapshot
+                                                                          .connectionState ==
+                                                                      ConnectionState
+                                                                          .waiting) {
+                                                                    return CircularProgressIndicator();
+                                                                  }
+                                                                  // print('$snapshot');
+                                                                  return SingleChildScrollView(
+                                                                    child: Row(
+                                                                      children: snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .map((DocumentSnapshot
+                                                                              document_vehicule_monday) {
+                                                                        Map<String,
+                                                                                dynamic>
+                                                                            vehicule_monday =
+                                                                            document_vehicule_monday.data()!
+                                                                                as Map<String, dynamic>;
+                                                                        // print('$collecteur');
+                                                                        return Container(
+                                                                            height:
+                                                                                20,
+                                                                            width:
+                                                                                120,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            child: Row(
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                buildVehiculeIcon(icontype: vehicule_monday['typeVehicule'], iconcolor: vehicule_monday['colorIconVehicule'].toUpperCase(), sizeIcon: 10),
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                Text(
+                                                                                  limitString(text: vehicule_monday['nomVehicule'] + ' ' + vehicule_monday['numeroImmatriculation'], limit_long: 10),
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                                                                )
+                                                                              ],
+                                                                            ));
+                                                                      }).toList(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .clock,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      tournee_monday[
+                                                                          'startTime'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .flag,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      'Etape: ' +
+                                                                          tournee_monday[
+                                                                              'nombredeEtape'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Expanded(
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: SizedBox(
+                                                                  height: 5,
+                                                                  child:
+                                                                      Container(
+                                                                    width: 140,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ));
+                                                  }).toList(),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Container(
+                                          width: 140,
+                                          height: 500,
+                                          color: Colors.green,
+                                          child: StreamBuilder<QuerySnapshot>(
+                                            stream: _tournee
+                                                .where('idCollecteur',
+                                                    isEqualTo: dataCollecteur[
+                                                        'idCollecteur'])
+                                                .where('dateTournee',
+                                                    isEqualTo: getDateText(
+                                                        date: date_tuesday))
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Something went wrong');
+                                              }
+
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              // print('$snapshot');
+                                              return SingleChildScrollView(
+                                                child: Column(
+                                                  children: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_tournee_tuesday) {
+                                                    Map<String, dynamic>
+                                                        tournee_tuesday =
+                                                        document_tournee_tuesday
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    return Container(
+                                                        height: 150,
+                                                        width: 130,
+                                                        color: Colors.red,
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              height: 20,
+                                                              width: 130,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              child: Text(
+                                                                'Tournee: ' +
+                                                                    limitString(
+                                                                        text: tournee_tuesday[
+                                                                            'idTournee'],
+                                                                        limit_long:
+                                                                            6),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Container(
+                                                              height: 20,
+                                                              width: 120,
+                                                              color:
+                                                                  Colors.white,
+                                                              child: StreamBuilder<
+                                                                  QuerySnapshot>(
+                                                                stream: _vehicule
+                                                                    .where(
+                                                                        'idVehicule',
+                                                                        isEqualTo:
+                                                                            tournee_tuesday['idVehicule'])
+                                                                    .limit(1)
+                                                                    .snapshots(),
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            QuerySnapshot>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                      .hasError) {
+                                                                    return Text(
+                                                                        'Something went wrong');
+                                                                  }
+
+                                                                  if (snapshot
+                                                                          .connectionState ==
+                                                                      ConnectionState
+                                                                          .waiting) {
+                                                                    return CircularProgressIndicator();
+                                                                  }
+                                                                  // print('$snapshot');
+                                                                  return SingleChildScrollView(
+                                                                    child: Row(
+                                                                      children: snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .map((DocumentSnapshot
+                                                                              document_vehicule_tuesday) {
+                                                                        Map<String,
+                                                                                dynamic>
+                                                                            vehicule_tuesday =
+                                                                            document_vehicule_tuesday.data()!
+                                                                                as Map<String, dynamic>;
+                                                                        // print('$collecteur');
+                                                                        return Container(
+                                                                            height:
+                                                                                20,
+                                                                            width:
+                                                                                120,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            child: Row(
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                buildVehiculeIcon(icontype: vehicule_tuesday['typeVehicule'], iconcolor: vehicule_tuesday['colorIconVehicule'].toUpperCase(), sizeIcon: 10),
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                Text(
+                                                                                  limitString(text: vehicule_tuesday['nomVehicule'] + ' ' + vehicule_tuesday['numeroImmatriculation'], limit_long: 10),
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                                                                )
+                                                                              ],
+                                                                            ));
+                                                                      }).toList(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .clock,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      tournee_tuesday[
+                                                                          'startTime'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .flag,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      'Etape: ' +
+                                                                          tournee_tuesday[
+                                                                              'nombredeEtape'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Expanded(
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: SizedBox(
+                                                                  height: 5,
+                                                                  child:
+                                                                      Container(
+                                                                    width: 140,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ));
+                                                  }).toList(),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Container(
+                                          width: 140,
+                                          height: 500,
+                                          color: Colors.green,
+                                          child: StreamBuilder<QuerySnapshot>(
+                                            stream: _tournee
+                                                .where('idCollecteur',
+                                                    isEqualTo: dataCollecteur[
+                                                        'idCollecteur'])
+                                                .where('dateTournee',
+                                                    isEqualTo: getDateText(
+                                                        date: date_wednesday))
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Something went wrong');
+                                              }
+
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              // print('$snapshot');
+                                              return SingleChildScrollView(
+                                                child: Column(
+                                                  children: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_tournee_wednesday) {
+                                                    Map<String, dynamic>
+                                                        tournee_wednesday =
+                                                        document_tournee_wednesday
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    return Container(
+                                                        height: 150,
+                                                        width: 130,
+                                                        color: Colors.red,
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              height: 20,
+                                                              width: 130,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              child: Text(
+                                                                'Tournee: ' +
+                                                                    limitString(
+                                                                        text: tournee_wednesday[
+                                                                            'idTournee'],
+                                                                        limit_long:
+                                                                            6),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Container(
+                                                              height: 20,
+                                                              width: 120,
+                                                              color:
+                                                                  Colors.white,
+                                                              child: StreamBuilder<
+                                                                  QuerySnapshot>(
+                                                                stream: _vehicule
+                                                                    .where(
+                                                                        'idVehicule',
+                                                                        isEqualTo:
+                                                                            tournee_wednesday['idVehicule'])
+                                                                    .limit(1)
+                                                                    .snapshots(),
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            QuerySnapshot>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                      .hasError) {
+                                                                    return Text(
+                                                                        'Something went wrong');
+                                                                  }
+
+                                                                  if (snapshot
+                                                                          .connectionState ==
+                                                                      ConnectionState
+                                                                          .waiting) {
+                                                                    return CircularProgressIndicator();
+                                                                  }
+                                                                  // print('$snapshot');
+                                                                  return SingleChildScrollView(
+                                                                    child: Row(
+                                                                      children: snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .map((DocumentSnapshot
+                                                                              document_vehicule_wednesday) {
+                                                                        Map<String,
+                                                                                dynamic>
+                                                                            vehicule_wednesday =
+                                                                            document_vehicule_wednesday.data()!
+                                                                                as Map<String, dynamic>;
+                                                                        // print('$collecteur');
+                                                                        return Container(
+                                                                            height:
+                                                                                20,
+                                                                            width:
+                                                                                120,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            child: Row(
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                buildVehiculeIcon(icontype: vehicule_wednesday['typeVehicule'], iconcolor: vehicule_wednesday['colorIconVehicule'].toUpperCase(), sizeIcon: 10),
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                Text(
+                                                                                  limitString(text: vehicule_wednesday['nomVehicule'] + ' ' + vehicule_wednesday['numeroImmatriculation'], limit_long: 10),
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                                                                )
+                                                                              ],
+                                                                            ));
+                                                                      }).toList(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .clock,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      tournee_wednesday[
+                                                                          'startTime'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .flag,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      'Etape: ' +
+                                                                          tournee_wednesday[
+                                                                              'nombredeEtape'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Expanded(
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: SizedBox(
+                                                                  height: 5,
+                                                                  child:
+                                                                      Container(
+                                                                    width: 140,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ));
+                                                  }).toList(),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Container(
+                                          width: 140,
+                                          height: 500,
+                                          color: Colors.green,
+                                          child: StreamBuilder<QuerySnapshot>(
+                                            stream: _tournee
+                                                .where('idCollecteur',
+                                                    isEqualTo: dataCollecteur[
+                                                        'idCollecteur'])
+                                                .where('dateTournee',
+                                                    isEqualTo: getDateText(
+                                                        date: date_thursday))
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Something went wrong');
+                                              }
+
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              // print('$snapshot');
+                                              return SingleChildScrollView(
+                                                child: Column(
+                                                  children: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_tournee_thursday) {
+                                                    Map<String, dynamic>
+                                                        tournee_thursday =
+                                                        document_tournee_thursday
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    return Container(
+                                                        height: 150,
+                                                        width: 130,
+                                                        color: Colors.red,
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              height: 20,
+                                                              width: 130,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              child: Text(
+                                                                'Tournee: ' +
+                                                                    limitString(
+                                                                        text: tournee_thursday[
+                                                                            'idTournee'],
+                                                                        limit_long:
+                                                                            6),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Container(
+                                                              height: 20,
+                                                              width: 120,
+                                                              color:
+                                                                  Colors.white,
+                                                              child: StreamBuilder<
+                                                                  QuerySnapshot>(
+                                                                stream: _vehicule
+                                                                    .where(
+                                                                        'idVehicule',
+                                                                        isEqualTo:
+                                                                            tournee_thursday['idVehicule'])
+                                                                    .limit(1)
+                                                                    .snapshots(),
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            QuerySnapshot>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                      .hasError) {
+                                                                    return Text(
+                                                                        'Something went wrong');
+                                                                  }
+
+                                                                  if (snapshot
+                                                                          .connectionState ==
+                                                                      ConnectionState
+                                                                          .waiting) {
+                                                                    return CircularProgressIndicator();
+                                                                  }
+                                                                  // print('$snapshot');
+                                                                  return SingleChildScrollView(
+                                                                    child: Row(
+                                                                      children: snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .map((DocumentSnapshot
+                                                                              document_vehicule_thursday) {
+                                                                        Map<String,
+                                                                                dynamic>
+                                                                            vehicule_thursday =
+                                                                            document_vehicule_thursday.data()!
+                                                                                as Map<String, dynamic>;
+                                                                        // print('$collecteur');
+                                                                        return Container(
+                                                                            height:
+                                                                                20,
+                                                                            width:
+                                                                                120,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            child: Row(
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                buildVehiculeIcon(icontype: vehicule_thursday['typeVehicule'], iconcolor: vehicule_thursday['colorIconVehicule'].toUpperCase(), sizeIcon: 10),
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                Text(
+                                                                                  limitString(text: vehicule_thursday['nomVehicule'] + ' ' + vehicule_thursday['numeroImmatriculation'], limit_long: 10),
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                                                                )
+                                                                              ],
+                                                                            ));
+                                                                      }).toList(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .clock,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      tournee_thursday[
+                                                                          'startTime'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .flag,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      'Etape: ' +
+                                                                          tournee_thursday[
+                                                                              'nombredeEtape'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Expanded(
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: SizedBox(
+                                                                  height: 5,
+                                                                  child:
+                                                                      Container(
+                                                                    width: 140,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ));
+                                                  }).toList(),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Container(
+                                          width: 140,
+                                          height: 500,
+                                          color: Colors.green,
+                                          child: StreamBuilder<QuerySnapshot>(
+                                            stream: _tournee
+                                                .where('idCollecteur',
+                                                    isEqualTo: dataCollecteur[
+                                                        'idCollecteur'])
+                                                .where('dateTournee',
+                                                    isEqualTo: getDateText(
+                                                        date: date_friday))
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Something went wrong');
+                                              }
+
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              // print('$snapshot');
+                                              return SingleChildScrollView(
+                                                child: Column(
+                                                  children: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_tournee_friday) {
+                                                    Map<String, dynamic>
+                                                        tournee_friday =
+                                                        document_tournee_friday
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    return Container(
+                                                        height: 150,
+                                                        width: 130,
+                                                        color: Colors.red,
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              height: 20,
+                                                              width: 130,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              child: Text(
+                                                                'Tournee: ' +
+                                                                    limitString(
+                                                                        text: tournee_friday[
+                                                                            'idTournee'],
+                                                                        limit_long:
+                                                                            6),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Container(
+                                                              height: 20,
+                                                              width: 120,
+                                                              color:
+                                                                  Colors.white,
+                                                              child: StreamBuilder<
+                                                                  QuerySnapshot>(
+                                                                stream: _vehicule
+                                                                    .where(
+                                                                        'idVehicule',
+                                                                        isEqualTo:
+                                                                            tournee_friday['idVehicule'])
+                                                                    .limit(1)
+                                                                    .snapshots(),
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            QuerySnapshot>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                      .hasError) {
+                                                                    return Text(
+                                                                        'Something went wrong');
+                                                                  }
+
+                                                                  if (snapshot
+                                                                          .connectionState ==
+                                                                      ConnectionState
+                                                                          .waiting) {
+                                                                    return CircularProgressIndicator();
+                                                                  }
+                                                                  // print('$snapshot');
+                                                                  return SingleChildScrollView(
+                                                                    child: Row(
+                                                                      children: snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .map((DocumentSnapshot
+                                                                              document_vehicule_friday) {
+                                                                        Map<String,
+                                                                                dynamic>
+                                                                            vehicule_friday =
+                                                                            document_vehicule_friday.data()!
+                                                                                as Map<String, dynamic>;
+                                                                        // print('$collecteur');
+                                                                        return Container(
+                                                                            height:
+                                                                                20,
+                                                                            width:
+                                                                                120,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            child: Row(
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                buildVehiculeIcon(icontype: vehicule_friday['typeVehicule'], iconcolor: vehicule_friday['colorIconVehicule'].toUpperCase(), sizeIcon: 10),
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                Text(
+                                                                                  limitString(text: vehicule_friday['nomVehicule'] + ' ' + vehicule_friday['numeroImmatriculation'], limit_long: 10),
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                                                                )
+                                                                              ],
+                                                                            ));
+                                                                      }).toList(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .clock,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      tournee_friday[
+                                                                          'startTime'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .flag,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      'Etape: ' +
+                                                                          tournee_friday[
+                                                                              'nombredeEtape'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Expanded(
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: SizedBox(
+                                                                  height: 5,
+                                                                  child:
+                                                                      Container(
+                                                                    width: 140,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ));
+                                                  }).toList(),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Container(
+                                          width: 140,
+                                          height: 500,
+                                          color: Colors.green,
+                                          child: StreamBuilder<QuerySnapshot>(
+                                            stream: _tournee
+                                                .where('idCollecteur',
+                                                    isEqualTo: dataCollecteur[
+                                                        'idCollecteur'])
+                                                .where('dateTournee',
+                                                    isEqualTo: getDateText(
+                                                        date: date_saturday))
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Something went wrong');
+                                              }
+
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              // print('$snapshot');
+                                              return SingleChildScrollView(
+                                                child: Column(
+                                                  children: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_tournee_saturday) {
+                                                    Map<String, dynamic>
+                                                        tournee_saturday =
+                                                        document_tournee_saturday
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    return Container(
+                                                        height: 150,
+                                                        width: 130,
+                                                        color: Colors.red,
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              height: 20,
+                                                              width: 130,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              child: Text(
+                                                                'Tournee: ' +
+                                                                    limitString(
+                                                                        text: tournee_saturday[
+                                                                            'idTournee'],
+                                                                        limit_long:
+                                                                            6),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Container(
+                                                              height: 20,
+                                                              width: 120,
+                                                              color:
+                                                                  Colors.white,
+                                                              child: StreamBuilder<
+                                                                  QuerySnapshot>(
+                                                                stream: _vehicule
+                                                                    .where(
+                                                                        'idVehicule',
+                                                                        isEqualTo:
+                                                                            tournee_saturday['idVehicule'])
+                                                                    .limit(1)
+                                                                    .snapshots(),
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            QuerySnapshot>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                      .hasError) {
+                                                                    return Text(
+                                                                        'Something went wrong');
+                                                                  }
+
+                                                                  if (snapshot
+                                                                          .connectionState ==
+                                                                      ConnectionState
+                                                                          .waiting) {
+                                                                    return CircularProgressIndicator();
+                                                                  }
+                                                                  // print('$snapshot');
+                                                                  return SingleChildScrollView(
+                                                                    child: Row(
+                                                                      children: snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .map((DocumentSnapshot
+                                                                              document_vehicule_saturday) {
+                                                                        Map<String,
+                                                                                dynamic>
+                                                                            vehicule_saturday =
+                                                                            document_vehicule_saturday.data()!
+                                                                                as Map<String, dynamic>;
+                                                                        // print('$collecteur');
+                                                                        return Container(
+                                                                            height:
+                                                                                20,
+                                                                            width:
+                                                                                120,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            child: Row(
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                buildVehiculeIcon(icontype: vehicule_saturday['typeVehicule'], iconcolor: vehicule_saturday['colorIconVehicule'].toUpperCase(), sizeIcon: 10),
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                Text(
+                                                                                  limitString(text: vehicule_saturday['nomVehicule'] + ' ' + vehicule_saturday['numeroImmatriculation'], limit_long: 10),
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                                                                )
+                                                                              ],
+                                                                            ));
+                                                                      }).toList(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .clock,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      tournee_saturday[
+                                                                          'startTime'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Container(
+                                                                height: 20,
+                                                                width: 120,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .flag,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      'Etape: ' +
+                                                                          tournee_saturday[
+                                                                              'nombredeEtape'],
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Expanded(
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: SizedBox(
+                                                                  height: 5,
+                                                                  child:
+                                                                      Container(
+                                                                    width: 140,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ));
+                                                  }).toList(),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Container(
+                                          width: 140,
+                                          height: 500,
+                                          color: Colors.green,
+                                          child: FutureBuilder<String>(
+                                            future: Future<String>.delayed(
+                                              const Duration(seconds: 2),
+                                              () async {
+                                                int numberofEtape = 0;
+                                                int numberofTournee = 0;
+                                                await _tournee
+                                                    .where('idCollecteur',
+                                                        isEqualTo:
+                                                            dataCollecteur[
+                                                                'idCollecteur'])
+                                                    .where('dateTournee',
+                                                        isEqualTo: getDateText(
+                                                            date:
+                                                                firstDayOfWeek))
+                                                    .get()
+                                                    .then((QuerySnapshot
+                                                        querySnapshot) {
+                                                  querySnapshot.docs
+                                                      .forEach((tournee) {
+                                                    numberofTournee++;
+                                                    numberofEtape += int.parse(
+                                                        tournee[
+                                                            'nombredeEtape']);
+                                                  });
+                                                });
+                                                await _tournee
+                                                    .where('idCollecteur',
+                                                        isEqualTo:
+                                                            dataCollecteur[
+                                                                'idCollecteur'])
+                                                    .where('dateTournee',
+                                                        isEqualTo: getDateText(
+                                                            date: date_tuesday))
+                                                    .get()
+                                                    .then((QuerySnapshot
+                                                        querySnapshot) {
+                                                  querySnapshot.docs
+                                                      .forEach((tournee) {
+                                                    numberofTournee++;
+                                                    numberofEtape += int.parse(
+                                                        tournee[
+                                                            'nombredeEtape']);
+                                                  });
+                                                });
+                                                await _tournee
+                                                    .where('idCollecteur',
+                                                        isEqualTo:
+                                                            dataCollecteur[
+                                                                'idCollecteur'])
+                                                    .where('dateTournee',
+                                                        isEqualTo: getDateText(
+                                                            date:
+                                                                date_wednesday))
+                                                    .get()
+                                                    .then((QuerySnapshot
+                                                        querySnapshot) {
+                                                  querySnapshot.docs
+                                                      .forEach((tournee) {
+                                                    numberofTournee++;
+                                                    numberofEtape += int.parse(
+                                                        tournee[
+                                                            'nombredeEtape']);
+                                                  });
+                                                });
+                                                await _tournee
+                                                    .where('idCollecteur',
+                                                        isEqualTo:
+                                                            dataCollecteur[
+                                                                'idCollecteur'])
+                                                    .where('dateTournee',
+                                                        isEqualTo: getDateText(
+                                                            date:
+                                                                date_thursday))
+                                                    .get()
+                                                    .then((QuerySnapshot
+                                                        querySnapshot) {
+                                                  querySnapshot.docs
+                                                      .forEach((tournee) {
+                                                    numberofTournee++;
+                                                    numberofEtape += int.parse(
+                                                        tournee[
+                                                            'nombredeEtape']);
+                                                  });
+                                                });
+                                                await _tournee
+                                                    .where('idCollecteur',
+                                                        isEqualTo:
+                                                            dataCollecteur[
+                                                                'idCollecteur'])
+                                                    .where('dateTournee',
+                                                        isEqualTo: getDateText(
+                                                            date: date_friday))
+                                                    .get()
+                                                    .then((QuerySnapshot
+                                                        querySnapshot) {
+                                                  querySnapshot.docs
+                                                      .forEach((tournee) {
+                                                    numberofTournee++;
+                                                    numberofEtape += int.parse(
+                                                        tournee[
+                                                            'nombredeEtape']);
+                                                  });
+                                                });
+                                                await _tournee
+                                                    .where('idCollecteur',
+                                                        isEqualTo:
+                                                            dataCollecteur[
+                                                                'idCollecteur'])
+                                                    .where('dateTournee',
+                                                        isEqualTo: getDateText(
+                                                            date:
+                                                                date_saturday))
+                                                    .get()
+                                                    .then((QuerySnapshot
+                                                        querySnapshot) {
+                                                  querySnapshot.docs
+                                                      .forEach((tournee) {
+                                                    numberofTournee++;
+                                                    numberofEtape += int.parse(
+                                                        tournee[
+                                                            'nombredeEtape']);
+                                                  });
+                                                });
+                                                return 'Etape: ${numberofEtape.toString()} || Tournee: ${numberofTournee.toString()}';
+                                              },
+                                            ), // a previously-obtained Future<String> or null
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<String>
+                                                    snapshot) {
+                                              List<Widget> children;
+                                              if (snapshot.hasData) {
+                                                children = <Widget>[
+                                                  const Icon(
+                                                    Icons.check_circle_outline,
+                                                    color: Colors.green,
+                                                    size: 60,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 16),
+                                                    child: Text(
+                                                        '${snapshot.data}'),
+                                                  )
+                                                ];
+                                              } else if (snapshot.hasError) {
+                                                children = <Widget>[
+                                                  const Icon(
+                                                    Icons.error_outline,
+                                                    color: Colors.red,
+                                                    size: 60,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 16),
+                                                    child: Text(
+                                                        'Error: ${snapshot.error}'),
+                                                  )
+                                                ];
+                                              } else {
+                                                children = const <Widget>[
+                                                  SizedBox(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                    width: 60,
+                                                    height: 60,
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 16),
+                                                    child: Text(
+                                                        'Awaiting result...'),
+                                                  )
+                                                ];
+                                              }
+                                              return Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: children,
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),
