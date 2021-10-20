@@ -19,6 +19,7 @@ import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/today_color.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
+import 'package:tn09_app_web_demo/pages/view_compacte_page.dart';
 import 'package:tn09_app_web_demo/pages/view_planning_collecteur_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
@@ -739,11 +740,11 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                         .data!
                                                                         .docs
                                                                         .map((DocumentSnapshot
-                                                                            document_collecteur_momday) {
+                                                                            document_collecteur_monday) {
                                                                       Map<String,
                                                                               dynamic>
                                                                           collecteur_monday =
-                                                                          document_collecteur_momday.data()! as Map<
+                                                                          document_collecteur_monday.data()! as Map<
                                                                               String,
                                                                               dynamic>;
                                                                       // print('$collecteur');
@@ -2219,13 +2220,12 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  // Navigator.of(context)
-                  //     .pushReplacement(MaterialPageRoute(
-                  //         builder: (context) => PlanningWeeklyPage(
-                  //               thisDay:
-                  //                   // DateTime.parse('2019-10-05 15:43:03.887'),
-                  //                   DateTime.now(),
-                  //             )));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => PlanningWeeklyCompactePage(
+                            thisDay:
+                                // DateTime.parse('2019-10-05 15:43:03.887'),
+                                widget.thisDay,
+                          )));
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
