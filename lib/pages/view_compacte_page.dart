@@ -629,7 +629,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_monday[
                                                       'nombredeEtape']),
-                                          color: Colors.red,
+                                          color: Color(int.parse(
+                                              tournee_monday['colorTournee'])),
                                           child: Column(
                                             children: [
                                               Container(
@@ -843,7 +844,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_tuesday[
                                                       'nombredeEtape']),
-                                          color: Colors.red,
+                                          color: Color(int.parse(
+                                              tournee_tuesday['colorTournee'])),
                                           child: Column(
                                             children: [
                                               Container(
@@ -1059,7 +1061,9 @@ class _PlanningWeeklyCompactePageState
                                                   double.parse(
                                                       tournee_wednesday[
                                                           'nombredeEtape']),
-                                          color: Colors.red,
+                                          color: Color(int.parse(
+                                              tournee_wednesday[
+                                                  'colorTournee'])),
                                           child: Column(
                                             children: [
                                               Container(
@@ -1275,7 +1279,9 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_thursday[
                                                       'nombredeEtape']),
-                                          color: Colors.red,
+                                          color: Color(int.parse(
+                                              tournee_thursday[
+                                                  'colorTournee'])),
                                           child: Column(
                                             children: [
                                               Container(
@@ -1490,7 +1496,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_friday[
                                                       'nombredeEtape']),
-                                          color: Colors.red,
+                                          color: Color(int.parse(
+                                              tournee_friday['colorTournee'])),
                                           child: Column(
                                             children: [
                                               Container(
@@ -1704,7 +1711,9 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_saturday[
                                                       'nombredeEtape']),
-                                          color: Colors.red,
+                                          color: Color(int.parse(
+                                              tournee_saturday[
+                                                  'colorTournee'])),
                                           child: Column(
                                             children: [
                                               Container(
@@ -1920,7 +1929,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_sunday[
                                                       'nombredeEtape']),
-                                          color: Colors.red,
+                                          color: Color(int.parse(
+                                              tournee_sunday['colorTournee'])),
                                           child: Column(
                                             children: [
                                               Container(
