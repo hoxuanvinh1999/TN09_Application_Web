@@ -35,6 +35,10 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
       .collection("Vehicule")
       .orderBy('orderVehicule')
       .snapshots();
+  //For Collecteur
+  CollectionReference _collecteur =
+      FirebaseFirestore.instance.collection("Collecteur");
+
   @override
   Widget build(BuildContext context) {
     //For set up Date
@@ -165,7 +169,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
             SizedBox(height: 20),
             Container(
               width: 1200,
-              height: 1000,
+              height: 3000,
               color: Colors.green,
               child: Column(
                 children: [
@@ -329,6 +333,127 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                         ),
                         SizedBox(
                           height: 10,
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 1190,
+                    height: 1000,
+                    color: Colors.yellow,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Container(
+                          width: 200,
+                          height: 800,
+                          color: Colors.red,
+                        ),
+                        SizedBox(
+                          width: 50,
+                        ),
+                        Container(
+                          width: 900,
+                          height: 800,
+                          color: Colors.red,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 50,
+                                  width: 900,
+                                  color: Colors.green,
+                                  child: StreamBuilder<QuerySnapshot>(
+                                    stream: _vehicule
+                                        .where('idVehicule',
+                                            isNotEqualTo: 'null')
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text('Something went wrong');
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+                                      // print('$snapshot');
+                                      return SingleChildScrollView(
+                                        child: Row(
+                                          children: snapshot.data!.docs.map(
+                                              (DocumentSnapshot
+                                                  document_vehicule) {
+                                            Map<String, dynamic> vehicule =
+                                                document_vehicule.data()!
+                                                    as Map<String, dynamic>;
+                                            // print('$collecteur');
+                                            return Expanded(
+                                                child: Container(
+                                                    width: 150,
+                                                    height: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                    ),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 5, bottom: 5),
+                                                    child: GestureDetector(
+                                                      onTap: () {},
+                                                      child: Row(
+                                                        children: [
+                                                          buildVehiculeIcon(
+                                                              icontype: vehicule[
+                                                                  'typeVehicule'],
+                                                              iconcolor: vehicule[
+                                                                      'colorIconVehicule']
+                                                                  .toUpperCase(),
+                                                              sizeIcon: 15.0),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Text(
+                                                            vehicule[
+                                                                'nomVehicule'],
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Align(
+                                                              alignment: Alignment
+                                                                  .bottomRight,
+                                                              child: SizedBox(
+                                                                child:
+                                                                    Container(
+                                                                  width: 2,
+                                                                  height: 50,
+                                                                  color: Colors
+                                                                      .green,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )));
+                                          }).toList(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                )
+                              ]),
                         )
                       ],
                     ),
