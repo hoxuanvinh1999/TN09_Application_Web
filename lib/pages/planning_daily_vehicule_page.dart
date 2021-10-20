@@ -14,20 +14,21 @@ import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
-import 'package:tn09_app_web_demo/pages/planning_daily_vehicule_page.dart';
+import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
-class PlanningDailyPage extends StatefulWidget {
+class PlanningDailyVehiculePage extends StatefulWidget {
   DateTime thisDay;
-  PlanningDailyPage({
-    required this.thisDay,
-  });
+  Map dataVehicule;
+  PlanningDailyVehiculePage(
+      {required this.thisDay, required this.dataVehicule});
   @override
-  _PlanningDailyPageState createState() => _PlanningDailyPageState();
+  _PlanningDailyVehiculePageState createState() =>
+      _PlanningDailyVehiculePageState();
 }
 
-class _PlanningDailyPageState extends State<PlanningDailyPage> {
+class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   // for Vehicule
   CollectionReference _vehicule =
@@ -68,8 +69,9 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
       if (newDate == null) return;
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => PlanningDailyPage(
+          builder: (context) => PlanningDailyVehiculePage(
                 thisDay: newDate,
+                dataVehicule: widget.dataVehicule,
               )));
     }
 
@@ -156,7 +158,38 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: thisDay,
+                              text: thisDay,
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PlanningDailyPage(
+                                                thisDay: widget.thisDay,
+                                              )));
+                                }),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      FontAwesomeIcons.chevronCircleRight,
+                      size: 12,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: widget.dataVehicule['nomVehicule'],
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 15,
@@ -196,14 +229,15 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                                       children: [
                                         IconButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PlanningDailyPage(
-                                                                thisDay:
-                                                                    previousDay,
-                                                              )));
+                                              Navigator.of(context).pushReplacement(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PlanningDailyVehiculePage(
+                                                            thisDay:
+                                                                previousDay,
+                                                            dataVehicule: widget
+                                                                .dataVehicule,
+                                                          )));
                                             },
                                             icon: Icon(
                                               FontAwesomeIcons.stepBackward,
@@ -219,14 +253,14 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                                             )),
                                         IconButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PlanningDailyPage(
-                                                                thisDay:
-                                                                    nextDay,
-                                                              )));
+                                              Navigator.of(context).pushReplacement(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PlanningDailyVehiculePage(
+                                                            thisDay: nextDay,
+                                                            dataVehicule: widget
+                                                                .dataVehicule,
+                                                          )));
                                             },
                                             icon: Icon(
                                               FontAwesomeIcons.stepForward,
@@ -399,22 +433,35 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                                                     width: 150,
                                                     height: 40,
                                                     decoration: BoxDecoration(
-                                                      color: Colors.white,
+                                                      color: vehicule[
+                                                                  'idVehicule'] ==
+                                                              widget.dataVehicule[
+                                                                  'idVehicule']
+                                                          ? Colors.grey
+                                                          : Colors.white,
                                                     ),
                                                     margin:
                                                         const EdgeInsets.only(
                                                             top: 5, bottom: 5),
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                        Navigator.of(context)
-                                                            .pushReplacement(
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            PlanningDailyVehiculePage(
-                                                                              thisDay: widget.thisDay,
-                                                                              dataVehicule: vehicule,
-                                                                            )));
+                                                        if (vehicule[
+                                                                'idVehicule'] ==
+                                                            widget.dataVehicule[
+                                                                'idVehicule']) {
+                                                          null;
+                                                        } else {
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          PlanningDailyVehiculePage(
+                                                                            thisDay:
+                                                                                widget.thisDay,
+                                                                            dataVehicule:
+                                                                                vehicule,
+                                                                          )));
+                                                        }
                                                       },
                                                       child: Row(
                                                         children: [
@@ -490,7 +537,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                 onTap: () {
                   // Navigator.of(context)
                   //     .pushReplacement(MaterialPageRoute(
-                  //         builder: (context) => PlanningDailyPage(
+                  //         builder: (context) => PlanningDailyVehiculePage(
                   //               thisDay:
                   //                   // DateTime.parse('2019-10-05 15:43:03.887'),
                   //                   DateTime.now(),
@@ -517,7 +564,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                 onTap: () {
                   // Navigator.of(context)
                   //     .pushReplacement(MaterialPageRoute(
-                  //         builder: (context) => PlanningDailyPage(
+                  //         builder: (context) => PlanningDailyVehiculePage(
                   //               thisDay:
                   //                   // DateTime.parse('2019-10-05 15:43:03.887'),
                   //                   DateTime.now(),
@@ -544,7 +591,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                 onTap: () {
                   // Navigator.of(context)
                   //     .pushReplacement(MaterialPageRoute(
-                  //         builder: (context) => PlanningDailyPage(
+                  //         builder: (context) => PlanningDailyVehiculePage(
                   //               thisDay:
                   //                   // DateTime.parse('2019-10-05 15:43:03.887'),
                   //                   DateTime.now(),
