@@ -1040,7 +1040,110 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                                             )),
                                                                                         SizedBox(width: 10),
                                                                                         IconButton(
-                                                                                            onPressed: () async {},
+                                                                                            onPressed: () async {
+                                                                                              // get and save information before do the change
+                                                                                              String idEtapeNow = etape['idEtape'];
+                                                                                              String idEtapeBefore = etape['idEtapeBefore'];
+                                                                                              String idEtapeAfter = etape['idEtapeAfter'];
+                                                                                              String idEtapeAfterofAfter = '';
+                                                                                              String neworder = (int.parse(etape['orderEtape']) + 1).toString();
+                                                                                              String oldorder = etape['orderEtape'];
+                                                                                              if (idEtapeAfter == 'null') {
+                                                                                                Fluttertoast.showToast(msg: "This Etape can not go down", gravity: ToastGravity.TOP);
+                                                                                              } else if (idEtapeBefore != 'null') {
+                                                                                                await _etape.where('idEtape', isEqualTo: idEtapeAfter).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                                  querySnapshot.docs.forEach((etapeAfter) {
+                                                                                                    idEtapeAfterofAfter = etapeAfter['idEtapeAfter'];
+                                                                                                  });
+                                                                                                });
+                                                                                                if (idEtapeAfterofAfter != 'null') {
+                                                                                                  _etape.doc(idEtapeNow).update({
+                                                                                                    'idEtapeBefore': idEtapeAfter,
+                                                                                                    'idEtapeAfter': idEtapeAfterofAfter,
+                                                                                                    'orderEtape': neworder,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeAfter).update({
+                                                                                                    'idEtapeBefore': idEtapeBefore,
+                                                                                                    'idEtapeAfter': idEtapeNow,
+                                                                                                    'orderEtape': oldorder,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeBefore).update({
+                                                                                                    'idEtapeAfter': idEtapeAfter,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeAfterofAfter).update({
+                                                                                                    'idEtapeBefore': idEtapeNow,
+                                                                                                  }).then((value) {
+                                                                                                    Fluttertoast.showToast(msg: "Etape Moved Down", gravity: ToastGravity.TOP);
+                                                                                                    print("Etape Moved Down");
+                                                                                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                                } else {
+                                                                                                  _etape.doc(idEtapeNow).update({
+                                                                                                    'idEtapeBefore': idEtapeAfter,
+                                                                                                    'idEtapeAfter': 'null',
+                                                                                                    'orderEtape': neworder,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeAfter).update({
+                                                                                                    'idEtapeBefore': idEtapeBefore,
+                                                                                                    'idEtapeAfter': idEtapeNow,
+                                                                                                    'orderEtape': oldorder,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeBefore).update({
+                                                                                                    'idEtapeAfter': idEtapeAfter,
+                                                                                                  }).then((value) {
+                                                                                                    Fluttertoast.showToast(msg: "Etape Moved Up", gravity: ToastGravity.TOP);
+                                                                                                    print("Etape Moved Up");
+                                                                                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                                }
+                                                                                              } else {
+                                                                                                await _etape.where('idEtape', isEqualTo: idEtapeAfter).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                                  querySnapshot.docs.forEach((etapeAfter) {
+                                                                                                    idEtapeAfterofAfter = etapeAfter['idEtapeAfter'];
+                                                                                                  });
+                                                                                                });
+                                                                                                if (idEtapeAfterofAfter != 'null') {
+                                                                                                  _etape.doc(idEtapeNow).update({
+                                                                                                    'idEtapeBefore': idEtapeAfter,
+                                                                                                    'idEtapeAfter': idEtapeAfterofAfter,
+                                                                                                    'orderEtape': '2',
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeAfter).update({
+                                                                                                    'idEtapeBefore': 'null',
+                                                                                                    'idEtapeAfter': idEtapeNow,
+                                                                                                    'orderEtape': '1',
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeAfterofAfter).update({
+                                                                                                    'idEtapeBefore': idEtapeNow,
+                                                                                                  });
+                                                                                                  _tournee.doc(tournee['idTournee']).update({
+                                                                                                    'idEtapeStart': idEtapeAfter
+                                                                                                  }).then((value) {
+                                                                                                    Fluttertoast.showToast(msg: "Etape Moved Down", gravity: ToastGravity.TOP);
+                                                                                                    print("Etape Moved Down");
+                                                                                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                                } else {
+                                                                                                  _etape.doc(idEtapeNow).update({
+                                                                                                    'idEtapeBefore': idEtapeAfter,
+                                                                                                    'idEtapeAfter': 'null',
+                                                                                                    'orderEtape': '2',
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeAfter).update({
+                                                                                                    'idEtapeBefore': 'null',
+                                                                                                    'idEtapeAfter': idEtapeNow,
+                                                                                                    'orderEtape': '1',
+                                                                                                  });
+                                                                                                  _tournee.doc(tournee['idTournee']).update({
+                                                                                                    'idEtapeStart': idEtapeAfter
+                                                                                                  }).then((value) {
+                                                                                                    Fluttertoast.showToast(msg: "Etape Moved Down", gravity: ToastGravity.TOP);
+                                                                                                    print("Etape Moved Down");
+                                                                                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                                }
+                                                                                              }
+                                                                                            },
                                                                                             icon: Icon(
                                                                                               FontAwesomeIcons.chevronCircleDown,
                                                                                               size: 12,
