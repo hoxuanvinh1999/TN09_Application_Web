@@ -903,22 +903,151 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                               width: 400,
                                                                               color: Colors.grey,
                                                                               child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                 children: [
-                                                                                  SizedBox(
-                                                                                    width: 5,
+                                                                                  Container(
+                                                                                    child: Row(
+                                                                                      children: [
+                                                                                        SizedBox(
+                                                                                          width: 5,
+                                                                                        ),
+                                                                                        Icon(FontAwesomeIcons.truck, size: 12, color: Colors.black),
+                                                                                        SizedBox(
+                                                                                          width: 5,
+                                                                                        ),
+                                                                                        Icon(FontAwesomeIcons.arrowAltCircleRight, size: 12, color: Colors.black),
+                                                                                        SizedBox(
+                                                                                          width: 5,
+                                                                                        ),
+                                                                                        Text(
+                                                                                          'Etape #' + etape['orderEtape'],
+                                                                                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
-                                                                                  Icon(FontAwesomeIcons.truck, size: 12, color: Colors.black),
-                                                                                  SizedBox(
-                                                                                    width: 5,
-                                                                                  ),
-                                                                                  Icon(FontAwesomeIcons.arrowAltCircleRight, size: 12, color: Colors.black),
-                                                                                  SizedBox(
-                                                                                    width: 5,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    'Etape #' + etape['orderEtape'],
-                                                                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                                                                                  ),
+                                                                                  Container(
+                                                                                    child: Row(
+                                                                                      children: [
+                                                                                        IconButton(
+                                                                                            onPressed: () async {
+                                                                                              // get and save information before do the change
+                                                                                              String idEtapeNow = etape['idEtape'];
+                                                                                              String idEtapeBefore = etape['idEtapeBefore'];
+                                                                                              String idEtapeAfter = etape['idEtapeAfter'];
+                                                                                              String idEtapeBeforeofBefore = '';
+                                                                                              String neworder = (int.parse(etape['orderEtape']) - 1).toString();
+                                                                                              String oldorder = etape['orderEtape'];
+                                                                                              if (idEtapeBefore == 'null') {
+                                                                                                Fluttertoast.showToast(msg: "This Etape can not go up", gravity: ToastGravity.TOP);
+                                                                                              } else if (idEtapeAfter != 'null') {
+                                                                                                await _etape.where('idEtape', isEqualTo: idEtapeBefore).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                                  querySnapshot.docs.forEach((etapeBefore) {
+                                                                                                    idEtapeBeforeofBefore = etapeBefore['idEtapeBefore'];
+                                                                                                  });
+                                                                                                });
+                                                                                                if (idEtapeBeforeofBefore != 'null') {
+                                                                                                  _etape.doc(idEtapeNow).update({
+                                                                                                    'idEtapeBefore': idEtapeBeforeofBefore,
+                                                                                                    'idEtapeAfter': idEtapeBefore,
+                                                                                                    'orderEtape': neworder,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeBefore).update({
+                                                                                                    'idEtapeBefore': idEtapeNow,
+                                                                                                    'idEtapeAfter': idEtapeAfter,
+                                                                                                    'orderEtape': oldorder,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeAfter).update({
+                                                                                                    'idEtapeBefore': idEtapeBefore,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeBeforeofBefore).update({
+                                                                                                    'idEtapeAfter': idEtapeNow,
+                                                                                                  }).then((value) {
+                                                                                                    Fluttertoast.showToast(msg: "Etape Moved Up", gravity: ToastGravity.TOP);
+                                                                                                    print("Etape Moved Up");
+                                                                                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                                } else {
+                                                                                                  _etape.doc(idEtapeNow).update({
+                                                                                                    'idEtapeBefore': 'null',
+                                                                                                    'idEtapeAfter': idEtapeBefore,
+                                                                                                    'orderEtape': '1',
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeBefore).update({
+                                                                                                    'idEtapeBefore': idEtapeNow,
+                                                                                                    'idEtapeAfter': idEtapeAfter,
+                                                                                                    'orderEtape': '2',
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeAfter).update({
+                                                                                                    'idEtapeBefore': idEtapeBefore,
+                                                                                                  });
+                                                                                                  _tournee.doc(tournee['idTournee']).update({
+                                                                                                    'idEtapeStart': idEtapeNow
+                                                                                                  }).then((value) {
+                                                                                                    Fluttertoast.showToast(msg: "Etape Moved Up", gravity: ToastGravity.TOP);
+                                                                                                    print("Etape Moved Up");
+                                                                                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                                }
+                                                                                              } else {
+                                                                                                await _etape.where('idEtape', isEqualTo: idEtapeBefore).limit(1).get().then((QuerySnapshot querySnapshot) {
+                                                                                                  querySnapshot.docs.forEach((etapeBefore) {
+                                                                                                    idEtapeBeforeofBefore = etapeBefore['idEtapeBefore'];
+                                                                                                  });
+                                                                                                });
+                                                                                                if (idEtapeBeforeofBefore != 'null') {
+                                                                                                  _etape.doc(idEtapeNow).update({
+                                                                                                    'idEtapeBefore': idEtapeBeforeofBefore,
+                                                                                                    'idEtapeAfter': idEtapeBefore,
+                                                                                                    'orderEtape': neworder,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeBefore).update({
+                                                                                                    'idEtapeBefore': idEtapeNow,
+                                                                                                    'idEtapeAfter': idEtapeAfter,
+                                                                                                    'orderEtape': oldorder,
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeBeforeofBefore).update({
+                                                                                                    'idEtapeAfter': idEtapeNow,
+                                                                                                  }).then((value) {
+                                                                                                    Fluttertoast.showToast(msg: "Etape Moved Up", gravity: ToastGravity.TOP);
+                                                                                                    print("Etape Moved Up");
+                                                                                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                                } else {
+                                                                                                  _etape.doc(idEtapeNow).update({
+                                                                                                    'idEtapeBefore': 'null',
+                                                                                                    'idEtapeAfter': idEtapeBefore,
+                                                                                                    'orderEtape': '1',
+                                                                                                  });
+                                                                                                  _etape.doc(idEtapeBefore).update({
+                                                                                                    'idEtapeBefore': idEtapeNow,
+                                                                                                    'idEtapeAfter': idEtapeAfter,
+                                                                                                    'orderEtape': '2',
+                                                                                                  });
+                                                                                                  _tournee.doc(tournee['idTournee']).update({
+                                                                                                    'idEtapeStart': idEtapeNow
+                                                                                                  }).then((value) {
+                                                                                                    Fluttertoast.showToast(msg: "Etape Moved Up", gravity: ToastGravity.TOP);
+                                                                                                    print("Etape Moved Up");
+                                                                                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                                                  }).catchError((error) => print("Failed to add user: $error"));
+                                                                                                }
+                                                                                              }
+                                                                                            },
+                                                                                            icon: Icon(
+                                                                                              FontAwesomeIcons.chevronCircleUp,
+                                                                                              size: 12,
+                                                                                            )),
+                                                                                        SizedBox(width: 10),
+                                                                                        IconButton(
+                                                                                            onPressed: () async {},
+                                                                                            icon: Icon(
+                                                                                              FontAwesomeIcons.chevronCircleDown,
+                                                                                              size: 12,
+                                                                                            )),
+                                                                                      ],
+                                                                                    ),
+                                                                                  )
                                                                                 ],
                                                                               ),
                                                                             ),
