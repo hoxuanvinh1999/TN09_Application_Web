@@ -15,8 +15,10 @@ import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_if_a_time.dart';
+import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
+import 'package:tn09_app_web_demo/pages/math_function/is_Inconnu.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
@@ -51,6 +53,12 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
       FirebaseFirestore.instance.collection("Tournee");
   //For Etape
   CollectionReference _etape = FirebaseFirestore.instance.collection("Etape");
+  // for Frequence
+  CollectionReference _frequence =
+      FirebaseFirestore.instance.collection("Frequence");
+  //For Adresse
+  CollectionReference _adresse =
+      FirebaseFirestore.instance.collection("Adresse");
   @override
   Widget build(BuildContext context) {
     //For set up Date
@@ -840,6 +848,8 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                     isEqualTo:
                                                                         tournee[
                                                                             'idTournee'])
+                                                                .orderBy(
+                                                                    'orderEtape')
                                                                 .snapshots(),
                                                             builder: (BuildContext
                                                                     context,
@@ -848,8 +858,10 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                     snapshot) {
                                                               if (snapshot
                                                                   .hasError) {
+                                                                print(
+                                                                    '${snapshot.error.toString()}');
                                                                 return Text(
-                                                                    'Something went wrong');
+                                                                    'Something went wrong + ${snapshot.error.toString()}');
                                                               }
 
                                                               if (snapshot
@@ -885,7 +897,207 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                             .green,
                                                                         child:
                                                                             Column(
-                                                                          children: [],
+                                                                          children: [
+                                                                            Container(
+                                                                              height: 50,
+                                                                              width: 400,
+                                                                              color: Colors.grey,
+                                                                              child: Row(
+                                                                                children: [
+                                                                                  SizedBox(
+                                                                                    width: 5,
+                                                                                  ),
+                                                                                  Icon(FontAwesomeIcons.truck, size: 12, color: Colors.black),
+                                                                                  SizedBox(
+                                                                                    width: 5,
+                                                                                  ),
+                                                                                  Icon(FontAwesomeIcons.arrowAltCircleRight, size: 12, color: Colors.black),
+                                                                                  SizedBox(
+                                                                                    width: 5,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    'Etape #' + etape['orderEtape'],
+                                                                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 5,
+                                                                            ),
+                                                                            Container(
+                                                                              width: 390,
+                                                                              height: 200,
+                                                                              color: Colors.red,
+                                                                              child: StreamBuilder<QuerySnapshot>(
+                                                                                stream: _frequence.where('idFrequence', isEqualTo: etape['idFrequenceEtape']).snapshots(),
+                                                                                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                                                                  if (snapshot.hasError) {
+                                                                                    return Text('Something went wrong');
+                                                                                  }
+
+                                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                    return CircularProgressIndicator();
+                                                                                  }
+                                                                                  // print('$snapshot');
+                                                                                  return SingleChildScrollView(
+                                                                                    child: Column(
+                                                                                      children: snapshot.data!.docs.map((DocumentSnapshot document_frequence) {
+                                                                                        Map<String, dynamic> frequence = document_frequence.data()! as Map<String, dynamic>;
+                                                                                        // print('$collecteur');
+                                                                                        return Container(
+                                                                                          width: 380,
+                                                                                          height: 200,
+                                                                                          color: Colors.red,
+                                                                                          child: Row(
+                                                                                            children: [
+                                                                                              SizedBox(
+                                                                                                width: 10,
+                                                                                              ),
+                                                                                              Container(
+                                                                                                width: 200,
+                                                                                                height: 180,
+                                                                                                color: Colors.blue,
+                                                                                                child: Column(
+                                                                                                  children: [
+                                                                                                    SizedBox(
+                                                                                                      height: 10,
+                                                                                                    ),
+                                                                                                    Text(limitString(text: frequence['nomAdresseFrequence'], limit_long: 30)),
+                                                                                                    Row(
+                                                                                                      children: [
+                                                                                                        SizedBox(
+                                                                                                          width: 5,
+                                                                                                        ),
+                                                                                                        Icon(FontAwesomeIcons.undoAlt, size: 12, color: Colors.black),
+                                                                                                        SizedBox(
+                                                                                                          width: 2,
+                                                                                                        ),
+                                                                                                        Text(
+                                                                                                          titleFrequence(frequence: frequence['frequence'], jourFrequence: frequence['jourFrequence']),
+                                                                                                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                    StreamBuilder<QuerySnapshot>(
+                                                                                                      stream: _adresse.where('idAdresse', isEqualTo: frequence['idAdresseFrequence']).limit(1).snapshots(),
+                                                                                                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                                                                                        if (snapshot.hasError) {
+                                                                                                          return Text('Something went wrong');
+                                                                                                        }
+
+                                                                                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                                          return CircularProgressIndicator();
+                                                                                                        }
+                                                                                                        // print('$snapshot');
+                                                                                                        return SingleChildScrollView(
+                                                                                                          child: Row(
+                                                                                                            children: snapshot.data!.docs.map((DocumentSnapshot document_adresse) {
+                                                                                                              Map<String, dynamic> adresse = document_adresse.data()! as Map<String, dynamic>;
+                                                                                                              // print('$collecteur');
+                                                                                                              return Column(
+                                                                                                                children: [
+                                                                                                                  Text(adresse['ligne1Adresse'], style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                                                                                                  Text(adresse['codepostalAdresse'] + ' ' + adresse['villeAdresse'] + ' ' + adresse['paysAdresse'], style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                                                                                                ],
+                                                                                                              );
+                                                                                                            }).toList(),
+                                                                                                          ),
+                                                                                                        );
+                                                                                                      },
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                              SizedBox(
+                                                                                                width: 5,
+                                                                                              ),
+                                                                                              Container(
+                                                                                                width: 150,
+                                                                                                height: 180,
+                                                                                                color: Colors.blue,
+                                                                                                child: Column(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                                  children: [
+                                                                                                    SizedBox(
+                                                                                                      height: 16,
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      children: [
+                                                                                                        Icon(
+                                                                                                          FontAwesomeIcons.clock,
+                                                                                                          size: 12,
+                                                                                                        ),
+                                                                                                        SizedBox(
+                                                                                                          width: 5,
+                                                                                                        ),
+                                                                                                        Text(
+                                                                                                          'Durée ' + frequence['dureeFrequence'] + ' min',
+                                                                                                          style: TextStyle(
+                                                                                                            color: Colors.black,
+                                                                                                            fontSize: 12,
+                                                                                                            fontWeight: FontWeight.bold,
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: 16,
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      children: [
+                                                                                                        Icon(
+                                                                                                          FontAwesomeIcons.clock,
+                                                                                                          size: 12,
+                                                                                                        ),
+                                                                                                        SizedBox(
+                                                                                                          width: 5,
+                                                                                                        ),
+                                                                                                        Text(
+                                                                                                          'Start ' + ' min',
+                                                                                                          style: TextStyle(
+                                                                                                            color: Colors.black,
+                                                                                                            fontSize: 12,
+                                                                                                            fontWeight: FontWeight.bold,
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: 16,
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      children: [
+                                                                                                        Icon(
+                                                                                                          FontAwesomeIcons.moneyCheckAlt,
+                                                                                                          size: 12,
+                                                                                                        ),
+                                                                                                        SizedBox(
+                                                                                                          width: 5,
+                                                                                                        ),
+                                                                                                        Text(
+                                                                                                          'Tarif ' + isInconnu(text: frequence['tarifFrequence']) + ' €',
+                                                                                                          style: TextStyle(
+                                                                                                            color: Colors.black,
+                                                                                                            fontSize: 12,
+                                                                                                            fontWeight: FontWeight.bold,
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    )
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        );
+                                                                                      }).toList(),
+                                                                                    ),
+                                                                                  );
+                                                                                },
+                                                                              ),
+                                                                            )
+                                                                          ],
                                                                         ));
                                                                   }).toList(),
                                                                 ),
