@@ -9,6 +9,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
+import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_numeric_function.dart';
