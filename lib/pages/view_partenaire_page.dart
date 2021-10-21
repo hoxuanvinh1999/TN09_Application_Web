@@ -12,6 +12,7 @@ import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
+import 'package:tn09_app_web_demo/pages/math_function/is_Inconnu.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_numeric_function.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
@@ -83,10 +84,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   TextEditingController _surfacepassageAdresseController =
       TextEditingController();
 
-  isInconnu({required String text}) {
-    return text == '' ? 'Inconnu' : text;
-  }
-
   //for modify Adresse
   final _modifyAdressesKeyForm = GlobalKey<FormState>();
   TextEditingController _nomPartenaireAdresseModifyController =
@@ -123,14 +120,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     'Samedi',
     'Dimanche',
   ];
-  String titleFrequence(
-      {required String frequence, required String jourFrequence}) {
-    if (frequence == '1') {
-      return jourFrequence + ' chaque semaine';
-    } else {
-      return jourFrequence + ' toutes les ' + frequence + ' semaines';
-    }
-  }
 
   // for Vehicule
   CollectionReference _vehicule =
