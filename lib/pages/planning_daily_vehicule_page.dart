@@ -13,6 +13,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
+import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
+import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
@@ -40,7 +42,11 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
   //For Collecteur
   CollectionReference _collecteur =
       FirebaseFirestore.instance.collection("Collecteur");
-
+  //For Tournee
+  CollectionReference _tournee =
+      FirebaseFirestore.instance.collection("Tournee");
+  //For Etape
+  CollectionReference _etape = FirebaseFirestore.instance.collection("Etape");
   @override
   Widget build(BuildContext context) {
     //For set up Date
@@ -374,7 +380,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                   ),
                   Container(
                     width: 1190,
-                    height: 1000,
+                    height: 2500,
                     color: Colors.yellow,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -386,7 +392,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                         ),
                         Container(
                           width: 200,
-                          height: 800,
+                          height: 1000,
                           color: Colors.red,
                         ),
                         SizedBox(
@@ -394,7 +400,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                         ),
                         Container(
                           width: 900,
-                          height: 800,
+                          height: 2000,
                           color: Colors.red,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -505,6 +511,175 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                         ],
                                                       ),
                                                     )));
+                                          }).toList(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: 1800,
+                                  width: 890,
+                                  color: Colors.blue,
+                                  child: StreamBuilder<QuerySnapshot>(
+                                    stream: _tournee
+                                        .where('idVehicule',
+                                            isEqualTo: widget
+                                                .dataVehicule['idVehicule'])
+                                        .where('dateTournee',
+                                            isEqualTo: getDateText(
+                                                date: widget.thisDay))
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text('Something went wrong');
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+                                      // print('$snapshot');
+                                      return SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: snapshot.data!.docs.map(
+                                              (DocumentSnapshot
+                                                  document_tournee) {
+                                            Map<String, dynamic> tournee =
+                                                document_tournee.data()!
+                                                    as Map<String, dynamic>;
+                                            // TextEditingController
+                                            //     _nomCollecteurController =
+                                            //     TextEditingController();
+                                            // print('$collecteur');
+                                            return Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: 40),
+                                                width: 880,
+                                                height: 900,
+                                                color: Colors.white,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      width: 880,
+                                                      height: 60,
+                                                      color: Color(int.parse(
+                                                          tournee[
+                                                              'colorTournee'])),
+                                                      child: Row(children: [
+                                                        SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        buildVehiculeIcon(
+                                                            icontype: widget
+                                                                    .dataVehicule[
+                                                                'typeVehicule'],
+                                                            iconcolor:
+                                                                '0xff000000',
+                                                            sizeIcon: 15.0),
+                                                        SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Text(
+                                                          limitString(
+                                                              text: 'Tournee: ' +
+                                                                  tournee[
+                                                                      'idTournee'],
+                                                              limit_long: 30),
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ]),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Container(
+                                                          width: 400,
+                                                          height: 800,
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical: 20),
+                                                          color: Colors.yellow,
+                                                          child: StreamBuilder<
+                                                              QuerySnapshot>(
+                                                            stream: _etape
+                                                                .where(
+                                                                    'idTourneeEtape',
+                                                                    isEqualTo:
+                                                                        tournee[
+                                                                            'idTournee'])
+                                                                .snapshots(),
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        QuerySnapshot>
+                                                                    snapshot) {
+                                                              if (snapshot
+                                                                  .hasError) {
+                                                                return Text(
+                                                                    'Something went wrong');
+                                                              }
+
+                                                              if (snapshot
+                                                                      .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting) {
+                                                                return CircularProgressIndicator();
+                                                              }
+                                                              // print('$snapshot');
+                                                              return SingleChildScrollView(
+                                                                child: Column(
+                                                                  children: snapshot
+                                                                      .data!
+                                                                      .docs
+                                                                      .map((DocumentSnapshot
+                                                                          document_etape) {
+                                                                    Map<String,
+                                                                            dynamic>
+                                                                        etape =
+                                                                        document_etape.data()! as Map<
+                                                                            String,
+                                                                            dynamic>;
+                                                                    // print('$collecteur');
+                                                                    return Container(
+                                                                        width:
+                                                                            400,
+                                                                        height:
+                                                                            300,
+                                                                        margin: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                10),
+                                                                        color: Colors
+                                                                            .green,
+                                                                        child:
+                                                                            Column(
+                                                                          children: [],
+                                                                        ));
+                                                                  }).toList(),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ));
                                           }).toList(),
                                         ),
                                       );
