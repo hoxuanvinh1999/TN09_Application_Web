@@ -629,6 +629,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_monday[
                                                       'nombredeEtape']),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 20),
                                           color: Color(int.parse(
                                               tournee_monday['colorTournee'])),
                                           child: Column(
@@ -776,6 +778,10 @@ class _PlanningWeeklyCompactePageState
                                                             width: 120,
                                                             height: 80,
                                                             color: Colors.white,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10),
                                                             child: Text(etape[
                                                                 'nomAdresseEtape']),
                                                           );
@@ -785,19 +791,6 @@ class _PlanningWeeklyCompactePageState
                                                   },
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: SizedBox(
-                                                    height: 5,
-                                                    child: Container(
-                                                      width: 160,
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
                                             ],
                                           ));
                                     }).toList(),
@@ -844,6 +837,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_tuesday[
                                                       'nombredeEtape']),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 20),
                                           color: Color(int.parse(
                                               tournee_tuesday['colorTournee'])),
                                           child: Column(
@@ -992,6 +987,10 @@ class _PlanningWeeklyCompactePageState
                                                             width: 120,
                                                             height: 80,
                                                             color: Colors.white,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10),
                                                             child: Text(etape[
                                                                 'nomAdresseEtape']),
                                                           );
@@ -1001,19 +1000,6 @@ class _PlanningWeeklyCompactePageState
                                                   },
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: SizedBox(
-                                                    height: 5,
-                                                    child: Container(
-                                                      width: 160,
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
                                             ],
                                           ));
                                     }).toList(),
@@ -1061,6 +1047,8 @@ class _PlanningWeeklyCompactePageState
                                                   double.parse(
                                                       tournee_wednesday[
                                                           'nombredeEtape']),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 20),
                                           color: Color(int.parse(
                                               tournee_wednesday[
                                                   'colorTournee'])),
@@ -1211,6 +1199,10 @@ class _PlanningWeeklyCompactePageState
                                                             width: 120,
                                                             height: 80,
                                                             color: Colors.white,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10),
                                                             child: Text(etape[
                                                                 'nomAdresseEtape']),
                                                           );
@@ -1220,19 +1212,6 @@ class _PlanningWeeklyCompactePageState
                                                   },
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: SizedBox(
-                                                    height: 5,
-                                                    child: Container(
-                                                      width: 160,
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
                                             ],
                                           ));
                                     }).toList(),
@@ -1279,6 +1258,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_thursday[
                                                       'nombredeEtape']),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 20),
                                           color: Color(int.parse(
                                               tournee_thursday[
                                                   'colorTournee'])),
@@ -1429,6 +1410,10 @@ class _PlanningWeeklyCompactePageState
                                                             width: 120,
                                                             height: 80,
                                                             color: Colors.white,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10),
                                                             child: Text(etape[
                                                                 'nomAdresseEtape']),
                                                           );
@@ -1438,19 +1423,6 @@ class _PlanningWeeklyCompactePageState
                                                   },
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: SizedBox(
-                                                    height: 5,
-                                                    child: Container(
-                                                      width: 160,
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
                                             ],
                                           ));
                                     }).toList(),
@@ -1496,6 +1468,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_friday[
                                                       'nombredeEtape']),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 20),
                                           color: Color(int.parse(
                                               tournee_friday['colorTournee'])),
                                           child: Column(
@@ -1643,6 +1617,10 @@ class _PlanningWeeklyCompactePageState
                                                             width: 120,
                                                             height: 80,
                                                             color: Colors.white,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10),
                                                             child: Text(etape[
                                                                 'nomAdresseEtape']),
                                                           );
@@ -1652,19 +1630,6 @@ class _PlanningWeeklyCompactePageState
                                                   },
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: SizedBox(
-                                                    height: 5,
-                                                    child: Container(
-                                                      width: 160,
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
                                             ],
                                           ));
                                     }).toList(),
@@ -1711,6 +1676,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_saturday[
                                                       'nombredeEtape']),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 20),
                                           color: Color(int.parse(
                                               tournee_saturday[
                                                   'colorTournee'])),
@@ -1861,6 +1828,10 @@ class _PlanningWeeklyCompactePageState
                                                             width: 120,
                                                             height: 80,
                                                             color: Colors.white,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10),
                                                             child: Text(etape[
                                                                 'nomAdresseEtape']),
                                                           );
@@ -1870,19 +1841,6 @@ class _PlanningWeeklyCompactePageState
                                                   },
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: SizedBox(
-                                                    height: 5,
-                                                    child: Container(
-                                                      width: 160,
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
                                             ],
                                           ));
                                     }).toList(),
@@ -1929,6 +1887,8 @@ class _PlanningWeeklyCompactePageState
                                               80 *
                                                   double.parse(tournee_sunday[
                                                       'nombredeEtape']),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 20),
                                           color: Color(int.parse(
                                               tournee_sunday['colorTournee'])),
                                           child: Column(
@@ -2076,6 +2036,10 @@ class _PlanningWeeklyCompactePageState
                                                             width: 120,
                                                             height: 80,
                                                             color: Colors.white,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10),
                                                             child: Text(etape[
                                                                 'nomAdresseEtape']),
                                                           );
@@ -2085,19 +2049,6 @@ class _PlanningWeeklyCompactePageState
                                                   },
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: SizedBox(
-                                                    height: 5,
-                                                    child: Container(
-                                                      width: 160,
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
                                             ],
                                           ));
                                     }).toList(),
