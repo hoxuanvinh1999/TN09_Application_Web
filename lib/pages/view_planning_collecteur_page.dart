@@ -694,7 +694,12 @@ class _ViewPlanningCollecteurPageState
                                                     return Container(
                                                         height: 150,
                                                         width: 130,
-                                                        color: Colors.red,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
+                                                        color: Color(int.parse(
+                                                            tournee_monday[
+                                                                'colorTournee'])),
                                                         child: Column(
                                                           children: [
                                                             Container(
@@ -846,21 +851,6 @@ class _ViewPlanningCollecteurPageState
                                                                     )
                                                                   ],
                                                                 )),
-                                                            Expanded(
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: SizedBox(
-                                                                  height: 5,
-                                                                  child:
-                                                                      Container(
-                                                                    width: 140,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
                                                           ],
                                                         ));
                                                   }).toList(),
@@ -912,7 +902,12 @@ class _ViewPlanningCollecteurPageState
                                                     return Container(
                                                         height: 150,
                                                         width: 130,
-                                                        color: Colors.red,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
+                                                        color: Color(int.parse(
+                                                            tournee_tuesday[
+                                                                'colorTournee'])),
                                                         child: Column(
                                                           children: [
                                                             Container(
@@ -1064,21 +1059,6 @@ class _ViewPlanningCollecteurPageState
                                                                     )
                                                                   ],
                                                                 )),
-                                                            Expanded(
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: SizedBox(
-                                                                  height: 5,
-                                                                  child:
-                                                                      Container(
-                                                                    width: 140,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
                                                           ],
                                                         ));
                                                   }).toList(),
@@ -1130,7 +1110,12 @@ class _ViewPlanningCollecteurPageState
                                                     return Container(
                                                         height: 150,
                                                         width: 130,
-                                                        color: Colors.red,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
+                                                        color: Color(int.parse(
+                                                            tournee_wednesday[
+                                                                'colorTournee'])),
                                                         child: Column(
                                                           children: [
                                                             Container(
@@ -1282,21 +1267,6 @@ class _ViewPlanningCollecteurPageState
                                                                     )
                                                                   ],
                                                                 )),
-                                                            Expanded(
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: SizedBox(
-                                                                  height: 5,
-                                                                  child:
-                                                                      Container(
-                                                                    width: 140,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
                                                           ],
                                                         ));
                                                   }).toList(),
@@ -1348,7 +1318,12 @@ class _ViewPlanningCollecteurPageState
                                                     return Container(
                                                         height: 150,
                                                         width: 130,
-                                                        color: Colors.red,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
+                                                        color: Color(int.parse(
+                                                            tournee_thursday[
+                                                                'colorTournee'])),
                                                         child: Column(
                                                           children: [
                                                             Container(
@@ -1500,21 +1475,6 @@ class _ViewPlanningCollecteurPageState
                                                                     )
                                                                   ],
                                                                 )),
-                                                            Expanded(
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: SizedBox(
-                                                                  height: 5,
-                                                                  child:
-                                                                      Container(
-                                                                    width: 140,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
                                                           ],
                                                         ));
                                                   }).toList(),
@@ -1566,7 +1526,12 @@ class _ViewPlanningCollecteurPageState
                                                     return Container(
                                                         height: 150,
                                                         width: 130,
-                                                        color: Colors.red,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
+                                                        color: Color(int.parse(
+                                                            tournee_friday[
+                                                                'colorTournee'])),
                                                         child: Column(
                                                           children: [
                                                             Container(
@@ -1718,21 +1683,6 @@ class _ViewPlanningCollecteurPageState
                                                                     )
                                                                   ],
                                                                 )),
-                                                            Expanded(
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: SizedBox(
-                                                                  height: 5,
-                                                                  child:
-                                                                      Container(
-                                                                    width: 140,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
                                                           ],
                                                         ));
                                                   }).toList(),
@@ -1784,7 +1734,12 @@ class _ViewPlanningCollecteurPageState
                                                     return Container(
                                                         height: 150,
                                                         width: 130,
-                                                        color: Colors.red,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
+                                                        color: Color(int.parse(
+                                                            tournee_saturday[
+                                                                'colorTournee'])),
                                                         child: Column(
                                                           children: [
                                                             Container(
@@ -1936,21 +1891,6 @@ class _ViewPlanningCollecteurPageState
                                                                     )
                                                                   ],
                                                                 )),
-                                                            Expanded(
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: SizedBox(
-                                                                  height: 5,
-                                                                  child:
-                                                                      Container(
-                                                                    width: 140,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
                                                           ],
                                                         ));
                                                   }).toList(),
