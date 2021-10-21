@@ -1094,6 +1094,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                   int before = 0;
                                   int end = 0;
                                   String idEtapeStart = '';
+                                  int orderEtape = 1;
                                   for (int i = 0; i < _count; i++) {
                                     if (!found_start) {
                                       if (list_Etape_confirm[i]) {
@@ -1110,6 +1111,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                           'idEtape': list_IdEtape[i],
                                           'idTourneeEtape': newIdTournee,
                                           'idEtapebefore': 'null',
+                                          'orderEtape': orderEtape.toString(),
                                           'idPartenaireEtape':
                                               list_choiceIdPartenaire[i],
                                           'idVehiculeEtape': choiceIdVehicule,
@@ -1135,6 +1137,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                               list_tarifFrequence[i],
                                           'jourEtape': getDateText(date: date),
                                         });
+                                        orderEtape++;
                                         end = i;
                                       }
                                     } else {
@@ -1151,6 +1154,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                           'idEtapebefore': list_IdEtape[before],
                                           'idPartenaireEtape':
                                               list_choiceIdPartenaire[i],
+                                          'orderEtape': orderEtape.toString(),
                                           'idVehiculeEtape': choiceIdVehicule,
                                           'idCollecteurEtape':
                                               choiceIdCollecteur,
@@ -1174,6 +1178,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                               list_tarifFrequence[i],
                                           'jourEtape': getDateText(date: date),
                                         });
+                                        orderEtape++;
                                         before = i;
                                         end = i;
                                       }
