@@ -682,6 +682,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                 double.parse(
                                                                     tournee_monday[
                                                                         'nombredeEtape']),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
                                                         color: Color(int.parse(
                                                             tournee_monday[
                                                                 'colorTournee'])),
@@ -836,6 +839,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                               80,
                                                                           color:
                                                                               Colors.white,
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(vertical: 5),
                                                                           child:
                                                                               Text(etape['nomAdresseEtape']),
                                                                         );
@@ -902,6 +907,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                 double.parse(
                                                                     tournee_tuesday[
                                                                         'nombredeEtape']),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
                                                         color: Color(int.parse(
                                                             tournee_tuesday[
                                                                 'colorTournee'])),
@@ -1056,6 +1064,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                               80,
                                                                           color:
                                                                               Colors.white,
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(vertical: 5),
                                                                           child:
                                                                               Text(etape['nomAdresseEtape']),
                                                                         );
@@ -1122,6 +1132,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                 double.parse(
                                                                     tournee_wednesday[
                                                                         'nombredeEtape']),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
                                                         color: Color(int.parse(
                                                             tournee_wednesday[
                                                                 'colorTournee'])),
@@ -1276,6 +1289,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                               80,
                                                                           color:
                                                                               Colors.white,
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(vertical: 5),
                                                                           child:
                                                                               Text(etape['nomAdresseEtape']),
                                                                         );
@@ -1342,6 +1357,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                 double.parse(
                                                                     tournee_thursday[
                                                                         'nombredeEtape']),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
                                                         color: Color(int.parse(
                                                             tournee_thursday[
                                                                 'colorTournee'])),
@@ -1496,6 +1514,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                               80,
                                                                           color:
                                                                               Colors.white,
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(vertical: 5),
                                                                           child:
                                                                               Text(etape['nomAdresseEtape']),
                                                                         );
@@ -1562,6 +1582,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                 double.parse(
                                                                     tournee_friday[
                                                                         'nombredeEtape']),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
                                                         color: Color(int.parse(
                                                             tournee_friday[
                                                                 'colorTournee'])),
@@ -1716,6 +1739,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                               80,
                                                                           color:
                                                                               Colors.white,
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(vertical: 5),
                                                                           child:
                                                                               Text(etape['nomAdresseEtape']),
                                                                         );
@@ -1782,6 +1807,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                 double.parse(
                                                                     tournee_saturday[
                                                                         'nombredeEtape']),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
                                                         color: Color(int.parse(
                                                             tournee_saturday[
                                                                 'colorTournee'])),
@@ -1936,6 +1964,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                               80,
                                                                           color:
                                                                               Colors.white,
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(vertical: 5),
                                                                           child:
                                                                               Text(etape['nomAdresseEtape']),
                                                                         );
@@ -2002,6 +2032,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                 double.parse(
                                                                     tournee_sunday[
                                                                         'nombredeEtape']),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 20),
                                                         color: Color(int.parse(
                                                             tournee_sunday[
                                                                 'colorTournee'])),
@@ -2156,6 +2189,8 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                               80,
                                                                           color:
                                                                               Colors.white,
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(vertical: 5),
                                                                           child:
                                                                               Text(etape['nomAdresseEtape']),
                                                                         );
