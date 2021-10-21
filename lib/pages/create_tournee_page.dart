@@ -1110,7 +1110,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                         await _etape.doc(list_IdEtape[i]).set({
                                           'idEtape': list_IdEtape[i],
                                           'idTourneeEtape': newIdTournee,
-                                          'idEtapebefore': 'null',
+                                          'idEtapeBefore': 'null',
                                           'orderEtape': orderEtape.toString(),
                                           'idPartenaireEtape':
                                               list_choiceIdPartenaire[i],
@@ -1151,7 +1151,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                         await _etape.doc(list_IdEtape[i]).set({
                                           'idEtape': list_IdEtape[i],
                                           'idTourneeEtape': newIdTournee,
-                                          'idEtapebefore': list_IdEtape[before],
+                                          'idEtapeBefore': list_IdEtape[before],
                                           'idPartenaireEtape':
                                               list_choiceIdPartenaire[i],
                                           'orderEtape': orderEtape.toString(),
