@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
@@ -13,11 +14,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
+import 'package:tn09_app_web_demo/pages/math_function/check_if_a_time.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
+import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
+import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
 class PlanningDailyVehiculePage extends StatefulWidget {
@@ -79,6 +83,18 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                 thisDay: newDate,
                 dataVehicule: widget.dataVehicule,
               )));
+    }
+
+    //Pick Time Widget
+    Future pickTime(
+        {required BuildContext context, required TimeOfDay time}) async {
+      final newTime =
+          await showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+      if (newTime == null) {
+        return;
+      }
+      setState(() => time = newTime);
     }
 
     return Scaffold(
@@ -448,7 +464,9 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                     ),
                                                     margin:
                                                         const EdgeInsets.only(
-                                                            top: 5, bottom: 5),
+                                                            top: 5,
+                                                            bottom: 5,
+                                                            left: 5),
                                                     child: GestureDetector(
                                                       onTap: () {
                                                         if (vehicule[
@@ -493,21 +511,6 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                       .bold,
                                                             ),
                                                           ),
-                                                          Expanded(
-                                                            child: Align(
-                                                              alignment: Alignment
-                                                                  .bottomRight,
-                                                              child: SizedBox(
-                                                                child:
-                                                                    Container(
-                                                                  width: 2,
-                                                                  height: 50,
-                                                                  color: Colors
-                                                                      .green,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
                                                         ],
                                                       ),
                                                     )));
@@ -554,10 +557,15 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                             Map<String, dynamic> tournee =
                                                 document_tournee.data()!
                                                     as Map<String, dynamic>;
-                                            // TextEditingController
-                                            //     _nomCollecteurController =
-                                            //     TextEditingController();
-                                            // print('$collecteur');
+                                            TextEditingController
+                                                _timeStartController =
+                                                TextEditingController(
+                                                    text: tournee['startTime']);
+                                            TextEditingController
+                                                _newCollecteur =
+                                                TextEditingController();
+                                            String idCollecteurTournee =
+                                                tournee['idCollecteur'];
                                             return Container(
                                                 margin: EdgeInsets.symmetric(
                                                     vertical: 40),
@@ -598,6 +606,215 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                   FontWeight
                                                                       .bold),
                                                         ),
+                                                        SizedBox(
+                                                          width: 50,
+                                                        ),
+                                                        Icon(
+                                                            FontAwesomeIcons
+                                                                .user,
+                                                            size: 15,
+                                                            color:
+                                                                Colors.black),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        StreamBuilder<
+                                                                QuerySnapshot>(
+                                                            stream: _collecteur
+                                                                .where(
+                                                                    'idCollecteur',
+                                                                    isNotEqualTo:
+                                                                        'null')
+                                                                .snapshots(),
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        QuerySnapshot>
+                                                                    snapshot) {
+                                                              if (snapshot
+                                                                  .hasError) {
+                                                                return Text(
+                                                                    'Something went wrong');
+                                                              }
+
+                                                              if (snapshot
+                                                                      .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting) {
+                                                                return CircularProgressIndicator();
+                                                              }
+                                                              return DropdownButton(
+                                                                onChanged: (String?
+                                                                    changedValue) async {
+                                                                  idCollecteurTournee =
+                                                                      changedValue!;
+                                                                  // print(
+                                                                  //     'idCollecteurTournee $idCollecteurTournee');
+                                                                  // print(
+                                                                  //     'changedValue $changedValue');
+                                                                  await _collecteur
+                                                                      .where(
+                                                                          'idCollecteur',
+                                                                          isEqualTo:
+                                                                              changedValue)
+                                                                      .limit(1)
+                                                                      .get()
+                                                                      .then((QuerySnapshot
+                                                                          querySnapshot) {
+                                                                    querySnapshot
+                                                                        .docs
+                                                                        .forEach(
+                                                                            (doc) {
+                                                                      _newCollecteur
+                                                                              .text =
+                                                                          doc['nomCollecteur'];
+                                                                    });
+                                                                  });
+                                                                },
+                                                                value:
+                                                                    idCollecteurTournee,
+                                                                items: snapshot
+                                                                    .data!.docs
+                                                                    .map((DocumentSnapshot
+                                                                        document_collecteur) {
+                                                                  Map<String,
+                                                                          dynamic>
+                                                                      collecteur =
+                                                                      document_collecteur
+                                                                              .data()!
+                                                                          as Map<
+                                                                              String,
+                                                                              dynamic>;
+                                                                  return DropdownMenuItem<
+                                                                      String>(
+                                                                    value: collecteur[
+                                                                        'idCollecteur'],
+                                                                    child: Text(
+                                                                        collecteur[
+                                                                            'nomCollecteur']),
+                                                                  );
+                                                                }).toList(),
+                                                              );
+                                                            }),
+                                                        SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Container(
+                                                          width: 100,
+                                                          height: 50,
+                                                          color: Color(
+                                                              int.parse(tournee[
+                                                                  'colorTournee'])),
+                                                          child: TextFormField(
+                                                            enabled: false,
+                                                            controller:
+                                                                _newCollecteur,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              labelText:
+                                                                  'New Collecteur',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Icon(
+                                                            FontAwesomeIcons
+                                                                .clock,
+                                                            size: 15,
+                                                            color:
+                                                                Colors.black),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Container(
+                                                          width: 100,
+                                                          height: 50,
+                                                          color: Color(
+                                                              int.parse(tournee[
+                                                                  'colorTournee'])),
+                                                          child: TextFormField(
+                                                            controller:
+                                                                _timeStartController,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              labelText:
+                                                                  'TimeStart',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Container(
+                                                          width: 50,
+                                                          height: 50,
+                                                          color: Colors.blue,
+                                                          child: IconButton(
+                                                            icon: const Icon(
+                                                              FontAwesomeIcons
+                                                                  .check,
+                                                              size: 15,
+                                                            ),
+                                                            tooltip:
+                                                                'Modify Tournee',
+                                                            onPressed: () {
+                                                              if (idCollecteurTournee ==
+                                                                      tournee[
+                                                                          'idCollecteur'] &&
+                                                                  _timeStartController
+                                                                          .text ==
+                                                                      tournee[
+                                                                          'startTime']) {
+                                                                Fluttertoast.showToast(
+                                                                    msg:
+                                                                        "You changed nothing",
+                                                                    gravity:
+                                                                        ToastGravity
+                                                                            .TOP);
+                                                              } else if (!check_if_a_time(
+                                                                  check: _timeStartController
+                                                                      .text)) {
+                                                                Fluttertoast.showToast(
+                                                                    msg:
+                                                                        "Time form is xx:xx",
+                                                                    gravity:
+                                                                        ToastGravity
+                                                                            .TOP);
+                                                              } else {
+                                                                _tournee
+                                                                    .doc(tournee[
+                                                                        'idTournee'])
+                                                                    .update({
+                                                                  'startTime':
+                                                                      _timeStartController
+                                                                          .text,
+                                                                  'idCollecteur':
+                                                                      idCollecteurTournee,
+                                                                }).then(
+                                                                        (value) {
+                                                                  Fluttertoast.showToast(
+                                                                      msg:
+                                                                          "Tournee Modified",
+                                                                      gravity:
+                                                                          ToastGravity
+                                                                              .TOP);
+                                                                  print(
+                                                                      "Tournee Modified");
+                                                                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                      builder: (context) => PlanningDailyVehiculePage(
+                                                                          thisDay: widget
+                                                                              .thisDay,
+                                                                          dataVehicule:
+                                                                              widget.dataVehicule)));
+                                                                }).catchError(
+                                                                        (error) =>
+                                                                            print("Failed to add user: $error"));
+                                                              }
+                                                            },
+                                                          ),
+                                                        )
                                                       ]),
                                                     ),
                                                     Row(
