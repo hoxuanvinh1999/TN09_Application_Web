@@ -646,11 +646,14 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                 .where('idVehicule',
                                                     isEqualTo: dataVehicule[
                                                         'idVehicule'])
+                                                .orderBy('startTime')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
                                                     snapshot) {
                                               if (snapshot.hasError) {
+                                                print(
+                                                    '${snapshot.error.toString()}');
                                                 return Text(
                                                     'Something went wrong');
                                               }
@@ -871,6 +874,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                 .where('idVehicule',
                                                     isEqualTo: dataVehicule[
                                                         'idVehicule'])
+                                                .orderBy('startTime')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
@@ -1096,6 +1100,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                 .where('idVehicule',
                                                     isEqualTo: dataVehicule[
                                                         'idVehicule'])
+                                                .orderBy('startTime')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
@@ -1321,6 +1326,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                 .where('idVehicule',
                                                     isEqualTo: dataVehicule[
                                                         'idVehicule'])
+                                                .orderBy('startTime')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
@@ -1546,6 +1552,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                 .where('idVehicule',
                                                     isEqualTo: dataVehicule[
                                                         'idVehicule'])
+                                                .orderBy('startTime')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
@@ -1771,6 +1778,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                 .where('idVehicule',
                                                     isEqualTo: dataVehicule[
                                                         'idVehicule'])
+                                                .orderBy('startTime')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
@@ -1996,6 +2004,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                 .where('idVehicule',
                                                     isEqualTo: dataVehicule[
                                                         'idVehicule'])
+                                                .orderBy('startTime')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
