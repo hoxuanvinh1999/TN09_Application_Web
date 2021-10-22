@@ -435,8 +435,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                   color: Colors.green,
                                   child: StreamBuilder<QuerySnapshot>(
                                     stream: _vehicule
-                                        .where('idVehicule',
-                                            isNotEqualTo: 'null')
+                                        .orderBy('orderVehicule')
                                         .snapshots(),
                                     builder: (BuildContext context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -448,6 +447,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                           ConnectionState.waiting) {
                                         return CircularProgressIndicator();
                                       }
+
                                       // print('$snapshot');
                                       return SingleChildScrollView(
                                         child: Row(
@@ -458,6 +458,10 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                 document_vehicule.data()!
                                                     as Map<String, dynamic>;
                                             // print('$collecteur');
+                                            if (vehicule['idVehicule'] ==
+                                                'null') {
+                                              return SizedBox.shrink();
+                                            }
                                             return Expanded(
                                                 child: Container(
                                                     width: 150,
