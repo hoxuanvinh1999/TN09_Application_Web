@@ -547,6 +547,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                         .where('dateTournee',
                                             isEqualTo: getDateText(
                                                 date: widget.thisDay))
+                                        .orderBy('startTime')
                                         .snapshots(),
                                     builder: (BuildContext context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1342,6 +1343,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                           ),
                                                         )
                                                       ],
+                                                      ),
                                                     )
                                                   ],
                                                 ));
