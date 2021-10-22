@@ -603,10 +603,12 @@ class _PlanningWeeklyCompactePageState
                                   .where('dateTournee',
                                       isEqualTo:
                                           getDateText(date: firstDayOfWeek))
+                                  .orderBy('startTime')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
+                                  print('${snapshot.error.toString()}');
                                   return Text('Something went wrong');
                                 }
 
@@ -811,6 +813,7 @@ class _PlanningWeeklyCompactePageState
                                   .where('dateTournee',
                                       isEqualTo:
                                           getDateText(date: date_tuesday))
+                                  .orderBy('startTime')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1020,6 +1023,7 @@ class _PlanningWeeklyCompactePageState
                                   .where('dateTournee',
                                       isEqualTo:
                                           getDateText(date: date_wednesday))
+                                  .orderBy('startTime')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1232,6 +1236,7 @@ class _PlanningWeeklyCompactePageState
                                   .where('dateTournee',
                                       isEqualTo:
                                           getDateText(date: date_thursday))
+                                  .orderBy('startTime')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1442,6 +1447,7 @@ class _PlanningWeeklyCompactePageState
                               stream: _tournee
                                   .where('dateTournee',
                                       isEqualTo: getDateText(date: date_friday))
+                                  .orderBy('startTime')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1650,6 +1656,7 @@ class _PlanningWeeklyCompactePageState
                                   .where('dateTournee',
                                       isEqualTo:
                                           getDateText(date: date_saturday))
+                                  .orderBy('startTime')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1861,6 +1868,7 @@ class _PlanningWeeklyCompactePageState
                                   .where('dateTournee',
                                       isEqualTo:
                                           getDateText(date: lastDayOfWeek))
+                                  .orderBy('startTime')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
