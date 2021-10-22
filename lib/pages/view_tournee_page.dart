@@ -63,17 +63,21 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
       FirebaseFirestore.instance.collection("Adresse");
   TextEditingController _vehiculeInformationController =
       TextEditingController();
-  String _idnom1eCollecteur = '';
-  String _idnom2eCollecteur = '';
+  TextEditingController _newCollecteur = TextEditingController();
+  TextEditingController _new2eCollecteur = TextEditingController();
+  TextEditingController _timeStartController = TextEditingController();
+  String _idnom1eCollecteur = 'null';
+  String _idnom2eCollecteur = 'null';
 
   getInputTournee() async {
     _vehiculeInformationController.text = widget.dataVehicule['nomVehicule'] +
         '(${widget.dataVehicule['numeroImmatriculation']})';
     _idnom1eCollecteur = widget.dataTournee['idCollecteur'];
-    if (widget.dataTournee['id2eCollecteur'] != null) {
-      _idnom2eCollecteur = widget.dataTournee['id2eCollecteur'];
-    } else {
+    _timeStartController.text = widget.dataTournee['startTime'];
+    if (widget.dataTournee['id2eCollecteur'] == null) {
       _idnom2eCollecteur = 'null';
+    } else {
+      _idnom2eCollecteur = widget.dataTournee['id2eCollecteur'];
     }
   }
 
@@ -418,7 +422,538 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                     ),
                                   ],
                                 ),
-                              )
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                height: 500,
+                                width: 790,
+                                color: Colors.blue,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        buildVehiculeIcon(
+                                            icontype: widget
+                                                .dataVehicule['typeVehicule'],
+                                            iconcolor: '0xff000000',
+                                            sizeIcon: 15),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Vehicule: ',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          width: 400,
+                                          color: Colors.red,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller:
+                                                _vehiculeInformationController,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Icon(
+                                          FontAwesomeIcons.user,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Collecteur: ',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          width: 100,
+                                          color: Colors.red,
+                                          child: StreamBuilder<QuerySnapshot>(
+                                              stream: _collecteur
+                                                  .where('idCollecteur',
+                                                      isNotEqualTo: 'null')
+                                                  .snapshots(),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<QuerySnapshot>
+                                                      snapshot) {
+                                                if (snapshot.hasError) {
+                                                  return Text(
+                                                      'Something went wrong');
+                                                }
+
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return CircularProgressIndicator();
+                                                }
+                                                return DropdownButton(
+                                                  onChanged: (String?
+                                                      changedValue) async {
+                                                    _idnom1eCollecteur =
+                                                        changedValue!;
+                                                    // print(
+                                                    //     'idCollecteurTournee $idCollecteurTournee');
+                                                    // print(
+                                                    //     'changedValue $changedValue');
+                                                    await _collecteur
+                                                        .where('idCollecteur',
+                                                            isEqualTo:
+                                                                changedValue)
+                                                        .limit(1)
+                                                        .get()
+                                                        .then((QuerySnapshot
+                                                            querySnapshot) {
+                                                      querySnapshot.docs
+                                                          .forEach((doc) {
+                                                        _newCollecteur.text =
+                                                            doc['nomCollecteur'];
+                                                      });
+                                                    });
+                                                  },
+                                                  value: _idnom1eCollecteur,
+                                                  items: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_collecteur) {
+                                                    Map<String, dynamic>
+                                                        collecteur =
+                                                        document_collecteur
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: collecteur[
+                                                          'idCollecteur'],
+                                                      child: Text(collecteur[
+                                                          'nomCollecteur']),
+                                                    );
+                                                  }).toList(),
+                                                );
+                                              }),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          'New Collecteur: ',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Container(
+                                          width: 100,
+                                          height: 50,
+                                          color: Colors.red,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _newCollecteur,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.blue,
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              FontAwesomeIcons.check,
+                                              size: 15,
+                                            ),
+                                            tooltip: 'New Collecteur',
+                                            onPressed: () async {
+                                              if (_idnom1eCollecteur ==
+                                                  widget.dataTournee[
+                                                      'idCollecteur']) {
+                                                Fluttertoast.showToast(
+                                                    msg: "You chagned nothing",
+                                                    gravity: ToastGravity.TOP);
+                                              } else if (_idnom1eCollecteur ==
+                                                  _idnom2eCollecteur) {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "Cannot be the same as the 2e Collecteur",
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                _tournee
+                                                    .doc(widget.dataTournee[
+                                                        'idTournee'])
+                                                    .update({
+                                                  'idCollecteur':
+                                                      _idnom1eCollecteur,
+                                                }).then((value) async {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "Changed 1e Collecteur",
+                                                      gravity:
+                                                          ToastGravity.TOP);
+                                                  print(
+                                                      "Changed 1e Collecteur");
+                                                  await _tournee
+                                                      .where('idTournee',
+                                                          isEqualTo: widget
+                                                                  .dataTournee[
+                                                              'idTournee'])
+                                                      .limit(1)
+                                                      .get()
+                                                      .then((QuerySnapshot
+                                                          querySnapshot) {
+                                                    querySnapshot.docs
+                                                        .forEach((doc) {
+                                                      Map<String, dynamic>
+                                                          next_tournee =
+                                                          doc.data()! as Map<
+                                                              String, dynamic>;
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ViewTourneePage(
+                                                                            thisDay:
+                                                                                widget.thisDay,
+                                                                            dataVehicule:
+                                                                                widget.dataVehicule,
+                                                                            dataTournee:
+                                                                                next_tournee,
+                                                                          )));
+                                                    });
+                                                  });
+                                                }).catchError((error) => print(
+                                                        "Failed to add user: $error"));
+                                              }
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Icon(
+                                          FontAwesomeIcons.user,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          '2e Collecteur: ',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          width: 100,
+                                          color: Colors.red,
+                                          child: StreamBuilder<QuerySnapshot>(
+                                              stream: _collecteur.snapshots(),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<QuerySnapshot>
+                                                      snapshot) {
+                                                if (snapshot.hasError) {
+                                                  return Text(
+                                                      'Something went wrong');
+                                                }
+
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return CircularProgressIndicator();
+                                                }
+                                                return DropdownButton(
+                                                  onChanged: (String?
+                                                      changedValue) async {
+                                                    _idnom2eCollecteur =
+                                                        changedValue!;
+                                                    // print(
+                                                    //     'idCollecteurTournee $idCollecteurTournee');
+                                                    // print(
+                                                    //     'changedValue $changedValue');
+                                                    await _collecteur
+                                                        .where('idCollecteur',
+                                                            isEqualTo:
+                                                                changedValue)
+                                                        .limit(1)
+                                                        .get()
+                                                        .then((QuerySnapshot
+                                                            querySnapshot) {
+                                                      querySnapshot.docs
+                                                          .forEach((doc) {
+                                                        _new2eCollecteur.text =
+                                                            doc['nomCollecteur'];
+                                                      });
+                                                    });
+                                                  },
+                                                  value: _idnom2eCollecteur,
+                                                  items: snapshot.data!.docs
+                                                      .map((DocumentSnapshot
+                                                          document_collecteur) {
+                                                    Map<String, dynamic>
+                                                        collecteur =
+                                                        document_collecteur
+                                                                .data()!
+                                                            as Map<String,
+                                                                dynamic>;
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: collecteur[
+                                                          'idCollecteur'],
+                                                      child: Text(collecteur[
+                                                          'nomCollecteur']),
+                                                    );
+                                                  }).toList(),
+                                                );
+                                              }),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          'New 2e Collecteur: ',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Container(
+                                          width: 100,
+                                          height: 50,
+                                          color: Colors.red,
+                                          child: TextFormField(
+                                            enabled: false,
+                                            controller: _new2eCollecteur,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.blue,
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              FontAwesomeIcons.check,
+                                              size: 15,
+                                            ),
+                                            tooltip: 'Add 2e Collecteur',
+                                            onPressed: () async {
+                                              if (_idnom2eCollecteur ==
+                                                      'null' ||
+                                                  _idnom2eCollecteur ==
+                                                      widget.dataTournee[
+                                                          'id2eCollecteur']) {
+                                                Fluttertoast.showToast(
+                                                    msg: "You added no one",
+                                                    gravity: ToastGravity.TOP);
+                                              } else if (_idnom2eCollecteur ==
+                                                  _idnom1eCollecteur) {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "Cannot be the same as the 1e Collecteur",
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                _tournee
+                                                    .doc(widget.dataTournee[
+                                                        'idTournee'])
+                                                    .update({
+                                                  'id2eCollecteur':
+                                                      _idnom2eCollecteur,
+                                                }).then((value) async {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "Added 2e Collecteur",
+                                                      gravity:
+                                                          ToastGravity.TOP);
+                                                  print("Added 2e Collecteur");
+                                                  await _tournee
+                                                      .where('idTournee',
+                                                          isEqualTo: widget
+                                                                  .dataTournee[
+                                                              'idTournee'])
+                                                      .limit(1)
+                                                      .get()
+                                                      .then((QuerySnapshot
+                                                          querySnapshot) {
+                                                    querySnapshot.docs
+                                                        .forEach((doc) {
+                                                      Map<String, dynamic>
+                                                          next_tournee =
+                                                          doc.data()! as Map<
+                                                              String, dynamic>;
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ViewTourneePage(
+                                                                            thisDay:
+                                                                                widget.thisDay,
+                                                                            dataVehicule:
+                                                                                widget.dataVehicule,
+                                                                            dataTournee:
+                                                                                next_tournee,
+                                                                          )));
+                                                    });
+                                                  });
+                                                }).catchError((error) => print(
+                                                        "Failed to add user: $error"));
+                                              }
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Icon(
+                                          FontAwesomeIcons.clock,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Time Start: ',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          width: 100,
+                                          height: 50,
+                                          color: Colors.red,
+                                          child: TextFormField(
+                                            controller: _timeStartController,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.blue,
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              FontAwesomeIcons.check,
+                                              size: 15,
+                                            ),
+                                            tooltip: 'Change Time Start',
+                                            onPressed: () async {
+                                              if (_timeStartController.text ==
+                                                  widget.dataTournee[
+                                                      'startTime']) {
+                                                Fluttertoast.showToast(
+                                                    msg: "You changed nothing",
+                                                    gravity: ToastGravity.TOP);
+                                              } else if (!check_if_a_time(
+                                                  check: _timeStartController
+                                                      .text)) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Time form is xx:xx",
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                _tournee
+                                                    .doc(widget.dataTournee[
+                                                        'idTournee'])
+                                                    .update({
+                                                  'startTime':
+                                                      _timeStartController.text,
+                                                }).then((value) async {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "Time Start Modified",
+                                                      gravity:
+                                                          ToastGravity.TOP);
+                                                  print("Time Start Modified");
+                                                  await _tournee
+                                                      .where('idTournee',
+                                                          isEqualTo: widget
+                                                                  .dataTournee[
+                                                              'idTournee'])
+                                                      .limit(1)
+                                                      .get()
+                                                      .then((QuerySnapshot
+                                                          querySnapshot) {
+                                                    querySnapshot.docs
+                                                        .forEach((doc) {
+                                                      Map<String, dynamic>
+                                                          next_tournee =
+                                                          doc.data()! as Map<
+                                                              String, dynamic>;
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ViewTourneePage(
+                                                                            thisDay:
+                                                                                widget.thisDay,
+                                                                            dataVehicule:
+                                                                                widget.dataVehicule,
+                                                                            dataTournee:
+                                                                                next_tournee,
+                                                                          )));
+                                                    });
+                                                  });
+                                                }).catchError((error) => print(
+                                                        "Failed to add user: $error"));
+                                              }
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
