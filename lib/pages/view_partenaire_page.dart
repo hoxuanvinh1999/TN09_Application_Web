@@ -1399,11 +1399,12 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                               .collection("Adresse")
                               .where('idPartenaireAdresse',
                                   isEqualTo: widget.partenaire['idPartenaire'])
+                              .orderBy('nomPartenaireAdresse')
                               .snapshots(),
-                          //Can not use OrderBy and where together
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
+                              print('${snapshot.error.toString()}');
                               return Text(
                                   'Something went wrong + ${snapshot.error.toString()} + ${widget.partenaire['idPartenaire'].toString()}');
                             }
@@ -1806,7 +1807,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       isEqualTo:
                                           widget.partenaire['idPartenaire'])
                                   .snapshots(),
-                              //Can not use OrderBy and where together
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
@@ -2240,7 +2240,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       isEqualTo:
                                           widget.partenaire['idPartenaire'])
                                   .snapshots(),
-                              //Can not use OrderBy and where together
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
