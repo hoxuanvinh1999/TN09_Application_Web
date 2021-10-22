@@ -255,6 +255,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
+                              print('${snapshot.error.toString()}');
                               return Text('Something went wrong');
                             }
 
@@ -263,6 +264,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                               return CircularProgressIndicator();
                             }
                             // print('$snapshot');
+
                             return SingleChildScrollView(
                               child: Column(
                                 children: snapshot.data!.docs
@@ -270,6 +272,9 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   Map<String, dynamic> collecteur =
                                       document.data()! as Map<String, dynamic>;
                                   // print('$collecteur');
+                                  if (collecteur['idCollecteur'] == 'null') {
+                                    return SizedBox.shrink();
+                                  }
                                   return Container(
                                       color: Colors.white,
                                       child: Column(
