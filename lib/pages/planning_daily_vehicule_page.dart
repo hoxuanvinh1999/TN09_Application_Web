@@ -23,6 +23,7 @@ import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
+import 'package:tn09_app_web_demo/pages/view_tournee_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
@@ -607,17 +608,36 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                         SizedBox(
                                                           width: 20,
                                                         ),
-                                                        Text(
-                                                          limitString(
-                                                              text: 'Tournee: ' +
-                                                                  tournee[
-                                                                      'idTournee'],
-                                                              limit_long: 30),
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: <
+                                                                TextSpan>[
+                                                              TextSpan(
+                                                                  text: limitString(
+                                                                      text: 'Tournee: ' +
+                                                                          tournee[
+                                                                              'idTournee'],
+                                                                      limit_long:
+                                                                          30),
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                  recognizer:
+                                                                      TapGestureRecognizer()
+                                                                        ..onTap =
+                                                                            () {
+                                                                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                              builder: (context) => ViewTourneePage(
+                                                                                    thisDay: widget.thisDay,
+                                                                                    dataVehicule: widget.dataVehicule,
+                                                                                    dataTournee: tournee,
+                                                                                  )));
+                                                                        }),
+                                                            ],
+                                                          ),
                                                         ),
                                                         SizedBox(
                                                           width: 50,
