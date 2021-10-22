@@ -1343,7 +1343,6 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                           ),
                                                         )
                                                       ],
-                                                      ),
                                                     )
                                                   ],
                                                 ));
