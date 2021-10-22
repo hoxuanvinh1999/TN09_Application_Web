@@ -1806,10 +1806,12 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                   .where('idPartenaireFrequence',
                                       isEqualTo:
                                           widget.partenaire['idPartenaire'])
+                                  .orderBy('nomAdresseFrequence')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
+                                  print('${snapshot.error.toString()}');
                                   return Text(
                                       'Something went wrong + ${snapshot.error.toString()} + ${widget.partenaire['idPartenaire'].toString()}');
                                 }
@@ -2239,6 +2241,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                   .where('idPartenaireAdresse',
                                       isEqualTo:
                                           widget.partenaire['idPartenaire'])
+                                  .orderBy('nomPartenaireAdresse')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
