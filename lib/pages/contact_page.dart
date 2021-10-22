@@ -665,6 +665,9 @@ class _ContactPageState extends State<ContactPage> {
                                       as Map<String, dynamic>;
                               // print('link_contactadresse $link_contactadresse');
                               return Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                width: 580,
+                                height: 60,
                                 color: Colors.white,
                                 child: StreamBuilder<QuerySnapshot>(
                                   stream: FirebaseFirestore.instance
@@ -863,7 +866,7 @@ class _ContactPageState extends State<ContactPage> {
                   ),
                   Container(
                     width: 600,
-                    height: 100,
+                    height: 150,
                     color: Colors.blue,
                     child: StreamBuilder<QuerySnapshot>(
                       stream: _partenaire
@@ -888,6 +891,9 @@ class _ContactPageState extends State<ContactPage> {
                                       as Map<String, dynamic>;
                               // print('link_contactadresse $link_contactadresse');
                               return Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                width: 580,
+                                height: 50,
                                 color: Colors.white,
                                 child: Row(
                                   mainAxisAlignment:
@@ -908,13 +914,30 @@ class _ContactPageState extends State<ContactPage> {
                                             SizedBox(
                                               width: 10,
                                             ),
-                                            Text(
-                                              insidedataPartenaire[
-                                                  'nomPartenaire'],
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                                            RichText(
+                                              text: TextSpan(
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text:
+                                                          insidedataPartenaire[
+                                                              'nomPartenaire'],
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      recognizer:
+                                                          TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pushReplacement(
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              ViewPartenairePage(partenaire: insidedataPartenaire)));
+                                                            }),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         )),
