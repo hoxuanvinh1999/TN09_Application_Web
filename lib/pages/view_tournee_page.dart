@@ -391,7 +391,11 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                         Container(
                           margin: EdgeInsets.only(top: 20),
                           width: 800,
-                          height: 2000,
+                          height: 1000 +
+                              400 *
+                                  double.parse(
+                                      widget.dataTournee['nombredeEtape']) +
+                              500,
                           color: Colors.red,
                           child: Column(
                             children: [
@@ -427,7 +431,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                 height: 20,
                               ),
                               Container(
-                                height: 500,
+                                height: 400,
                                 width: 790,
                                 color: Colors.blue,
                                 child: Column(
@@ -954,6 +958,804 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                   ],
                                 ),
                               ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                height: 200 +
+                                    300 *
+                                        double.parse(widget
+                                            .dataTournee['nombredeEtape']),
+                                width: 790,
+                                color: Colors.blue,
+                                child: StreamBuilder<QuerySnapshot>(
+                                  stream: _etape
+                                      .where('idTourneeEtape',
+                                          isEqualTo:
+                                              widget.dataTournee['idTournee'])
+                                      .orderBy('orderEtape')
+                                      .snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      print('${snapshot.error.toString()}');
+                                      return Text(
+                                          'Something went wrong + ${snapshot.error.toString()}');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    // print('$snapshot');
+                                    return SingleChildScrollView(
+                                      child: Column(
+                                        children: snapshot.data!.docs.map(
+                                            (DocumentSnapshot document_etape) {
+                                          Map<String, dynamic> etape =
+                                              document_etape.data()!
+                                                  as Map<String, dynamic>;
+                                          // print('$collecteur');
+                                          return Container(
+                                              width: 500,
+                                              height: 300,
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              color: Colors.green,
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    height: 50,
+                                                    width: 400,
+                                                    color: Colors.grey,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          child: Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Icon(
+                                                                  FontAwesomeIcons
+                                                                      .truck,
+                                                                  size: 12,
+                                                                  color: Colors
+                                                                      .black),
+                                                              SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Icon(
+                                                                  FontAwesomeIcons
+                                                                      .arrowAltCircleRight,
+                                                                  size: 12,
+                                                                  color: Colors
+                                                                      .black),
+                                                              SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Text(
+                                                                'Etape #' +
+                                                                    etape[
+                                                                        'orderEtape'],
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child: Row(
+                                                            children: [
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    // get and save information before do the change
+                                                                    String
+                                                                        idEtapeNow =
+                                                                        etape[
+                                                                            'idEtape'];
+                                                                    String
+                                                                        idEtapeBefore =
+                                                                        etape[
+                                                                            'idEtapeBefore'];
+                                                                    String
+                                                                        idEtapeAfter =
+                                                                        etape[
+                                                                            'idEtapeAfter'];
+                                                                    String
+                                                                        idEtapeBeforeofBefore =
+                                                                        '';
+                                                                    String
+                                                                        neworder =
+                                                                        (int.parse(etape['orderEtape']) -
+                                                                                1)
+                                                                            .toString();
+                                                                    String
+                                                                        oldorder =
+                                                                        etape[
+                                                                            'orderEtape'];
+                                                                    if (idEtapeBefore ==
+                                                                        'null') {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "This Etape can not go up",
+                                                                          gravity:
+                                                                              ToastGravity.TOP);
+                                                                    } else if (idEtapeAfter !=
+                                                                        'null') {
+                                                                      await _etape
+                                                                          .where(
+                                                                              'idEtape',
+                                                                              isEqualTo:
+                                                                                  idEtapeBefore)
+                                                                          .limit(
+                                                                              1)
+                                                                          .get()
+                                                                          .then((QuerySnapshot
+                                                                              querySnapshot) {
+                                                                        querySnapshot
+                                                                            .docs
+                                                                            .forEach((etapeBefore) {
+                                                                          idEtapeBeforeofBefore =
+                                                                              etapeBefore['idEtapeBefore'];
+                                                                        });
+                                                                      });
+                                                                      if (idEtapeBeforeofBefore !=
+                                                                          'null') {
+                                                                        _etape
+                                                                            .doc(idEtapeNow)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeBeforeofBefore,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeBefore,
+                                                                          'orderEtape':
+                                                                              neworder,
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeBefore)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeNow,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeAfter,
+                                                                          'orderEtape':
+                                                                              oldorder,
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeAfter)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeBefore,
+                                                                        });
+                                                                        _etape.doc(idEtapeBeforeofBefore).update({
+                                                                          'idEtapeAfter':
+                                                                              idEtapeNow,
+                                                                        }).then(
+                                                                            (value) {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: "Etape Moved Up",
+                                                                              gravity: ToastGravity.TOP);
+                                                                          print(
+                                                                              "Etape Moved Up");
+                                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                        }).catchError((error) =>
+                                                                            print("Failed to add user: $error"));
+                                                                      } else {
+                                                                        _etape
+                                                                            .doc(idEtapeNow)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              'null',
+                                                                          'idEtapeAfter':
+                                                                              idEtapeBefore,
+                                                                          'orderEtape':
+                                                                              '1',
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeBefore)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeNow,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeAfter,
+                                                                          'orderEtape':
+                                                                              '2',
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeAfter)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeBefore,
+                                                                        });
+                                                                        _tournee.doc(widget.dataTournee['idTournee']).update({
+                                                                          'idEtapeStart':
+                                                                              idEtapeNow
+                                                                        }).then(
+                                                                            (value) {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: "Etape Moved Up",
+                                                                              gravity: ToastGravity.TOP);
+                                                                          print(
+                                                                              "Etape Moved Up");
+                                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                        }).catchError((error) =>
+                                                                            print("Failed to add user: $error"));
+                                                                      }
+                                                                    } else {
+                                                                      await _etape
+                                                                          .where(
+                                                                              'idEtape',
+                                                                              isEqualTo:
+                                                                                  idEtapeBefore)
+                                                                          .limit(
+                                                                              1)
+                                                                          .get()
+                                                                          .then((QuerySnapshot
+                                                                              querySnapshot) {
+                                                                        querySnapshot
+                                                                            .docs
+                                                                            .forEach((etapeBefore) {
+                                                                          idEtapeBeforeofBefore =
+                                                                              etapeBefore['idEtapeBefore'];
+                                                                        });
+                                                                      });
+                                                                      if (idEtapeBeforeofBefore !=
+                                                                          'null') {
+                                                                        _etape
+                                                                            .doc(idEtapeNow)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeBeforeofBefore,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeBefore,
+                                                                          'orderEtape':
+                                                                              neworder,
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeBefore)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeNow,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeAfter,
+                                                                          'orderEtape':
+                                                                              oldorder,
+                                                                        });
+                                                                        _etape.doc(idEtapeBeforeofBefore).update({
+                                                                          'idEtapeAfter':
+                                                                              idEtapeNow,
+                                                                        }).then(
+                                                                            (value) {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: "Etape Moved Up",
+                                                                              gravity: ToastGravity.TOP);
+                                                                          print(
+                                                                              "Etape Moved Up");
+                                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                        }).catchError((error) =>
+                                                                            print("Failed to add user: $error"));
+                                                                      } else {
+                                                                        _etape
+                                                                            .doc(idEtapeNow)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              'null',
+                                                                          'idEtapeAfter':
+                                                                              idEtapeBefore,
+                                                                          'orderEtape':
+                                                                              '1',
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeBefore)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeNow,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeAfter,
+                                                                          'orderEtape':
+                                                                              '2',
+                                                                        });
+                                                                        _tournee.doc(widget.dataTournee['idTournee']).update({
+                                                                          'idEtapeStart':
+                                                                              idEtapeNow
+                                                                        }).then(
+                                                                            (value) {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: "Etape Moved Up",
+                                                                              gravity: ToastGravity.TOP);
+                                                                          print(
+                                                                              "Etape Moved Up");
+                                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                        }).catchError((error) =>
+                                                                            print("Failed to add user: $error"));
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  icon: Icon(
+                                                                    FontAwesomeIcons
+                                                                        .chevronCircleUp,
+                                                                    size: 12,
+                                                                  )),
+                                                              SizedBox(
+                                                                  width: 10),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    // get and save information before do the change
+                                                                    String
+                                                                        idEtapeNow =
+                                                                        etape[
+                                                                            'idEtape'];
+                                                                    String
+                                                                        idEtapeBefore =
+                                                                        etape[
+                                                                            'idEtapeBefore'];
+                                                                    String
+                                                                        idEtapeAfter =
+                                                                        etape[
+                                                                            'idEtapeAfter'];
+                                                                    String
+                                                                        idEtapeAfterofAfter =
+                                                                        '';
+                                                                    String
+                                                                        neworder =
+                                                                        (int.parse(etape['orderEtape']) +
+                                                                                1)
+                                                                            .toString();
+                                                                    String
+                                                                        oldorder =
+                                                                        etape[
+                                                                            'orderEtape'];
+                                                                    if (idEtapeAfter ==
+                                                                        'null') {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "This Etape can not go down",
+                                                                          gravity:
+                                                                              ToastGravity.TOP);
+                                                                    } else if (idEtapeBefore !=
+                                                                        'null') {
+                                                                      await _etape
+                                                                          .where(
+                                                                              'idEtape',
+                                                                              isEqualTo:
+                                                                                  idEtapeAfter)
+                                                                          .limit(
+                                                                              1)
+                                                                          .get()
+                                                                          .then((QuerySnapshot
+                                                                              querySnapshot) {
+                                                                        querySnapshot
+                                                                            .docs
+                                                                            .forEach((etapeAfter) {
+                                                                          idEtapeAfterofAfter =
+                                                                              etapeAfter['idEtapeAfter'];
+                                                                        });
+                                                                      });
+                                                                      if (idEtapeAfterofAfter !=
+                                                                          'null') {
+                                                                        _etape
+                                                                            .doc(idEtapeNow)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeAfter,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeAfterofAfter,
+                                                                          'orderEtape':
+                                                                              neworder,
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeAfter)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeBefore,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeNow,
+                                                                          'orderEtape':
+                                                                              oldorder,
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeBefore)
+                                                                            .update({
+                                                                          'idEtapeAfter':
+                                                                              idEtapeAfter,
+                                                                        });
+                                                                        _etape.doc(idEtapeAfterofAfter).update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeNow,
+                                                                        }).then(
+                                                                            (value) {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: "Etape Moved Down",
+                                                                              gravity: ToastGravity.TOP);
+                                                                          print(
+                                                                              "Etape Moved Down");
+                                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                        }).catchError((error) =>
+                                                                            print("Failed to add user: $error"));
+                                                                      } else {
+                                                                        _etape
+                                                                            .doc(idEtapeNow)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeAfter,
+                                                                          'idEtapeAfter':
+                                                                              'null',
+                                                                          'orderEtape':
+                                                                              neworder,
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeAfter)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeBefore,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeNow,
+                                                                          'orderEtape':
+                                                                              oldorder,
+                                                                        });
+                                                                        _etape.doc(idEtapeBefore).update({
+                                                                          'idEtapeAfter':
+                                                                              idEtapeAfter,
+                                                                        }).then(
+                                                                            (value) {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: "Etape Moved Up",
+                                                                              gravity: ToastGravity.TOP);
+                                                                          print(
+                                                                              "Etape Moved Up");
+                                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                        }).catchError((error) =>
+                                                                            print("Failed to add user: $error"));
+                                                                      }
+                                                                    } else {
+                                                                      await _etape
+                                                                          .where(
+                                                                              'idEtape',
+                                                                              isEqualTo:
+                                                                                  idEtapeAfter)
+                                                                          .limit(
+                                                                              1)
+                                                                          .get()
+                                                                          .then((QuerySnapshot
+                                                                              querySnapshot) {
+                                                                        querySnapshot
+                                                                            .docs
+                                                                            .forEach((etapeAfter) {
+                                                                          idEtapeAfterofAfter =
+                                                                              etapeAfter['idEtapeAfter'];
+                                                                        });
+                                                                      });
+                                                                      if (idEtapeAfterofAfter !=
+                                                                          'null') {
+                                                                        _etape
+                                                                            .doc(idEtapeNow)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeAfter,
+                                                                          'idEtapeAfter':
+                                                                              idEtapeAfterofAfter,
+                                                                          'orderEtape':
+                                                                              '2',
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeAfter)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              'null',
+                                                                          'idEtapeAfter':
+                                                                              idEtapeNow,
+                                                                          'orderEtape':
+                                                                              '1',
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeAfterofAfter)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeNow,
+                                                                        });
+                                                                        _tournee.doc(widget.dataTournee['idTournee']).update({
+                                                                          'idEtapeStart':
+                                                                              idEtapeAfter
+                                                                        }).then(
+                                                                            (value) {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: "Etape Moved Down",
+                                                                              gravity: ToastGravity.TOP);
+                                                                          print(
+                                                                              "Etape Moved Down");
+                                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                        }).catchError((error) =>
+                                                                            print("Failed to add user: $error"));
+                                                                      } else {
+                                                                        _etape
+                                                                            .doc(idEtapeNow)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              idEtapeAfter,
+                                                                          'idEtapeAfter':
+                                                                              'null',
+                                                                          'orderEtape':
+                                                                              '2',
+                                                                        });
+                                                                        _etape
+                                                                            .doc(idEtapeAfter)
+                                                                            .update({
+                                                                          'idEtapeBefore':
+                                                                              'null',
+                                                                          'idEtapeAfter':
+                                                                              idEtapeNow,
+                                                                          'orderEtape':
+                                                                              '1',
+                                                                        });
+                                                                        _tournee.doc(widget.dataTournee['idTournee']).update({
+                                                                          'idEtapeStart':
+                                                                              idEtapeAfter
+                                                                        }).then(
+                                                                            (value) {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: "Etape Moved Down",
+                                                                              gravity: ToastGravity.TOP);
+                                                                          print(
+                                                                              "Etape Moved Down");
+                                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PlanningDailyVehiculePage(thisDay: widget.thisDay, dataVehicule: widget.dataVehicule)));
+                                                                        }).catchError((error) =>
+                                                                            print("Failed to add user: $error"));
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  icon: Icon(
+                                                                    FontAwesomeIcons
+                                                                        .chevronCircleDown,
+                                                                    size: 12,
+                                                                  )),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Container(
+                                                    width: 390,
+                                                    height: 200,
+                                                    color: Colors.red,
+                                                    child: StreamBuilder<
+                                                        QuerySnapshot>(
+                                                      stream: _frequence
+                                                          .where('idFrequence',
+                                                              isEqualTo: etape[
+                                                                  'idFrequenceEtape'])
+                                                          .snapshots(),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<
+                                                                  QuerySnapshot>
+                                                              snapshot) {
+                                                        if (snapshot.hasError) {
+                                                          return Text(
+                                                              'Something went wrong');
+                                                        }
+
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return CircularProgressIndicator();
+                                                        }
+                                                        // print('$snapshot');
+                                                        return SingleChildScrollView(
+                                                          child: Column(
+                                                            children: snapshot
+                                                                .data!.docs
+                                                                .map((DocumentSnapshot
+                                                                    document_frequence) {
+                                                              Map<String,
+                                                                      dynamic>
+                                                                  frequence =
+                                                                  document_frequence
+                                                                          .data()!
+                                                                      as Map<
+                                                                          String,
+                                                                          dynamic>;
+                                                              // print('$collecteur');
+                                                              return Container(
+                                                                width: 380,
+                                                                height: 200,
+                                                                color:
+                                                                    Colors.red,
+                                                                child: Row(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Container(
+                                                                      width:
+                                                                          200,
+                                                                      height:
+                                                                          180,
+                                                                      color: Colors
+                                                                          .blue,
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          SizedBox(
+                                                                            height:
+                                                                                10,
+                                                                          ),
+                                                                          Text(limitString(
+                                                                              text: frequence['nomAdresseFrequence'],
+                                                                              limit_long: 30)),
+                                                                          Row(
+                                                                            children: [
+                                                                              SizedBox(
+                                                                                width: 5,
+                                                                              ),
+                                                                              Icon(FontAwesomeIcons.undoAlt, size: 12, color: Colors.black),
+                                                                              SizedBox(
+                                                                                width: 2,
+                                                                              ),
+                                                                              Text(
+                                                                                titleFrequence(frequence: frequence['frequence'], jourFrequence: frequence['jourFrequence']),
+                                                                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          StreamBuilder<
+                                                                              QuerySnapshot>(
+                                                                            stream:
+                                                                                _adresse.where('idAdresse', isEqualTo: frequence['idAdresseFrequence']).limit(1).snapshots(),
+                                                                            builder:
+                                                                                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                                                              if (snapshot.hasError) {
+                                                                                return Text('Something went wrong');
+                                                                              }
+
+                                                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                return CircularProgressIndicator();
+                                                                              }
+                                                                              // print('$snapshot');
+                                                                              return SingleChildScrollView(
+                                                                                child: Row(
+                                                                                  children: snapshot.data!.docs.map((DocumentSnapshot document_adresse) {
+                                                                                    Map<String, dynamic> adresse = document_adresse.data()! as Map<String, dynamic>;
+                                                                                    // print('$collecteur');
+                                                                                    return Column(
+                                                                                      children: [
+                                                                                        Text(adresse['ligne1Adresse'], style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                                                                        Text(adresse['codepostalAdresse'] + ' ' + adresse['villeAdresse'] + ' ' + adresse['paysAdresse'], style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                                                                      ],
+                                                                                    );
+                                                                                  }).toList(),
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    Container(
+                                                                      width:
+                                                                          150,
+                                                                      height:
+                                                                          180,
+                                                                      color: Colors
+                                                                          .blue,
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          SizedBox(
+                                                                            height:
+                                                                                16,
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Icon(
+                                                                                FontAwesomeIcons.clock,
+                                                                                size: 12,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 5,
+                                                                              ),
+                                                                              Text(
+                                                                                'Durée ' + frequence['dureeFrequence'] + ' min',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 12,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                16,
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Icon(
+                                                                                FontAwesomeIcons.clock,
+                                                                                size: 12,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 5,
+                                                                              ),
+                                                                              Text(
+                                                                                'Start ' + ' min',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 12,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                16,
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Icon(
+                                                                                FontAwesomeIcons.moneyCheckAlt,
+                                                                                size: 12,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 5,
+                                                                              ),
+                                                                              Text(
+                                                                                'Tarif ' + isInconnu(text: frequence['tarifFrequence']) + ' €',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 12,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            }).toList(),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
+                                              ));
+                                        }).toList(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                height: 400,
+                                width: 790,
+                              )
                             ],
                           ),
                         ),
