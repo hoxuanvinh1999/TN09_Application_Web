@@ -1311,7 +1311,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                                                           width: 5,
                                                                                                         ),
                                                                                                         Text(
-                                                                                                          'Start ' + ' min',
+                                                                                                          'Start ' + isInconnu(text: frequence['dureeFrequence']) + ' min',
                                                                                                           style: TextStyle(
                                                                                                             color: Colors.black,
                                                                                                             fontSize: 12,
