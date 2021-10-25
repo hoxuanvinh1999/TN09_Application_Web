@@ -6,26 +6,21 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
-import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'dart:async';
-import 'package:tn09_app_web_demo/login_page/login_page.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
-import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_if_a_time.dart';
 import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
-import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_Inconnu.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/pages/view_tournee_page.dart';
-import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 class PlanningDailyVehiculePage extends StatefulWidget {
   DateTime thisDay;
@@ -39,6 +34,16 @@ class PlanningDailyVehiculePage extends StatefulWidget {
 
 class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  // For Google Map
+  static const _initialCameraPosition = CameraPosition(
+    target: LatLng(44.855601489864014, -0.5484378447808893),
+    zoom: 15,
+  );
+  Marker _ourCompany = Marker(
+      markerId: MarkerId('les_detritivores'),
+      position: LatLng(44.85552543453359, -0.5484378447808893),
+      infoWindow:
+          InfoWindow(title: 'Les detritivores', snippet: 'Our Company'));
   // for Vehicule
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
@@ -568,6 +573,17 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                           children: snapshot.data!.docs.map(
                                               (DocumentSnapshot
                                                   document_tournee) {
+                                            //For google map
+                                            Completer<GoogleMapController>
+                                                _controller = Completer();
+                                            Set<Polyline> _polylines =
+                                                Set<Polyline>();
+                                            List<LatLng> polylineCoordinates =
+                                                [];
+                                            PolylinePoints polylinePoints =
+                                                PolylinePoints();
+                                            Set<Marker> _markers = {};
+                                            // Build Information
                                             Map<String, dynamic> tournee =
                                                 document_tournee.data()!
                                                     as Map<String, dynamic>;
@@ -1361,7 +1377,176 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                               );
                                                             },
                                                           ),
-                                                        )
+                                                        ),
+                                                        SizedBox(
+                                                          width: 30,
+                                                        ),
+                                                        Container(
+                                                          width: 400,
+                                                          height: 800,
+                                                          color: Colors.yellow,
+                                                          child: FutureBuilder<
+                                                              String>(
+                                                            future: Future<
+                                                                String>.delayed(
+                                                              const Duration(
+                                                                  seconds: 2),
+                                                              () async {
+                                                                bool
+                                                                    found_start =
+                                                                    false;
+                                                                int numberofMarker =
+                                                                    0;
+                                                                for (int i = 0;
+                                                                    i <
+                                                                        int.parse(
+                                                                            tournee['nombredeEtape']);
+                                                                    i++) {
+                                                                  await _etape
+                                                                      .where(
+                                                                          'idTourneeEtape',
+                                                                          isEqualTo: tournee[
+                                                                              'idTournee'])
+                                                                      .get()
+                                                                      .then((QuerySnapshot
+                                                                          querySnapshot) {
+                                                                    querySnapshot
+                                                                        .docs
+                                                                        .forEach(
+                                                                            (doc_etape) async {
+                                                                      Map<String,
+                                                                              dynamic>
+                                                                          etape =
+                                                                          doc_etape.data()! as Map<
+                                                                              String,
+                                                                              dynamic>;
+                                                                      await _adresse
+                                                                          .where(
+                                                                              'idAdresse',
+                                                                              isEqualTo: etape[
+                                                                                  'idAdresseEtape'])
+                                                                          .limit(
+                                                                              1)
+                                                                          .get()
+                                                                          .then((QuerySnapshot
+                                                                              querySnapshot) {
+                                                                        querySnapshot
+                                                                            .docs
+                                                                            .forEach((doc_adresse) {
+                                                                          Map<String, dynamic>
+                                                                              adresse =
+                                                                              doc_adresse.data()! as Map<String, dynamic>;
+                                                                          if (adresse['latitudeAdresse'] != '0' &&
+                                                                              adresse['longitudeAdresse'] != '0' &&
+                                                                              adresse['idPosition'] != 'null') {
+                                                                            numberofMarker++;
+                                                                            _markers.add(Marker(
+                                                                              markerId: MarkerId(adresse['idPosition']),
+                                                                              infoWindow: InfoWindow(title: adresse['nomPartenaireAdresse']),
+                                                                              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                                                                              position: LatLng(double.parse(adresse['latitudeAdresse']), double.parse(adresse['longitudeAdresse'])),
+                                                                            ));
+                                                                          }
+                                                                        });
+                                                                      });
+                                                                    });
+                                                                  });
+                                                                }
+                                                                _markers.add(
+                                                                    _ourCompany);
+                                                                return 'Done';
+                                                              },
+                                                            ), // a previously-obtained Future<String> or null
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        String>
+                                                                    snapshot) {
+                                                              List<Widget>
+                                                                  children;
+                                                              if (snapshot
+                                                                  .hasData) {
+                                                                children =
+                                                                    <Widget>[
+                                                                  Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          height:
+                                                                              500,
+                                                                          width:
+                                                                              380,
+                                                                          color:
+                                                                              Colors.red,
+                                                                          child:
+                                                                              GoogleMap(
+                                                                            polylines:
+                                                                                _polylines,
+                                                                            myLocationButtonEnabled:
+                                                                                true,
+                                                                            zoomControlsEnabled:
+                                                                                true,
+                                                                            initialCameraPosition:
+                                                                                _initialCameraPosition,
+                                                                            markers:
+                                                                                _markers,
+                                                                            onMapCreated:
+                                                                                (GoogleMapController controller) {
+                                                                              _controller.complete(controller);
+                                                                            },
+                                                                          ),
+                                                                        )
+                                                                      ]),
+                                                                ];
+                                                              } else if (snapshot
+                                                                  .hasError) {
+                                                                children =
+                                                                    <Widget>[
+                                                                  const Icon(
+                                                                    Icons
+                                                                        .error_outline,
+                                                                    color: Colors
+                                                                        .red,
+                                                                    size: 60,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        top:
+                                                                            16),
+                                                                    child: Text(
+                                                                        'Error: ${snapshot.error}'),
+                                                                  )
+                                                                ];
+                                                              } else {
+                                                                children =
+                                                                    const <
+                                                                        Widget>[
+                                                                  SizedBox(
+                                                                    child:
+                                                                        CircularProgressIndicator(),
+                                                                    width: 60,
+                                                                    height: 60,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsets
+                                                                        .only(
+                                                                            top:
+                                                                                16),
+                                                                    child: Text(
+                                                                        'Awaiting result...'),
+                                                                  )
+                                                                ];
+                                                              }
+                                                              return Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children:
+                                                                    children,
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
                                                       ],
                                                     )
                                                   ],
