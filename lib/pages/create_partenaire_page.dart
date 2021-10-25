@@ -445,6 +445,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                   'paysAdresse': 'null',
                                   'latitudeAdresse': '0',
                                   'longitudeAdresse': '0',
+                                  'idPosition': 'null',
                                   'etageAdresse': 'null',
                                   'ascenseurAdresse': 'false',
                                   'noteAdresse': 'null',

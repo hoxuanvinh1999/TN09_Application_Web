@@ -3693,6 +3693,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                         _latitudeAdresseController.text,
                                     'longitudeAdresse':
                                         _longitudeAdresseController.text,
+                                    'idPosition': 'null',
                                     'etageAdresse':
                                         _etageAdresseController.text,
                                     'ascenseurAdresse': _ascenseurAdresse,
