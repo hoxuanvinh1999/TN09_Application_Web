@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'dart:async';
+import 'package:http/http.dart' as html;
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_if_a_time.dart';
 import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
@@ -21,6 +22,7 @@ import 'package:tn09_app_web_demo/pages/view_tournee_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:tn09_app_web_demo/.env.dart';
 
 class PlanningDailyVehiculePage extends StatefulWidget {
   DateTime thisDay;
@@ -576,13 +578,11 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                             //For google map
                                             Completer<GoogleMapController>
                                                 _controller = Completer();
+                                            GoogleMapController?
+                                                _googleMapController;
+                                            Set<Marker> _markers = {};
                                             Set<Polyline> _polylines =
                                                 Set<Polyline>();
-                                            List<LatLng> polylineCoordinates =
-                                                [];
-                                            PolylinePoints polylinePoints =
-                                                PolylinePoints();
-                                            Set<Marker> _markers = {};
                                             // Build Information
                                             Map<String, dynamic> tournee =
                                                 document_tournee.data()!
@@ -1392,9 +1392,18 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                               const Duration(
                                                                   seconds: 2),
                                                               () async {
-                                                                bool
-                                                                    found_start =
-                                                                    false;
+                                                                List<LatLng>
+                                                                    polylineCoordinates =
+                                                                    [];
+                                                                PolylinePoints
+                                                                    polylinePoints =
+                                                                    PolylinePoints();
+                                                                List<double>
+                                                                    listlongitudeLocation =
+                                                                    [];
+                                                                List<double>
+                                                                    listlatitudeLocation =
+                                                                    [];
                                                                 int numberofMarker =
                                                                     0;
                                                                 for (int i = 0;
@@ -1439,21 +1448,177 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                           if (adresse['latitudeAdresse'] != '0' &&
                                                                               adresse['longitudeAdresse'] != '0' &&
                                                                               adresse['idPosition'] != 'null') {
-                                                                            numberofMarker++;
-                                                                            _markers.add(Marker(
-                                                                              markerId: MarkerId(adresse['idPosition']),
-                                                                              infoWindow: InfoWindow(title: adresse['nomPartenaireAdresse']),
-                                                                              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-                                                                              position: LatLng(double.parse(adresse['latitudeAdresse']), double.parse(adresse['longitudeAdresse'])),
-                                                                            ));
+                                                                            if (_markers.length <
+                                                                                int.parse(tournee['nombredeEtape'])) {
+                                                                              numberofMarker++;
+                                                                              listlatitudeLocation.add(double.parse(adresse['latitudeAdresse']));
+                                                                              listlongitudeLocation.add(double.parse(adresse['longitudeAdresse']));
+                                                                              _markers.add(Marker(
+                                                                                markerId: MarkerId(adresse['idPosition']),
+                                                                                infoWindow: InfoWindow(title: adresse['nomPartenaireAdresse']),
+                                                                                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                                                                                position: LatLng(double.parse(adresse['latitudeAdresse']), double.parse(adresse['longitudeAdresse'])),
+                                                                              ));
+                                                                            }
                                                                           }
                                                                         });
                                                                       });
                                                                     });
                                                                   });
                                                                 }
+
                                                                 _markers.add(
                                                                     _ourCompany);
+                                                                numberofMarker++;
+
+                                                                print(
+                                                                    'numberofMarker: $numberofMarker');
+                                                                print(
+                                                                    ' listlatitudeLocation ${listlatitudeLocation.length} : $listlatitudeLocation');
+                                                                print(
+                                                                    ' listlongitudeLocation ${listlongitudeLocation.length} : $listlongitudeLocation');
+                                                                print(
+                                                                    '  _markers ${_markers.length}');
+
+                                                                for (int j = 0;
+                                                                    j <
+                                                                        // int.parse(
+                                                                        //     tournee['nombredeEtape']);
+                                                                        // numberofMarker;
+                                                                        _markers
+                                                                            .length;
+                                                                    j++) {
+                                                                  print('$j');
+                                                                  if (j == 0) {
+                                                                    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+                                                                        googleAPIKey,
+                                                                        PointLatLng(
+                                                                            44.85552543453359,
+                                                                            -0.5484378447808893),
+                                                                        PointLatLng(
+                                                                            listlatitudeLocation[0],
+                                                                            listlongitudeLocation[0])
+                                                                        // PointLatLng(44.86301953775456, -0.550416465058058)
+                                                                        );
+                                                                    print(
+                                                                        'Result Status  ${result.status}');
+                                                                    if (result
+                                                                            .status ==
+                                                                        'OK') {
+                                                                      result
+                                                                          .points
+                                                                          .forEach((PointLatLng
+                                                                              point) {
+                                                                        polylineCoordinates.add(LatLng(
+                                                                            point.latitude,
+                                                                            point.longitude));
+                                                                      });
+                                                                      _polylines
+                                                                          .add(
+                                                                              Polyline(
+                                                                        polylineId:
+                                                                            PolylineId('Polyline_Etape_1'),
+                                                                        width:
+                                                                            5,
+                                                                        color: Colors
+                                                                            .blue,
+                                                                        points:
+                                                                            polylineCoordinates,
+                                                                      ));
+                                                                    }
+                                                                    print(
+                                                                        ' polylineCoordinates ${polylineCoordinates.length}');
+                                                                  } else if (j ==
+                                                                      _markers.length -
+                                                                          1) {
+                                                                    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+                                                                        googleAPIKey,
+                                                                        PointLatLng(
+                                                                            listlatitudeLocation[j -
+                                                                                1],
+                                                                            listlongitudeLocation[j -
+                                                                                1]),
+                                                                        PointLatLng(
+                                                                            44.85552543453359,
+                                                                            -0.5484378447808893));
+                                                                    print(
+                                                                        'Result Status  ${result.status}');
+                                                                    if (result
+                                                                            .status ==
+                                                                        'OK') {
+                                                                      result
+                                                                          .points
+                                                                          .forEach((PointLatLng
+                                                                              point) {
+                                                                        polylineCoordinates.add(LatLng(
+                                                                            point.latitude,
+                                                                            point.longitude));
+                                                                      });
+                                                                      _polylines
+                                                                          .add(
+                                                                              Polyline(
+                                                                        polylineId:
+                                                                            PolylineId('Polyline_Etape ${j + 1}'),
+                                                                        visible:
+                                                                            true,
+                                                                        width:
+                                                                            5,
+                                                                        color: Colors
+                                                                            .green,
+                                                                        points:
+                                                                            polylineCoordinates,
+                                                                      ));
+                                                                    }
+                                                                    print(
+                                                                        ' polylineCoordinates ${polylineCoordinates.length}');
+                                                                  } else {
+                                                                    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+                                                                        googleAPIKey,
+                                                                        PointLatLng(
+                                                                            listlatitudeLocation[
+                                                                                j],
+                                                                            listlongitudeLocation[
+                                                                                j]),
+                                                                        PointLatLng(
+                                                                            listlatitudeLocation[j -
+                                                                                1],
+                                                                            listlongitudeLocation[j -
+                                                                                1]));
+                                                                    print(
+                                                                        'Result Status  ${result.status}');
+                                                                    if (result
+                                                                            .status ==
+                                                                        'OK') {
+                                                                      result
+                                                                          .points
+                                                                          .forEach((PointLatLng
+                                                                              point) {
+                                                                        polylineCoordinates.add(LatLng(
+                                                                            point.latitude,
+                                                                            point.longitude));
+                                                                      });
+                                                                      _polylines
+                                                                          .add(
+                                                                              Polyline(
+                                                                        polylineId:
+                                                                            PolylineId('Polyline_Etape ${j + 1}'),
+                                                                        visible:
+                                                                            true,
+                                                                        width:
+                                                                            5,
+                                                                        color: Colors
+                                                                            .yellow,
+                                                                        points:
+                                                                            polylineCoordinates,
+                                                                      ));
+                                                                    }
+                                                                  }
+                                                                  print(
+                                                                      ' polylineCoordinates ${polylineCoordinates.length}');
+                                                                }
+                                                                print(
+                                                                    '_polylines ${_polylines.length} : $_polylines');
+
                                                                 return 'Done';
                                                               },
                                                             ), // a previously-obtained Future<String> or null
@@ -1491,7 +1656,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                                 _markers,
                                                                             onMapCreated:
                                                                                 (GoogleMapController controller) {
-                                                                              _controller.complete(controller);
+                                                                              _googleMapController = controller;
                                                                             },
                                                                           ),
                                                                         )
