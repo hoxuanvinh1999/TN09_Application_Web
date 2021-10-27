@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,12 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
   // For Partenaire
   CollectionReference _partenaire =
       FirebaseFirestore.instance.collection("Partenaire");
+  // For Control Table
+  CollectionReference _contenantadresse =
+      FirebaseFirestore.instance.collection("ContenantAdresse");
+  //For frequence
+  CollectionReference _frequence =
+      FirebaseFirestore.instance.collection("Frequence");
   // For Adresse
   final _createAdresseKeyForm = GlobalKey<FormState>();
   CollectionReference _adresse =
@@ -813,7 +820,108 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                           child: GestureDetector(
                             onTap: () async {
                               if (_createAdresseKeyForm.currentState!
-                                  .validate()) {}
+                                  .validate()) {
+                                await _partenaire
+                                    .where('idPartenaire',
+                                        isEqualTo:
+                                            widget.partenaire['idPartenaire'])
+                                    .limit(1)
+                                    .get()
+                                    .then((QuerySnapshot querySnapshot) {
+                                  querySnapshot.docs.forEach((doc) {
+                                    _partenaire.doc(doc.id).update({
+                                      'nombredeAdresses': (int.parse(
+                                                  widget.partenaire[
+                                                      'nombredeAdresses']) +
+                                              1)
+                                          .toString(),
+                                    });
+                                  });
+                                });
+                                String newidAdresse = _adresse.doc().id;
+                                await _contenantadresse.doc(newidAdresse).set({
+                                  'idAdresse': newidAdresse,
+                                  'nombredetype': '0'
+                                });
+                                await _frequence.doc(_frequence.doc().id).set({
+                                  'frequence': 1,
+                                  'jourFrequence': 'Lundi',
+                                  'siretPartenaire': '',
+                                  'idContactFrequence': 'null',
+                                  'idVehiculeFrequence': 'null',
+                                  'idAdresseFrequence': newidAdresse,
+                                  'nomAdresseFrequence':
+                                      _nomPartenaireAdresseController.text,
+                                  'idPartenaireFrequence':
+                                      widget.partenaire['idPartenaire'],
+                                  'dureeFrequence': '0',
+                                  'startFrequence': '00:00',
+                                  'endFrequence': '00:00',
+                                  'tarifFrequence': '0',
+                                  'dateMinimaleFrequence': '19/10/2021',
+                                  'dateMaximaleFrequence': '19/10/2021',
+                                  'idFrequence': 'null'
+                                });
+                                await _adresse.doc(newidAdresse).set({
+                                  'nomPartenaireAdresse':
+                                      _nomPartenaireAdresseController.text,
+                                  'ligne1Adresse':
+                                      _ligne1AdresseController.text,
+                                  'ligne2Adresse':
+                                      _ligne2AdresseController.text,
+                                  'codepostalAdresse':
+                                      _codepostalAdresseController.text,
+                                  'villeAdresse': _villeAdresseController.text,
+                                  'paysAdresse': _paysAdresseController.text,
+                                  'latitudeAdresse':
+                                      _latitudeAdresseController.text,
+                                  'longitudeAdresse':
+                                      _longitudeAdresseController.text,
+                                  'idPosition': 'null',
+                                  'etageAdresse': _etageAdresseController.text,
+                                  'ascenseurAdresse': _ascenseurAdresse,
+                                  'noteAdresse': _noteAdresseController.text,
+                                  'passagesAdresse': _passagesAdresse,
+                                  'facturationAdresse': _facturationAdresse,
+                                  'tarifpassageAdresse':
+                                      _tarifpassageAdresseController.text,
+                                  'tempspassageAdresse':
+                                      _tempspassageAdresseController.text,
+                                  'surfacepassageAdresse':
+                                      _surfacepassageAdresseController.text,
+                                  'idPartenaireAdresse':
+                                      widget.partenaire['idPartenaire'],
+                                  'nombredeContact': '0',
+                                  'idAdresse': newidAdresse,
+                                }).then((value) async {
+                                  await _partenaire
+                                      .where('idPartenaire',
+                                          isEqualTo:
+                                              widget.partenaire['idPartenaire'])
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      Map<String, dynamic> next_partenaire =
+                                          doc.data()! as Map<String, dynamic>;
+                                      print("Adresse Added");
+                                      Fluttertoast.showToast(
+                                          msg: "Adresse Added",
+                                          gravity: ToastGravity.TOP);
+
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ViewPartenairePage(
+                                                  partenaire: next_partenaire,
+                                                )),
+                                      ).then((value) => setState(() {}));
+                                    });
+                                  });
+                                }).catchError((error) =>
+                                    print("Failed to add user: $error"));
+                              }
                             },
                             child: Row(
                               children: [
