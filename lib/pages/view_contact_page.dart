@@ -14,6 +14,7 @@ import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/generate_password.dart';
+import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 
@@ -163,9 +164,11 @@ class _ViewContactPageState extends State<ViewContactPage> {
             ],
           )),
       SizedBox(height: 20),
-      Align(
-          alignment: Alignment(-0.9, 0),
-          child: Container(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
               margin: EdgeInsets.only(left: 20),
               width: 600,
               height: 1000,
@@ -569,7 +572,159 @@ class _ViewContactPageState extends State<ViewContactPage> {
                     ],
                   ),
                 ),
-              ])))
+              ])),
+          SizedBox(
+            width: 30,
+          ),
+          Container(
+              width: 600,
+              height: 100 +
+                  double.parse(widget.dataContact['nombredePartenaire']) * 150,
+              color: Colors.green,
+              child: Column(
+                children: [
+                  Container(
+                    height: 60,
+                    color: Colors.blue,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 20),
+                            Icon(
+                              FontAwesomeIcons.flag,
+                              size: 17,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Partenaire Related',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        const Divider(
+                          thickness: 5,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: 580,
+                    height:
+                        double.parse(widget.dataContact['nombredePartenaire']) *
+                            150,
+                    color: Colors.red,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: _contactpartenaire
+                          .where('idContact',
+                              isEqualTo: widget.dataContact['idContact'])
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          print('${snapshot.error.toString()}');
+                          return Text('Something went wrong');
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        // print('$snapshot');
+
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: snapshot.data!.docs.map(
+                                (DocumentSnapshot document_contactpartenaire) {
+                              Map<String, dynamic> contactpartenaire =
+                                  document_contactpartenaire.data()!
+                                      as Map<String, dynamic>;
+                              // print('$collecteur');
+
+                              return Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                alignment: Alignment.center,
+                                color: Colors.white,
+                                height: 50,
+                                width: 560,
+                                child: StreamBuilder<QuerySnapshot>(
+                                  stream: _partenaire
+                                      .where('idPartenaire',
+                                          isEqualTo:
+                                              contactpartenaire['idPartenaire'])
+                                      .limit(1)
+                                      .snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      print('${snapshot.error.toString()}');
+                                      return Text('Something went wrong');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    // print('$snapshot');
+
+                                    return SingleChildScrollView(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: snapshot.data!.docs.map(
+                                            (DocumentSnapshot
+                                                document_partenaire) {
+                                          Map<String, dynamic> partenaire =
+                                              document_partenaire.data()!
+                                                  as Map<String, dynamic>;
+                                          // print('$collecteur');
+                                          return Container(
+                                              color: Colors.white,
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(limitString(
+                                                      text: partenaire[
+                                                          'nomPartenaire'],
+                                                      limit_long: 20)),
+                                                ],
+                                              ));
+                                        }).toList(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ))
+        ],
+      )
     ])));
   }
 }
