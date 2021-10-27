@@ -36,6 +36,10 @@ class ApplicationBloc with ChangeNotifier {
       vicinity: '',
       placeId: '',
       formatted_address: '',
+      city: '',
+      code_postal: '',
+      short_adresse: '',
+      country: '',
     );
     notifyListeners();
   }
