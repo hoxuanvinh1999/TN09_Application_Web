@@ -1490,6 +1490,29 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                     j++) {
                                                                   print('$j');
                                                                   if (j == 0) {
+                                                                    polylineCoordinates
+                                                                        .clear();
+                                                                    // polylineCoordinates.add(LatLng(
+                                                                    //     44.85552543453359,
+                                                                    //     -0.5484378447808893));
+                                                                    // polylineCoordinates.add(LatLng(
+                                                                    //     44.8606994,
+                                                                    //     -0.5562271000000001));
+
+                                                                    // _polylines.add(
+                                                                    //     Polyline(
+                                                                    //   polylineId:
+                                                                    //       PolylineId(
+                                                                    //           'Polyline_Etape_1'),
+                                                                    //   width: 5,
+                                                                    //   visible:
+                                                                    //       true,
+                                                                    //   color: Colors
+                                                                    //       .blue,
+                                                                    //   points:
+                                                                    //       polylineCoordinates,
+                                                                    // ));
+
                                                                     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
                                                                         googleAPIKey,
                                                                         PointLatLng(
@@ -1528,91 +1551,92 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                     }
                                                                     print(
                                                                         ' polylineCoordinates ${polylineCoordinates.length}');
-                                                                  } else if (j ==
-                                                                      _markers.length -
-                                                                          1) {
-                                                                    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-                                                                        googleAPIKey,
-                                                                        PointLatLng(
-                                                                            listlatitudeLocation[j -
-                                                                                1],
-                                                                            listlongitudeLocation[j -
-                                                                                1]),
-                                                                        PointLatLng(
-                                                                            44.85552543453359,
-                                                                            -0.5484378447808893));
-                                                                    print(
-                                                                        'Result Status  ${result.status}');
-                                                                    if (result
-                                                                            .status ==
-                                                                        'OK') {
-                                                                      result
-                                                                          .points
-                                                                          .forEach((PointLatLng
-                                                                              point) {
-                                                                        polylineCoordinates.add(LatLng(
-                                                                            point.latitude,
-                                                                            point.longitude));
-                                                                      });
-                                                                      _polylines
-                                                                          .add(
-                                                                              Polyline(
-                                                                        polylineId:
-                                                                            PolylineId('Polyline_Etape ${j + 1}'),
-                                                                        visible:
-                                                                            true,
-                                                                        width:
-                                                                            5,
-                                                                        color: Colors
-                                                                            .green,
-                                                                        points:
-                                                                            polylineCoordinates,
-                                                                      ));
-                                                                    }
-                                                                    print(
-                                                                        ' polylineCoordinates ${polylineCoordinates.length}');
-                                                                  } else {
-                                                                    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-                                                                        googleAPIKey,
-                                                                        PointLatLng(
-                                                                            listlatitudeLocation[
-                                                                                j],
-                                                                            listlongitudeLocation[
-                                                                                j]),
-                                                                        PointLatLng(
-                                                                            listlatitudeLocation[j -
-                                                                                1],
-                                                                            listlongitudeLocation[j -
-                                                                                1]));
-                                                                    print(
-                                                                        'Result Status  ${result.status}');
-                                                                    if (result
-                                                                            .status ==
-                                                                        'OK') {
-                                                                      result
-                                                                          .points
-                                                                          .forEach((PointLatLng
-                                                                              point) {
-                                                                        polylineCoordinates.add(LatLng(
-                                                                            point.latitude,
-                                                                            point.longitude));
-                                                                      });
-                                                                      _polylines
-                                                                          .add(
-                                                                              Polyline(
-                                                                        polylineId:
-                                                                            PolylineId('Polyline_Etape ${j + 1}'),
-                                                                        visible:
-                                                                            true,
-                                                                        width:
-                                                                            5,
-                                                                        color: Colors
-                                                                            .yellow,
-                                                                        points:
-                                                                            polylineCoordinates,
-                                                                      ));
-                                                                    }
                                                                   }
+                                                                  // else if (j ==
+                                                                  //     _markers.length -
+                                                                  //         1) {
+                                                                  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+                                                                  //       googleAPIKey,
+                                                                  //       PointLatLng(
+                                                                  //           listlatitudeLocation[j -
+                                                                  //               1],
+                                                                  //           listlongitudeLocation[j -
+                                                                  //               1]),
+                                                                  //       PointLatLng(
+                                                                  //           44.85552543453359,
+                                                                  //           -0.5484378447808893));
+                                                                  //   print(
+                                                                  //       'Result Status  ${result.status}');
+                                                                  //   if (result
+                                                                  //           .status ==
+                                                                  //       'OK') {
+                                                                  //     result
+                                                                  //         .points
+                                                                  //         .forEach((PointLatLng
+                                                                  //             point) {
+                                                                  //       polylineCoordinates.add(LatLng(
+                                                                  //           point.latitude,
+                                                                  //           point.longitude));
+                                                                  //     });
+                                                                  //     _polylines
+                                                                  //         .add(
+                                                                  //             Polyline(
+                                                                  //       polylineId:
+                                                                  //           PolylineId('Polyline_Etape ${j + 1}'),
+                                                                  //       visible:
+                                                                  //           true,
+                                                                  //       width:
+                                                                  //           5,
+                                                                  //       color: Colors
+                                                                  //           .green,
+                                                                  //       points:
+                                                                  //           polylineCoordinates,
+                                                                  //     ));
+                                                                  //   }
+                                                                  //   print(
+                                                                  //       ' polylineCoordinates ${polylineCoordinates.length}');
+                                                                  // } else {
+                                                                  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+                                                                  //       googleAPIKey,
+                                                                  //       PointLatLng(
+                                                                  //           listlatitudeLocation[
+                                                                  //               j],
+                                                                  //           listlongitudeLocation[
+                                                                  //               j]),
+                                                                  //       PointLatLng(
+                                                                  //           listlatitudeLocation[j -
+                                                                  //               1],
+                                                                  //           listlongitudeLocation[j -
+                                                                  //               1]));
+                                                                  //   print(
+                                                                  //       'Result Status  ${result.status}');
+                                                                  //   if (result
+                                                                  //           .status ==
+                                                                  //       'OK') {
+                                                                  //     result
+                                                                  //         .points
+                                                                  //         .forEach((PointLatLng
+                                                                  //             point) {
+                                                                  //       polylineCoordinates.add(LatLng(
+                                                                  //           point.latitude,
+                                                                  //           point.longitude));
+                                                                  //     });
+                                                                  //     _polylines
+                                                                  //         .add(
+                                                                  //             Polyline(
+                                                                  //       polylineId:
+                                                                  //           PolylineId('Polyline_Etape ${j + 1}'),
+                                                                  //       visible:
+                                                                  //           true,
+                                                                  //       width:
+                                                                  //           5,
+                                                                  //       color: Colors
+                                                                  //           .yellow,
+                                                                  //       points:
+                                                                  //           polylineCoordinates,
+                                                                  //     ));
+                                                                  //   }
+                                                                  // }
                                                                   print(
                                                                       ' polylineCoordinates ${polylineCoordinates.length}');
                                                                 }
