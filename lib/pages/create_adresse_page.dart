@@ -14,8 +14,13 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 
 class CreateAdressePage extends StatefulWidget {
+  Map partenaire;
+  CreateAdressePage({
+    required this.partenaire,
+  });
   @override
   _CreateAdressePageState createState() => _CreateAdressePageState();
 }
@@ -49,10 +54,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
   TextEditingController _surfacepassageAdresseController =
       TextEditingController();
   inputData() {
-    _nomPartenaireAdresseController.text = '';
-    //= widget.partenaire['nomPartenaire'];
-    _latitudeAdresseController.text = '';
-    _longitudeAdresseController.text = '';
+    _nomPartenaireAdresseController.text = widget.partenaire['nomPartenaire'];
     _etageAdresseController.text = '0';
     _noteAdresseController.text = '';
   }
@@ -82,6 +84,10 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
   String addressLocation = '';
   String latitudeLocation = '';
   String longitudeLocation = '';
+  String short_adresse = '';
+  String code_postal = '';
+  String city = '';
+  String country = '';
   final _locationController = TextEditingController();
   void initState() {
     final applicationBloc =
@@ -132,6 +138,10 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
     longitudeLocation = (place.geometry.location.lng).toString();
     idLocation = place.placeId;
     addressLocation = place.formatted_address;
+    short_adresse = place.short_adresse;
+    code_postal = place.code_postal;
+    city = place.city;
+    country = place.country;
     final GoogleMapController controller = await _mapController.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -209,6 +219,36 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => PartenairePage()));
+                          }),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(
+                FontAwesomeIcons.chevronCircleRight,
+                size: 12,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: widget.partenaire['nomPartenaire'],
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                                    builder: (context) => ViewPartenairePage(
+                                          partenaire: widget.partenaire,
+                                        )));
                           }),
                   ],
                 ),
@@ -456,7 +496,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                           ),
                           Container(
                             width: 400,
-                            height: 250,
+                            height: 80,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -476,6 +516,8 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                       onPressed: () {
                                         setState(() {
                                           searchAdresse = true;
+                                          applicationBloc.searchPlaces(
+                                              _ligne1AdresseController.text);
                                         });
                                       },
                                       tooltip: 'Search by Google Map',
@@ -486,35 +528,35 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                     )
                                   ],
                                 ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: 20,
-                                  ),
-                                  padding: EdgeInsets.only(left: 8.0),
-                                  width: 200,
-                                  color: Colors.red,
-                                  child: TextFormField(
-                                    controller: _latitudeAdresseController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Latitude:',
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: 20,
-                                  ),
-                                  padding: EdgeInsets.only(left: 8.0),
-                                  width: 200,
-                                  color: Colors.red,
-                                  child: TextFormField(
-                                    controller: _longitudeAdresseController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Longitude:',
-                                    ),
-                                  ),
-                                ),
                               ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: 20,
+                            ),
+                            padding: EdgeInsets.only(left: 8.0),
+                            width: 200,
+                            color: Colors.red,
+                            child: TextFormField(
+                              controller: _latitudeAdresseController,
+                              decoration: InputDecoration(
+                                labelText: 'Latitude:',
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 20,
+                            ),
+                            padding: EdgeInsets.only(left: 8.0),
+                            width: 200,
+                            color: Colors.red,
+                            child: TextFormField(
+                              controller: _longitudeAdresseController,
+                              decoration: InputDecoration(
+                                labelText: 'Longitude:',
+                              ),
                             ),
                           ),
                           // Container(
@@ -734,7 +776,13 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                      builder: (context) => ViewPartenairePage(
+                                            partenaire: widget.partenaire,
+                                          )));
+                            },
                             child: Row(
                               children: [
                                 Icon(
@@ -940,7 +988,22 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    setState(() {
+                                      _ligne1AdresseController.text =
+                                          addressLocation.toString();
+                                      _ligne2AdresseController.text =
+                                          short_adresse;
+                                      _longitudeAdresseController.text =
+                                          longitudeLocation;
+                                      _latitudeAdresseController.text =
+                                          latitudeLocation;
+                                      _villeAdresseController.text = city;
+                                      _paysAdresseController.text = country;
+                                      _codepostalAdresseController.text =
+                                          code_postal;
+                                    });
+                                  },
                                 ),
                               )
                             ],

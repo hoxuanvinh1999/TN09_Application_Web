@@ -8,6 +8,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tn09_app_web_demo/pages/create_adresse_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
@@ -1361,7 +1362,14 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     ),
                                     child: GestureDetector(
                                       onTap: () {
-                                        showCreateAdressesDialog();
+                                        // showCreateAdressesDialog();
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CreateAdressePage(
+                                                      partenaire:
+                                                          widget.partenaire,
+                                                    )));
                                       },
                                       child: Row(
                                         children: [
@@ -3174,7 +3182,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     thickness: 5,
                   ),
                   Container(
-                    height: 400,
+                    height: 350,
                     color: Colors.green,
                     child: Form(
                         key: _createAdressesKeyForm,
@@ -3912,7 +3920,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     height: 10,
                   ),
                   Container(
-                    height: 380,
+                    height: 300,
                     color: Colors.green,
                     child: Form(
                         key: _modifyAdressesKeyForm,
@@ -4655,7 +4663,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     height: 10,
                   ),
                   Container(
-                    height: 380,
+                    height: 300,
                     color: Colors.green,
                     child: SingleChildScrollView(
                       child: Column(
