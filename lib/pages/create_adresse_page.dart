@@ -50,6 +50,8 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
     _noteAdresseController.text = '';
   }
 
+  bool searchAdresse = false;
+
   @override
   Widget build(BuildContext context) {
     inputData();
@@ -146,6 +148,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
       SizedBox(height: 20),
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
               margin: EdgeInsets.only(left: 50),
@@ -242,6 +245,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
+                            padding: EdgeInsets.only(left: 8.0),
                             margin: EdgeInsets.symmetric(vertical: 20),
                             width: 400,
                             color: Colors.red,
@@ -263,6 +267,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -283,6 +288,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -296,6 +302,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -316,6 +323,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -336,6 +344,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -353,29 +362,66 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
                             width: 400,
-                            color: Colors.red,
-                            child: TextFormField(
-                              controller: _latitudeAdresseController,
-                              decoration: InputDecoration(
-                                labelText: 'Latitude:',
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            width: 400,
-                            color: Colors.red,
-                            child: TextFormField(
-                              controller: _longitudeAdresseController,
-                              decoration: InputDecoration(
-                                labelText: 'Longitude:',
-                              ),
+                            height: 250,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Position',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          searchAdresse = true;
+                                        });
+                                      },
+                                      tooltip: 'Search by Google Map',
+                                      icon: Icon(
+                                        FontAwesomeIcons.search,
+                                        size: 15,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 20,
+                                  ),
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  width: 200,
+                                  color: Colors.red,
+                                  child: TextFormField(
+                                    controller: _latitudeAdresseController,
+                                    decoration: InputDecoration(
+                                      labelText: 'Latitude:',
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 20,
+                                  ),
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  width: 200,
+                                  color: Colors.red,
+                                  child: TextFormField(
+                                    controller: _longitudeAdresseController,
+                                    decoration: InputDecoration(
+                                      labelText: 'Longitude:',
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           // Container(
@@ -390,6 +436,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -515,6 +562,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -534,6 +582,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -553,6 +602,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             margin: EdgeInsets.symmetric(
                               vertical: 20,
                             ),
+                            padding: EdgeInsets.only(left: 8.0),
                             width: 400,
                             color: Colors.red,
                             child: TextFormField(
@@ -649,8 +699,57 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                 ),
               ])),
           SizedBox(
-            width: 50,
+            width: 30,
           ),
+          Visibility(
+              visible: searchAdresse,
+              child: Container(
+                width: 600,
+                height: 1000,
+                color: Colors.green,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 60,
+                      color: Colors.blue,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: 20),
+                              Icon(
+                                FontAwesomeIcons.search,
+                                size: 17,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Search Posistion',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          const Divider(
+                            thickness: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ))
         ],
       )
     ])));
