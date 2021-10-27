@@ -703,10 +703,32 @@ class _ViewContactPageState extends State<ViewContactPage> {
                                                   SizedBox(
                                                     width: 10,
                                                   ),
-                                                  Text(limitString(
-                                                      text: partenaire[
-                                                          'nomPartenaire'],
-                                                      limit_long: 20)),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      children: <TextSpan>[
+                                                        TextSpan(
+                                                            text: partenaire[
+                                                                'nomPartenaire'],
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                            recognizer:
+                                                                TapGestureRecognizer()
+                                                                  ..onTap = () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pushReplacement(MaterialPageRoute(
+                                                                            builder: (context) => ViewPartenairePage(
+                                                                                  partenaire: partenaire,
+                                                                                )));
+                                                                  }),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ],
                                               ));
                                         }).toList(),
