@@ -3141,7 +3141,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   showCreateAdressesDialog() {
     _nomPartenaireAdresseController.text = widget.partenaire['nomPartenaire'];
     _latitudeAdresseController.text = '';
-    _latitudeAdresseController.text = '';
+    _longitudeAdresseController.text = '';
     _etageAdresseController.text = '0';
     _noteAdresseController.text = '';
     TabController adressesTabController;
