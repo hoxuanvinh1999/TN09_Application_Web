@@ -1,7 +1,14 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:tn09_app_web_demo/google_map/blocs/application_bloc.dart';
+import 'package:tn09_app_web_demo/google_map/models/place.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
@@ -51,10 +58,96 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
   }
 
   bool searchAdresse = false;
+//For Google Map
+  static const _initialCameraPosition = CameraPosition(
+    target: LatLng(44.855601489864014, -0.5484378447808893),
+    zoom: 15,
+  );
+
+  Set<Marker> _markers = {};
+  GoogleMapController? _googleMapController;
+
+  Marker _ourCompany = Marker(
+      markerId: MarkerId('les_detritivores'),
+      position: LatLng(44.85552543453359, -0.5484378447808893),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      infoWindow:
+          InfoWindow(title: 'Les detritivores', snippet: 'Our Company'));
+
+  @override
+  Completer<GoogleMapController> _mapController = Completer();
+  StreamSubscription? locationSubscription;
+  StreamSubscription? boundsSubscription;
+  String idLocation = '';
+  String addressLocation = '';
+  String latitudeLocation = '';
+  String longitudeLocation = '';
+  final _locationController = TextEditingController();
+  void initState() {
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
+
+    //Listen for selected Location
+    locationSubscription = applicationBloc.selectedLocation.stream
+        .asBroadcastStream()
+        .listen((place) {
+      if (place != null) {
+        _locationController.text = place.name;
+        _goToPlace(place);
+        // _googleMapController!.animateCamera(CameraUpdate.newCameraPosition(
+        //   CameraPosition(
+        //       target: LatLng(
+        //           place.geometry.location.lat, place.geometry.location.lng),
+        //       zoom: 14.0),
+        // ));
+        // _markers.remove('now');
+        _markers.add(Marker(
+          markerId: MarkerId('${place.placeId}'),
+          infoWindow: InfoWindow(title: place.name),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          position:
+              LatLng(place.geometry.location.lat, place.geometry.location.lng),
+        ));
+        String location_name = place.name;
+      } else
+        _locationController.text = "";
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
+    applicationBloc.dispose();
+    _locationController.dispose();
+    locationSubscription!.cancel();
+    boundsSubscription!.cancel();
+    super.dispose();
+  }
+
+  Future<void> _goToPlace(Place place) async {
+    latitudeLocation = (place.geometry.location.lat).toString();
+    longitudeLocation = (place.geometry.location.lng).toString();
+    idLocation = place.placeId;
+    addressLocation = place.formatted_address;
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(
+                place.geometry.location.lat, place.geometry.location.lng),
+            zoom: 14.0),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     inputData();
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    _markers.add(_ourCompany);
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -705,7 +798,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
               visible: searchAdresse,
               child: Container(
                 width: 600,
-                height: 1000,
+                height: 2000,
                 color: Colors.green,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -747,6 +840,111 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                         ],
                       ),
                     ),
+                    (applicationBloc.currentLocation == null)
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ListView(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  decoration: InputDecoration(
+                                    hintText: 'Search Location',
+                                    suffixIcon: Icon(Icons.search),
+                                  ),
+                                  onChanged: (value) =>
+                                      applicationBloc.searchPlaces(value),
+                                ),
+                              ),
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    height: 600,
+                                    child: GoogleMap(
+                                      myLocationButtonEnabled: false,
+                                      zoomControlsEnabled: true,
+                                      initialCameraPosition: CameraPosition(
+                                        target: LatLng(
+                                            applicationBloc
+                                                .currentLocation.latitude,
+                                            applicationBloc
+                                                .currentLocation.altitude),
+                                        zoom: 15,
+                                      ),
+                                      // _initialCameraPosition,
+                                      onMapCreated:
+                                          (GoogleMapController controller) {
+                                        _mapController.complete(controller);
+                                        //setPolylines();
+                                      },
+                                      markers: _markers,
+                                      gestureRecognizers: Set()
+                                        ..add(Factory<EagerGestureRecognizer>(
+                                            () => EagerGestureRecognizer())),
+                                    ),
+                                  ),
+                                  if (applicationBloc.searchResults != [] &&
+                                      applicationBloc.searchResults.length != 0)
+                                    Container(
+                                        height: 600,
+                                        width: 600,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(.6),
+                                        )),
+                                  if (applicationBloc.searchResults != [])
+                                    Container(
+                                      height: 600,
+                                      width: 600,
+                                      child: ListView.builder(
+                                          itemCount: applicationBloc
+                                              .searchResults.length,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              title: Text(
+                                                applicationBloc
+                                                    .searchResults[index]
+                                                    .description,
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              onTap: () {
+                                                applicationBloc
+                                                    .setSelectedLocation(
+                                                        applicationBloc
+                                                            .searchResults[
+                                                                index]
+                                                            .placeId);
+                                              },
+                                            );
+                                          }),
+                                    ),
+                                ],
+                              ),
+                              Container(
+                                width: 200,
+                                height: 100,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 20),
+                                child: ElevatedButton(
+                                  child: Text(
+                                    'Select Location',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              )
+                            ],
+                          ),
                   ],
                 ),
               ))
