@@ -395,7 +395,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                         key: _createPartenaireKeyForm,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               width: 400,
@@ -648,7 +648,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
             SizedBox(height: 20),
             Container(
               margin: EdgeInsets.only(left: 20),
-              height: 200 +
+              height: 300 +
                   100 * double.parse(widget.partenaire['nombredeContact']),
               width: 600,
               color: Colors.green,
