@@ -879,10 +879,13 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                       _longitudeAdresseController.text,
                                   'idPosition': 'null',
                                   'etageAdresse': _etageAdresseController.text,
-                                  'ascenseurAdresse': _ascenseurAdresse,
+                                  'ascenseurAdresse':
+                                      _ascenseurAdresse.toString(),
                                   'noteAdresse': _noteAdresseController.text,
-                                  'passagesAdresse': _passagesAdresse,
-                                  'facturationAdresse': _facturationAdresse,
+                                  'passagesAdresse':
+                                      _passagesAdresse.toString(),
+                                  'facturationAdresse':
+                                      _facturationAdresse.toString(),
                                   'tarifpassageAdresse':
                                       _tarifpassageAdresseController.text,
                                   'tempspassageAdresse':
