@@ -220,7 +220,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                       key: _createPartenaireKeyForm,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
                             width: 400,
