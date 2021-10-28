@@ -122,12 +122,14 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
     'Dimanche',
   ];
 
-  // for Vehicule
+  //for Vehicule
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection('Vehicule');
   //for Contenant
   CollectionReference _contenant =
       FirebaseFirestore.instance.collection("Contenant");
+  //for Etape
+  CollectionReference _etape = FirebaseFirestore.instance.collection('Etape');
   Widget buildVehiculeFrequence({required idVehiculeFrequence}) {
     if (idVehiculeFrequence == 'null') {
       return Container(
@@ -4366,6 +4368,19 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                               onTap: () async {
                                 if (_modifyAdressesKeyForm.currentState!
                                     .validate()) {
+                                  await _etape
+                                      .where('idAdresseEtape',
+                                          isEqualTo: dataAdresse['idAdresse'])
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc_etape) {
+                                      _etape.doc(doc_etape.id).update({
+                                        'nomAdresseEtape':
+                                            _nomPartenaireAdresseModifyController
+                                                .text,
+                                      });
+                                    });
+                                  });
                                   await _adresse
                                       .where('idAdresse',
                                           isEqualTo: dataAdresse['idAdresse'])
