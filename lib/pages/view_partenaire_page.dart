@@ -5166,7 +5166,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     height: 10,
                   ),
                   Container(
-                    height: 380,
+                    height: 350,
                     color: Colors.green,
                     child: SingleChildScrollView(
                       child: Column(

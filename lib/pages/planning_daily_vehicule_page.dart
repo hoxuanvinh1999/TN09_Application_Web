@@ -23,6 +23,8 @@ import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:tn09_app_web_demo/.env.dart';
+import 'package:tn09_app_web_demo/pages/widget/company_position.dart'
+    as company;
 
 class PlanningDailyVehiculePage extends StatefulWidget {
   DateTime thisDay;
@@ -41,11 +43,7 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
     target: LatLng(44.855601489864014, -0.5484378447808893),
     zoom: 15,
   );
-  Marker _ourCompany = Marker(
-      markerId: MarkerId('les_detritivores'),
-      position: LatLng(44.85552543453359, -0.5484378447808893),
-      infoWindow:
-          InfoWindow(title: 'Les detritivores', snippet: 'Our Company'));
+
   // for Vehicule
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
@@ -1467,8 +1465,8 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                   });
                                                                 }
 
-                                                                _markers.add(
-                                                                    _ourCompany);
+                                                                _markers.add(company
+                                                                    .companyMarker);
                                                                 numberofMarker++;
 
                                                                 print(

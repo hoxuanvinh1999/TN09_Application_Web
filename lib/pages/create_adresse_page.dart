@@ -16,6 +16,8 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/widget/company_position.dart'
+    as company;
 
 class CreateAdressePage extends StatefulWidget {
   Map partenaire;
@@ -75,13 +77,6 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
 
   Set<Marker> _markers = {};
   GoogleMapController? _googleMapController;
-
-  Marker _ourCompany = Marker(
-      markerId: MarkerId('les_detritivores'),
-      position: LatLng(44.85552543453359, -0.5484378447808893),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      infoWindow:
-          InfoWindow(title: 'Les detritivores', snippet: 'Our Company'));
 
   @override
   Completer<GoogleMapController> _mapController = Completer();
@@ -164,7 +159,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
   Widget build(BuildContext context) {
     inputData();
     final applicationBloc = Provider.of<ApplicationBloc>(context);
-    _markers.add(_ourCompany);
+    _markers.add(company.companyMarker);
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
