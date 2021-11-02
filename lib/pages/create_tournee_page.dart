@@ -1135,6 +1135,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                               list_endFrequence[i],
                                           'tarifFrequenceEtape':
                                               list_tarifFrequence[i],
+                                          'status': 'wait',
                                           'jourEtape': getDateText(date: date),
                                         });
                                         orderEtape++;
@@ -1176,6 +1177,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                               list_endFrequence[i],
                                           'tarifFrequenceEtape':
                                               list_tarifFrequence[i],
+                                          'status': 'wait',
                                           'jourEtape': getDateText(date: date),
                                         });
                                         orderEtape++;
@@ -1202,6 +1204,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                     'nombredeEtape': numberofEtape.toString(),
                                     'isCreating': false.toString(),
                                     'jourTournee': _jourPlanning,
+                                    'status': 'wait',
                                     'colorTournee': colorTournee,
                                   }).then((value) {
                                     Fluttertoast.showToast(
