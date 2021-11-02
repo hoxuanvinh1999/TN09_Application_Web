@@ -4368,6 +4368,19 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                               onTap: () async {
                                 if (_modifyAdressesKeyForm.currentState!
                                     .validate()) {
+                                  await _frequence
+                                      .where('idAdresseFrequence',
+                                          isEqualTo: dataAdresse['idAdresse'])
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc_frequence) {
+                                      _frequence.doc(doc_frequence.id).update({
+                                        'nomAdresseFrequence':
+                                            _nomPartenaireAdresseModifyController
+                                                .text,
+                                      });
+                                    });
+                                  });
                                   await _etape
                                       .where('idAdresseEtape',
                                           isEqualTo: dataAdresse['idAdresse'])
