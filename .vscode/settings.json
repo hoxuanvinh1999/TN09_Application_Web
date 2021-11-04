@@ -1,3 +1,4 @@
 {
-    "openhab.useRestApi": false
+    "openhab.useRestApi": false,
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

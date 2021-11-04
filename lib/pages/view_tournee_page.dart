@@ -6,24 +6,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
-import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 import 'package:tn09_app_web_demo/header.dart';
 import 'dart:async';
-import 'package:tn09_app_web_demo/login_page/login_page.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
-import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_if_a_time.dart';
 import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
-import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_Inconnu.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
-import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
 class ViewTourneePage extends StatefulWidget {

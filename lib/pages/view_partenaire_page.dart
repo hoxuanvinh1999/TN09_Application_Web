@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -14,7 +13,6 @@ import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_Inconnu.dart';
-import 'package:tn09_app_web_demo/pages/math_function/is_numeric_function.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
