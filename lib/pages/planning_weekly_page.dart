@@ -43,9 +43,21 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
       FirebaseFirestore.instance.collection("Collecteur");
   // for Etape
   CollectionReference _etape = FirebaseFirestore.instance.collection("Etape");
+  //clear data
+  void clearCreatingTournee() async {
+    await _tournee
+        .where('isCreating', isEqualTo: 'true')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((tournee_data) {
+        _tournee.doc(tournee_data['idTournee']).delete();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    clearCreatingTournee();
     //For set up Date
     int currentDay = widget.thisDay.weekday;
     DateTime firstDayOfWeek =

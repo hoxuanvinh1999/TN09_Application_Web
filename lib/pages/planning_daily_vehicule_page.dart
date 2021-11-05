@@ -65,8 +65,21 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
   //For Adresse
   CollectionReference _adresse =
       FirebaseFirestore.instance.collection("Adresse");
+  //clear data
+  void clearCreatingTournee() async {
+    await _tournee
+        .where('isCreating', isEqualTo: 'true')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((tournee_data) {
+        _tournee.doc(tournee_data['idTournee']).delete();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    clearCreatingTournee();
     //For set up Date
     int currentDay = widget.thisDay.weekday;
     DateTime nextDay = widget.thisDay.add(new Duration(days: 1));

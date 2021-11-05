@@ -110,12 +110,24 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
   List<String> list_IdEtape = [];
   List<bool> list_Etape_confirm = [];
   List<Color> list_color_etape = [];
+  //clear data
+  void clearCreatingTournee() async {
+    await _tournee
+        .where('isCreating', isEqualTo: 'true')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((tournee_data) {
+        _tournee.doc(tournee_data['idTournee']).delete();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    clearCreatingTournee();
     // For the list view
     List<Widget> list_step =
         List.generate(_count, (int i) => addStepWidget(element: i));
-    ;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -145,7 +157,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () {
+                          ..onTap = () async {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => HomeScreen()));
