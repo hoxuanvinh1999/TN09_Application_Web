@@ -124,7 +124,6 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
 
   @override
   Widget build(BuildContext context) {
-    clearCreatingTournee();
     // For the list view
     List<Widget> list_step =
         List.generate(_count, (int i) => addStepWidget(element: i));

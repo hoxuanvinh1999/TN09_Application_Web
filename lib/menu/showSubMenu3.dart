@@ -68,7 +68,7 @@ showSubMenu3({required BuildContext context}) {
                       height: 10,
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async{
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CreateTourneePage()));
                       },
