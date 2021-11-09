@@ -6,6 +6,7 @@ import 'package:tn09_app_web_demo/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tn09_app_web_demo/pages/create_matiere_page.dart';
 
 class MatieresPage extends StatefulWidget {
   @override
@@ -132,7 +133,10 @@ class _MatieresPageState extends State<MatieresPage> {
                                         right: 10, top: 20, bottom: 20),
                                     child: GestureDetector(
                                       onTap: () {
-                                        // Update Later
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CreateMatierePage()));
                                       },
                                       child: Row(
                                         children: [
