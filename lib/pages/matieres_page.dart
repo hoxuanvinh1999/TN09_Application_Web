@@ -16,7 +16,7 @@ class _MatieresPageState extends State<MatieresPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   // For Matiere
   CollectionReference _matiere =
-      FirebaseFirestore.instance.collection("Collecteur");
+      FirebaseFirestore.instance.collection("Matiere");
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +211,7 @@ class _MatieresPageState extends State<MatieresPage> {
                           )),
                       Container(
                         child: StreamBuilder<QuerySnapshot>(
-                          stream: _matiere.orderBy('nomCollecteur').snapshots(),
+                          stream: _matiere.orderBy('nomMatiere').snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
@@ -229,24 +229,58 @@ class _MatieresPageState extends State<MatieresPage> {
                               child: Column(
                                 children: snapshot.data!.docs
                                     .map((DocumentSnapshot document) {
-                                  Map<String, dynamic> collecteur =
+                                  Map<String, dynamic> matiere =
                                       document.data()! as Map<String, dynamic>;
                                   // print('$collecteur');
-                                  if (collecteur['idCollecteur'] == 'null') {
+                                  if (matiere['idMatiere'] == 'null') {
                                     return SizedBox.shrink();
+                                  } else {
+                                    return Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        color: Colors.white,
+                                        height: 60,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10),
+                                                      child: Icon(
+                                                        FontAwesomeIcons.tag,
+                                                        size: 15,
+                                                        color: Color(int.parse(
+                                                            matiere[
+                                                                'colorMatiere'])),
+                                                      )),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10),
+                                                    child: Text(
+                                                      matiere['nomMatiere'],
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            const Divider(
+                                              thickness: 5,
+                                            ),
+                                          ],
+                                        ));
                                   }
-                                  return Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 10),
-                                      color: Colors.white,
-                                      height: 50,
-                                      child: Column(
-                                        children: [
-                                          const Divider(
-                                            thickness: 5,
-                                          ),
-                                        ],
-                                      ));
                                 }).toList(),
                               ),
                             );
