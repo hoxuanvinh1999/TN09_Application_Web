@@ -7,6 +7,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/create_matiere_page.dart';
+import 'package:tn09_app_web_demo/pages/modify_matiere_page.dart';
 
 class MatieresPage extends StatefulWidget {
   @override
@@ -297,16 +298,31 @@ class _MatieresPageState extends State<MatieresPage> {
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          Text(
-                                                            matiere[
-                                                                'nomMatiere'],
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              children: <
+                                                                  TextSpan>[
+                                                                TextSpan(
+                                                                    text: matiere[
+                                                                        'nomMatiere'],
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold),
+                                                                    recognizer:
+                                                                        TapGestureRecognizer()
+                                                                          ..onTap =
+                                                                              () {
+                                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                                builder: (context) => ModifyMatierePage(
+                                                                                      dataMatiere: matiere,
+                                                                                    )));
+                                                                          }),
+                                                              ],
                                                             ),
                                                           ),
                                                           Container(
@@ -367,11 +383,23 @@ class _MatieresPageState extends State<MatieresPage> {
                                                                               document_MatiereParente.data()! as Map<String, dynamic>;
                                                                           return Container(
                                                                             child:
-                                                                                Text(
-                                                                              matiereParente['nomMatiere'],
-                                                                              style: TextStyle(
-                                                                                color: Colors.grey,
-                                                                                fontSize: 15,
+                                                                                RichText(
+                                                                              text: TextSpan(
+                                                                                children: <TextSpan>[
+                                                                                  TextSpan(
+                                                                                      text: matiereParente['nomMatiere'],
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.black,
+                                                                                        fontSize: 15,
+                                                                                      ),
+                                                                                      recognizer: TapGestureRecognizer()
+                                                                                        ..onTap = () {
+                                                                                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                                              builder: (context) => ModifyMatierePage(
+                                                                                                    dataMatiere: matiereParente,
+                                                                                                  )));
+                                                                                        }),
+                                                                                ],
                                                                               ),
                                                                             ),
                                                                           );
@@ -420,38 +448,41 @@ class _MatieresPageState extends State<MatieresPage> {
                                                     ),
                                                   ),
                                                   Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 100),
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            width: 30,
-                                                            color: Colors.green,
-                                                            child: IconButton(
-                                                              icon: const Icon(
-                                                                  Icons.edit),
-                                                              tooltip:
-                                                                  'Modify Matiere',
-                                                              onPressed: () {},
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 10),
-                                                            width: 50,
-                                                            color: Colors.green,
-                                                            child: IconButton(
-                                                              icon: const Icon(
-                                                                  FontAwesomeIcons
-                                                                      .truck),
-                                                              tooltip:
-                                                                  'Historique des collectes',
-                                                              onPressed: () {},
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ))
+                                                    margin: EdgeInsets.only(
+                                                        left: 100),
+                                                    width: 30,
+                                                    color: Colors.green,
+                                                    child: IconButton(
+                                                      icon: const Icon(
+                                                          Icons.edit),
+                                                      tooltip: 'Modify Matiere',
+                                                      onPressed: () {
+                                                        print('Modify Matiere');
+                                                        Navigator.of(context)
+                                                            .pushReplacement(
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ModifyMatierePage(
+                                                                              dataMatiere: matiere,
+                                                                            )));
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 10),
+                                                    width: 50,
+                                                    color: Colors.green,
+                                                    child: IconButton(
+                                                      icon: const Icon(
+                                                          FontAwesomeIcons
+                                                              .truck),
+                                                      tooltip:
+                                                          'Historique des collectes',
+                                                      onPressed: () {},
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                             ),
@@ -488,13 +519,29 @@ class _MatieresPageState extends State<MatieresPage> {
                                                     width: 200,
                                                     margin: EdgeInsets.only(
                                                         left: 10),
-                                                    child: Text(
-                                                      matiere['nomMatiere'],
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        children: <TextSpan>[
+                                                          TextSpan(
+                                                              text: matiere[
+                                                                  'nomMatiere'],
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                              recognizer:
+                                                                  TapGestureRecognizer()
+                                                                    ..onTap =
+                                                                        () {
+                                                                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                          builder: (context) => ModifyMatierePage(
+                                                                                dataMatiere: matiere,
+                                                                              )));
+                                                                    }),
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
@@ -533,38 +580,41 @@ class _MatieresPageState extends State<MatieresPage> {
                                                     ),
                                                   ),
                                                   Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 100),
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            width: 30,
-                                                            color: Colors.green,
-                                                            child: IconButton(
-                                                              icon: const Icon(
-                                                                  Icons.edit),
-                                                              tooltip:
-                                                                  'Modify Matiere',
-                                                              onPressed: () {},
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 10),
-                                                            width: 50,
-                                                            color: Colors.green,
-                                                            child: IconButton(
-                                                              icon: const Icon(
-                                                                  FontAwesomeIcons
-                                                                      .truck),
-                                                              tooltip:
-                                                                  'Historique des collectes',
-                                                              onPressed: () {},
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ))
+                                                    margin: EdgeInsets.only(
+                                                        left: 100),
+                                                    width: 30,
+                                                    color: Colors.green,
+                                                    child: IconButton(
+                                                      icon: const Icon(
+                                                          Icons.edit),
+                                                      tooltip: 'Modify Matiere',
+                                                      onPressed: () {
+                                                        print('Modify Matiere');
+                                                        Navigator.of(context)
+                                                            .pushReplacement(
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ModifyMatierePage(
+                                                                              dataMatiere: matiere,
+                                                                            )));
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 10),
+                                                    width: 50,
+                                                    color: Colors.green,
+                                                    child: IconButton(
+                                                      icon: const Icon(
+                                                          FontAwesomeIcons
+                                                              .truck),
+                                                      tooltip:
+                                                          'Historique des collectes',
+                                                      onPressed: () {},
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                             ),
