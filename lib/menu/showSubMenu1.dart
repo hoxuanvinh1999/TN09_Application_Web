@@ -27,7 +27,7 @@ showSubMenu1({required BuildContext context}) {
                             builder: (context) => CollecteurPage()));
                       },
                       child: Container(
-                          margin: EdgeInsets.only(left: 0),
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
                           color: Colors.red,
                           width: 400,
                           height: 30,
@@ -36,16 +36,13 @@ showSubMenu1({required BuildContext context}) {
                             child: Text('Collecteur'),
                           )),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => VehiculePage()));
                       },
                       child: Container(
-                          margin: EdgeInsets.only(left: 0),
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
                           color: Colors.red,
                           width: 400,
                           height: 30,
@@ -54,16 +51,13 @@ showSubMenu1({required BuildContext context}) {
                             child: Text('Vehicule'),
                           )),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => ContenantPage()));
                       },
                       child: Container(
-                          margin: EdgeInsets.only(left: 0),
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
                           color: Colors.red,
                           width: 400,
                           height: 30,
@@ -72,16 +66,14 @@ showSubMenu1({required BuildContext context}) {
                             child: Text('Contenant'),
                           )),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => TypeContenantPage()));
                       },
                       child: Container(
-                          margin: EdgeInsets.only(left: 20),
+                          margin:
+                              EdgeInsets.only(left: 20, top: 10, bottom: 10),
                           color: Colors.red,
                           width: 380,
                           height: 30,

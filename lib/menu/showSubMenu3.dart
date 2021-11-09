@@ -33,7 +33,7 @@ showSubMenu3({required BuildContext context}) {
                                 )));
                       },
                       child: Container(
-                          margin: EdgeInsets.only(left: 0),
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
                           color: Colors.red,
                           width: 400,
                           height: 30,
@@ -41,9 +41,6 @@ showSubMenu3({required BuildContext context}) {
                             padding: EdgeInsets.only(left: 10, top: 5),
                             child: Text('Planning Weekly'),
                           )),
-                    ),
-                    SizedBox(
-                      height: 10,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -55,7 +52,7 @@ showSubMenu3({required BuildContext context}) {
                                 )));
                       },
                       child: Container(
-                          margin: EdgeInsets.only(left: 0),
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
                           color: Colors.red,
                           width: 400,
                           height: 30,
@@ -64,16 +61,13 @@ showSubMenu3({required BuildContext context}) {
                             child: Text('Planning Daily'),
                           )),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     GestureDetector(
-                      onTap: () async{
+                      onTap: () async {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CreateTourneePage()));
                       },
                       child: Container(
-                          margin: EdgeInsets.only(left: 0),
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
                           color: Colors.red,
                           width: 400,
                           height: 30,
