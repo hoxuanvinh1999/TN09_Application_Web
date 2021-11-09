@@ -199,6 +199,28 @@ class _MatieresPageState extends State<MatieresPage> {
                                         ),
                                       ],
                                     ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 400),
+                                    child: Text(
+                                      'Référence',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 200),
+                                    child: Text(
+                                      'Traitement',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
@@ -238,12 +260,13 @@ class _MatieresPageState extends State<MatieresPage> {
                                   // print('$collecteur');
                                   if (matiere['idMatiere'] == 'null') {
                                     return SizedBox.shrink();
-                                  } else {
+                                  } else if (matiere['idMatiereParente'] !=
+                                      'null') {
                                     return Container(
                                         margin:
                                             EdgeInsets.symmetric(vertical: 10),
                                         color: Colors.white,
-                                        height: 60,
+                                        height: 100,
                                         child: Column(
                                           children: [
                                             Container(
@@ -263,9 +286,208 @@ class _MatieresPageState extends State<MatieresPage> {
                                                                 'colorMatiere'])),
                                                       )),
                                                   Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10),
+                                                      width: 200,
+                                                      margin: EdgeInsets.only(
+                                                          left: 10),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            matiere[
+                                                                'nomMatiere'],
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: 10),
+                                                            child: Row(
+                                                              children: [
+                                                                Icon(
+                                                                  FontAwesomeIcons
+                                                                      .levelDownAlt,
+                                                                  size: 12,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              10),
+                                                                  child: StreamBuilder<
+                                                                      QuerySnapshot>(
+                                                                    stream: _matiere
+                                                                        .where(
+                                                                            'idMatiere',
+                                                                            isEqualTo:
+                                                                                matiere['idMatiereParente'])
+                                                                        .limit(1)
+                                                                        .snapshots(),
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<QuerySnapshot>
+                                                                            snapshot) {
+                                                                      if (snapshot
+                                                                          .hasError) {
+                                                                        print(
+                                                                            '${snapshot.error.toString()}');
+                                                                        return Text(
+                                                                            'Something went wrong');
+                                                                      }
+
+                                                                      if (snapshot
+                                                                              .connectionState ==
+                                                                          ConnectionState
+                                                                              .waiting) {
+                                                                        return CircularProgressIndicator();
+                                                                      }
+                                                                      // print('$snapshot');
+
+                                                                      return Row(
+                                                                        children: snapshot
+                                                                            .data!
+                                                                            .docs
+                                                                            .map((DocumentSnapshot
+                                                                                document_MatiereParente) {
+                                                                          Map<String, dynamic>
+                                                                              matiereParente =
+                                                                              document_MatiereParente.data()! as Map<String, dynamic>;
+                                                                          return Container(
+                                                                            child:
+                                                                                Text(
+                                                                              matiereParente['nomMatiere'],
+                                                                              style: TextStyle(
+                                                                                color: Colors.grey,
+                                                                                fontSize: 15,
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }).toList(),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 250),
+                                                    child: Text(
+                                                      matiere['referenceMatiere'] ==
+                                                              ''
+                                                          ? 'N/A'
+                                                          : matiere[
+                                                              'referenceMatiere'],
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 300),
+                                                    child: Text(
+                                                      matiere['traitementMatiere'] ==
+                                                              null
+                                                          ? 'N/A'
+                                                          : matiere[
+                                                              'traitementMatiere'],
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 100),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            width: 30,
+                                                            color: Colors.green,
+                                                            child: IconButton(
+                                                              icon: const Icon(
+                                                                  Icons.edit),
+                                                              tooltip:
+                                                                  'Modify Matiere',
+                                                              onPressed: () {},
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    left: 10),
+                                                            width: 50,
+                                                            color: Colors.green,
+                                                            child: IconButton(
+                                                              icon: const Icon(
+                                                                  FontAwesomeIcons
+                                                                      .truck),
+                                                              tooltip:
+                                                                  'Historique des collectes',
+                                                              onPressed: () {},
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ))
+                                                ],
+                                              ),
+                                            ),
+                                            const Divider(
+                                              thickness: 5,
+                                            ),
+                                          ],
+                                        ));
+                                  } else {
+                                    return Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        color: Colors.white,
+                                        height: 80,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10),
+                                                      child: Icon(
+                                                        FontAwesomeIcons.tag,
+                                                        size: 15,
+                                                        color: Color(int.parse(
+                                                            matiere[
+                                                                'colorMatiere'])),
+                                                      )),
+                                                  Container(
+                                                    width: 200,
+                                                    margin: EdgeInsets.only(
+                                                        left: 10),
                                                     child: Text(
                                                       matiere['nomMatiere'],
                                                       style: TextStyle(
@@ -275,7 +497,74 @@ class _MatieresPageState extends State<MatieresPage> {
                                                             FontWeight.bold,
                                                       ),
                                                     ),
-                                                  )
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 250),
+                                                    child: Text(
+                                                      matiere['referenceMatiere'] ==
+                                                              ''
+                                                          ? 'N/A'
+                                                          : matiere[
+                                                              'referenceMatiere'],
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 300),
+                                                    child: Text(
+                                                      matiere['traitementMatiere'] ==
+                                                              null
+                                                          ? 'N/A'
+                                                          : matiere[
+                                                              'traitementMatiere'],
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 100),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            width: 30,
+                                                            color: Colors.green,
+                                                            child: IconButton(
+                                                              icon: const Icon(
+                                                                  Icons.edit),
+                                                              tooltip:
+                                                                  'Modify Matiere',
+                                                              onPressed: () {},
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    left: 10),
+                                                            width: 50,
+                                                            color: Colors.green,
+                                                            child: IconButton(
+                                                              icon: const Icon(
+                                                                  FontAwesomeIcons
+                                                                      .truck),
+                                                              tooltip:
+                                                                  'Historique des collectes',
+                                                              onPressed: () {},
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ))
                                                 ],
                                               ),
                                             ),
