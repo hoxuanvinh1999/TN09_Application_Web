@@ -4,6 +4,7 @@ import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
 import 'package:tn09_app_web_demo/pages/contact_page.dart';
 import 'package:tn09_app_web_demo/pages/create_tournee_page.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/peser_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 
@@ -74,6 +75,23 @@ showSubMenu3({required BuildContext context}) {
                           child: Padding(
                             padding: EdgeInsets.only(left: 10, top: 5),
                             child: Text('Create Tournee'),
+                          )),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => PeserDailyPage(
+                                  thisDay: DateTime.now(),
+                                )));
+                      },
+                      child: Container(
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
+                          color: Colors.red,
+                          width: 400,
+                          height: 30,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10, top: 5),
+                            child: Text('Peser'),
                           )),
                     ),
                   ],

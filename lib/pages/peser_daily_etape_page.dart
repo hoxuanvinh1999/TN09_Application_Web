@@ -150,38 +150,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                              text: 'Semaine #$weeknumber',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PlanningWeeklyPage(
-                                                thisDay: widget.thisDay,
-                                              )));
-                                }),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.chevronCircleRight,
-                      size: 12,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: thisDay,
+                              text: 'Peser ' + thisDay,
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 15,
