@@ -14,10 +14,12 @@ import 'package:tn09_app_web_demo/pages/math_function/check_if_a_time.dart';
 import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_Inconnu.dart';
+import 'package:tn09_app_web_demo/pages/math_function/is_numeric_function.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/matieres_page.dart';
 import 'package:tn09_app_web_demo/pages/peser_daily_etape_page.dart';
+import 'package:tn09_app_web_demo/pages/peser_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/pages/view_tournee_page.dart';
@@ -28,22 +30,58 @@ import 'package:tn09_app_web_demo/.env.dart';
 import 'package:tn09_app_web_demo/pages/widget/company_position.dart'
     as company;
 
-class PeserDailyPage extends StatefulWidget {
+class PeserDailyEtapePage extends StatefulWidget {
   DateTime thisDay;
-  PeserDailyPage({
+  String idEtape;
+  String typeContenant;
+  int nombredeContenant;
+  PeserDailyEtapePage({
     required this.thisDay,
+    required this.nombredeContenant,
+    required this.typeContenant,
+    required this.idEtape,
   });
   @override
-  _PeserDailyPageState createState() => _PeserDailyPageState();
+  _PeserDailyEtapePageState createState() => _PeserDailyEtapePageState();
 }
 
-class _PeserDailyPageState extends State<PeserDailyPage> {
+class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   // For Tounree
   CollectionReference _tournee =
       FirebaseFirestore.instance.collection("Tournee");
   // For Etape
   CollectionReference _etape = FirebaseFirestore.instance.collection("Etape");
+  // For Etape
+  CollectionReference _typecontenant =
+      FirebaseFirestore.instance.collection("TypeContenant");
+  // For matiere
+  CollectionReference _matiere =
+      FirebaseFirestore.instance.collection("Matiere");
+  String typeMatiere = 'null';
+  // For Save poid(weight)
+  TextEditingController _poidController = TextEditingController();
+  TextEditingController _poidTotalController = TextEditingController();
+  double poidContenant = 0;
+  void initState() {
+    setState(() {
+      _typecontenant
+          .where('nomTypeContenant', isEqualTo: widget.typeContenant)
+          .limit(1)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((document_type_contenant) {
+          Map<String, dynamic> type_contenant =
+              document_type_contenant.data()! as Map<String, dynamic>;
+          setState(() {
+            poidContenant = double.parse(type_contenant['poidContenant']) *
+                widget.nombredeContenant;
+          });
+        });
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,24 +97,6 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
     print('thisDay: $thisDay');
     print('nextDay: $nextDay');
     print('previousDay: $previousDay');
-
-    //Pick Date Widget
-    Future pickDate(BuildContext context) async {
-      final initialDate = widget.thisDay;
-      final newDate = await showDatePicker(
-        context: context,
-        initialDate: initialDate,
-        firstDate: DateTime(DateTime.now().year - 25),
-        lastDate: DateTime(DateTime.now().year + 10),
-      );
-
-      if (newDate == null) return;
-
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => PeserDailyPage(
-                thisDay: newDate,
-              )));
-    }
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -199,46 +219,7 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                     height: 50,
                                     color: Colors.yellow,
                                     child: Row(
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PeserDailyPage(
-                                                                thisDay:
-                                                                    previousDay,
-                                                              )));
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.stepBackward,
-                                              size: 15,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              pickDate(context);
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.calendar,
-                                              size: 15,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PeserDailyPage(
-                                                                thisDay:
-                                                                    nextDay,
-                                                              )));
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.stepForward,
-                                              size: 15,
-                                            ))
-                                      ],
+                                      children: [],
                                     ),
                                   ),
                                   SizedBox(
@@ -530,6 +511,7 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                     }
                                                     //print('$etape_result_key');
                                                     //print('$etape_result');
+
                                                     return Container(
                                                       margin: EdgeInsets.only(
                                                           bottom: 20, left: 10),
@@ -674,6 +656,283 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                 ],
                               ),
                             ),
+                            Container(
+                              width: 350,
+                              height: 50,
+                              color: Colors.blue,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.boxOpen,
+                                    size: 15,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                      widget.typeContenant +
+                                          ': ' +
+                                          widget.nombredeContenant.toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 350,
+                              height: 50,
+                              color: Colors.blue,
+                              child: StreamBuilder<QuerySnapshot>(
+                                stream: _typecontenant
+                                    .where('nomTypeContenant',
+                                        isEqualTo: widget.typeContenant)
+                                    .limit(1)
+                                    .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    print('${snapshot.error.toString()}');
+                                    return Text('Something went wrong');
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  }
+                                  // print('$snapshot');
+
+                                  return Row(
+                                    children: snapshot.data!.docs.map(
+                                        (DocumentSnapshot
+                                            document_type_contenant) {
+                                      Map<String, dynamic> type_contenant =
+                                          document_type_contenant.data()!
+                                              as Map<String, dynamic>;
+                                      return Text(
+                                          'Poids des conteneurs ' +
+                                              type_contenant['poidContenant'] +
+                                              ' kg x ' +
+                                              widget.nombredeContenant
+                                                  .toString() +
+                                              ' = ' +
+                                              (double.parse(type_contenant[
+                                                          'poidContenant']) *
+                                                      widget.nombredeContenant)
+                                                  .toString() +
+                                              ' kg',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15));
+                                    }).toList(),
+                                  );
+                                },
+                              ),
+                            ),
+                            Container(
+                              width: 350,
+                              height: 50,
+                              color: Colors.blue,
+                              child: StreamBuilder<QuerySnapshot>(
+                                  stream: _matiere.snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Something went wrong');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    return DropdownButton(
+                                      onChanged: (String? changedValue) {
+                                        setState(() {
+                                          typeMatiere = changedValue!;
+                                        });
+                                      },
+                                      value: typeMatiere,
+                                      items: snapshot.data!.docs.map(
+                                          (DocumentSnapshot document_matiere) {
+                                        Map<String, dynamic> matiere =
+                                            document_matiere.data()!
+                                                as Map<String, dynamic>;
+
+                                        return DropdownMenuItem<String>(
+                                          value: matiere['nomMatiere'],
+                                          child: new Text(matiere['nomMatiere'],
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15)),
+                                        );
+                                      }).toList(),
+                                    );
+                                  }),
+                            ),
+                            Container(
+                              width: 350,
+                              height: 50,
+                              color: Colors.blue,
+                              child: TextFormField(
+                                controller: _poidController,
+                                onChanged: (String value) {
+                                  if (!isNumericUsing_tryParse(value)) {
+                                    setState(() {
+                                      _poidTotalController.text =
+                                          'please input a real number';
+                                    });
+                                  } else {
+                                    _poidTotalController.text =
+                                        (double.parse(value) + poidContenant)
+                                            .toString();
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Poid(en kg)* :',
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 350,
+                              height: 50,
+                              color: Colors.blue,
+                              child: TextFormField(
+                                controller: _poidTotalController,
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  labelText: 'Poid Total(en kg)* :',
+                                ),
+                              ),
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(top: 20),
+                                width: 350,
+                                height: 50,
+                                color: Colors.red,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    if (typeMatiere == 'null') {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'Please select a type of matiere',
+                                          gravity: ToastGravity.TOP);
+                                    } else {
+                                      _etape
+                                          .where('idEtape',
+                                              isEqualTo: widget.idEtape)
+                                          .limit(1)
+                                          .get()
+                                          .then((QuerySnapshot querySnapshot) {
+                                        querySnapshot.docs
+                                            .forEach((document_etape) {
+                                          Map<String, dynamic> etape =
+                                              document_etape.data()!
+                                                  as Map<String, dynamic>;
+                                          if (etape['resultPeser'] == null) {
+                                            Map<String, dynamic> resultPeser =
+                                                {};
+                                            Map<String, dynamic>
+                                                contenant_information = {};
+                                            contenant_information.putIfAbsent(
+                                                'nomTypeContenant',
+                                                () => widget.typeContenant);
+                                            contenant_information.putIfAbsent(
+                                                'numberOfContenant',
+                                                () => widget.nombredeContenant
+                                                    .toString());
+                                            contenant_information.putIfAbsent(
+                                                'poidContenant',
+                                                () => poidContenant.toString());
+                                            contenant_information.putIfAbsent(
+                                                'poidCollecte',
+                                                () => _poidController.text);
+                                            contenant_information.putIfAbsent(
+                                                'poidTotal',
+                                                () =>
+                                                    _poidTotalController.text);
+                                            contenant_information.putIfAbsent(
+                                                'typeMatiere',
+                                                () => typeMatiere);
+                                            resultPeser.putIfAbsent(
+                                                widget.typeContenant,
+                                                () => contenant_information);
+                                            _etape
+                                                .doc(document_etape.id)
+                                                .update({
+                                              'resultPeser': resultPeser,
+                                            });
+                                          } else {
+                                            Map<String, dynamic> resultPeser =
+                                                etape['resultPeser'];
+                                            Map<String, dynamic>
+                                                contenant_information = {};
+                                            contenant_information.putIfAbsent(
+                                                'nomTypeContenant',
+                                                () => widget.typeContenant);
+                                            contenant_information.putIfAbsent(
+                                                'numberOfContenant',
+                                                () => widget.nombredeContenant
+                                                    .toString());
+                                            contenant_information.putIfAbsent(
+                                                'poidContenant',
+                                                () => poidContenant.toString());
+                                            contenant_information.putIfAbsent(
+                                                'poidCollecte',
+                                                () => _poidController.text);
+                                            contenant_information.putIfAbsent(
+                                                'poidTotal',
+                                                () =>
+                                                    _poidTotalController.text);
+                                            contenant_information.putIfAbsent(
+                                                'typeMatiere',
+                                                () => typeMatiere);
+                                            resultPeser.putIfAbsent(
+                                                widget.typeContenant,
+                                                () => contenant_information);
+                                            _etape
+                                                .doc(document_etape.id)
+                                                .update({
+                                              'resultPeser': resultPeser,
+                                            });
+                                          }
+                                        });
+                                      });
+                                      Fluttertoast.showToast(
+                                          msg: 'Peser OK',
+                                          gravity: ToastGravity.TOP);
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PeserDailyPage(
+                                                      thisDay:
+                                                          widget.thisDay)));
+                                    }
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.weight,
+                                        size: 15,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        'Peser',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
                           ],
                         ),
                       ),
