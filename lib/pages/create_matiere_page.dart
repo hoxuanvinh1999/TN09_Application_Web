@@ -505,7 +505,7 @@ class _CreateMatierePageState extends State<CreateMatierePage> {
                                   'nomEnglishMatiere':
                                       _nomMatiereEnglishController.text,
                                   'idMatiereParente': matiereparente,
-                                  'actifPartenaire': _actifMatiere,
+                                  'actifMatiere': _actifMatiere,
                                   'colorMatiere': _colorMatiereController.text,
                                   'referenceMatiere':
                                       _referenceMatiereController.text,
