@@ -34,7 +34,7 @@ class PeserDailyEtapePage extends StatefulWidget {
   DateTime thisDay;
   String idEtape;
   String typeContenant;
-  int nombredeContenant;
+  String nombredeContenant;
   PeserDailyEtapePage({
     required this.thisDay,
     required this.nombredeContenant,
@@ -75,7 +75,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
               document_type_contenant.data()! as Map<String, dynamic>;
           setState(() {
             poidContenant = double.parse(type_contenant['poidContenant']) *
-                widget.nombredeContenant;
+                double.parse(widget.nombredeContenant);
           });
         });
       });
@@ -688,7 +688,8 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                               ' = ' +
                                               (double.parse(type_contenant[
                                                           'poidContenant']) *
-                                                      widget.nombredeContenant)
+                                                      double.parse(widget
+                                                          .nombredeContenant))
                                                   .toString() +
                                               ' kg',
                                           style: TextStyle(
