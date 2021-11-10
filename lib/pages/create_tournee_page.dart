@@ -404,13 +404,23 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                                 as Map<String, dynamic>;
 
                                         return DropdownMenuItem<String>(
-                                          value: dataVehicule['idVehicule'],
-                                          child: new Text(
-                                              dataVehicule['nomVehicule'] +
+                                            value: dataVehicule['idVehicule'],
+                                            child: Row(children: [
+                                              buildVehiculeIcon(
+                                                  icontype: dataVehicule[
+                                                      'typeVehicule'],
+                                                  iconcolor: dataVehicule[
+                                                          'colorIconVehicule']
+                                                      .toUpperCase(),
+                                                  sizeIcon: 15.0),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(dataVehicule['nomVehicule'] +
                                                   ' ' +
                                                   dataVehicule[
                                                       'numeroImmatriculation']),
-                                        );
+                                            ]));
                                       }).toList(),
                                     );
                                   }),
