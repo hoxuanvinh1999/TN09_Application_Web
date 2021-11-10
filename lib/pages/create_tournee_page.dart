@@ -1139,135 +1139,384 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                       msg: "You did not confirm any Etape",
                                       gravity: ToastGravity.TOP);
                                 } else {
-                                  bool found_start = false;
-                                  int numberofEtape = 0;
-                                  int before = 0;
-                                  int end = 0;
-                                  String idEtapeStart = '';
-                                  int orderEtape = 1;
-                                  for (int i = 0; i < _count; i++) {
-                                    if (!found_start) {
-                                      if (list_Etape_confirm[i]) {
-                                        found_start = true;
-                                        idEtapeStart = list_IdEtape[i];
-                                        numberofEtape++;
-                                        await _tournee
-                                            .doc(newIdTournee)
-                                            .update({
-                                          'idEtapeStart': idEtapeStart,
-                                        });
-                                        before = i;
-                                        await _etape.doc(list_IdEtape[i]).set({
-                                          'idEtape': list_IdEtape[i],
-                                          'idTourneeEtape': newIdTournee,
-                                          'idEtapeBefore': 'null',
-                                          'orderEtape': orderEtape.toString(),
-                                          'idPartenaireEtape':
-                                              list_choiceIdPartenaire[i],
-                                          'idVehiculeEtape': choiceIdVehicule,
-                                          'idCollecteurEtape':
-                                              choiceIdCollecteur,
-                                          'idAdresseEtape':
-                                              list_choiceIdAdresse[i],
-                                          'nomAdresseEtape':
-                                              list_choiceNomPartenaireAdresse[
-                                                  i],
-                                          'latitudeEtape':
-                                              list_latitudeAdresse[i],
-                                          'longitude': list_longitudeAdresse[i],
-                                          'ligne1Adresse':
-                                              list_ligne1Adresse[i],
-                                          'idFrequenceEtape':
-                                              list_choiceIdFrequence[i],
-                                          'startFrequenceEtape':
-                                              list_startFrequence[i],
-                                          'endFrequenceEtape':
-                                              list_endFrequence[i],
-                                          'tarifFrequenceEtape':
-                                              list_tarifFrequence[i],
-                                          'status': 'wait',
-                                          'jourEtape': getDateText(date: date),
-                                        });
-                                        orderEtape++;
-                                        end = i;
-                                      }
-                                    } else {
-                                      if (list_Etape_confirm[i]) {
-                                        numberofEtape++;
-                                        await _etape
-                                            .doc(list_IdEtape[before])
-                                            .update({
-                                          'idEtapeAfter': list_IdEtape[i],
-                                        });
-                                        await _etape.doc(list_IdEtape[i]).set({
-                                          'idEtape': list_IdEtape[i],
-                                          'idTourneeEtape': newIdTournee,
-                                          'idEtapeBefore': list_IdEtape[before],
-                                          'idPartenaireEtape':
-                                              list_choiceIdPartenaire[i],
-                                          'orderEtape': orderEtape.toString(),
-                                          'idVehiculeEtape': choiceIdVehicule,
-                                          'idCollecteurEtape':
-                                              choiceIdCollecteur,
-                                          'idAdresseEtape':
-                                              list_choiceIdAdresse[i],
-                                          'nomAdresseEtape':
-                                              list_choiceNomPartenaireAdresse[
-                                                  i],
-                                          'latitudeEtape':
-                                              list_latitudeAdresse[i],
-                                          'longitude': list_longitudeAdresse[i],
-                                          'ligne1Adresse':
-                                              list_ligne1Adresse[i],
-                                          'idFrequenceEtape':
-                                              list_choiceIdFrequence[i],
-                                          'startFrequenceEtape':
-                                              list_startFrequence[i],
-                                          'endFrequenceEtape':
-                                              list_endFrequence[i],
-                                          'tarifFrequenceEtape':
-                                              list_tarifFrequence[i],
-                                          'status': 'wait',
-                                          'jourEtape': getDateText(date: date),
-                                        });
-                                        orderEtape++;
-                                        before = i;
-                                        end = i;
+                                  DateTime date_left_limit = DateTime(
+                                      int.parse(left_limit.substring(6)),
+                                      int.parse(left_limit.substring(3, 5)),
+                                      int.parse(left_limit.substring(0, 2)));
+                                  DateTime date_right_limit = DateTime(
+                                      int.parse(right_limit.substring(6)),
+                                      int.parse(right_limit.substring(3, 5)),
+                                      int.parse(right_limit.substring(0, 2)));
+                                  int number_of_planning = 1;
+                                  DateTime date_first_Planning = date;
+                                  DateTime date_Planning =
+                                      date.add(Duration(days: 7));
+                                  while (date_Planning
+                                      .isBefore(date_right_limit)) {
+                                    number_of_planning++;
+                                    date_Planning =
+                                        date_Planning.add(Duration(days: 7));
+                                  }
+                                  if (getDateText(date: date_Planning) ==
+                                      getDateText(date: date_right_limit)) {
+                                    number_of_planning++;
+                                  }
+                                  print('$number_of_planning');
+                                  if (number_of_planning == 1) {
+                                    bool found_start = false;
+                                    int numberofEtape = 0;
+                                    int before = 0;
+                                    int end = 0;
+                                    String idEtapeStart = '';
+                                    int orderEtape = 1;
+                                    for (int i = 0; i < _count; i++) {
+                                      if (!found_start) {
+                                        if (list_Etape_confirm[i]) {
+                                          found_start = true;
+                                          idEtapeStart = list_IdEtape[i];
+                                          numberofEtape++;
+                                          await _tournee
+                                              .doc(newIdTournee)
+                                              .update({
+                                            'idEtapeStart': idEtapeStart,
+                                          });
+                                          before = i;
+                                          await _etape
+                                              .doc(list_IdEtape[i])
+                                              .set({
+                                            'idEtape': list_IdEtape[i],
+                                            'idTourneeEtape': newIdTournee,
+                                            'idEtapeBefore': 'null',
+                                            'orderEtape': orderEtape.toString(),
+                                            'idPartenaireEtape':
+                                                list_choiceIdPartenaire[i],
+                                            'idVehiculeEtape': choiceIdVehicule,
+                                            'idCollecteurEtape':
+                                                choiceIdCollecteur,
+                                            'idAdresseEtape':
+                                                list_choiceIdAdresse[i],
+                                            'nomAdresseEtape':
+                                                list_choiceNomPartenaireAdresse[
+                                                    i],
+                                            'latitudeEtape':
+                                                list_latitudeAdresse[i],
+                                            'longitude':
+                                                list_longitudeAdresse[i],
+                                            'ligne1Adresse':
+                                                list_ligne1Adresse[i],
+                                            'idFrequenceEtape':
+                                                list_choiceIdFrequence[i],
+                                            'startFrequenceEtape':
+                                                list_startFrequence[i],
+                                            'endFrequenceEtape':
+                                                list_endFrequence[i],
+                                            'tarifFrequenceEtape':
+                                                list_tarifFrequence[i],
+                                            'status': 'wait',
+                                            'jourEtape':
+                                                getDateText(date: date),
+                                          });
+                                          orderEtape++;
+                                          end = i;
+                                        }
+                                      } else {
+                                        if (list_Etape_confirm[i]) {
+                                          numberofEtape++;
+                                          await _etape
+                                              .doc(list_IdEtape[before])
+                                              .update({
+                                            'idEtapeAfter': list_IdEtape[i],
+                                          });
+                                          await _etape
+                                              .doc(list_IdEtape[i])
+                                              .set({
+                                            'idEtape': list_IdEtape[i],
+                                            'idTourneeEtape': newIdTournee,
+                                            'idEtapeBefore':
+                                                list_IdEtape[before],
+                                            'idPartenaireEtape':
+                                                list_choiceIdPartenaire[i],
+                                            'orderEtape': orderEtape.toString(),
+                                            'idVehiculeEtape': choiceIdVehicule,
+                                            'idCollecteurEtape':
+                                                choiceIdCollecteur,
+                                            'idAdresseEtape':
+                                                list_choiceIdAdresse[i],
+                                            'nomAdresseEtape':
+                                                list_choiceNomPartenaireAdresse[
+                                                    i],
+                                            'latitudeEtape':
+                                                list_latitudeAdresse[i],
+                                            'longitude':
+                                                list_longitudeAdresse[i],
+                                            'ligne1Adresse':
+                                                list_ligne1Adresse[i],
+                                            'idFrequenceEtape':
+                                                list_choiceIdFrequence[i],
+                                            'startFrequenceEtape':
+                                                list_startFrequence[i],
+                                            'endFrequenceEtape':
+                                                list_endFrequence[i],
+                                            'tarifFrequenceEtape':
+                                                list_tarifFrequence[i],
+                                            'status': 'wait',
+                                            'jourEtape':
+                                                getDateText(date: date),
+                                          });
+                                          orderEtape++;
+                                          before = i;
+                                          end = i;
+                                        }
                                       }
                                     }
-                                  }
-                                  await _etape.doc(list_IdEtape[end]).update({
-                                    'idEtapeAfter': 'null',
-                                  });
-                                  String colorTournee = '';
-                                  await _vehicule
-                                      .where('idVehicule',
-                                          isEqualTo: choiceIdVehicule)
-                                      .limit(1)
-                                      .get()
-                                      .then((QuerySnapshot querySnapshot) {
-                                    querySnapshot.docs.forEach((doc) {
-                                      colorTournee = doc['colorIconVehicule'];
+                                    await _etape.doc(list_IdEtape[end]).update({
+                                      'idEtapeAfter': 'null',
                                     });
-                                  });
-                                  await _tournee.doc(newIdTournee).update({
-                                    'nombredeEtape': numberofEtape.toString(),
-                                    'isCreating': false.toString(),
-                                    'jourTournee': _jourPlanning,
-                                    'status': 'wait',
-                                    'colorTournee': colorTournee,
-                                  }).then((value) {
-                                    Fluttertoast.showToast(
-                                        msg: "Finish Creating Tournee",
-                                        gravity: ToastGravity.TOP);
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PlanningWeeklyPage(
-                                                  thisDay: date,
-                                                )));
-                                  }).catchError((error) =>
-                                      print("Failed to add user: $error"));
+                                    String colorTournee = '';
+                                    await _vehicule
+                                        .where('idVehicule',
+                                            isEqualTo: choiceIdVehicule)
+                                        .limit(1)
+                                        .get()
+                                        .then((QuerySnapshot querySnapshot) {
+                                      querySnapshot.docs.forEach((doc) {
+                                        colorTournee = doc['colorIconVehicule'];
+                                      });
+                                    });
+                                    await _tournee.doc(newIdTournee).update({
+                                      'nombredeEtape': numberofEtape.toString(),
+                                      'isCreating': false.toString(),
+                                      'jourTournee': _jourPlanning,
+                                      'status': 'wait',
+                                      'colorTournee': colorTournee,
+                                    }).then((value) {
+                                      Fluttertoast.showToast(
+                                          msg: "Finish Creating Tournee",
+                                          gravity: ToastGravity.TOP);
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PlanningWeeklyPage(
+                                                    thisDay: date,
+                                                  )));
+                                    }).catchError((error) =>
+                                        print("Failed to add user: $error"));
+                                  } else {
+                                    // await _tournee.doc(newIdTournee).set({
+                                    //   'idTournee': newIdTournee,
+                                    //   'idCollecteur': choiceIdCollecteur,
+                                    //   'idVehicule': choiceIdVehicule,
+                                    //   'dateTournee': getDateText(date: date),
+                                    //   'startTime': getTimeText(time: timeStart),
+                                    //   'isCreating': 'true',
+                                    // });
+                                    print(
+                                        'Start creating $number_of_planning tournee');
+                                    for (int j = 0;
+                                        j < number_of_planning;
+                                        j++) {
+                                      _tournee
+                                          .where('idTournee',
+                                              isEqualTo: newIdTournee)
+                                          .limit(1)
+                                          .get()
+                                          .then((QuerySnapshot querySnapshot) {
+                                        querySnapshot.docs
+                                            .forEach((document_tournee) async {
+                                          Map<String, dynamic> data_Tournee =
+                                              document_tournee.data()!
+                                                  as Map<String, dynamic>;
+                                          String newIdTournee_now =
+                                              _tournee.doc().id.toString();
+                                          data_Tournee['idTournee'] =
+                                              newIdTournee_now;
+                                          data_Tournee['dateTournee'] =
+                                              getDateText(
+                                                  date: date.add(
+                                                      Duration(days: 7 * j)));
+
+                                          bool found_start = false;
+                                          int numberofEtape = 0;
+                                          int before = 0;
+                                          int end = 0;
+                                          String idEtapeStart = '';
+                                          int orderEtape = 1;
+                                          List<String> list_idEtape_now = [];
+                                          for (int i = 0; i < _count; i++) {
+                                            list_idEtape_now.add(
+                                                _etape.doc().id.toString());
+                                          }
+                                          for (int i = 0; i < _count; i++) {
+                                            if (!found_start) {
+                                              if (list_Etape_confirm[i]) {
+                                                found_start = true;
+                                                idEtapeStart =
+                                                    list_idEtape_now[i];
+                                                numberofEtape++;
+                                                data_Tournee.putIfAbsent(
+                                                    'idEtapeStart',
+                                                    () => idEtapeStart);
+                                                before = i;
+                                                await _etape
+                                                    .doc(list_idEtape_now[i])
+                                                    .set({
+                                                  'idEtape':
+                                                      list_idEtape_now[i],
+                                                  'idTourneeEtape':
+                                                      newIdTournee_now,
+                                                  'idEtapeBefore': 'null',
+                                                  'orderEtape':
+                                                      orderEtape.toString(),
+                                                  'idPartenaireEtape':
+                                                      list_choiceIdPartenaire[
+                                                          i],
+                                                  'idVehiculeEtape':
+                                                      choiceIdVehicule,
+                                                  'idCollecteurEtape':
+                                                      choiceIdCollecteur,
+                                                  'idAdresseEtape':
+                                                      list_choiceIdAdresse[i],
+                                                  'nomAdresseEtape':
+                                                      list_choiceNomPartenaireAdresse[
+                                                          i],
+                                                  'latitudeEtape':
+                                                      list_latitudeAdresse[i],
+                                                  'longitude':
+                                                      list_longitudeAdresse[i],
+                                                  'ligne1Adresse':
+                                                      list_ligne1Adresse[i],
+                                                  'idFrequenceEtape':
+                                                      list_choiceIdFrequence[i],
+                                                  'startFrequenceEtape':
+                                                      list_startFrequence[i],
+                                                  'endFrequenceEtape':
+                                                      list_endFrequence[i],
+                                                  'tarifFrequenceEtape':
+                                                      list_tarifFrequence[i],
+                                                  'status': 'wait',
+                                                  'jourEtape': getDateText(
+                                                      date: date.add(Duration(
+                                                          days: 7 * j))),
+                                                });
+                                                orderEtape++;
+                                                end = i;
+                                              }
+                                            } else {
+                                              if (list_Etape_confirm[i]) {
+                                                numberofEtape++;
+                                                await _etape
+                                                    .doc(list_idEtape_now[
+                                                        before])
+                                                    .update({
+                                                  'idEtapeAfter':
+                                                      list_idEtape_now[i],
+                                                });
+                                                await _etape
+                                                    .doc(list_idEtape_now[i])
+                                                    .set({
+                                                  'idEtape':
+                                                      list_idEtape_now[i],
+                                                  'idTourneeEtape':
+                                                      newIdTournee_now,
+                                                  'idEtapeBefore':
+                                                      list_idEtape_now[before],
+                                                  'idPartenaireEtape':
+                                                      list_choiceIdPartenaire[
+                                                          i],
+                                                  'orderEtape':
+                                                      orderEtape.toString(),
+                                                  'idVehiculeEtape':
+                                                      choiceIdVehicule,
+                                                  'idCollecteurEtape':
+                                                      choiceIdCollecteur,
+                                                  'idAdresseEtape':
+                                                      list_choiceIdAdresse[i],
+                                                  'nomAdresseEtape':
+                                                      list_choiceNomPartenaireAdresse[
+                                                          i],
+                                                  'latitudeEtape':
+                                                      list_latitudeAdresse[i],
+                                                  'longitude':
+                                                      list_longitudeAdresse[i],
+                                                  'ligne1Adresse':
+                                                      list_ligne1Adresse[i],
+                                                  'idFrequenceEtape':
+                                                      list_choiceIdFrequence[i],
+                                                  'startFrequenceEtape':
+                                                      list_startFrequence[i],
+                                                  'endFrequenceEtape':
+                                                      list_endFrequence[i],
+                                                  'tarifFrequenceEtape':
+                                                      list_tarifFrequence[i],
+                                                  'status': 'wait',
+                                                  'jourEtape': getDateText(
+                                                      date: date.add(Duration(
+                                                          days: 7 * j))),
+                                                });
+                                                orderEtape++;
+                                                before = i;
+                                                end = i;
+                                              }
+                                            }
+                                          }
+                                          await _etape
+                                              .doc(list_idEtape_now[end])
+                                              .update({
+                                            'idEtapeAfter': 'null',
+                                          });
+                                          String colorTournee = '';
+                                          await _vehicule
+                                              .where('idVehicule',
+                                                  isEqualTo: choiceIdVehicule)
+                                              .limit(1)
+                                              .get()
+                                              .then((QuerySnapshot
+                                                  querySnapshot) {
+                                            querySnapshot.docs.forEach((doc) {
+                                              colorTournee =
+                                                  doc['colorIconVehicule'];
+                                            });
+                                          });
+                                          data_Tournee.putIfAbsent(
+                                              'nombredeEtape',
+                                              () => numberofEtape.toString());
+                                          data_Tournee['isCreating'] =
+                                              false.toString();
+                                          data_Tournee.putIfAbsent(
+                                              'status', () => 'wait');
+                                          data_Tournee.putIfAbsent(
+                                              'colorTournee',
+                                              () => colorTournee);
+                                          data_Tournee.putIfAbsent(
+                                              'jourTournee',
+                                              () => _jourPlanning);
+                                          print('$data_Tournee');
+                                          await _tournee
+                                              .doc(newIdTournee_now)
+                                              .set(data_Tournee)
+                                              .then((value) {
+                                            if (j == number_of_planning - 1) {
+                                              print(
+                                                  'j = $j and number of planning is $number_of_planning');
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "Finish Creating $number_of_planning Tournee",
+                                                  gravity: ToastGravity.TOP);
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              PlanningWeeklyPage(
+                                                                thisDay: date,
+                                                              )));
+                                            }
+                                          }).catchError((error) => print(
+                                                  "Failed to add user: $error"));
+                                        });
+                                      });
+                                      print('j = $j');
+                                    }
+                                  }
                                 }
                               }
                             },
