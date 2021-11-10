@@ -732,17 +732,33 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
 
                                         return DropdownMenuItem<String>(
                                           value: matiere['nomMatiere'],
-                                          child: new Text(matiere['nomMatiere'],
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Icon(FontAwesomeIcons.tag,
+                                                    color: Color(
+                                                      int.parse(matiere[
+                                                          'colorMatiere']),
+                                                    ),
+                                                    size: 15),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(matiere['nomMatiere'],
                                               style: TextStyle(
                                                   color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                   fontSize: 15)),
-                                        );
+                                              ],
+                                            ));
                                       }).toList(),
                                     );
                                   }),
                             ),
                             Container(
+                              margin: EdgeInsets.only(top: 10),
                               width: 350,
                               height: 50,
                               color: Colors.blue,
