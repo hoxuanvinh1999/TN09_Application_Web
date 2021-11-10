@@ -13,6 +13,7 @@ import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
+import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
 class CreateTourneePage extends StatefulWidget {
   @override
@@ -42,6 +43,9 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
   List<String> list_startFrequence = [];
   List<String> list_endFrequence = [];
   List<String> list_tarifFrequence = [];
+  // These two lists is for calculation of the Duration
+  List<DateTime> list_dateMaximaleFrequence = [];
+  List<DateTime> list_dateMinimaleFrequence = [];
 
   //For collecteur
   CollectionReference _collecteur =
@@ -54,8 +58,11 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
       FirebaseFirestore.instance.collection("Frequence");
   // For select day
   String _jourPlanning = '';
-
+  // DateTime now
   DateTime date = DateTime.now();
+  // For calculation of the Duration
+  String left_limit = '';
+  String right_limit = '';
 
   String getText() {
     if (date == null) {
@@ -195,7 +202,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
           child: Container(
               margin: EdgeInsets.only(left: 20),
               width: 600,
-              height: 2000,
+              height: 2500,
               color: Colors.green,
               child: Column(children: [
                 Container(
@@ -937,6 +944,20 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                 list_startFrequence.add(doc['startFrequence']);
                                 list_endFrequence.add(doc['endFrequence']);
                                 list_tarifFrequence.add(doc['tarifFrequence']);
+                                list_dateMaximaleFrequence.add(DateTime(
+                                    int.parse(doc['dateMaximaleFrequence']
+                                        .substring(6)),
+                                    int.parse(doc['dateMaximaleFrequence']
+                                        .substring(3, 5)),
+                                    int.parse(doc['dateMaximaleFrequence']
+                                        .substring(0, 2))));
+                                list_dateMinimaleFrequence.add(DateTime(
+                                    int.parse(doc['dateMinimaleFrequence']
+                                        .substring(6)),
+                                    int.parse(doc['dateMinimaleFrequence']
+                                        .substring(3, 5)),
+                                    int.parse(doc['dateMinimaleFrequence']
+                                        .substring(0, 2))));
                               });
                             });
 
@@ -999,14 +1020,25 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                       ],
                     )),
                 Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
                     height: 800,
                     child: SingleChildScrollView(
                       child: Column(
                         children: list_step,
                       ),
                     )),
-                SizedBox(
-                  height: 20,
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  alignment: Alignment.centerLeft,
+                  height: 80,
+                  color: Colors.blue,
+                  child: Text(
+                    'Duration: ' + left_limit + '-' + right_limit,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ),
                 ),
                 Container(
                   width: 800,
@@ -1016,7 +1048,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
-                          width: 150,
+                          width: 100,
                           decoration: BoxDecoration(
                               color: Colors.yellow,
                               borderRadius: BorderRadius.circular(10)),
@@ -1074,6 +1106,196 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                       ),
                       Container(
                           width: 200,
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(10)),
+                          margin: const EdgeInsets.only(
+                              right: 10, top: 20, bottom: 20),
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (_count == 0) {
+                                Fluttertoast.showToast(
+                                    msg: "Please add a Etape",
+                                    gravity: ToastGravity.TOP);
+                              } else if (confirm) {
+                                Fluttertoast.showToast(
+                                    msg:
+                                        "Please select and confirm Collecteur and Vehicule",
+                                    gravity: ToastGravity.TOP);
+                              } else {
+                                bool all_etape_not_confirm = true;
+                                int check_all_etape = 0;
+                                while (all_etape_not_confirm &&
+                                    check_all_etape < _count) {
+                                  if (list_Etape_confirm[check_all_etape] ==
+                                      false) {
+                                    check_all_etape++;
+                                  } else {
+                                    all_etape_not_confirm = false;
+                                  }
+                                }
+                                if (all_etape_not_confirm) {
+                                  Fluttertoast.showToast(
+                                      msg: "You did not confirm any Etape",
+                                      gravity: ToastGravity.TOP);
+                                } else {
+                                  bool found_start = false;
+                                  int numberofEtape = 0;
+                                  int before = 0;
+                                  int end = 0;
+                                  String idEtapeStart = '';
+                                  int orderEtape = 1;
+                                  for (int i = 0; i < _count; i++) {
+                                    if (!found_start) {
+                                      if (list_Etape_confirm[i]) {
+                                        found_start = true;
+                                        idEtapeStart = list_IdEtape[i];
+                                        numberofEtape++;
+                                        await _tournee
+                                            .doc(newIdTournee)
+                                            .update({
+                                          'idEtapeStart': idEtapeStart,
+                                        });
+                                        before = i;
+                                        await _etape.doc(list_IdEtape[i]).set({
+                                          'idEtape': list_IdEtape[i],
+                                          'idTourneeEtape': newIdTournee,
+                                          'idEtapeBefore': 'null',
+                                          'orderEtape': orderEtape.toString(),
+                                          'idPartenaireEtape':
+                                              list_choiceIdPartenaire[i],
+                                          'idVehiculeEtape': choiceIdVehicule,
+                                          'idCollecteurEtape':
+                                              choiceIdCollecteur,
+                                          'idAdresseEtape':
+                                              list_choiceIdAdresse[i],
+                                          'nomAdresseEtape':
+                                              list_choiceNomPartenaireAdresse[
+                                                  i],
+                                          'latitudeEtape':
+                                              list_latitudeAdresse[i],
+                                          'longitude': list_longitudeAdresse[i],
+                                          'ligne1Adresse':
+                                              list_ligne1Adresse[i],
+                                          'idFrequenceEtape':
+                                              list_choiceIdFrequence[i],
+                                          'startFrequenceEtape':
+                                              list_startFrequence[i],
+                                          'endFrequenceEtape':
+                                              list_endFrequence[i],
+                                          'tarifFrequenceEtape':
+                                              list_tarifFrequence[i],
+                                          'status': 'wait',
+                                          'jourEtape': getDateText(date: date),
+                                        });
+                                        orderEtape++;
+                                        end = i;
+                                      }
+                                    } else {
+                                      if (list_Etape_confirm[i]) {
+                                        numberofEtape++;
+                                        await _etape
+                                            .doc(list_IdEtape[before])
+                                            .update({
+                                          'idEtapeAfter': list_IdEtape[i],
+                                        });
+                                        await _etape.doc(list_IdEtape[i]).set({
+                                          'idEtape': list_IdEtape[i],
+                                          'idTourneeEtape': newIdTournee,
+                                          'idEtapeBefore': list_IdEtape[before],
+                                          'idPartenaireEtape':
+                                              list_choiceIdPartenaire[i],
+                                          'orderEtape': orderEtape.toString(),
+                                          'idVehiculeEtape': choiceIdVehicule,
+                                          'idCollecteurEtape':
+                                              choiceIdCollecteur,
+                                          'idAdresseEtape':
+                                              list_choiceIdAdresse[i],
+                                          'nomAdresseEtape':
+                                              list_choiceNomPartenaireAdresse[
+                                                  i],
+                                          'latitudeEtape':
+                                              list_latitudeAdresse[i],
+                                          'longitude': list_longitudeAdresse[i],
+                                          'ligne1Adresse':
+                                              list_ligne1Adresse[i],
+                                          'idFrequenceEtape':
+                                              list_choiceIdFrequence[i],
+                                          'startFrequenceEtape':
+                                              list_startFrequence[i],
+                                          'endFrequenceEtape':
+                                              list_endFrequence[i],
+                                          'tarifFrequenceEtape':
+                                              list_tarifFrequence[i],
+                                          'status': 'wait',
+                                          'jourEtape': getDateText(date: date),
+                                        });
+                                        orderEtape++;
+                                        before = i;
+                                        end = i;
+                                      }
+                                    }
+                                  }
+                                  await _etape.doc(list_IdEtape[end]).update({
+                                    'idEtapeAfter': 'null',
+                                  });
+                                  String colorTournee = '';
+                                  await _vehicule
+                                      .where('idVehicule',
+                                          isEqualTo: choiceIdVehicule)
+                                      .limit(1)
+                                      .get()
+                                      .then((QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach((doc) {
+                                      colorTournee = doc['colorIconVehicule'];
+                                    });
+                                  });
+                                  await _tournee.doc(newIdTournee).update({
+                                    'nombredeEtape': numberofEtape.toString(),
+                                    'isCreating': false.toString(),
+                                    'jourTournee': _jourPlanning,
+                                    'status': 'wait',
+                                    'colorTournee': colorTournee,
+                                  }).then((value) {
+                                    Fluttertoast.showToast(
+                                        msg: "Finish Creating Tournee",
+                                        gravity: ToastGravity.TOP);
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PlanningWeeklyPage(
+                                                  thisDay: date,
+                                                )));
+                                  }).catchError((error) =>
+                                      print("Failed to add user: $error"));
+                                }
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Add Planning in duration',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Container(
+                          width: 180,
                           decoration: BoxDecoration(
                               color: Colors.yellow,
                               borderRadius: BorderRadius.circular(10)),
@@ -1340,10 +1562,55 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                               right: 10, top: 20, bottom: 20),
                           child: GestureDetector(
                             onTap: () async {
-                              setState(() {
-                                list_Etape_confirm[element] = false;
-                                list_color_etape[element] = Colors.blue;
-                              });
+                              int number_of_etape_added = list_Etape_confirm
+                                  .map((element) => element == true ? 1 : 0)
+                                  .reduce((value, element) => value + element);
+                              print('$number_of_etape_added');
+                              if (number_of_etape_added == 1) {
+                                setState(() {
+                                  left_limit = '';
+                                  right_limit = '';
+                                  list_Etape_confirm[element] = false;
+                                  list_color_etape[element] = Colors.blue;
+                                });
+                              } else {
+                                setState(() {
+                                  list_Etape_confirm[element] = false;
+                                  list_color_etape[element] = Colors.blue;
+                                });
+                                bool find_first_true_element = false;
+                                late DateTime newMinFrequence;
+                                late DateTime newMaxFrequence;
+                                for (int i = 0;
+                                    i < list_Etape_confirm.length;
+                                    i++) {
+                                  if (list_Etape_confirm[i] == true) {
+                                    if (find_first_true_element) {
+                                      newMinFrequence =
+                                          newMinFrequence.isBefore(
+                                                  list_dateMinimaleFrequence[i])
+                                              ? list_dateMinimaleFrequence[i]
+                                              : newMinFrequence;
+                                      newMaxFrequence = newMaxFrequence.isAfter(
+                                              list_dateMaximaleFrequence[i])
+                                          ? list_dateMaximaleFrequence[i]
+                                          : newMaxFrequence;
+                                    } else {
+                                      newMinFrequence =
+                                          list_dateMinimaleFrequence[i];
+                                      newMaxFrequence =
+                                          list_dateMaximaleFrequence[i];
+                                      find_first_true_element = true;
+                                    }
+                                  }
+                                }
+                                setState(() {
+                                  left_limit =
+                                      getDateText(date: newMinFrequence);
+                                  right_limit =
+                                      getDateText(date: newMaxFrequence);
+                                });
+                              }
                             },
                             child: Row(
                               children: [
@@ -1377,10 +1644,44 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                               right: 10, top: 20, bottom: 20),
                           child: GestureDetector(
                             onTap: () async {
-                              setState(() {
-                                list_Etape_confirm[element] = true;
-                                list_color_etape[element] = Colors.grey;
-                              });
+                              if (left_limit == '' && right_limit == '') {
+                                setState(() {
+                                  left_limit = getDateText(
+                                      date:
+                                          list_dateMinimaleFrequence[element]);
+                                  right_limit = getDateText(
+                                      date:
+                                          list_dateMaximaleFrequence[element]);
+                                  list_Etape_confirm[element] = true;
+                                  list_color_etape[element] = Colors.grey;
+                                });
+                              } else {
+                                DateTime date_left_limit = DateTime(
+                                    int.parse(left_limit.substring(6)),
+                                    int.parse(left_limit.substring(3, 5)),
+                                    int.parse(left_limit.substring(0, 2)));
+                                DateTime date_right_limit = DateTime(
+                                    int.parse(right_limit.substring(6)),
+                                    int.parse(right_limit.substring(3, 5)),
+                                    int.parse(right_limit.substring(0, 2)));
+                                setState(() {
+                                  left_limit = date_left_limit.isBefore(
+                                          list_dateMinimaleFrequence[element])
+                                      ? getDateText(
+                                          date: list_dateMinimaleFrequence[
+                                              element])
+                                      : left_limit;
+
+                                  right_limit = date_right_limit.isAfter(
+                                          list_dateMaximaleFrequence[element])
+                                      ? getDateText(
+                                          date: list_dateMaximaleFrequence[
+                                              element])
+                                      : right_limit;
+                                  list_Etape_confirm[element] = true;
+                                  list_color_etape[element] = Colors.grey;
+                                });
+                              }
                             },
                             child: Row(
                               children: [
