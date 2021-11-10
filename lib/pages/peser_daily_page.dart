@@ -44,6 +44,12 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
       FirebaseFirestore.instance.collection("Tournee");
   // For Etape
   CollectionReference _etape = FirebaseFirestore.instance.collection("Etape");
+  // For Type Matiere
+  CollectionReference _matiere =
+      FirebaseFirestore.instance.collection("Matiere");
+  // For Type Contenant
+  CollectionReference _typecontenant =
+      FirebaseFirestore.instance.collection("TypeContenant");
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +294,7 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                           height: 50,
                                           color: Colors.blue,
                                           child: Text(
-                                              'Tournee' + tournee['idTournee'],
+                                              'Tournee ' + tournee['idTournee'],
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -300,6 +306,7 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                 .where('idTourneeEtape',
                                                     isEqualTo:
                                                         tournee['idTournee'])
+                                                .orderBy('orderEtape')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
@@ -361,6 +368,34 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                               'numberOfTypeContenant') {
                                                         String typeContenant =
                                                             etape_result_key[i];
+                                                        // String
+                                                        //     nomTypeContenant =
+                                                        //     '';
+                                                        // _typecontenant
+                                                        //     .where(
+                                                        //         'nomTypeContenant',
+                                                        //         isEqualTo:
+                                                        //             etape_result_key[
+                                                        //                 i])
+                                                        //     .limit(1)
+                                                        //     .get()
+                                                        //     .then((QuerySnapshot
+                                                        //         querySnapshot) {
+                                                        //   querySnapshot.docs
+                                                        //       .forEach(
+                                                        //           (document_type_contenant) {
+                                                        //     Map<String, dynamic>
+                                                        //         type_contenant =
+                                                        //         document_type_contenant
+                                                        //                 .data()!
+                                                        //             as Map<
+                                                        //                 String,
+                                                        //                 dynamic>;
+                                                        //     nomTypeContenant =
+                                                        //         type_contenant[
+                                                        //             'idTypeContenant'];
+                                                        //   });
+                                                        // });
                                                         if (etape_result_peser[
                                                                     typeContenant] ==
                                                                 null ||
@@ -383,10 +418,57 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                                   SizedBox(
                                                                     width: 10,
                                                                   ),
+                                                                  Container(
+                                                                    child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                      stream: _typecontenant
+                                                                          .where(
+                                                                              'nomTypeContenant',
+                                                                              isEqualTo: etape_result_key[i])
+                                                                          .limit(1)
+                                                                          .snapshots(),
+                                                                      builder: (BuildContext
+                                                                              context,
+                                                                          AsyncSnapshot<QuerySnapshot>
+                                                                              snapshot) {
+                                                                        if (snapshot
+                                                                            .hasError) {
+                                                                          print(
+                                                                              '${snapshot.error.toString()}');
+                                                                          return Text(
+                                                                              'Something went wrong');
+                                                                        }
+
+                                                                        if (snapshot.connectionState ==
+                                                                            ConnectionState.waiting) {
+                                                                          return CircularProgressIndicator();
+                                                                        }
+                                                                        late Widget
+                                                                            nom_contenant_information;
+                                                                        snapshot
+                                                                            .data!
+                                                                            .docs
+                                                                            .forEach((DocumentSnapshot
+                                                                                document_type_contenant) {
+                                                                          Map<String, dynamic>
+                                                                              type_contenant =
+                                                                              document_type_contenant.data()! as Map<String, dynamic>;
+
+                                                                          nom_contenant_information =
+                                                                              Text(
+                                                                            type_contenant['idTypeContenant'],
+                                                                            style: TextStyle(
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 15),
+                                                                          );
+                                                                        });
+                                                                        return nom_contenant_information;
+                                                                      },
+                                                                    ),
+                                                                  ),
                                                                   Text(
-                                                                      etape_result_key[
-                                                                              i] +
-                                                                          ': ' +
+                                                                      ': ' +
                                                                           etape_result[etape_result_key[i]]
                                                                               .toString(),
                                                                       style: TextStyle(
@@ -460,10 +542,57 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                                   SizedBox(
                                                                     width: 10,
                                                                   ),
+                                                                  Container(
+                                                                    child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                      stream: _typecontenant
+                                                                          .where(
+                                                                              'nomTypeContenant',
+                                                                              isEqualTo: etape_result_key[i])
+                                                                          .limit(1)
+                                                                          .snapshots(),
+                                                                      builder: (BuildContext
+                                                                              context,
+                                                                          AsyncSnapshot<QuerySnapshot>
+                                                                              snapshot) {
+                                                                        if (snapshot
+                                                                            .hasError) {
+                                                                          print(
+                                                                              '${snapshot.error.toString()}');
+                                                                          return Text(
+                                                                              'Something went wrong');
+                                                                        }
+
+                                                                        if (snapshot.connectionState ==
+                                                                            ConnectionState.waiting) {
+                                                                          return CircularProgressIndicator();
+                                                                        }
+                                                                        late Widget
+                                                                            nom_contenant_information;
+                                                                        snapshot
+                                                                            .data!
+                                                                            .docs
+                                                                            .forEach((DocumentSnapshot
+                                                                                document_type_contenant) {
+                                                                          Map<String, dynamic>
+                                                                              type_contenant =
+                                                                              document_type_contenant.data()! as Map<String, dynamic>;
+
+                                                                          nom_contenant_information =
+                                                                              Text(
+                                                                            type_contenant['idTypeContenant'],
+                                                                            style: TextStyle(
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 15),
+                                                                          );
+                                                                        });
+                                                                        return nom_contenant_information;
+                                                                      },
+                                                                    ),
+                                                                  ),
                                                                   Text(
-                                                                      etape_result_key[
-                                                                              i] +
-                                                                          ': ' +
+                                                                      ': ' +
                                                                           etape_result[etape_result_key[i]]
                                                                               .toString(),
                                                                       style: TextStyle(
@@ -476,11 +605,74 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                                   SizedBox(
                                                                     width: 10,
                                                                   ),
+                                                                  Container(
+                                                                    child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                      stream: _matiere
+                                                                          .where(
+                                                                              'idMatiere',
+                                                                              isEqualTo: contenant_information['typeMatiere'])
+                                                                          .limit(1)
+                                                                          .snapshots(),
+                                                                      builder: (BuildContext
+                                                                              context,
+                                                                          AsyncSnapshot<QuerySnapshot>
+                                                                              snapshot) {
+                                                                        if (snapshot
+                                                                            .hasError) {
+                                                                          print(
+                                                                              '${snapshot.error.toString()}');
+                                                                          return Text(
+                                                                              'Something went wrong');
+                                                                        }
+
+                                                                        if (snapshot.connectionState ==
+                                                                            ConnectionState.waiting) {
+                                                                          return CircularProgressIndicator();
+                                                                        }
+                                                                        List<Widget>
+                                                                            matiere_information =
+                                                                            [];
+                                                                        snapshot
+                                                                            .data!
+                                                                            .docs
+                                                                            .forEach((DocumentSnapshot
+                                                                                document_matiere) {
+                                                                          Map<String, dynamic>
+                                                                              matiere =
+                                                                              document_matiere.data()! as Map<String, dynamic>;
+                                                                          matiere_information
+                                                                              .add(Icon(
+                                                                            FontAwesomeIcons.tag,
+                                                                            color:
+                                                                                Color(int.parse(matiere['colorMatiere'])),
+                                                                            size:
+                                                                                15,
+                                                                          ));
+                                                                          matiere_information
+                                                                              .add(SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ));
+                                                                          matiere_information
+                                                                              .add(
+                                                                            Text(matiere['nomMatiere'],
+                                                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15)),
+                                                                          );
+                                                                          matiere_information
+                                                                              .add(SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ));
+                                                                        });
+                                                                        return Row(
+                                                                            children:
+                                                                                matiere_information);
+                                                                      },
+                                                                    ),
+                                                                  ),
                                                                   Text(
                                                                       contenant_information[
-                                                                              'typeMatiere'] +
-                                                                          '  ' +
-                                                                          contenant_information[
                                                                               'poidTotal'] +
                                                                           ' kg(s)',
                                                                       style: TextStyle(
@@ -508,16 +700,19 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                       child: Column(
                                                         children: [
                                                           Container(
-                                                            alignment:
-                                                                Alignment(
-                                                                    -0.5, 0),
+                                                            alignment: Alignment
+                                                                .centerLeft,
                                                             width: 400,
                                                             height: 50,
                                                             color:
                                                                 Colors.yellow,
                                                             child: Text(
-                                                                etape[
-                                                                    'nomAdresseEtape'],
+                                                                'Etape #' +
+                                                                    etape[
+                                                                        'orderEtape'] +
+                                                                    ':  ' +
+                                                                    etape[
+                                                                        'nomAdresseEtape'],
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black,

@@ -269,7 +269,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                           height: 50,
                                           color: Colors.blue,
                                           child: Text(
-                                              'Tournee' + tournee['idTournee'],
+                                              'Tournee ' + tournee['idTournee'],
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -281,6 +281,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                 .where('idTourneeEtape',
                                                     isEqualTo:
                                                         tournee['idTournee'])
+                                                .orderBy('orderEtape')
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
@@ -364,10 +365,57 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                                   SizedBox(
                                                                     width: 10,
                                                                   ),
+                                                                  Container(
+                                                                    child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                      stream: _typecontenant
+                                                                          .where(
+                                                                              'nomTypeContenant',
+                                                                              isEqualTo: etape_result_key[i])
+                                                                          .limit(1)
+                                                                          .snapshots(),
+                                                                      builder: (BuildContext
+                                                                              context,
+                                                                          AsyncSnapshot<QuerySnapshot>
+                                                                              snapshot) {
+                                                                        if (snapshot
+                                                                            .hasError) {
+                                                                          print(
+                                                                              '${snapshot.error.toString()}');
+                                                                          return Text(
+                                                                              'Something went wrong');
+                                                                        }
+
+                                                                        if (snapshot.connectionState ==
+                                                                            ConnectionState.waiting) {
+                                                                          return CircularProgressIndicator();
+                                                                        }
+                                                                        late Widget
+                                                                            nom_contenant_information;
+                                                                        snapshot
+                                                                            .data!
+                                                                            .docs
+                                                                            .forEach((DocumentSnapshot
+                                                                                document_type_contenant) {
+                                                                          Map<String, dynamic>
+                                                                              type_contenant =
+                                                                              document_type_contenant.data()! as Map<String, dynamic>;
+
+                                                                          nom_contenant_information =
+                                                                              Text(
+                                                                            type_contenant['idTypeContenant'],
+                                                                            style: TextStyle(
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 15),
+                                                                          );
+                                                                        });
+                                                                        return nom_contenant_information;
+                                                                      },
+                                                                    ),
+                                                                  ),
                                                                   Text(
-                                                                      etape_result_key[
-                                                                              i] +
-                                                                          ': ' +
+                                                                      ': ' +
                                                                           etape_result[etape_result_key[i]]
                                                                               .toString(),
                                                                       style: TextStyle(
@@ -441,10 +489,57 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                                   SizedBox(
                                                                     width: 10,
                                                                   ),
+                                                                  Container(
+                                                                    child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                      stream: _typecontenant
+                                                                          .where(
+                                                                              'nomTypeContenant',
+                                                                              isEqualTo: etape_result_key[i])
+                                                                          .limit(1)
+                                                                          .snapshots(),
+                                                                      builder: (BuildContext
+                                                                              context,
+                                                                          AsyncSnapshot<QuerySnapshot>
+                                                                              snapshot) {
+                                                                        if (snapshot
+                                                                            .hasError) {
+                                                                          print(
+                                                                              '${snapshot.error.toString()}');
+                                                                          return Text(
+                                                                              'Something went wrong');
+                                                                        }
+
+                                                                        if (snapshot.connectionState ==
+                                                                            ConnectionState.waiting) {
+                                                                          return CircularProgressIndicator();
+                                                                        }
+                                                                        late Widget
+                                                                            nom_contenant_information;
+                                                                        snapshot
+                                                                            .data!
+                                                                            .docs
+                                                                            .forEach((DocumentSnapshot
+                                                                                document_type_contenant) {
+                                                                          Map<String, dynamic>
+                                                                              type_contenant =
+                                                                              document_type_contenant.data()! as Map<String, dynamic>;
+
+                                                                          nom_contenant_information =
+                                                                              Text(
+                                                                            type_contenant['idTypeContenant'],
+                                                                            style: TextStyle(
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 15),
+                                                                          );
+                                                                        });
+                                                                        return nom_contenant_information;
+                                                                      },
+                                                                    ),
+                                                                  ),
                                                                   Text(
-                                                                      etape_result_key[
-                                                                              i] +
-                                                                          ': ' +
+                                                                      ': ' +
                                                                           etape_result[etape_result_key[i]]
                                                                               .toString(),
                                                                       style: TextStyle(
@@ -457,11 +552,74 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                                   SizedBox(
                                                                     width: 10,
                                                                   ),
+                                                                  Container(
+                                                                    child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                      stream: _matiere
+                                                                          .where(
+                                                                              'idMatiere',
+                                                                              isEqualTo: contenant_information['typeMatiere'])
+                                                                          .limit(1)
+                                                                          .snapshots(),
+                                                                      builder: (BuildContext
+                                                                              context,
+                                                                          AsyncSnapshot<QuerySnapshot>
+                                                                              snapshot) {
+                                                                        if (snapshot
+                                                                            .hasError) {
+                                                                          print(
+                                                                              '${snapshot.error.toString()}');
+                                                                          return Text(
+                                                                              'Something went wrong');
+                                                                        }
+
+                                                                        if (snapshot.connectionState ==
+                                                                            ConnectionState.waiting) {
+                                                                          return CircularProgressIndicator();
+                                                                        }
+                                                                        List<Widget>
+                                                                            matiere_information =
+                                                                            [];
+                                                                        snapshot
+                                                                            .data!
+                                                                            .docs
+                                                                            .forEach((DocumentSnapshot
+                                                                                document_matiere) {
+                                                                          Map<String, dynamic>
+                                                                              matiere =
+                                                                              document_matiere.data()! as Map<String, dynamic>;
+                                                                          matiere_information
+                                                                              .add(Icon(
+                                                                            FontAwesomeIcons.tag,
+                                                                            color:
+                                                                                Color(int.parse(matiere['colorMatiere'])),
+                                                                            size:
+                                                                                15,
+                                                                          ));
+                                                                          matiere_information
+                                                                              .add(SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ));
+                                                                          matiere_information
+                                                                              .add(
+                                                                            Text(matiere['nomMatiere'],
+                                                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15)),
+                                                                          );
+                                                                          matiere_information
+                                                                              .add(SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ));
+                                                                        });
+                                                                        return Row(
+                                                                            children:
+                                                                                matiere_information);
+                                                                      },
+                                                                    ),
+                                                                  ),
                                                                   Text(
                                                                       contenant_information[
-                                                                              'typeMatiere'] +
-                                                                          '  ' +
-                                                                          contenant_information[
                                                                               'poidTotal'] +
                                                                           ' kg(s)',
                                                                       style: TextStyle(
@@ -490,16 +648,19 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                       child: Column(
                                                         children: [
                                                           Container(
-                                                            alignment:
-                                                                Alignment(
-                                                                    -0.5, 0),
+                                                            alignment: Alignment
+                                                                .centerLeft,
                                                             width: 400,
                                                             height: 50,
                                                             color:
                                                                 Colors.yellow,
                                                             child: Text(
-                                                                etape[
-                                                                    'nomAdresseEtape'],
+                                                                'Etape #' +
+                                                                    etape[
+                                                                        'orderEtape'] +
+                                                                    ':  ' +
+                                                                    etape[
+                                                                        'nomAdresseEtape'],
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black,
@@ -638,9 +799,47 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                   SizedBox(
                                     width: 10,
                                   ),
+                                  Container(
+                                    child: StreamBuilder<QuerySnapshot>(
+                                      stream: _typecontenant
+                                          .where('nomTypeContenant',
+                                              isEqualTo: widget.typeContenant)
+                                          .limit(1)
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        if (snapshot.hasError) {
+                                          print('${snapshot.error.toString()}');
+                                          return Text('Something went wrong');
+                                        }
+
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                        }
+                                        late Widget nom_contenant_information;
+                                        snapshot.data!.docs.forEach(
+                                            (DocumentSnapshot
+                                                document_type_contenant) {
+                                          Map<String, dynamic> type_contenant =
+                                              document_type_contenant.data()!
+                                                  as Map<String, dynamic>;
+
+                                          nom_contenant_information = Text(
+                                            type_contenant['idTypeContenant'],
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          );
+                                        });
+                                        return nom_contenant_information;
+                                      },
+                                    ),
+                                  ),
                                   Text(
-                                      widget.typeContenant +
-                                          ': ' +
+                                      ': ' +
                                           widget.nombredeContenant.toString(),
                                       style: TextStyle(
                                           color: Colors.black,
@@ -686,11 +885,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                               widget.nombredeContenant
                                                   .toString() +
                                               ' = ' +
-                                              (double.parse(type_contenant[
-                                                          'poidContenant']) *
-                                                      double.parse(widget
-                                                          .nombredeContenant))
-                                                  .toString() +
+                                              poidContenant.toStringAsFixed(3) +
                                               ' kg',
                                           style: TextStyle(
                                               color: Colors.black,
@@ -731,7 +926,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                 as Map<String, dynamic>;
 
                                         return DropdownMenuItem<String>(
-                                          value: matiere['nomMatiere'],
+                                            value: matiere['idMatiere'],
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
@@ -746,11 +941,11 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                   width: 10,
                                                 ),
                                                 Text(matiere['nomMatiere'],
-                                              style: TextStyle(
-                                                  color: Colors.black,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                  fontSize: 15)),
+                                                        fontSize: 15)),
                                               ],
                                             ));
                                       }).toList(),
@@ -773,7 +968,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                   } else {
                                     _poidTotalController.text =
                                         (double.parse(value) + poidContenant)
-                                            .toString();
+                                            .toStringAsFixed(3);
                                   }
                                 },
                                 decoration: InputDecoration(
@@ -804,6 +999,11 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                       Fluttertoast.showToast(
                                           msg:
                                               'Please select a type of matiere',
+                                          gravity: ToastGravity.TOP);
+                                    } else if (!isNumericUsing_tryParse(
+                                        _poidController.text)) {
+                                      Fluttertoast.showToast(
+                                          msg: 'Please enter weight',
                                           gravity: ToastGravity.TOP);
                                     } else {
                                       _etape
