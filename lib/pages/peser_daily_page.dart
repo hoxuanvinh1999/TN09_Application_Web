@@ -331,78 +331,41 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                         document_etape.data()!
                                                             as Map<String,
                                                                 dynamic>;
-                                                    Map<String, dynamic>
-                                                        etape_result =
-                                                        etape['resultCollecte']
-                                                            as Map<String,
-                                                                dynamic>;
-                                                    Map<String, dynamic>
-                                                        etape_result_peser =
-                                                        etape['resultPeser'] ==
-                                                                null
-                                                            ? {}
-                                                            : etape['resultPeser']
-                                                                as Map<String,
-                                                                    dynamic>;
-                                                    List<Widget>
-                                                        result_contenant_information =
-                                                        [];
-                                                    List etape_result_key =
-                                                        etape_result.keys
-                                                            .toList();
-                                                    for (int i = 0;
-                                                        i <
-                                                            etape_result_key
-                                                                .length;
-                                                        i++) {
-                                                      //Condition check will be changed in the future
-                                                      if (etape_result_key[i] !=
-                                                              'idTournee' &&
-                                                          etape_result_key[i] !=
-                                                              'numberOfContenant' &&
-                                                          etape_result_key[i] !=
-                                                              'idCollecteur' &&
-                                                          etape_result_key[i] !=
-                                                              'idEtape' &&
-                                                          etape_result_key[i] !=
-                                                              'numberOfTypeContenant') {
-                                                        String typeContenant =
-                                                            etape_result_key[i];
-                                                        // String
-                                                        //     nomTypeContenant =
-                                                        //     '';
-                                                        // _typecontenant
-                                                        //     .where(
-                                                        //         'nomTypeContenant',
-                                                        //         isEqualTo:
-                                                        //             etape_result_key[
-                                                        //                 i])
-                                                        //     .limit(1)
-                                                        //     .get()
-                                                        //     .then((QuerySnapshot
-                                                        //         querySnapshot) {
-                                                        //   querySnapshot.docs
-                                                        //       .forEach(
-                                                        //           (document_type_contenant) {
-                                                        //     Map<String, dynamic>
-                                                        //         type_contenant =
-                                                        //         document_type_contenant
-                                                        //                 .data()!
-                                                        //             as Map<
-                                                        //                 String,
-                                                        //                 dynamic>;
-                                                        //     nomTypeContenant =
-                                                        //         type_contenant[
-                                                        //             'idTypeContenant'];
-                                                        //   });
-                                                        // });
-                                                        if (etape_result_peser[
-                                                                    typeContenant] ==
-                                                                null ||
-                                                            etape_result_peser ==
-                                                                {}) {
-                                                          result_contenant_information
-                                                              .add(
+                                                    if (etape[
+                                                            'resultCollecte'] ==
+                                                        null) {
+                                                      return Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 20,
+                                                            left: 10),
+                                                        width: 400,
+                                                        height: 300,
+                                                        color: Colors.green,
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              width: 400,
+                                                              height: 50,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              child: Text(
+                                                                  'Etape #' +
+                                                                      etape[
+                                                                          'orderEtape'] +
+                                                                      ':  ' +
+                                                                      etape[
+                                                                          'nomAdresseEtape'],
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          15)),
+                                                            ),
                                                             Container(
                                                               width: 350,
                                                               height: 50,
@@ -412,65 +375,19 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                                 children: [
                                                                   Icon(
                                                                     FontAwesomeIcons
-                                                                        .boxOpen,
+                                                                        .clock,
                                                                     size: 15,
                                                                   ),
                                                                   SizedBox(
                                                                     width: 10,
                                                                   ),
-                                                                  Container(
-                                                                    child: StreamBuilder<
-                                                                        QuerySnapshot>(
-                                                                      stream: _typecontenant
-                                                                          .where(
-                                                                              'nomTypeContenant',
-                                                                              isEqualTo: etape_result_key[i])
-                                                                          .limit(1)
-                                                                          .snapshots(),
-                                                                      builder: (BuildContext
-                                                                              context,
-                                                                          AsyncSnapshot<QuerySnapshot>
-                                                                              snapshot) {
-                                                                        if (snapshot
-                                                                            .hasError) {
-                                                                          print(
-                                                                              '${snapshot.error.toString()}');
-                                                                          return Text(
-                                                                              'Something went wrong');
-                                                                        }
-
-                                                                        if (snapshot.connectionState ==
-                                                                            ConnectionState.waiting) {
-                                                                          return CircularProgressIndicator();
-                                                                        }
-                                                                        late Widget
-                                                                            nom_contenant_information;
-                                                                        snapshot
-                                                                            .data!
-                                                                            .docs
-                                                                            .forEach((DocumentSnapshot
-                                                                                document_type_contenant) {
-                                                                          Map<String, dynamic>
-                                                                              type_contenant =
-                                                                              document_type_contenant.data()! as Map<String, dynamic>;
-
-                                                                          nom_contenant_information =
-                                                                              Text(
-                                                                            type_contenant['idTypeContenant'],
-                                                                            style: TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontWeight: FontWeight.bold,
-                                                                                fontSize: 15),
-                                                                          );
-                                                                        });
-                                                                        return nom_contenant_information;
-                                                                      },
-                                                                    ),
-                                                                  ),
                                                                   Text(
-                                                                      ': ' +
-                                                                          etape_result[etape_result_key[i]]
-                                                                              .toString(),
+                                                                      'Time: ' +
+                                                                          etape[
+                                                                              'realStartTime'] +
+                                                                          ' - ' +
+                                                                          etape[
+                                                                              'realEndTime'],
                                                                       style: TextStyle(
                                                                           color: Colors
                                                                               .black,
@@ -478,55 +395,407 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                                               .bold,
                                                                           fontSize:
                                                                               15)),
-                                                                  Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              10),
-                                                                      width: 50,
-                                                                      decoration: BoxDecoration(
-                                                                          color: Colors
-                                                                              .yellow,
-                                                                          borderRadius: BorderRadius.circular(
-                                                                              5)),
-                                                                      child:
-                                                                          GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                              builder: (context) => PeserDailyEtapePage(
-                                                                                    thisDay: widget.thisDay,
-                                                                                    typeContenant: etape_result_key[i],
-                                                                                    nombredeContenant: etape_result[etape_result_key[i]],
-                                                                                    idEtape: etape['idEtape'],
-                                                                                  )));
-                                                                        },
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Text(
-                                                                              'Peser',
-                                                                              style: TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontSize: 15,
-                                                                                fontWeight: FontWeight.bold,
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      )),
                                                                 ],
                                                               ),
                                                             ),
-                                                          );
-                                                        } else {
-                                                          Map<String, dynamic>
-                                                              contenant_information =
-                                                              etape_result_peser[
-                                                                      typeContenant]
+                                                            Container(
+                                                              width: 350,
+                                                              height: 50,
+                                                              color:
+                                                                  Colors.blue,
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    FontAwesomeIcons
+                                                                        .hourglassHalf,
+                                                                    size: 15,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  Text(
+                                                                      'Duree: ' +
+                                                                          etape[
+                                                                              'duree'],
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              15)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      Map<String, dynamic>
+                                                          etape_result =
+                                                          etape['resultCollecte']
+                                                              as Map<String,
+                                                                  dynamic>;
+                                                      Map<String, dynamic>
+                                                          etape_result_peser =
+                                                          etape['resultPeser'] ==
+                                                                  null
+                                                              ? {}
+                                                              : etape['resultPeser']
                                                                   as Map<String,
                                                                       dynamic>;
-                                                          result_contenant_information
-                                                              .add(
+                                                      List<Widget>
+                                                          result_contenant_information =
+                                                          [];
+                                                      List etape_result_key =
+                                                          etape_result.keys
+                                                              .toList();
+                                                      for (int i = 0;
+                                                          i <
+                                                              etape_result_key
+                                                                  .length;
+                                                          i++) {
+                                                        //Condition check will be changed in the future
+                                                        if (etape_result_key[
+                                                                    i] !=
+                                                                'idTournee' &&
+                                                            etape_result_key[
+                                                                    i] !=
+                                                                'numberOfContenant' &&
+                                                            etape_result_key[
+                                                                    i] !=
+                                                                'idCollecteur' &&
+                                                            etape_result_key[
+                                                                    i] !=
+                                                                'idEtape' &&
+                                                            etape_result_key[
+                                                                    i] !=
+                                                                'numberOfTypeContenant') {
+                                                          String typeContenant =
+                                                              etape_result_key[
+                                                                  i];
+                                                          // String
+                                                          //     nomTypeContenant =
+                                                          //     '';
+                                                          // _typecontenant
+                                                          //     .where(
+                                                          //         'nomTypeContenant',
+                                                          //         isEqualTo:
+                                                          //             etape_result_key[
+                                                          //                 i])
+                                                          //     .limit(1)
+                                                          //     .get()
+                                                          //     .then((QuerySnapshot
+                                                          //         querySnapshot) {
+                                                          //   querySnapshot.docs
+                                                          //       .forEach(
+                                                          //           (document_type_contenant) {
+                                                          //     Map<String, dynamic>
+                                                          //         type_contenant =
+                                                          //         document_type_contenant
+                                                          //                 .data()!
+                                                          //             as Map<
+                                                          //                 String,
+                                                          //                 dynamic>;
+                                                          //     nomTypeContenant =
+                                                          //         type_contenant[
+                                                          //             'idTypeContenant'];
+                                                          //   });
+                                                          // });
+                                                          if (etape_result_peser[
+                                                                      typeContenant] ==
+                                                                  null ||
+                                                              etape_result_peser ==
+                                                                  {}) {
+                                                            result_contenant_information
+                                                                .add(
+                                                              Container(
+                                                                width: 350,
+                                                                height: 50,
+                                                                color:
+                                                                    Colors.blue,
+                                                                child: Row(
+                                                                  children: [
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .boxOpen,
+                                                                      size: 15,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Container(
+                                                                      child: StreamBuilder<
+                                                                          QuerySnapshot>(
+                                                                        stream: _typecontenant
+                                                                            .where('nomTypeContenant',
+                                                                                isEqualTo: etape_result_key[i])
+                                                                            .limit(1)
+                                                                            .snapshots(),
+                                                                        builder: (BuildContext
+                                                                                context,
+                                                                            AsyncSnapshot<QuerySnapshot>
+                                                                                snapshot) {
+                                                                          if (snapshot
+                                                                              .hasError) {
+                                                                            print('${snapshot.error.toString()}');
+                                                                            return Text('Something went wrong');
+                                                                          }
+
+                                                                          if (snapshot.connectionState ==
+                                                                              ConnectionState.waiting) {
+                                                                            return CircularProgressIndicator();
+                                                                          }
+                                                                          late Widget
+                                                                              nom_contenant_information;
+                                                                          snapshot
+                                                                              .data!
+                                                                              .docs
+                                                                              .forEach((DocumentSnapshot document_type_contenant) {
+                                                                            Map<String, dynamic>
+                                                                                type_contenant =
+                                                                                document_type_contenant.data()! as Map<String, dynamic>;
+
+                                                                            nom_contenant_information =
+                                                                                Text(
+                                                                              type_contenant['idTypeContenant'],
+                                                                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+                                                                            );
+                                                                          });
+                                                                          return nom_contenant_information;
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                        ': ' +
+                                                                            etape_result[etape_result_key[i]]
+                                                                                .toString(),
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 15)),
+                                                                    Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            left:
+                                                                                10),
+                                                                        width:
+                                                                            50,
+                                                                        decoration: BoxDecoration(
+                                                                            color: Colors
+                                                                                .yellow,
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                5)),
+                                                                        child:
+                                                                            GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                                builder: (context) => PeserDailyEtapePage(
+                                                                                      thisDay: widget.thisDay,
+                                                                                      typeContenant: etape_result_key[i],
+                                                                                      nombredeContenant: etape_result[etape_result_key[i]],
+                                                                                      idEtape: etape['idEtape'],
+                                                                                    )));
+                                                                          },
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                'Peser',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 15,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        )),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            Map<String, dynamic>
+                                                                contenant_information =
+                                                                etape_result_peser[
+                                                                        typeContenant]
+                                                                    as Map<
+                                                                        String,
+                                                                        dynamic>;
+                                                            result_contenant_information
+                                                                .add(
+                                                              Container(
+                                                                width: 350,
+                                                                height: 50,
+                                                                color:
+                                                                    Colors.blue,
+                                                                child: Row(
+                                                                  children: [
+                                                                    Icon(
+                                                                      FontAwesomeIcons
+                                                                          .boxOpen,
+                                                                      size: 15,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Container(
+                                                                      child: StreamBuilder<
+                                                                          QuerySnapshot>(
+                                                                        stream: _typecontenant
+                                                                            .where('nomTypeContenant',
+                                                                                isEqualTo: etape_result_key[i])
+                                                                            .limit(1)
+                                                                            .snapshots(),
+                                                                        builder: (BuildContext
+                                                                                context,
+                                                                            AsyncSnapshot<QuerySnapshot>
+                                                                                snapshot) {
+                                                                          if (snapshot
+                                                                              .hasError) {
+                                                                            print('${snapshot.error.toString()}');
+                                                                            return Text('Something went wrong');
+                                                                          }
+
+                                                                          if (snapshot.connectionState ==
+                                                                              ConnectionState.waiting) {
+                                                                            return CircularProgressIndicator();
+                                                                          }
+                                                                          late Widget
+                                                                              nom_contenant_information;
+                                                                          snapshot
+                                                                              .data!
+                                                                              .docs
+                                                                              .forEach((DocumentSnapshot document_type_contenant) {
+                                                                            Map<String, dynamic>
+                                                                                type_contenant =
+                                                                                document_type_contenant.data()! as Map<String, dynamic>;
+
+                                                                            nom_contenant_information =
+                                                                                Text(
+                                                                              type_contenant['idTypeContenant'],
+                                                                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+                                                                            );
+                                                                          });
+                                                                          return nom_contenant_information;
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                        ': ' +
+                                                                            etape_result[etape_result_key[i]]
+                                                                                .toString(),
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 15)),
+                                                                    SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Container(
+                                                                      child: StreamBuilder<
+                                                                          QuerySnapshot>(
+                                                                        stream: _matiere
+                                                                            .where('idMatiere',
+                                                                                isEqualTo: contenant_information['typeMatiere'])
+                                                                            .limit(1)
+                                                                            .snapshots(),
+                                                                        builder: (BuildContext
+                                                                                context,
+                                                                            AsyncSnapshot<QuerySnapshot>
+                                                                                snapshot) {
+                                                                          if (snapshot
+                                                                              .hasError) {
+                                                                            print('${snapshot.error.toString()}');
+                                                                            return Text('Something went wrong');
+                                                                          }
+
+                                                                          if (snapshot.connectionState ==
+                                                                              ConnectionState.waiting) {
+                                                                            return CircularProgressIndicator();
+                                                                          }
+                                                                          List<Widget>
+                                                                              matiere_information =
+                                                                              [];
+                                                                          snapshot
+                                                                              .data!
+                                                                              .docs
+                                                                              .forEach((DocumentSnapshot document_matiere) {
+                                                                            Map<String, dynamic>
+                                                                                matiere =
+                                                                                document_matiere.data()! as Map<String, dynamic>;
+                                                                            matiere_information.add(Icon(
+                                                                              FontAwesomeIcons.tag,
+                                                                              color: Color(int.parse(matiere['colorMatiere'])),
+                                                                              size: 15,
+                                                                            ));
+                                                                            matiere_information.add(SizedBox(
+                                                                              width: 10,
+                                                                            ));
+                                                                            matiere_information.add(
+                                                                              Text(matiere['nomMatiere'], style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15)),
+                                                                            );
+                                                                            matiere_information.add(SizedBox(
+                                                                              width: 10,
+                                                                            ));
+                                                                          });
+                                                                          return Row(
+                                                                              children: matiere_information);
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                        contenant_information['poidTotal'] +
+                                                                            ' kg(s)',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 15)),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                        }
+                                                      }
+                                                      //print('$etape_result_key');
+                                                      //print('$etape_result');
+                                                      return Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 20,
+                                                            left: 10),
+                                                        width: 400,
+                                                        height: 300,
+                                                        color: Colors.green,
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              width: 400,
+                                                              height: 50,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              child: Text(
+                                                                  'Etape #' +
+                                                                      etape[
+                                                                          'orderEtape'] +
+                                                                      ':  ' +
+                                                                      etape[
+                                                                          'nomAdresseEtape'],
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          15)),
+                                                            ),
                                                             Container(
                                                               width: 350,
                                                               height: 50,
@@ -536,145 +805,19 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                                 children: [
                                                                   Icon(
                                                                     FontAwesomeIcons
-                                                                        .boxOpen,
+                                                                        .clock,
                                                                     size: 15,
                                                                   ),
                                                                   SizedBox(
                                                                     width: 10,
                                                                   ),
-                                                                  Container(
-                                                                    child: StreamBuilder<
-                                                                        QuerySnapshot>(
-                                                                      stream: _typecontenant
-                                                                          .where(
-                                                                              'nomTypeContenant',
-                                                                              isEqualTo: etape_result_key[i])
-                                                                          .limit(1)
-                                                                          .snapshots(),
-                                                                      builder: (BuildContext
-                                                                              context,
-                                                                          AsyncSnapshot<QuerySnapshot>
-                                                                              snapshot) {
-                                                                        if (snapshot
-                                                                            .hasError) {
-                                                                          print(
-                                                                              '${snapshot.error.toString()}');
-                                                                          return Text(
-                                                                              'Something went wrong');
-                                                                        }
-
-                                                                        if (snapshot.connectionState ==
-                                                                            ConnectionState.waiting) {
-                                                                          return CircularProgressIndicator();
-                                                                        }
-                                                                        late Widget
-                                                                            nom_contenant_information;
-                                                                        snapshot
-                                                                            .data!
-                                                                            .docs
-                                                                            .forEach((DocumentSnapshot
-                                                                                document_type_contenant) {
-                                                                          Map<String, dynamic>
-                                                                              type_contenant =
-                                                                              document_type_contenant.data()! as Map<String, dynamic>;
-
-                                                                          nom_contenant_information =
-                                                                              Text(
-                                                                            type_contenant['idTypeContenant'],
-                                                                            style: TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontWeight: FontWeight.bold,
-                                                                                fontSize: 15),
-                                                                          );
-                                                                        });
-                                                                        return nom_contenant_information;
-                                                                      },
-                                                                    ),
-                                                                  ),
                                                                   Text(
-                                                                      ': ' +
-                                                                          etape_result[etape_result_key[i]]
-                                                                              .toString(),
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          fontSize:
-                                                                              15)),
-                                                                  SizedBox(
-                                                                    width: 10,
-                                                                  ),
-                                                                  Container(
-                                                                    child: StreamBuilder<
-                                                                        QuerySnapshot>(
-                                                                      stream: _matiere
-                                                                          .where(
-                                                                              'idMatiere',
-                                                                              isEqualTo: contenant_information['typeMatiere'])
-                                                                          .limit(1)
-                                                                          .snapshots(),
-                                                                      builder: (BuildContext
-                                                                              context,
-                                                                          AsyncSnapshot<QuerySnapshot>
-                                                                              snapshot) {
-                                                                        if (snapshot
-                                                                            .hasError) {
-                                                                          print(
-                                                                              '${snapshot.error.toString()}');
-                                                                          return Text(
-                                                                              'Something went wrong');
-                                                                        }
-
-                                                                        if (snapshot.connectionState ==
-                                                                            ConnectionState.waiting) {
-                                                                          return CircularProgressIndicator();
-                                                                        }
-                                                                        List<Widget>
-                                                                            matiere_information =
-                                                                            [];
-                                                                        snapshot
-                                                                            .data!
-                                                                            .docs
-                                                                            .forEach((DocumentSnapshot
-                                                                                document_matiere) {
-                                                                          Map<String, dynamic>
-                                                                              matiere =
-                                                                              document_matiere.data()! as Map<String, dynamic>;
-                                                                          matiere_information
-                                                                              .add(Icon(
-                                                                            FontAwesomeIcons.tag,
-                                                                            color:
-                                                                                Color(int.parse(matiere['colorMatiere'])),
-                                                                            size:
-                                                                                15,
-                                                                          ));
-                                                                          matiere_information
-                                                                              .add(SizedBox(
-                                                                            width:
-                                                                                10,
-                                                                          ));
-                                                                          matiere_information
-                                                                              .add(
-                                                                            Text(matiere['nomMatiere'],
-                                                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15)),
-                                                                          );
-                                                                          matiere_information
-                                                                              .add(SizedBox(
-                                                                            width:
-                                                                                10,
-                                                                          ));
-                                                                        });
-                                                                        return Row(
-                                                                            children:
-                                                                                matiere_information);
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                      contenant_information[
-                                                                              'poidTotal'] +
-                                                                          ' kg(s)',
+                                                                      'Time: ' +
+                                                                          etape[
+                                                                              'realStartTime'] +
+                                                                          ' - ' +
+                                                                          etape[
+                                                                              'realEndTime'],
                                                                       style: TextStyle(
                                                                           color: Colors
                                                                               .black,
@@ -685,113 +828,45 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                                 ],
                                                               ),
                                                             ),
-                                                          );
-                                                        }
-                                                      }
+                                                            Container(
+                                                              width: 350,
+                                                              height: 50,
+                                                              color:
+                                                                  Colors.blue,
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    FontAwesomeIcons
+                                                                        .hourglassHalf,
+                                                                    size: 15,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  Text(
+                                                                      'Duree: ' +
+                                                                          etape[
+                                                                              'duree'],
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              15)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            SingleChildScrollView(
+                                                              child: Column(
+                                                                children:
+                                                                    result_contenant_information,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
                                                     }
-                                                    //print('$etape_result_key');
-                                                    //print('$etape_result');
-                                                    return Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 20, left: 10),
-                                                      width: 400,
-                                                      height: 300,
-                                                      color: Colors.green,
-                                                      child: Column(
-                                                        children: [
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            width: 400,
-                                                            height: 50,
-                                                            color:
-                                                                Colors.yellow,
-                                                            child: Text(
-                                                                'Etape #' +
-                                                                    etape[
-                                                                        'orderEtape'] +
-                                                                    ':  ' +
-                                                                    etape[
-                                                                        'nomAdresseEtape'],
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        15)),
-                                                          ),
-                                                          Container(
-                                                            width: 350,
-                                                            height: 50,
-                                                            color: Colors.blue,
-                                                            child: Row(
-                                                              children: [
-                                                                Icon(
-                                                                  FontAwesomeIcons
-                                                                      .clock,
-                                                                  size: 15,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Text(
-                                                                    'Time: ' +
-                                                                        etape[
-                                                                            'realStartTime'] +
-                                                                        ' - ' +
-                                                                        etape[
-                                                                            'realEndTime'],
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontSize:
-                                                                            15)),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 350,
-                                                            height: 50,
-                                                            color: Colors.blue,
-                                                            child: Row(
-                                                              children: [
-                                                                Icon(
-                                                                  FontAwesomeIcons
-                                                                      .hourglassHalf,
-                                                                  size: 15,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Text(
-                                                                    'Duree: ' +
-                                                                        etape[
-                                                                            'duree'],
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontSize:
-                                                                            15)),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          SingleChildScrollView(
-                                                            child: Column(
-                                                              children:
-                                                                  result_contenant_information,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    );
                                                   }).toList(),
                                                 ),
                                               );
