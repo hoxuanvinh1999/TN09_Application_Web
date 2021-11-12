@@ -47,3 +47,4 @@ app.*.map.json
 .env.dart
 sshkey.pub
 sshkey
+token.txt
