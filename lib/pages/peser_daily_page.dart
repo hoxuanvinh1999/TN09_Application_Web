@@ -857,10 +857,17 @@ class _PeserDailyPageState extends State<PeserDailyPage> {
                                                                 ],
                                                               ),
                                                             ),
-                                                            SingleChildScrollView(
-                                                              child: Column(
-                                                                children:
-                                                                    result_contenant_information,
+                                                            Container(
+                                                              width: 350,
+                                                              height: 120,
+                                                              color:
+                                                                  Colors.blue,
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                child: Column(
+                                                                  children:
+                                                                      result_contenant_information,
+                                                                ),
                                                               ),
                                                             )
                                                           ],

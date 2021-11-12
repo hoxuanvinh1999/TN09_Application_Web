@@ -62,6 +62,8 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
   // For Save poid(weight)
   TextEditingController _poidController = TextEditingController();
   TextEditingController _poidTotalController = TextEditingController();
+  // Save comment
+  TextEditingController _notePeserController = TextEditingController();
   double poidContenant = 0;
   void initState() {
     setState(() {
@@ -731,10 +733,16 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                               ],
                                                             ),
                                                           ),
-                                                          SingleChildScrollView(
-                                                            child: Column(
-                                                              children:
-                                                                  result_contenant_information,
+                                                          Container(
+                                                            width: 350,
+                                                            height: 120,
+                                                            color: Colors.blue,
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              child: Column(
+                                                                children:
+                                                                    result_contenant_information,
+                                                              ),
                                                             ),
                                                           )
                                                         ],
@@ -758,7 +766,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                           top: 20,
                         ),
                         color: Colors.yellow,
-                        height: 500,
+                        height: 800,
                         width: 500,
                         child: Column(
                           children: [
@@ -989,6 +997,21 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                               ),
                             ),
                             Container(
+                                margin: EdgeInsets.symmetric(
+                                  vertical: 20,
+                                ),
+                                width: 350,
+                                color: Colors.blue,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: TextField(
+                                    controller: _notePeserController,
+                                    maxLines: 4,
+                                    decoration: InputDecoration.collapsed(
+                                        hintText: "Note"),
+                                  ),
+                                )),
+                            Container(
                                 margin: EdgeInsets.only(top: 20),
                                 width: 350,
                                 height: 50,
@@ -1042,6 +1065,10 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                             contenant_information.putIfAbsent(
                                                 'typeMatiere',
                                                 () => typeMatiere);
+                                            contenant_information.putIfAbsent(
+                                                'notePeser',
+                                                () =>
+                                                    _notePeserController.text);
                                             resultPeser.putIfAbsent(
                                                 widget.typeContenant,
                                                 () => contenant_information);
