@@ -330,8 +330,8 @@ class _LoginPageState extends State<LoginPage> {
 
   _signinAnonymous() async {
     await auth.signInAnonymously();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => PartenairePage()
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()
             // PlanningDailyPage(
             //       thisDay: DateTime.parse("2021-10-18 20:18:04Z"),
             //     )
