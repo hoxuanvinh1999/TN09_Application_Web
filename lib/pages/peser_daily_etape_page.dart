@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -64,6 +65,8 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
   TextEditingController _poidTotalController = TextEditingController();
   // Save comment
   TextEditingController _notePeserController = TextEditingController();
+  // Save rating
+  String ratePeser = '1.5';
   double poidContenant = 0;
   void initState() {
     setState(() {
@@ -1012,6 +1015,34 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                   ),
                                 )),
                             Container(
+                              margin: EdgeInsets.symmetric(
+                                vertical: 20,
+                              ),
+                              alignment: Alignment.center,
+                              width: 350,
+                              height: 50,
+                              color: Colors.blue,
+                              child: RatingBar.builder(
+                                initialRating: 1.5,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 3,
+                                itemPadding:
+                                    EdgeInsets.symmetric(horizontal: 4.0),
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (rating) {
+                                  print(rating);
+                                  setState(() {
+                                    ratePeser = rating.toString();
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
                                 margin: EdgeInsets.only(top: 20),
                                 width: 350,
                                 height: 50,
@@ -1044,34 +1075,55 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                             Map<String, dynamic> resultPeser =
                                                 {};
                                             Map<String, dynamic>
-                                                contenant_information = {};
-                                            contenant_information.putIfAbsent(
-                                                'nomTypeContenant',
-                                                () => widget.typeContenant);
-                                            contenant_information.putIfAbsent(
-                                                'numberOfContenant',
-                                                () => widget.nombredeContenant
-                                                    .toString());
-                                            contenant_information.putIfAbsent(
-                                                'poidContenant',
-                                                () => poidContenant.toString());
-                                            contenant_information.putIfAbsent(
-                                                'poidCollecte',
-                                                () => _poidController.text);
-                                            contenant_information.putIfAbsent(
-                                                'poidTotal',
-                                                () =>
-                                                    _poidTotalController.text);
-                                            contenant_information.putIfAbsent(
-                                                'typeMatiere',
-                                                () => typeMatiere);
-                                            contenant_information.putIfAbsent(
-                                                'notePeser',
-                                                () =>
-                                                    _notePeserController.text);
-                                            resultPeser.putIfAbsent(
-                                                widget.typeContenant,
-                                                () => contenant_information);
+                                                contenant_information = {
+                                              'nomTypeContenant':
+                                                  widget.typeContenant,
+                                              'numberOfContenant':
+                                                  widget.nombredeContenant,
+                                              'poidContenant':
+                                                  poidContenant.toString(),
+                                              'poidCollecte':
+                                                  _poidController.text,
+                                              'poidTotal':
+                                                  _poidTotalController.text,
+                                              'typeMatiere': typeMatiere,
+                                              'notePeser':
+                                                  _notePeserController.text,
+                                              'ratePeser': ratePeser,
+                                            };
+                                            resultPeser[widget.typeContenant] =
+                                                contenant_information;
+                                            // contenant_information.putIfAbsent(
+                                            //     'nomTypeContenant',
+                                            //     () => widget.typeContenant);
+                                            // contenant_information.putIfAbsent(
+                                            //     'numberOfContenant',
+                                            //     () => widget.nombredeContenant
+                                            //         .toString());
+                                            // contenant_information.putIfAbsent(
+                                            //     'poidContenant',
+                                            //     () => poidContenant.toString());
+                                            // contenant_information.putIfAbsent(
+                                            //     'poidCollecte',
+                                            //     () => _poidController.text);
+                                            // contenant_information.putIfAbsent(
+                                            //     'poidTotal',
+                                            //     () =>
+                                            //         _poidTotalController.text);
+                                            // contenant_information.putIfAbsent(
+                                            //     'typeMatiere',
+                                            //     () => typeMatiere);
+                                            // contenant_information.putIfAbsent(
+                                            //     'notePeser',
+                                            //     () =>
+                                            //         _notePeserController.text);
+                                            // contenant_information.putIfAbsent(
+                                            //     'ratePeser',
+                                            //     () =>
+                                            //         _notePeserController.text);
+                                            // resultPeser.putIfAbsent(
+                                            //     widget.typeContenant,
+                                            //     () => contenant_information);
                                             _etape
                                                 .doc(document_etape.id)
                                                 .update({
@@ -1081,34 +1133,51 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                             Map<String, dynamic> resultPeser =
                                                 etape['resultPeser'];
                                             Map<String, dynamic>
-                                                contenant_information = {};
-                                            contenant_information.putIfAbsent(
-                                                'nomTypeContenant',
-                                                () => widget.typeContenant);
-                                            contenant_information.putIfAbsent(
-                                                'numberOfContenant',
-                                                () => widget.nombredeContenant
-                                                    .toString());
-                                            contenant_information.putIfAbsent(
-                                                'poidContenant',
-                                                () => poidContenant.toString());
-                                            contenant_information.putIfAbsent(
-                                                'poidCollecte',
-                                                () => _poidController.text);
-                                            contenant_information.putIfAbsent(
-                                                'poidTotal',
-                                                () =>
-                                                    _poidTotalController.text);
-                                            contenant_information.putIfAbsent(
-                                                'typeMatiere',
-                                                () => typeMatiere);
-                                            contenant_information.putIfAbsent(
-                                                'notePeser',
-                                                () =>
-                                                    _notePeserController.text);
-                                            resultPeser.putIfAbsent(
-                                                widget.typeContenant,
-                                                () => contenant_information);
+                                                contenant_information = {
+                                              'nomTypeContenant':
+                                                  widget.typeContenant,
+                                              'numberOfContenant':
+                                                  widget.nombredeContenant,
+                                              'poidContenant':
+                                                  poidContenant.toString(),
+                                              'poidCollecte':
+                                                  _poidController.text,
+                                              'poidTotal':
+                                                  _poidTotalController.text,
+                                              'typeMatiere': typeMatiere,
+                                              'notePeser':
+                                                  _notePeserController.text,
+                                              'ratePeser': ratePeser,
+                                            };
+                                            resultPeser[widget.typeContenant] =
+                                                contenant_information;
+                                            // contenant_information.putIfAbsent(
+                                            //     'nomTypeContenant',
+                                            //     () => widget.typeContenant);
+                                            // contenant_information.putIfAbsent(
+                                            //     'numberOfContenant',
+                                            //     () => widget.nombredeContenant
+                                            //         .toString());
+                                            // contenant_information.putIfAbsent(
+                                            //     'poidContenant',
+                                            //     () => poidContenant.toString());
+                                            // contenant_information.putIfAbsent(
+                                            //     'poidCollecte',
+                                            //     () => _poidController.text);
+                                            // contenant_information.putIfAbsent(
+                                            //     'poidTotal',
+                                            //     () =>
+                                            //         _poidTotalController.text);
+                                            // contenant_information.putIfAbsent(
+                                            //     'typeMatiere',
+                                            //     () => typeMatiere);
+                                            // contenant_information.putIfAbsent(
+                                            //     'notePeser',
+                                            //     () =>
+                                            //         _notePeserController.text);
+                                            // resultPeser.putIfAbsent(
+                                            //     widget.typeContenant,
+                                            //     () => contenant_information);
                                             _etape
                                                 .doc(document_etape.id)
                                                 .update({
