@@ -1102,6 +1102,10 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                             contenant_information.putIfAbsent(
                                                 'typeMatiere',
                                                 () => typeMatiere);
+                                            contenant_information.putIfAbsent(
+                                                'notePeser',
+                                                () =>
+                                                    _notePeserController.text);
                                             resultPeser.putIfAbsent(
                                                 widget.typeContenant,
                                                 () => contenant_information);
