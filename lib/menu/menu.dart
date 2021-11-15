@@ -4,7 +4,10 @@ import 'package:tn09_app_web_demo/menu/showSubMenu3.dart';
 import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
-Widget menu({required BuildContext context}) {
+Widget menu({
+  required BuildContext context,
+//  required String language,
+}) {
   return Container(
     decoration: BoxDecoration(
       color: Color(graphique.color['secondary_color_1']),
@@ -13,7 +16,7 @@ Widget menu({required BuildContext context}) {
             width: 1.0, color: Color(graphique.color['defaut_black'])),
       ),
     ),
-    width: double.infinity,
+    width: MediaQuery.of(context).size.width,
     height: 50,
     child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -29,15 +32,25 @@ Widget menu({required BuildContext context}) {
               width: 200,
               decoration: BoxDecoration(
                 color: Color(graphique.color['main_color_1']),
+                border: Border(
+                  right: BorderSide(
+                      width: 1.0,
+                      color: Color(graphique.color['defaut_black'])),
+                  left: BorderSide(
+                      width: 1.0,
+                      color: Color(graphique.color['defaut_black'])),
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Text(graphique.languagefr['button_1_title'],
-                    style: TextStyle(
-                      color: Color(graphique.color['main_color_2']),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                child: Text(
+                  graphique.languagefr['button_1']['title'],
+                  style: TextStyle(
+                    color: Color(graphique.color['main_color_2']),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
@@ -70,10 +83,18 @@ Widget menu({required BuildContext context}) {
               width: 200,
               decoration: BoxDecoration(
                 color: Color(graphique.color['main_color_1']),
+                border: Border(
+                  right: BorderSide(
+                      width: 1.0,
+                      color: Color(graphique.color['defaut_black'])),
+                  left: BorderSide(
+                      width: 1.0,
+                      color: Color(graphique.color['defaut_black'])),
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Text('Button2',
+                child: Text(graphique.languagefr['button_2']['title'],
                     style: TextStyle(
                       color: Color(graphique.color['main_color_2']),
                       fontSize: 20,
@@ -92,10 +113,18 @@ Widget menu({required BuildContext context}) {
               width: 200,
               decoration: BoxDecoration(
                 color: Color(graphique.color['main_color_1']),
+                border: Border(
+                  right: BorderSide(
+                      width: 1.0,
+                      color: Color(graphique.color['defaut_black'])),
+                  left: BorderSide(
+                      width: 1.0,
+                      color: Color(graphique.color['defaut_black'])),
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Text('Button3',
+                child: Text(graphique.languagefr['button_3']['title'],
                     style: TextStyle(
                       color: Color(graphique.color['main_color_2']),
                       fontSize: 20,
