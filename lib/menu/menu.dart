@@ -13,7 +13,7 @@ Widget menu({
       color: Color(graphique.color['secondary_color_1']),
       border: Border(
         bottom: BorderSide(
-            width: 1.0, color: Color(graphique.color['defaut_black'])),
+            width: 1.0, color: Color(graphique.color['default_black'])),
       ),
     ),
     width: MediaQuery.of(context).size.width,
@@ -35,10 +35,10 @@ Widget menu({
                 border: Border(
                   right: BorderSide(
                       width: 1.0,
-                      color: Color(graphique.color['defaut_black'])),
+                      color: Color(graphique.color['default_black'])),
                   left: BorderSide(
                       width: 1.0,
-                      color: Color(graphique.color['defaut_black'])),
+                      color: Color(graphique.color['default_black'])),
                 ),
               ),
               child: Padding(
@@ -86,10 +86,10 @@ Widget menu({
                 border: Border(
                   right: BorderSide(
                       width: 1.0,
-                      color: Color(graphique.color['defaut_black'])),
+                      color: Color(graphique.color['default_black'])),
                   left: BorderSide(
                       width: 1.0,
-                      color: Color(graphique.color['defaut_black'])),
+                      color: Color(graphique.color['default_black'])),
                 ),
               ),
               child: Padding(
@@ -116,10 +116,10 @@ Widget menu({
                 border: Border(
                   right: BorderSide(
                       width: 1.0,
-                      color: Color(graphique.color['defaut_black'])),
+                      color: Color(graphique.color['default_black'])),
                   left: BorderSide(
                       width: 1.0,
-                      color: Color(graphique.color['defaut_black'])),
+                      color: Color(graphique.color['default_black'])),
                 ),
               ),
               child: Padding(

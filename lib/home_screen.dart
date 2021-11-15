@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_return_type_for_catch_error, avoid_function_literals_in_foreach_calls, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   border: Border(
                     bottom: BorderSide(
                         width: 1.0,
-                        color: Color(graphique.color['defaut_black'])),
+                        color: Color(graphique.color['default_black'])),
                   ),
                 ),
                 width: double.infinity,
@@ -65,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 )),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
+              margin: const EdgeInsets.symmetric(vertical: 20),
               alignment: Alignment.centerLeft,
               width: MediaQuery.of(context).size.width * 0.9,
               height: 1000,
@@ -73,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   Container(
-                      margin: EdgeInsets.only(left: 80),
+                      margin: const EdgeInsets.only(left: 80),
                       width: 150,
                       height: 50,
                       color: Colors.yellow,

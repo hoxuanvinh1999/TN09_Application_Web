@@ -25,7 +25,7 @@ Widget header({required BuildContext context}) {
         color: Color(graphique.color['main_color_1']),
         border: Border(
           bottom: BorderSide(
-              width: 1.0, color: Color(graphique.color['defaut_black'])),
+              width: 1.0, color: Color(graphique.color['default_black'])),
         ),
       ),
       height: 80,

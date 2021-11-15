@@ -66,7 +66,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                           height: 200,
                           width: 400,
                           decoration: BoxDecoration(
-                              color: Color(graphique.color['defaut_white']),
+                              color: Color(graphique.color['default_white']),
                               borderRadius: BorderRadius.circular(10)),
                           child: Column(
                             children: [
@@ -86,7 +86,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                     'An email has been sent to ${user?.email}',
                                     style: TextStyle(
                                         fontSize: 15,
-                                        color: Color(graphique.color['grey'])),
+                                        color: Color(
+                                            graphique.color['default_grey'])),
                                   ),
                                 ],
                               ),
@@ -97,7 +98,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                     'Please Verify',
                                     style: TextStyle(
                                         fontSize: 15,
-                                        color: Color(graphique.color['grey'])),
+                                        color: Color(
+                                            graphique.color['default_grey'])),
                                   ),
                                 ],
                               ),

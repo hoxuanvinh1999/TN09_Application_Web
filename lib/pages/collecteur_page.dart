@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, unused_local_variable
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:tn09_app_web_demo/menu/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class CollecteurPage extends StatefulWidget {
   @override
@@ -70,7 +73,14 @@ class _CollecteurPageState extends State<CollecteurPage> {
               context: context,
             ),
             Container(
-                color: Colors.yellow,
+                decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                ),
                 width: double.infinity,
                 height: 40,
                 child: Row(
@@ -82,7 +92,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                       FontAwesomeIcons.home,
                       size: 12,
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[

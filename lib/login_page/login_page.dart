@@ -219,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 480,
               width: 400,
               decoration: BoxDecoration(
-                  color: Color(graphique.color['defaut_white']),
+                  color: Color(graphique.color['default_white']),
                   borderRadius: BorderRadius.circular(20)),
               child: Column(
                 children: [
@@ -250,7 +250,8 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'Sign up to our DataBase',
                     style: TextStyle(
-                        fontSize: 15, color: Color(graphique.color['grey'])),
+                        fontSize: 15,
+                        color: Color(graphique.color['default_grey'])),
                   ),
                   SizedBox(
                     height: 20,

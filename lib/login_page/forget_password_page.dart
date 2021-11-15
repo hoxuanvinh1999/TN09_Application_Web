@@ -49,7 +49,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                           height: 300,
                           width: 400,
                           decoration: BoxDecoration(
-                              color: Color(graphique.color['defaut_white']),
+                              color: Color(graphique.color['default_white']),
                               borderRadius: BorderRadius.circular(10)),
                           child: Column(
                             children: [
@@ -66,7 +66,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                 'Reset your password',
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: Color(graphique.color['grey'])),
+                                    color:
+                                        Color(graphique.color['default_grey'])),
                               ),
                               SizedBox(
                                 height: 20,
