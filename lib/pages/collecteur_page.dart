@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tn09_app_web_demo/header.dart';
+import 'package:tn09_app_web_demo/menu/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -66,7 +66,9 @@ class _CollecteurPageState extends State<CollecteurPage> {
         child: Column(
           children: [
             header(context: context),
-            menu(context: context),
+            menu(
+              context: context,
+            ),
             Container(
                 color: Colors.yellow,
                 width: double.infinity,
