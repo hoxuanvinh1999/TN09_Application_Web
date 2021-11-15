@@ -63,6 +63,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Fow width of table
+    double page_width = MediaQuery.of(context).size.width * 0.5;
     // inputData();
     return Scaffold(
       body: SingleChildScrollView(
@@ -81,7 +83,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                         color: Color(graphique.color['default_black'])),
                   ),
                 ),
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 height: 40,
                 child: Row(
                   children: [
@@ -99,7 +101,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                           TextSpan(
                               text: 'Home',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -127,7 +129,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                           TextSpan(
                             text: 'Collecteur',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Color(graphique.color['default_grey']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -136,45 +138,65 @@ class _CollecteurPageState extends State<CollecteurPage> {
                     ),
                   ],
                 )),
-            SizedBox(height: 20),
             Align(
               alignment: Alignment(-0.9, 0),
               child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  width: 600,
-                  height: 800,
-                  color: Colors.green,
+                  margin: const EdgeInsets.only(left: 20, top: 20),
+                  width: page_width,
+                  height: 2000,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['special_bureautique_2']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
                   child: Column(
                     children: [
                       Container(
-                        color: Colors.blue,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                          color: Color(graphique.color['main_color_1']),
+                          border: Border.all(
+                              width: 1.0,
+                              color: Color(graphique.color['default_black'])),
+                        ),
+                        width: MediaQuery.of(context).size.width * 0.5,
                         child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(width: 20),
-                                Icon(
-                                  Icons.people,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Collecteur',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                Container(
+                                  margin: const EdgeInsets.only(left: 20),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.people,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        graphique.languagefr['collecteur_page']
+                                            ['table_title'],
+                                        style: TextStyle(
+                                          color: Color(
+                                              graphique.color['main_color_2']),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 280,
                                 ),
                                 Container(
                                     width: 150,
                                     decoration: BoxDecoration(
-                                        color: Colors.yellow,
+                                        color: Color(
+                                            graphique.color['default_yellow']),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     margin: const EdgeInsets.only(
@@ -187,7 +209,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                         children: [
                                           Icon(
                                             Icons.add,
-                                            color: Colors.white,
+                                            color: Color(graphique
+                                                .color['default_black']),
                                           ),
                                           SizedBox(
                                             width: 10,
@@ -195,7 +218,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                           Text(
                                             'New Collecteur',
                                             style: TextStyle(
-                                              color: Colors.black,
+                                              color: Color(graphique
+                                                  .color['default_black']),
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -205,62 +229,52 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                     )),
                               ],
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            const Divider(
-                              thickness: 5,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            )
                           ],
                         ),
                       ),
                       Container(
-                          color: Colors.red,
-                          child: Column(
+                        margin: const EdgeInsets.only(top: 10),
+                        width: page_width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Color(graphique.color['main_color_1']),
+                          border: Border.all(
+                              width: 1.0,
+                              color: Color(graphique.color['default_black'])),
+                        ),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 5,
+                              const SizedBox(
+                                width: 30,
                               ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    'Nom',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 200,
-                                  ),
-                                  Text(
-                                    'Sites',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                graphique.languagefr['collecteur_page']
+                                    ['column_1_title'],
+                                style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               SizedBox(
-                                height: 5,
+                                width: 220,
                               ),
-                              const Divider(
-                                thickness: 5,
+                              Text(
+                                graphique.languagefr['collecteur_page']
+                                    ['column_2_title'],
+                                style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              SizedBox(
-                                height: 15,
-                              )
                             ],
-                          )),
+                          ),
+                        ),
+                      ),
                       Container(
                         child: StreamBuilder<QuerySnapshot>(
                           stream: _collecteurStream,
@@ -285,109 +299,134 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                       document.data()! as Map<String, dynamic>;
                                   // print('$collecteur');
                                   if (collecteur['idCollecteur'] == 'null') {
-                                    return SizedBox.shrink();
+                                    return const SizedBox.shrink();
                                   }
                                   return Container(
-                                      color: Colors.white,
-                                      child: Column(
+                                      width: page_width,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 20),
+                                      decoration: BoxDecoration(
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        border: Border(
+                                            top: BorderSide(
+                                                width: 1.0,
+                                                color: Color(graphique
+                                                    .color['default_black'])),
+                                            bottom: BorderSide(
+                                                width: 1.0,
+                                                color: Color(graphique
+                                                    .color['default_black']))),
+                                      ),
+                                      child: Row(
                                         children: [
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Container(
-                                                alignment: Alignment.topLeft,
-                                                width: 200,
-                                                height: 50,
-                                                color: Colors.green,
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Text(
-                                                      collecteur[
-                                                          'nomCollecteur'],
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Text(
-                                                      collecteur[
-                                                          'prenomCollecteur'],
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 30,
-                                              ),
-                                              Container(
-                                                alignment: Alignment(-1, 0.15),
-                                                width: 200,
-                                                height: 50,
-                                                color: Colors.green,
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.place,
-                                                      color: Colors.black,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Text(
-                                                      collecteur[
-                                                          'siteCollecteur'],
-                                                      style: TextStyle(
-                                                          color: Colors.black,
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  alignment: Alignment.topLeft,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 20),
+                                                  width: 200,
+                                                  height: 50,
+                                                  color: Color(graphique.color[
+                                                      'special_bureautique_2']),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        collecteur[
+                                                            'nomCollecteur'],
+                                                        style: TextStyle(
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
                                                           fontSize: 15,
                                                           fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ],
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        collecteur[
+                                                            'prenomCollecteur'],
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                width: 100,
-                                              ),
-                                              Container(
-                                                alignment: Alignment(-1, 0.15),
-                                                width: 50,
-                                                height: 50,
-                                                color: Colors.green,
-                                                child: IconButton(
-                                                  icon: const Icon(Icons.edit),
-                                                  tooltip: 'Modify Collecteur',
-                                                  onPressed: () {
-                                                    showModifyCollecteurDialog(
-                                                        context: context,
-                                                        dataCollecteur:
-                                                            collecteur);
-                                                  },
+                                                Container(
+                                                  width: 200,
+                                                  height: 50,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 20),
+                                                  color: Color(graphique.color[
+                                                      'special_bureautique_2']),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.place,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        collecteur[
+                                                            'siteCollecteur'],
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          const Divider(
-                                            thickness: 5,
+                                                SizedBox(
+                                                  width: 120,
+                                                ),
+                                                Container(
+                                                  alignment:
+                                                      Alignment(-1, 0.15),
+                                                  width: 50,
+                                                  height: 50,
+                                                  color: Color(graphique.color[
+                                                      'special_bureautique_2']),
+                                                  child: IconButton(
+                                                    icon:
+                                                        const Icon(Icons.edit),
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_black']),
+                                                    tooltip:
+                                                        'Modify Collecteur',
+                                                    onPressed: () {
+                                                      showModifyCollecteurDialog(
+                                                          context: context,
+                                                          dataCollecteur:
+                                                              collecteur);
+                                                    },
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ));
