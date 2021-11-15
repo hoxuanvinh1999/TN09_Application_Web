@@ -6,6 +6,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/forget_password_page.dart';
 import 'package:tn09_app_web_demo/login_page/verify_email_page.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -27,12 +28,12 @@ class _LoginPageState extends State<LoginPage> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                    begin: Alignment.center,
+                    end: Alignment.centerRight,
                     colors: [
-                  Color(0xFFBFAC97),
-                  Color(0xFF74B424),
-                  Color(0xFF94C21E),
+                  Color(graphique.color['main_color_1']),
+                  Color(graphique.color['main_color_2']),
+                  // Color(graphique.color['secondary_color_1']),
                 ])),
             child: SingleChildScrollView(
               child: Column(
@@ -129,7 +130,8 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text(
                                     'Forget Password',
                                     style: TextStyle(
-                                        color: Colors.orangeAccent[700]),
+                                        color: Color(
+                                            graphique.color['main_color_2'])),
                                   ))
                             ],
                           ),
@@ -146,12 +148,11 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
                                 gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.bottomRight,
+                                    begin: Alignment.center,
+                                    end: Alignment.centerRight,
                                     colors: [
-                                      Color(0xFFBFAC97),
-                                      Color(0xFF74B424),
-                                      Color(0xFF94C21E),
+                                      Color(graphique.color['main_color_1']),
+                                      Color(graphique.color['main_color_2']),
                                     ])),
                             child: Padding(
                               padding: EdgeInsets.all(12.0),
@@ -175,12 +176,11 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
                                 gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.bottomRight,
+                                    begin: Alignment.center,
+                                    end: Alignment.centerRight,
                                     colors: [
-                                      Color(0xFFBFAC97),
-                                      Color(0xFF74B424),
-                                      Color(0xFF94C21E),
+                                      Color(graphique.color['main_color_1']),
+                                      Color(graphique.color['main_color_2']),
                                     ])),
                             child: Padding(
                               padding: EdgeInsets.all(12.0),
@@ -219,7 +219,8 @@ class _LoginPageState extends State<LoginPage> {
               height: 480,
               width: 400,
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                  color: Color(graphique.color['defaut_white']),
+                  borderRadius: BorderRadius.circular(20)),
               child: Column(
                 children: [
                   // Positioned(
@@ -248,7 +249,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Text(
                     'Sign up to our DataBase',
-                    style: TextStyle(fontSize: 15, color: Colors.grey),
+                    style: TextStyle(
+                        fontSize: 15, color: Color(graphique.color['grey'])),
                   ),
                   SizedBox(
                     height: 20,
@@ -303,12 +305,11 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.bottomRight,
+                              begin: Alignment.center,
+                              end: Alignment.centerRight,
                               colors: [
-                                Color(0xFFBFAC97),
-                                Color(0xFF74B424),
-                                Color(0xFF94C21E),
+                                Color(graphique.color['main_color_1']),
+                                Color(graphique.color['main_color_2']),
                               ])),
                       child: Padding(
                         padding: EdgeInsets.all(12.0),

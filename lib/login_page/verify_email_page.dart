@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class VerifyScreen extends StatefulWidget {
   @override
@@ -51,12 +49,11 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                          begin: Alignment.center,
+                          end: Alignment.centerRight,
                           colors: [
-                        Color(0xFFBFAC97),
-                        Color(0xFF74B424),
-                        Color(0xFF94C21E),
+                        Color(graphique.color['main_color_1']),
+                        Color(graphique.color['main_color_2']),
                       ])),
                   child: SingleChildScrollView(
                       child: Column(
@@ -69,7 +66,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                           height: 200,
                           width: 400,
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(graphique.color['defaut_white']),
                               borderRadius: BorderRadius.circular(10)),
                           child: Column(
                             children: [
@@ -88,7 +85,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                   Text(
                                     'An email has been sent to ${user?.email}',
                                     style: TextStyle(
-                                        fontSize: 15, color: Colors.grey),
+                                        fontSize: 15,
+                                        color: Color(graphique.color['grey'])),
                                   ),
                                 ],
                               ),
@@ -98,7 +96,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                   Text(
                                     'Please Verify',
                                     style: TextStyle(
-                                        fontSize: 15, color: Colors.grey),
+                                        fontSize: 15,
+                                        color: Color(graphique.color['grey'])),
                                   ),
                                 ],
                               ),

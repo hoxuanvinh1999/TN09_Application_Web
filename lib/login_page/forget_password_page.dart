@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class ForgetPasswordPage extends StatefulWidget {
   @override
@@ -31,12 +32,11 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                          begin: Alignment.center,
+                          end: Alignment.centerRight,
                           colors: [
-                        Color(0xFFBFAC97),
-                        Color(0xFF74B424),
-                        Color(0xFF94C21E),
+                        Color(graphique.color['main_color_1']),
+                        Color(graphique.color['main_color_2']),
                       ])),
                   child: SingleChildScrollView(
                       child: Column(
@@ -49,7 +49,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                           height: 300,
                           width: 400,
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(graphique.color['defaut_white']),
                               borderRadius: BorderRadius.circular(10)),
                           child: Column(
                             children: [
@@ -64,8 +64,9 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                               ),
                               Text(
                                 'Reset your password',
-                                style:
-                                    TextStyle(fontSize: 15, color: Colors.grey),
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Color(graphique.color['grey'])),
                               ),
                               SizedBox(
                                 height: 20,
@@ -133,12 +134,13 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50),
                                       gradient: LinearGradient(
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.bottomRight,
+                                          begin: Alignment.center,
+                                          end: Alignment.centerRight,
                                           colors: [
-                                            Color(0xFFBFAC97),
-                                            Color(0xFF74B424),
-                                            Color(0xFF94C21E),
+                                            Color(graphique
+                                                .color['main_color_1']),
+                                            Color(graphique
+                                                .color['main_color_2']),
                                           ])),
                                   child: Padding(
                                     padding: EdgeInsets.all(12.0),
