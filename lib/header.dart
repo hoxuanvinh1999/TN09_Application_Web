@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
 import 'package:tn09_app_web_demo/pages/user_infor_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 Widget header({required BuildContext context}) {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -19,9 +20,15 @@ Widget header({required BuildContext context}) {
   // print(('$displayName'));
 
   return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: Color(graphique.color['main_color_1']),
+        border: Border(
+          bottom: BorderSide(
+              width: 1.0, color: Color(graphique.color['defaut_black'])),
+        ),
+      ),
       height: 80,
-      color: Colors.green,
       child: GestureDetector(
         onTap: () {
           showDialog(
@@ -34,7 +41,7 @@ Widget header({required BuildContext context}) {
                       height: 100,
                       width: 100,
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Color(graphique.color['main_color_2']),
                       ),
                       child: Column(
                         children: [
@@ -48,9 +55,14 @@ Widget header({required BuildContext context}) {
                                       builder: (context) => UserInforPage()));
                             },
                             child: Container(
-                                color: Colors.red,
+                                margin: EdgeInsets.only(left: 10, bottom: 5),
+                                // color: Colors.red,
                                 child: Row(
                                   children: [
+                                    Icon(
+                                      FontAwesomeIcons.user,
+                                      size: 15,
+                                    ),
                                     SizedBox(
                                       width: 10,
                                     ),
@@ -61,14 +73,8 @@ Widget header({required BuildContext context}) {
                                   ],
                                 )),
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
                           Divider(
                             thickness: 3,
-                          ),
-                          SizedBox(
-                            height: 5,
                           ),
                           GestureDetector(
                             onTap: () async {
@@ -80,14 +86,13 @@ Widget header({required BuildContext context}) {
                                       builder: (context) => LoginPage()));
                             },
                             child: Container(
-                                color: Colors.red,
+                                margin: EdgeInsets.only(left: 10, bottom: 5),
+                                // color: Colors.red,
                                 child: Row(
                                   children: [
-                                    SizedBox(
-                                      width: 10,
-                                    ),
                                     Icon(
                                       FontAwesomeIcons.signOutAlt,
+                                      size: 15,
                                     ),
                                     SizedBox(
                                       width: 5,
@@ -108,7 +113,19 @@ Widget header({required BuildContext context}) {
             child: Image.asset('images/logo_homescreen.png'),
           ),
           Container(
-              margin: const EdgeInsets.only(right: 10, top: 20, bottom: 20),
+              margin: const EdgeInsets.only(
+                // right: 10,
+                top: 20,
+                bottom: 20,
+              ),
+              decoration: BoxDecoration(
+                color: Color(graphique.color['main_color_1']),
+                // border: Border.all(
+                //   color: Colors.black,
+                //   width: 4,
+                // ),
+                // borderRadius: BorderRadius.circular(4)
+              ),
               child: GestureDetector(
                 child: Row(
                   children: [
