@@ -2,6 +2,12 @@ const Map<String, dynamic> color = {
   'default_white': 0xfff4eeee,
   'default_black': 0xff060606,
   'default_grey': 0xff484f41,
+  'default_red': 0xffc9301b,
+  'default_blue': 0xff175978,
+  'default_yellow': 0xfff0db0f,
+  'special_bureautique_1': 0xff263b29,
+  'special_bureautique_2': 0xff446c4a,
+  'special_bureautique_3': 0xfff5d19d,
   'main_color_1': 0xFF263b29,
   'main_color_2': 0xFFe94e1a,
   'secondary_color_1': 0xFF9eb356,
@@ -29,5 +35,10 @@ const Map<String, dynamic> languagefr = {
     'function_2_title': 'Planification journalière',
     'function_3_title': 'Créer tournée',
     'function_4_title': 'Peser',
+  },
+  'collecteur_page': {
+    'table_title': 'Chauffeurs',
+    'column_1_title': 'Nom',
+    'column_2_title': 'Sites'
   },
 };
