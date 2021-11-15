@@ -4,14 +4,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
-import 'package:tn09_app_web_demo/header.dart';
-import 'dart:async';
-import 'package:tn09_app_web_demo/login_page/login_page.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:tn09_app_web_demo/menu/header.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
-import 'package:tn09_app_web_demo/menu/showSubMenu1.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -29,7 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
             header(context: context),
             menu(context: context),
             Container(
-                color: Colors.yellow,
+                decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['defaut_black'])),
+                  ),
+                ),
                 width: double.infinity,
                 height: 40,
                 child: Row(
