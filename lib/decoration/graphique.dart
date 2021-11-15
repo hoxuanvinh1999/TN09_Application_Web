@@ -10,5 +10,24 @@ const Map<String, dynamic> color = {
 };
 
 const Map<String, dynamic> languagefr = {
-  'button_1_title': 'Gestion',
+  'button_1': {
+    'title': 'Gestion',
+    'function_1_title': 'Chauffeurs',
+    'function_2_title': 'Véhicules',
+    'function_3_title': 'Contenants',
+    'sub_function_3_title': 'Type Contenants',
+    'function_4_title': 'Matières',
+  },
+  'button_2': {
+    'title': 'Partenaires',
+    'function_1_title': 'Liste des partenaires',
+    'function_2_title': 'Gestion des contacts',
+  },
+  'button_3': {
+    'title': 'Tournées',
+    'function_1_title': 'Calendrier hebdomadaire',
+    'function_2_title': 'Planification journalière',
+    'function_3_title': 'Créer tournée',
+    'function_4_title': 'Peser',
+  },
 };
