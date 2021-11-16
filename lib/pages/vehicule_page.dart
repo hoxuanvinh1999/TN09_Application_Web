@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,6 +9,7 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class VehiculePage extends StatefulWidget {
   @override
@@ -36,6 +39,8 @@ class _VehiculePageState extends State<VehiculePage> {
       .orderBy('orderVehicule')
       .snapshots();
   Widget build(BuildContext context) {
+    // Fow width of table
+    double page_width = MediaQuery.of(context).size.width * 0.65;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -43,101 +48,135 @@ class _VehiculePageState extends State<VehiculePage> {
             header(context: context),
             menu(context: context),
             Container(
-                color: Colors.yellow,
-                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                ),
+                width: MediaQuery.of(context).size.width,
                 height: 40,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.home,
-                      size: 12,
-                    ),
-                    SizedBox(width: 5),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Home',
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 40,
+                      ),
+                      Icon(
+                        FontAwesomeIcons.home,
+                        size: 12,
+                      ),
+                      SizedBox(width: 5),
+                      RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Home',
+                                style: TextStyle(
+                                    color:
+                                        Color(graphique.color['default_red']),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen()));
+                                  }),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        FontAwesomeIcons.chevronCircleRight,
+                        size: 12,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: graphique.languagefr['vehicule_page']
+                                  ['nom_page'],
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_grey']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) => HomeScreen()));
-                                }),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.chevronCircleRight,
-                      size: 12,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Vehicule',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )),
-            SizedBox(height: 20),
             Align(
               alignment: Alignment(-0.9, 0),
               child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  width: 800,
+                  margin: EdgeInsets.only(
+                    left: 20,
+                    top: 20,
+                  ),
+                  width: page_width,
                   height: 1000,
-                  color: Colors.green,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['special_bureautique_2']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
                   child: Column(
                     children: [
                       Container(
-                        color: Colors.blue,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                          color: Color(graphique.color['main_color_1']),
+                          border: Border.all(
+                              width: 1.0,
+                              color: Color(graphique.color['default_black'])),
+                        ),
+                        width: page_width,
                         child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(width: 20),
-                                Icon(
-                                  FontAwesomeIcons.truck,
-                                  size: 17,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Vehicule',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                Container(
+                                  margin: const EdgeInsets.only(left: 20),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.truck,
+                                        size: 17,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        graphique.languagefr['vehicule_page']
+                                            ['table_title'],
+                                        style: TextStyle(
+                                          color: Color(
+                                              graphique.color['main_color_2']),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 500,
-                                ),
                                 Container(
-                                    width: 150,
+                                    width: 180,
                                     decoration: BoxDecoration(
-                                        color: Colors.yellow,
+                                        color: Color(
+                                            graphique.color['default_yellow']),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     margin: const EdgeInsets.only(
@@ -150,15 +189,19 @@ class _VehiculePageState extends State<VehiculePage> {
                                         children: [
                                           Icon(
                                             Icons.add,
-                                            color: Colors.white,
+                                            color: Color(graphique
+                                                .color['default_black']),
                                           ),
                                           SizedBox(
                                             width: 10,
                                           ),
                                           Text(
-                                            'New Vehicule',
+                                            graphique
+                                                    .languagefr['vehicule_page']
+                                                ['button_1'],
                                             style: TextStyle(
-                                              color: Colors.black,
+                                              color: Color(graphique
+                                                  .color['default_black']),
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -168,20 +211,19 @@ class _VehiculePageState extends State<VehiculePage> {
                                     )),
                               ],
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            const Divider(
-                              thickness: 5,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            )
                           ],
                         ),
                       ),
                       Container(
-                          color: Colors.red,
+                          margin: const EdgeInsets.only(top: 10),
+                          width: page_width,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Color(graphique.color['main_color_1']),
+                            border: Border.all(
+                                width: 1.0,
+                                color: Color(graphique.color['default_black'])),
+                          ),
                           child: Column(
                             children: [
                               SizedBox(
@@ -200,7 +242,20 @@ class _VehiculePageState extends State<VehiculePage> {
                                     width: 10,
                                   ),
                                   Text(
-                                    'Nom Vehicule',
+                                    graphique.languagefr['vehicule_page']
+                                        ['column_1_title'],
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 80,
+                                  ),
+                                  Text(
+                                    graphique.languagefr['vehicule_page']
+                                        ['column_2_title'],
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18,
@@ -211,7 +266,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                     width: 100,
                                   ),
                                   Text(
-                                    'Immatriculation',
+                                    graphique.languagefr['vehicule_page']
+                                        ['column_3_title'],
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18,
@@ -219,18 +275,7 @@ class _VehiculePageState extends State<VehiculePage> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 100,
-                                  ),
-                                  Text(
-                                    'Site',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 150,
+                                    width: 180,
                                   ),
                                   Icon(
                                     FontAwesomeIcons.sortNumericDown,
@@ -238,15 +283,6 @@ class _VehiculePageState extends State<VehiculePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              const Divider(
-                                thickness: 5,
-                              ),
-                              SizedBox(
-                                height: 15,
-                              )
                             ],
                           )),
                       StreamBuilder<QuerySnapshot>(
@@ -272,147 +308,166 @@ class _VehiculePageState extends State<VehiculePage> {
                                 return SizedBox.shrink();
                               }
                               return Container(
-                                  color: Colors.white,
-                                  child: Column(
+                                width: page_width,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                decoration: BoxDecoration(
+                                  color: Color(
+                                      graphique.color['special_bureautique_2']),
+                                  border: Border(
+                                      top: BorderSide(
+                                          width: 1.0,
+                                          color: Color(graphique
+                                              .color['default_black'])),
+                                      bottom: BorderSide(
+                                          width: 1.0,
+                                          color: Color(graphique
+                                              .color['default_black']))),
+                                ),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       SizedBox(
-                                        height: 5,
+                                        width: 20,
                                       ),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          buildVehiculeIcon(
-                                              icontype:
-                                                  vehicule['typeVehicule'],
-                                              iconcolor:
-                                                  vehicule['colorIconVehicule']
-                                                      .toUpperCase(),
-                                              sizeIcon: 17.0),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Container(
-                                            alignment: Alignment(-1, 0.15),
-                                            width: 100,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  vehicule['nomVehicule'],
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
+                                      buildVehiculeIcon(
+                                          icontype: vehicule['typeVehicule'],
+                                          iconcolor:
+                                              vehicule['colorIconVehicule']
+                                                  .toUpperCase(),
+                                          sizeIcon: 17.0),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 10),
+                                        width: 100,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              vehicule['nomVehicule'],
+                                              style: TextStyle(
+                                                color: Color(graphique
+                                                    .color['default_black']),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 100,
-                                          ),
-                                          Container(
-                                            alignment: Alignment(-1, 0.15),
-                                            width: 100,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  vehicule[
-                                                      'numeroImmatriculation'],
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 120,
-                                          ),
-                                          Container(
-                                            alignment: Alignment(-1, 0.15),
-                                            width: 150,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.place,
-                                                  color: Colors.black,
-                                                ),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  vehicule['siteVehicule'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 50,
-                                          ),
-                                          Container(
-                                            alignment: Alignment(-1, 0.15),
-                                            width: 30,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  vehicule['orderVehicule'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 40,
-                                          ),
-                                          Container(
-                                            alignment: Alignment(-1, 0.15),
-                                            width: 50,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              tooltip: 'Modify Vehicule',
-                                              onPressed: () {
-                                                showModifyVehiculeDialog(
-                                                    context: context,
-                                                    dataVehicule: vehicule);
-                                              },
-                                            ),
-                                          )
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(
-                                        height: 5,
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(left: 100),
+                                        width: 100,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              vehicule['numeroImmatriculation'],
+                                              style: TextStyle(
+                                                color: Color(graphique
+                                                    .color['default_black']),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      const Divider(
-                                        thickness: 5,
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(left: 120),
+                                        width: 150,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.place,
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              vehicule['siteVehicule'],
+                                              style: TextStyle(
+                                                  color: Color(graphique
+                                                      .color['default_black']),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 70),
+                                        width: 30,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              vehicule['orderVehicule'],
+                                              style: TextStyle(
+                                                  color: Color(graphique
+                                                      .color['default_black']),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 40),
+                                        width: 50,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                          tooltip: 'Modify Vehicule',
+                                          onPressed: () {
+                                            showModifyVehiculeDialog(
+                                                context: context,
+                                                dataVehicule: vehicule);
+                                          },
+                                        ),
+                                      )
                                     ],
-                                  ));
+                                  ),
+                                ),
+                              );
                             }).toList(),
                           );
                         },
