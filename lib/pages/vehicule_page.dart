@@ -49,7 +49,7 @@ class _VehiculePageState extends State<VehiculePage> {
             menu(context: context),
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.yellow,
+                  color: Color(graphique.color['default_yellow']),
                   border: Border(
                     bottom: BorderSide(
                         width: 1.0,
@@ -152,9 +152,11 @@ class _VehiculePageState extends State<VehiculePage> {
                                   margin: const EdgeInsets.only(left: 20),
                                   child: Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         FontAwesomeIcons.truck,
                                         size: 17,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -234,18 +236,12 @@ class _VehiculePageState extends State<VehiculePage> {
                                   SizedBox(
                                     width: 20,
                                   ),
-                                  Icon(
-                                    FontAwesomeIcons.truck,
-                                    size: 17,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
                                   Text(
                                     graphique.languagefr['vehicule_page']
                                         ['column_1_title'],
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['main_color_2']),
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -257,19 +253,21 @@ class _VehiculePageState extends State<VehiculePage> {
                                     graphique.languagefr['vehicule_page']
                                         ['column_2_title'],
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['main_color_2']),
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 100,
+                                    width: 130,
                                   ),
                                   Text(
                                     graphique.languagefr['vehicule_page']
                                         ['column_3_title'],
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['main_color_2']),
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -280,6 +278,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                   Icon(
                                     FontAwesomeIcons.sortNumericDown,
                                     size: 17,
+                                    color:
+                                        Color(graphique.color['main_color_2']),
                                   ),
                                 ],
                               ),
