@@ -27,14 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
             menu(context: context),
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.yellow,
+                  color: Color(graphique.color['default_yellow']),
                   border: Border(
                     bottom: BorderSide(
                         width: 1.0,
                         color: Color(graphique.color['default_black'])),
                   ),
                 ),
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 height: 40,
                 child: Row(
                   children: [
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           TextSpan(
                               text: 'Home',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.centerLeft,
               width: MediaQuery.of(context).size.width * 0.9,
               height: 1000,
-              color: Colors.green,
+              color: Color(graphique.color['special_bureautique_2']),
               child: Column(
                 children: [
                   // Container(
