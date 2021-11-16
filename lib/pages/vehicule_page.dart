@@ -68,6 +68,7 @@ class _VehiculePageState extends State<VehiculePage> {
                       Icon(
                         FontAwesomeIcons.home,
                         size: 12,
+                        color: Color(graphique.color['default_black']),
                       ),
                       SizedBox(width: 5),
                       RichText(
@@ -143,148 +144,135 @@ class _VehiculePageState extends State<VehiculePage> {
                               color: Color(graphique.color['default_black'])),
                         ),
                         width: page_width,
-                        child: Column(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(left: 20),
+                            Container(
+                              margin: const EdgeInsets.only(left: 20),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.truck,
+                                    size: 17,
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    graphique.languagefr['vehicule_page']
+                                        ['table_title'],
+                                    style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                width: 180,
+                                decoration: BoxDecoration(
+                                    color: Color(
+                                        graphique.color['default_yellow']),
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.only(
+                                    right: 10, top: 20, bottom: 20),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showCreateVehicule();
+                                  },
                                   child: Row(
                                     children: [
                                       Icon(
-                                        FontAwesomeIcons.truck,
-                                        size: 17,
+                                        Icons.add,
                                         color: Color(
-                                            graphique.color['main_color_2']),
+                                            graphique.color['default_black']),
                                       ),
-                                      const SizedBox(
+                                      SizedBox(
                                         width: 10,
                                       ),
                                       Text(
                                         graphique.languagefr['vehicule_page']
-                                            ['table_title'],
+                                            ['button_1'],
                                         style: TextStyle(
                                           color: Color(
-                                              graphique.color['main_color_2']),
-                                          fontSize: 20,
+                                              graphique.color['default_black']),
+                                          fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Container(
-                                    width: 180,
-                                    decoration: BoxDecoration(
-                                        color: Color(
-                                            graphique.color['default_yellow']),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    margin: const EdgeInsets.only(
-                                        right: 10, top: 20, bottom: 20),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showCreateVehicule();
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.add,
-                                            color: Color(graphique
-                                                .color['default_black']),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            graphique
-                                                    .languagefr['vehicule_page']
-                                                ['button_1'],
-                                            style: TextStyle(
-                                              color: Color(graphique
-                                                  .color['default_black']),
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ],
-                            ),
+                                )),
                           ],
                         ),
                       ),
                       Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          width: page_width,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Color(graphique.color['main_color_1']),
-                            border: Border.all(
-                                width: 1.0,
-                                color: Color(graphique.color['default_black'])),
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 5,
+                        margin: const EdgeInsets.only(top: 10),
+                        width: page_width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Color(graphique.color['main_color_1']),
+                          border: Border.all(
+                              width: 1.0,
+                              color: Color(graphique.color['default_black'])),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              graphique.languagefr['vehicule_page']
+                                  ['column_1_title'],
+                              style: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    graphique.languagefr['vehicule_page']
-                                        ['column_1_title'],
-                                    style: TextStyle(
-                                      color: Color(
-                                          graphique.color['main_color_2']),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 80,
-                                  ),
-                                  Text(
-                                    graphique.languagefr['vehicule_page']
-                                        ['column_2_title'],
-                                    style: TextStyle(
-                                      color: Color(
-                                          graphique.color['main_color_2']),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 130,
-                                  ),
-                                  Text(
-                                    graphique.languagefr['vehicule_page']
-                                        ['column_3_title'],
-                                    style: TextStyle(
-                                      color: Color(
-                                          graphique.color['main_color_2']),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 180,
-                                  ),
-                                  Icon(
-                                    FontAwesomeIcons.sortNumericDown,
-                                    size: 17,
-                                    color:
-                                        Color(graphique.color['main_color_2']),
-                                  ),
-                                ],
+                            ),
+                            SizedBox(
+                              width: 80,
+                            ),
+                            Text(
+                              graphique.languagefr['vehicule_page']
+                                  ['column_2_title'],
+                              style: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          )),
+                            ),
+                            SizedBox(
+                              width: 130,
+                            ),
+                            Text(
+                              graphique.languagefr['vehicule_page']
+                                  ['column_3_title'],
+                              style: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 180,
+                            ),
+                            Icon(
+                              FontAwesomeIcons.sortNumericDown,
+                              size: 17,
+                              color: Color(graphique.color['main_color_2']),
+                            ),
+                          ],
+                        ),
+                      ),
                       StreamBuilder<QuerySnapshot>(
                         stream: _vehiculeStream,
                         builder: (BuildContext context,
