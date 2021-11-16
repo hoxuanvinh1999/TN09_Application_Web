@@ -59,4 +59,15 @@ const Map<String, dynamic> languagefr = {
     'column_2_title': 'Type',
     'column_3_title': 'Actuellement',
   },
+  'type_contenant_page': {
+    'nom_page': 'Types de contenants',
+    'button_1': 'Nouveau Type',
+    'table_title': 'Types de contenants',
+    'column_1_title': 'Désignation',
+    'column_2_title': 'Collecte',
+    'column_3_title': 'Prépa.',
+    'column_4_title': 'Pesée',
+    'column_5_title': 'Limit',
+    'column_6_title': 'Nombre',
+  },
 };
