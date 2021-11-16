@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
                     SizedBox(width: 5),
                     RichText(
