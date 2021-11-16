@@ -459,7 +459,8 @@ class _ContenantPageState extends State<ContenantPage> {
                                   if (value == null ||
                                       value.isEmpty ||
                                       value == '') {
-                                    return 'This can not be null';
+                                    return graphique.languagefr['warning']
+                                        ['not_null'];
                                   }
                                 },
                               ),

@@ -19,6 +19,7 @@ import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/bool_icon.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class ViewPartenairePage extends StatefulWidget {
   Map partenaire;
@@ -409,7 +410,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                   if (value == null ||
                                       value.isEmpty ||
                                       value == '') {
-                                    return 'This can not be null';
+                                    return graphique.languagefr['warning']
+                                        ['not_null'];
                                   }
                                 },
                               ),
@@ -3201,7 +3203,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -3221,7 +3224,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -3257,7 +3261,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -3277,7 +3282,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -3297,7 +3303,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -3343,7 +3350,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -3940,7 +3948,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -3960,7 +3969,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -3997,7 +4007,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -4017,7 +4028,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -4037,7 +4049,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -4083,7 +4096,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),

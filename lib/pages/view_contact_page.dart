@@ -12,6 +12,7 @@ import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
 import 'package:tn09_app_web_demo/pages/math_function/generate_password.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class ViewContactPage extends StatefulWidget {
   Map dataContact;
@@ -267,7 +268,8 @@ class _ViewContactPageState extends State<ViewContactPage> {
                               if (value == null ||
                                   value.isEmpty ||
                                   value == '') {
-                                return 'This can not be null';
+                                return graphique.languagefr['warning']
+                                    ['not_null'];
                               }
                             },
                           ),
@@ -287,7 +289,8 @@ class _ViewContactPageState extends State<ViewContactPage> {
                               if (value == null ||
                                   value.isEmpty ||
                                   value == '') {
-                                return 'This can not be null';
+                                return graphique.languagefr['warning']
+                                    ['not_null'];
                               }
                             },
                           ),

@@ -8,6 +8,7 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/matieres_page.dart';
 import 'package:translator/translator.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class ModifyMatierePage extends StatefulWidget {
   Map dataMatiere;
@@ -258,7 +259,8 @@ class _ModifyMatierePageState extends State<ModifyMatierePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),

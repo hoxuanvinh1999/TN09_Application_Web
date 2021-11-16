@@ -201,7 +201,8 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                               Container(
                                   width: 160,
                                   decoration: BoxDecoration(
-                                      color: Colors.yellow,
+                                      color: Color(
+                                          graphique.color['default_yellow']),
                                       borderRadius: BorderRadius.circular(10)),
                                   margin: const EdgeInsets.only(
                                       right: 10, top: 20, bottom: 20),

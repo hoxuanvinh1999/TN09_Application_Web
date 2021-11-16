@@ -11,6 +11,7 @@ import 'package:tn09_app_web_demo/pages/contact_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
 import 'package:tn09_app_web_demo/pages/math_function/generate_password.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class CreateContactPage extends StatefulWidget {
   @override
@@ -243,7 +244,8 @@ class _CreateContactPageState extends State<CreateContactPage> {
                               if (value == null ||
                                   value.isEmpty ||
                                   value == '') {
-                                return 'This can not be null';
+                                return graphique.languagefr['warning']
+                                    ['not_null'];
                               }
                             },
                           ),
@@ -263,7 +265,8 @@ class _CreateContactPageState extends State<CreateContactPage> {
                               if (value == null ||
                                   value.isEmpty ||
                                   value == '') {
-                                return 'This can not be null';
+                                return graphique.languagefr['warning']
+                                    ['not_null'];
                               }
                             },
                           ),

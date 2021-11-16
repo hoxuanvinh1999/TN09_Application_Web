@@ -516,7 +516,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -534,7 +535,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -554,7 +556,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -903,7 +906,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -922,7 +926,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -942,7 +947,8 @@ class _VehiculePageState extends State<VehiculePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),

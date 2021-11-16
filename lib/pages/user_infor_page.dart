@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/menu/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class UserInforPage extends StatefulWidget {
   @override
@@ -275,7 +276,8 @@ class _UserInforPageState extends State<UserInforPage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -302,7 +304,8 @@ class _UserInforPageState extends State<UserInforPage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -323,7 +326,8 @@ class _UserInforPageState extends State<UserInforPage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     } else if (_checknewPasswordController
                                             .text !=
                                         _newPasswordController.text) {

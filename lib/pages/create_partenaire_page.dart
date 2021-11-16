@@ -6,6 +6,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class CreatePartenairePage extends StatefulWidget {
   @override
@@ -232,7 +233,8 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),

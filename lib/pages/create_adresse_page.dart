@@ -16,6 +16,7 @@ import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/company_position.dart'
     as company;
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class CreateAdressePage extends StatefulWidget {
   Map partenaire;
@@ -391,7 +392,8 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),
@@ -412,7 +414,8 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),
@@ -447,7 +450,8 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),
@@ -468,7 +472,8 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),
@@ -489,7 +494,8 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),
@@ -583,7 +589,8 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),

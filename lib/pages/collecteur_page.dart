@@ -477,7 +477,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   if (value == null ||
                                       value.isEmpty ||
                                       value == '') {
-                                    return 'This can not be null';
+                                    return graphique.languagefr['warning']
+                                        ['not_null'];
                                   }
                                 },
                               ),
@@ -497,7 +498,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   if (value == null ||
                                       value.isEmpty ||
                                       value == '') {
-                                    return 'This can not be null';
+                                    return graphique.languagefr['warning']
+                                        ['not_null'];
                                   }
                                 },
                               ),
@@ -745,7 +747,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   if (value == null ||
                                       value.isEmpty ||
                                       value == '') {
-                                    return 'This can not be null';
+                                    return graphique.languagefr['warning']
+                                        ['not_null'];
                                   }
                                 },
                               ),
@@ -765,7 +768,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   if (value == null ||
                                       value.isEmpty ||
                                       value == '') {
-                                    return 'This can not be null';
+                                    return graphique.languagefr['warning']
+                                        ['not_null'];
                                   }
                                 },
                               ),

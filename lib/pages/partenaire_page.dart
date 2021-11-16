@@ -13,6 +13,7 @@ import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/generate_password.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class PartenairePage extends StatefulWidget {
   @override
@@ -563,7 +564,8 @@ class _PartenairePageState extends State<PartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -583,7 +585,8 @@ class _PartenairePageState extends State<PartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -1045,7 +1048,8 @@ class _PartenairePageState extends State<PartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
@@ -1065,7 +1069,8 @@ class _PartenairePageState extends State<PartenairePage> {
                                     if (value == null ||
                                         value.isEmpty ||
                                         value == '') {
-                                      return 'This can not be null';
+                                      return graphique.languagefr['warning']
+                                          ['not_null'];
                                     }
                                   },
                                 ),
