@@ -51,4 +51,12 @@ const Map<String, dynamic> languagefr = {
     'column_2_title': 'Immatriculation',
     'column_3_title': 'Site',
   },
+  'contenant_page': {
+    'nom_page': 'Contenants',
+    'button_1': 'Nouveau Contenant',
+    'table_title': 'Contenants',
+    'column_1_title': 'Code-barres',
+    'column_2_title': 'Type',
+    'column_3_title': 'Actuellement',
+  },
 };
