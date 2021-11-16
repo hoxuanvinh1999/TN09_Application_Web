@@ -142,7 +142,7 @@ class _CreateMatierePageState extends State<CreateMatierePage> {
                 bottom: 20,
               ),
               width: page_width,
-              height: 800,
+              height: 900,
               decoration: BoxDecoration(
                 color: Color(graphique.color['special_bureautique_2']),
                 border: Border.all(
@@ -221,7 +221,7 @@ class _CreateMatierePageState extends State<CreateMatierePage> {
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 20),
-                  height: 450,
+                  height: 550,
                   width: page_width * 2 / 3,
                   decoration: BoxDecoration(
                     color: Color(graphique.color['special_bureautique_2']),
@@ -279,7 +279,8 @@ class _CreateMatierePageState extends State<CreateMatierePage> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value == '') {
-                                  return 'This can not be null';
+                                  return graphique.languagefr['warning']
+                                      ['not_null'];
                                 }
                               },
                             ),
