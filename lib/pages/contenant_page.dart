@@ -58,9 +58,10 @@ class _ContenantPageState extends State<ContenantPage> {
                     const SizedBox(
                       width: 40,
                     ),
-                    const Icon(
+                    Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
                     const SizedBox(width: 5),
                     RichText(
@@ -131,144 +132,133 @@ class _ContenantPageState extends State<ContenantPage> {
                             width: 1.0,
                             color: Color(graphique.color['default_black'])),
                       ),
-                      child: Column(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 20),
+                          Container(
+                            margin: const EdgeInsets.only(left: 20),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.boxOpen,
+                                  size: 17,
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  graphique.languagefr['contenant_page']
+                                      ['table_title'],
+                                  style: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              width: 180,
+                              decoration: BoxDecoration(
+                                  color:
+                                      Color(graphique.color['default_yellow']),
+                                  borderRadius: BorderRadius.circular(10)),
+                              margin: const EdgeInsets.only(
+                                  right: 10, top: 20, bottom: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  showCreateContenant();
+                                },
                                 child: Row(
                                   children: [
                                     Icon(
-                                      FontAwesomeIcons.boxOpen,
-                                      size: 17,
+                                      Icons.add,
                                       color: Color(
-                                          graphique.color['main_color_2']),
+                                          graphique.color['default_black']),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Text(
-                                      'Contenant',
+                                      graphique.languagefr['contenant_page']
+                                          ['button_1'],
                                       style: TextStyle(
                                         color: Color(
-                                            graphique.color['main_color_2']),
-                                        fontSize: 20,
+                                            graphique.color['default_black']),
+                                        fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              Container(
-                                  width: 180,
-                                  decoration: BoxDecoration(
-                                      color: Color(
-                                          graphique.color['default_yellow']),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  margin: const EdgeInsets.only(
-                                      right: 10, top: 20, bottom: 20),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showCreateContenant();
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          color: Color(
-                                              graphique.color['default_black']),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          graphique.languagefr['contenant_page']
-                                              ['button_1'],
-                                          style: TextStyle(
-                                            color: Color(graphique
-                                                .color['default_black']),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                            ],
-                          ),
+                              )),
                         ],
                       ),
                     ),
                     Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        width: page_width,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Color(graphique.color['main_color_1']),
-                          border: Border.all(
-                              width: 1.0,
-                              color: Color(graphique.color['default_black'])),
-                        ),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 5,
+                      margin: const EdgeInsets.only(top: 10),
+                      width: page_width,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['main_color_1']),
+                        border: Border.all(
+                            width: 1.0,
+                            color: Color(graphique.color['default_black'])),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            graphique.languagefr['contenant_page']
+                                ['column_1_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Text(
-                                  graphique.languagefr['contenant_page']
-                                      ['column_1_title'],
-                                  style: TextStyle(
-                                    color:
-                                        Color(graphique.color['main_color_2']),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 80,
-                                ),
-                                Text(
-                                  graphique.languagefr['contenant_page']
-                                      ['column_2_title'],
-                                  style: TextStyle(
-                                    color:
-                                        Color(graphique.color['main_color_2']),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 100,
-                                ),
-                                Text(
-                                  graphique.languagefr['contenant_page']
-                                      ['column_3_title'],
-                                  style: TextStyle(
-                                    color:
-                                        Color(graphique.color['main_color_2']),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 100,
-                                ),
-                                Icon(
-                                  FontAwesomeIcons.barcode,
-                                  size: 17,
-                                  color: Color(graphique.color['main_color_2']),
-                                ),
-                              ],
+                          ),
+                          SizedBox(
+                            width: 80,
+                          ),
+                          Text(
+                            graphique.languagefr['contenant_page']
+                                ['column_2_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        )),
+                          ),
+                          SizedBox(
+                            width: 100,
+                          ),
+                          Text(
+                            graphique.languagefr['contenant_page']
+                                ['column_3_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 100,
+                          ),
+                          Icon(
+                            FontAwesomeIcons.barcode,
+                            size: 17,
+                            color: Color(graphique.color['main_color_2']),
+                          ),
+                        ],
+                      ),
+                    ),
                     StreamBuilder<QuerySnapshot>(
                       stream: _contenantStream,
                       builder: (BuildContext context,
