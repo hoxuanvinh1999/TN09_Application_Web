@@ -8,6 +8,7 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/contenant_page.dart';
 import 'package:tn09_app_web_demo/pages/create_type_contenant_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class TypeContenantPage extends StatefulWidget {
   @override
@@ -32,6 +33,8 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
       .snapshots();
   @override
   Widget build(BuildContext context) {
+    // Fow width of table
+    double page_width = MediaQuery.of(context).size.width * 0.8;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -39,26 +42,36 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
             header(context: context),
             menu(context: context),
             Container(
-                color: Colors.yellow,
-                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['default_yellow']),
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                ),
+                width: MediaQuery.of(context).size.width,
                 height: 40,
                 child: Row(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 40,
                     ),
                     Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(
+                      width: 5,
+                    ),
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
                               text: 'Home',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -70,23 +83,24 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
-                    Icon(
+                    const Icon(
                       FontAwesomeIcons.chevronCircleRight,
                       size: 12,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                              text: 'Contenant',
+                              text: graphique.languagefr['contenant_page']
+                                  ['nom_page'],
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -99,23 +113,24 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
-                    Icon(
+                    const Icon(
                       FontAwesomeIcons.chevronCircleRight,
                       size: 12,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Type Contenant',
+                            text: graphique.languagefr['type_contenant_page']
+                                ['nom_page'],
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Color(graphique.color['default_grey']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -124,40 +139,58 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                     ),
                   ],
                 )),
-            SizedBox(height: 20),
             Align(
                 alignment: Alignment(-0.9, 0),
                 child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  width: 1000,
-                  height: 1000,
-                  color: Colors.green,
+                  margin: const EdgeInsets.only(
+                    left: 20,
+                    top: 20,
+                  ),
+                  width: page_width,
+                  height: 1500,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['special_bureautique_2']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
                   child: Column(children: [
                     Container(
-                      color: Colors.blue,
+                      margin: const EdgeInsets.only(bottom: 10),
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['main_color_1']),
+                        border: Border.all(
+                            width: 1.0,
+                            color: Color(graphique.color['default_black'])),
+                      ),
                       child: Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: 200,
+                                width: 240,
                                 child: Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 20,
                                     ),
                                     Icon(
-                                      FontAwesomeIcons.objectGroup,
+                                      FontAwesomeIcons.cubes,
                                       size: 17,
+                                      color: Color(
+                                          graphique.color['main_color_2']),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
-                                      'Type Contenant',
+                                      graphique
+                                              .languagefr['type_contenant_page']
+                                          ['table_title'],
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -166,7 +199,7 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                                 ),
                               ),
                               Container(
-                                  width: 180,
+                                  width: 160,
                                   decoration: BoxDecoration(
                                       color: Colors.yellow,
                                       borderRadius: BorderRadius.circular(10)),
@@ -184,15 +217,19 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                                       children: [
                                         Icon(
                                           Icons.add,
-                                          color: Colors.white,
+                                          color: Color(
+                                              graphique.color['default_black']),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Text(
-                                          'New Type Contenant',
+                                          graphique.languagefr[
+                                                  'type_contenant_page']
+                                              ['button_1'],
                                           style: TextStyle(
-                                            color: Colors.black,
+                                            color: Color(graphique
+                                                .color['default_black']),
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -202,127 +239,122 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                                   )),
                             ],
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          const Divider(
-                            thickness: 5,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          )
                         ],
                       ),
                     ),
                     Container(
-                        color: Colors.red,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 5,
+                      margin: const EdgeInsets.only(top: 10),
+                      width: page_width,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['main_color_1']),
+                        border: Border.all(
+                            width: 1.0,
+                            color: Color(graphique.color['default_black'])),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            graphique.languagefr['type_contenant_page']
+                                ['column_1_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Text(
-                                  'Nom du Type',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 120,
-                                ),
-                                Text(
-                                  'Collecte',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 50,
-                                ),
-                                Text(
-                                  'Prepare',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 50,
-                                ),
-                                Text(
-                                  'Pesée',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 100,
-                                ),
-                                Icon(
-                                  FontAwesomeIcons.weight,
-                                  size: 17,
-                                ),
-                                SizedBox(
-                                  width: 80,
-                                ),
-                                Icon(
-                                  FontAwesomeIcons.weightHanging,
-                                  size: 17,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Limit',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 50,
-                                ),
-                                Icon(
-                                  FontAwesomeIcons.boxOpen,
-                                  size: 17,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Nombre',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                          ),
+                          SizedBox(
+                            width: 130,
+                          ),
+                          Text(
+                            graphique.languagefr['type_contenant_page']
+                                ['column_2_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(
-                              height: 5,
+                          ),
+                          SizedBox(
+                            width: 50,
+                          ),
+                          Text(
+                            graphique.languagefr['type_contenant_page']
+                                ['column_3_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            const Divider(
-                              thickness: 5,
+                          ),
+                          SizedBox(
+                            width: 70,
+                          ),
+                          Text(
+                            graphique.languagefr['type_contenant_page']
+                                ['column_4_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(
-                              height: 15,
-                            )
-                          ],
-                        )),
+                          ),
+                          SizedBox(
+                            width: 80,
+                          ),
+                          Icon(
+                            FontAwesomeIcons.weight,
+                            size: 17,
+                            color: Color(graphique.color['main_color_2']),
+                          ),
+                          SizedBox(
+                            width: 80,
+                          ),
+                          Icon(
+                            FontAwesomeIcons.weightHanging,
+                            size: 17,
+                            color: Color(graphique.color['main_color_2']),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            graphique.languagefr['type_contenant_page']
+                                ['column_5_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 50,
+                          ),
+                          Icon(
+                            FontAwesomeIcons.boxOpen,
+                            size: 17,
+                            color: Color(graphique.color['main_color_2']),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            graphique.languagefr['type_contenant_page']
+                                ['column_6_title'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     StreamBuilder<QuerySnapshot>(
                       stream: _typecontenantStream,
                       builder: (BuildContext context,
@@ -344,159 +376,169 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                                     as Map<String, dynamic>;
                             // print('$contenant');
                             return Container(
-                                color: Colors.white,
-                                child: Column(
+                              width: page_width,
+                              margin: const EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                color: Color(
+                                    graphique.color['special_bureautique_2']),
+                                border: Border(
+                                    top: BorderSide(
+                                        width: 1.0,
+                                        color: Color(
+                                            graphique.color['default_black'])),
+                                    bottom: BorderSide(
+                                        width: 1.0,
+                                        color: Color(
+                                            graphique.color['default_black']))),
+                              ),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
                                   children: [
-                                    SizedBox(
-                                      height: 5,
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 20),
+                                      width: 200,
+                                      height: 50,
+                                      color: Color(graphique
+                                          .color['special_bureautique_2']),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            document_typecontenant.id,
+                                            style: TextStyle(
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 200,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                document_typecontenant.id,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
+                                    Container(
+                                        margin: const EdgeInsets.only(left: 30),
+                                        width: 50,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: buildStatusIcon(
+                                            iconstatus:
+                                                typecontenant['collecte'])),
+                                    Container(
+                                        margin: const EdgeInsets.only(left: 60),
+                                        width: 50,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: buildStatusIcon(
+                                            iconstatus:
+                                                typecontenant['prepare'])),
+                                    Container(
+                                        margin: const EdgeInsets.only(left: 70),
+                                        width: 50,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: buildStatusIcon(
+                                            iconstatus:
+                                                typecontenant['pesee'])),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 80),
+                                      width: 80,
+                                      height: 50,
+                                      color: Color(graphique
+                                          .color['special_bureautique_2']),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            typecontenant['poidContenant'] +
+                                                ' kg',
+                                            style: TextStyle(
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 30,
-                                        ),
-                                        Container(
-                                            width: 50,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: buildStatusIcon(
-                                                iconstatus:
-                                                    typecontenant['collecte'])),
-                                        SizedBox(
-                                          width: 60,
-                                        ),
-                                        Container(
-                                            width: 50,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: buildStatusIcon(
-                                                iconstatus:
-                                                    typecontenant['prepare'])),
-                                        SizedBox(
-                                          width: 70,
-                                        ),
-                                        Container(
-                                            width: 50,
-                                            height: 50,
-                                            color: Colors.green,
-                                            child: buildStatusIcon(
-                                                iconstatus:
-                                                    typecontenant['pesee'])),
-                                        SizedBox(
-                                          width: 80,
-                                        ),
-                                        Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 80,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                typecontenant['poidContenant'] +
-                                                    ' kg',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 30,
-                                        ),
-                                        Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 80,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                typecontenant[
-                                                        'limitpoidContenant'] +
-                                                    ' kg',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 50,
-                                        ),
-                                        Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 50,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                typecontenant['nombre'],
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 30,
-                                        ),
-                                        Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 50,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: IconButton(
-                                            icon: const Icon(Icons.edit),
-                                            tooltip: 'Modify Type Contenant',
-                                            onPressed: () {
-                                              // showModifyContenantDialog(
-                                              //     context: context,
-                                              //     dataContenant: contenant);
-                                            },
-                                          ),
-                                        )
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    SizedBox(
-                                      height: 5,
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 30),
+                                      width: 80,
+                                      height: 50,
+                                      color: Color(graphique
+                                          .color['special_bureautique_2']),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            typecontenant[
+                                                    'limitpoidContenant'] +
+                                                ' kg',
+                                            style: TextStyle(
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    const Divider(
-                                      thickness: 5,
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 50),
+                                      width: 50,
+                                      height: 50,
+                                      color: Color(graphique
+                                          .color['special_bureautique_2']),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            typecontenant['nombre'],
+                                            style: TextStyle(
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 30),
+                                      width: 50,
+                                      height: 50,
+                                      color: Color(graphique
+                                          .color['special_bureautique_2']),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.edit),
+                                        color: Color(
+                                            graphique.color['default_black']),
+                                        tooltip: 'Modify Type Contenant',
+                                        onPressed: () {
+                                          // showModifyContenantDialog(
+                                          //     context: context,
+                                          //     dataContenant: contenant);
+                                        },
+                                      ),
+                                    )
                                   ],
-                                ));
+                                ),
+                              ),
+                            );
                           }).toList(),
                         );
                       },
