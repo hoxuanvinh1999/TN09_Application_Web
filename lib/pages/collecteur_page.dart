@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, unused_local_variable
+// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, unused_local_variable, non_constant_identifier_names
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -86,6 +86,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                 width: MediaQuery.of(context).size.width,
                 height: 40,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       width: 40,
@@ -93,6 +95,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                     Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
                     const SizedBox(width: 5),
                     RichText(
@@ -162,75 +165,71 @@ class _CollecteurPageState extends State<CollecteurPage> {
                               color: Color(graphique.color['default_black'])),
                         ),
                         width: page_width,
-                        child: Column(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(left: 20),
+                            Container(
+                              margin: const EdgeInsets.only(left: 20),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.people,
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    graphique.languagefr['collecteur_page']
+                                        ['table_title'],
+                                    style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                width: 180,
+                                decoration: BoxDecoration(
+                                    color: Color(
+                                        graphique.color['default_yellow']),
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.only(
+                                    right: 10, top: 20, bottom: 20),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showCreateCollecteur();
+                                  },
                                   child: Row(
                                     children: [
                                       Icon(
-                                        Icons.people,
+                                        Icons.add,
                                         color: Color(
-                                            graphique.color['main_color_2']),
-                                        size: 20,
+                                            graphique.color['default_black']),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       Text(
                                         graphique.languagefr['collecteur_page']
-                                            ['table_title'],
+                                            ['button_1'],
                                         style: TextStyle(
                                           color: Color(
-                                              graphique.color['main_color_2']),
-                                          fontSize: 20,
+                                              graphique.color['default_black']),
+                                          fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Container(
-                                    width: 180,
-                                    decoration: BoxDecoration(
-                                        color: Color(
-                                            graphique.color['default_yellow']),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    margin: const EdgeInsets.only(
-                                        right: 10, top: 20, bottom: 20),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showCreateCollecteur();
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.add,
-                                            color: Color(graphique
-                                                .color['default_black']),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            graphique.languagefr[
-                                                'collecteur_page']['button_1'],
-                                            style: TextStyle(
-                                              color: Color(graphique
-                                                  .color['default_black']),
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ],
-                            ),
+                                )),
                           ],
                         ),
                       ),
@@ -247,6 +246,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               const SizedBox(
@@ -277,6 +277,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                           ),
                         ),
                       ),
+                      // ignore: avoid_unnecessary_containers
                       Container(
                         child: StreamBuilder<QuerySnapshot>(
                           stream: _collecteurStream,
