@@ -142,7 +142,7 @@ class _CreateMatierePageState extends State<CreateMatierePage> {
                 bottom: 20,
               ),
               width: page_width,
-              height: 900,
+              height: 850,
               decoration: BoxDecoration(
                 color: Color(graphique.color['special_bureautique_2']),
                 border: Border.all(
@@ -216,12 +216,9 @@ class _CreateMatierePageState extends State<CreateMatierePage> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 20),
-                  height: 550,
+                  height: 500,
                   width: page_width * 2 / 3,
                   decoration: BoxDecoration(
                     color: Color(graphique.color['special_bureautique_2']),
@@ -596,7 +593,7 @@ class _CreateMatierePageState extends State<CreateMatierePage> {
                       )),
                 ),
                 Container(
-                  width: 800,
+                  width: page_width * 3 / 4,
                   height: 80,
                   decoration: BoxDecoration(
                     color: Color(graphique.color['main_color_1']),
@@ -605,10 +602,9 @@ class _CreateMatierePageState extends State<CreateMatierePage> {
                         color: Color(graphique.color['default_black'])),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 250,
-                      ),
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
