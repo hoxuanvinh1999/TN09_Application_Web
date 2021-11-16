@@ -127,7 +127,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Collecteur',
+                            text: graphique.languagefr['collecteur_page']
+                                ['nom_page'],
                             style: TextStyle(
                                 color: Color(graphique.color['default_grey']),
                                 fontSize: 15,
@@ -160,7 +161,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                               width: 1.0,
                               color: Color(graphique.color['default_black'])),
                         ),
-                        width: MediaQuery.of(context).size.width * 0.5,
+                        width: page_width,
                         child: Column(
                           children: [
                             Row(
@@ -193,7 +194,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   ),
                                 ),
                                 Container(
-                                    width: 150,
+                                    width: 180,
                                     decoration: BoxDecoration(
                                         color: Color(
                                             graphique.color['default_yellow']),
@@ -212,11 +213,12 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                             color: Color(graphique
                                                 .color['default_black']),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           Text(
-                                            'New Collecteur',
+                                            graphique.languagefr[
+                                                'collecteur_page']['button_1'],
                                             style: TextStyle(
                                               color: Color(graphique
                                                   .color['default_black']),
@@ -259,8 +261,8 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
-                                width: 220,
+                              const SizedBox(
+                                width: 230,
                               ),
                               Text(
                                 graphique.languagefr['collecteur_page']
@@ -302,134 +304,117 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                     return const SizedBox.shrink();
                                   }
                                   return Container(
-                                      width: page_width,
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 20),
-                                      decoration: BoxDecoration(
-                                        color: Color(graphique
-                                            .color['special_bureautique_2']),
-                                        border: Border(
-                                            top: BorderSide(
-                                                width: 1.0,
-                                                color: Color(graphique
-                                                    .color['default_black'])),
-                                            bottom: BorderSide(
-                                                width: 1.0,
-                                                color: Color(graphique
-                                                    .color['default_black']))),
-                                      ),
+                                    width: page_width,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 20),
+                                    decoration: BoxDecoration(
+                                      color: Color(graphique
+                                          .color['special_bureautique_2']),
+                                      border: Border(
+                                          top: BorderSide(
+                                              width: 1.0,
+                                              color: Color(graphique
+                                                  .color['default_black'])),
+                                          bottom: BorderSide(
+                                              width: 1.0,
+                                              color: Color(graphique
+                                                  .color['default_black']))),
+                                    ),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
                                       child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Row(
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            margin:
+                                                const EdgeInsets.only(left: 20),
+                                            width: 200,
+                                            height: 50,
+                                            color: Color(graphique.color[
+                                                'special_bureautique_2']),
+                                            child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                  alignment: Alignment.topLeft,
-                                                  margin: const EdgeInsets.only(
-                                                      left: 20),
-                                                  width: 200,
-                                                  height: 50,
-                                                  color: Color(graphique.color[
-                                                      'special_bureautique_2']),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        collecteur[
-                                                            'nomCollecteur'],
-                                                        style: TextStyle(
-                                                          color: Color(graphique
-                                                                  .color[
-                                                              'default_black']),
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        collecteur[
-                                                            'prenomCollecteur'],
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 12,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 200,
-                                                  height: 50,
-                                                  margin: const EdgeInsets.only(
-                                                      left: 20),
-                                                  color: Color(graphique.color[
-                                                      'special_bureautique_2']),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.place,
-                                                        color: Color(graphique
-                                                                .color[
-                                                            'default_black']),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        collecteur[
-                                                            'siteCollecteur'],
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 120,
-                                                ),
-                                                Container(
-                                                  alignment:
-                                                      Alignment(-1, 0.15),
-                                                  width: 50,
-                                                  height: 50,
-                                                  color: Color(graphique.color[
-                                                      'special_bureautique_2']),
-                                                  child: IconButton(
-                                                    icon:
-                                                        const Icon(Icons.edit),
+                                                Text(
+                                                  collecteur['nomCollecteur'],
+                                                  style: TextStyle(
                                                     color: Color(
                                                         graphique.color[
                                                             'default_black']),
-                                                    tooltip:
-                                                        'Modify Collecteur',
-                                                    onPressed: () {
-                                                      showModifyCollecteurDialog(
-                                                          context: context,
-                                                          dataCollecteur:
-                                                              collecteur);
-                                                    },
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                )
+                                                ),
+                                                Text(
+                                                  collecteur[
+                                                      'prenomCollecteur'],
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
+                                          Container(
+                                            width: 200,
+                                            height: 50,
+                                            margin:
+                                                const EdgeInsets.only(left: 20),
+                                            color: Color(graphique.color[
+                                                'special_bureautique_2']),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.place,
+                                                  color: Color(graphique
+                                                      .color['default_black']),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  collecteur['siteCollecteur'],
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 120,
+                                          ),
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            color: Color(graphique.color[
+                                                'special_bureautique_2']),
+                                            child: IconButton(
+                                              icon: const Icon(Icons.edit),
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                              tooltip: 'Modify Collecteur',
+                                              onPressed: () {
+                                                showModifyCollecteurDialog(
+                                                    context: context,
+                                                    dataCollecteur: collecteur);
+                                              },
+                                            ),
+                                          )
                                         ],
-                                      ));
+                                      ),
+                                    ),
+                                  );
                                 }).toList(),
                               ),
                             );
