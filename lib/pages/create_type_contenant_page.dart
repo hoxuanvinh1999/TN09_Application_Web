@@ -519,7 +519,7 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                   ),
                 ),
                 Container(
-                  width: 800,
+                  width: page_width * 3 / 4,
                   height: 80,
                   decoration: BoxDecoration(
                     color: Color(graphique.color['main_color_1']),
@@ -528,10 +528,9 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                         color: Color(graphique.color['default_black'])),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 250,
-                      ),
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
