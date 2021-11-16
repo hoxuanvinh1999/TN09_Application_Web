@@ -70,4 +70,12 @@ const Map<String, dynamic> languagefr = {
     'column_5_title': 'Limit',
     'column_6_title': 'Nombre',
   },
+  'matieres_page': {
+    'nom_page': 'Matières collectées',
+    'button_1': 'Nouveau matière',
+    'table_title': 'Matières collectées',
+    'column_1_title': 'Désignation',
+    'column_2_title': 'Référence',
+    'column_3_title': 'Traitement',
+  },
 };
