@@ -76,7 +76,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
             ),
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.yellow,
+                  color: Color(graphique.color['default_yellow']),
                   border: Border(
                     bottom: BorderSide(
                         width: 1.0,
