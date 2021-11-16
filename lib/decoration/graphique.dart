@@ -97,6 +97,18 @@ const Map<String, dynamic> languagefr = {
     'field_6_choice_1': 'Actif',
     'field_6_choice_2': 'Pas Actif',
   },
+  'create_contenant_page': {
+    'nom_page': 'Nouveau contenant',
+    'button_1': 'Enregistrer',
+    'button_2': 'Annuler',
+    'form_title': 'Nouveau contenant',
+    'form_subtitle': 'Informations et paramètres',
+    'field_1_title': 'Code-barres*',
+    'field_2_title': 'Type*',
+    'field_3_title': 'Actuellement*',
+    'field_3_choice_1': 'Disponible',
+    'field_3_choice_2': 'PasDisponible',
+  },
   'create_type_contenant_page': {
     'nom_page': 'Nouveau type de contenants',
     'button_1': 'Enregistrer',
