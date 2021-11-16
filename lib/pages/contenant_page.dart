@@ -8,6 +8,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
+import 'package:tn09_app_web_demo/pages/create_contenant_page.dart';
 
 class ContenantPage extends StatefulWidget {
   @override
@@ -170,7 +171,11 @@ class _ContenantPageState extends State<ContenantPage> {
                                   right: 10, top: 20, bottom: 20),
                               child: GestureDetector(
                                 onTap: () {
-                                  showCreateContenant();
+                                  //showCreateContenant();
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CreateContenantPage()));
                                 },
                                 child: Row(
                                   children: [
