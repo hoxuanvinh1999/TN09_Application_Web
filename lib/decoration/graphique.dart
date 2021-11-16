@@ -37,8 +37,18 @@ const Map<String, dynamic> languagefr = {
     'function_4_title': 'Peser',
   },
   'collecteur_page': {
+    'nom_page': 'Chauffeurs',
+    'button_1': 'Nouveau Chauffeur',
     'table_title': 'Chauffeurs',
     'column_1_title': 'Nom',
     'column_2_title': 'Sites'
+  },
+  'vehicule_page': {
+    'nom_page': 'Véhicules',
+    'button_1': 'Nouveau Véhicule',
+    'table_title': 'Véhicules',
+    'column_1_title': 'Nom Véhicules',
+    'column_2_title': 'Immatriculation',
+    'column_3_title': 'Site',
   },
 };
