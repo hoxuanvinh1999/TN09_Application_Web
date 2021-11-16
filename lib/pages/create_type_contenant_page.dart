@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/contenant_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_numeric_function.dart';
 import 'package:tn09_app_web_demo/pages/type_contenant_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class CreateTypeContenantPage extends StatefulWidget {
   @override
@@ -31,14 +32,22 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Fow width of table
+    double page_width = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
       header(context: context),
       menu(context: context),
       Container(
-          color: Colors.yellow,
-          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(graphique.color['default_yellow']),
+            border: Border(
+              bottom: BorderSide(
+                  width: 1.0, color: Color(graphique.color['default_black'])),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           height: 40,
           child: Row(
             children: [
@@ -48,6 +57,7 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
               Icon(
                 FontAwesomeIcons.home,
                 size: 12,
+                color: Color(graphique.color['default_black']),
               ),
               SizedBox(width: 5),
               RichText(
@@ -56,7 +66,7 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                     TextSpan(
                         text: 'Home',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -82,9 +92,10 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Contenant',
+                        text: graphique.languagefr['contenant_page']
+                            ['nom_page'],
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -110,9 +121,10 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Type Contenant',
+                        text: graphique.languagefr['type_contenant_page']
+                            ['nom_page'],
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -138,9 +150,10 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Create New Type Contenant',
+                      text: graphique.languagefr['create_type_contenant_page']
+                          ['nom_page'],
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -149,152 +162,215 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
               ),
             ],
           )),
-      SizedBox(height: 20),
       Align(
           alignment: Alignment(-0.9, 0),
           child: Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 600,
+              margin: const EdgeInsets.only(
+                left: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: page_width,
               height: 900,
-              color: Colors.green,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(children: [
                 Container(
                   height: 60,
-                  color: Colors.blue,
-                  child: Column(
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 20),
-                          Icon(
-                            FontAwesomeIcons.flag,
-                            size: 17,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Create New Type Contenant',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      SizedBox(width: 20),
+                      Icon(
+                        FontAwesomeIcons.cubes,
+                        size: 17,
+                        color: Color(graphique.color['main_color_2']),
                       ),
                       SizedBox(
-                        height: 5,
+                        width: 10,
                       ),
-                      const Divider(
-                        thickness: 5,
+                      Text(
+                        graphique.languagefr['create_type_contenant_page']
+                            ['form_title'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                    height: 60,
-                    color: Colors.red,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 5,
+                  margin: const EdgeInsets.only(top: 20),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(
+                        FontAwesomeIcons.cog,
+                        size: 15,
+                        color: Color(graphique.color['main_color_2']),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        graphique.languagefr['create_type_contenant_page']
+                            ['form_subtitle'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.cog,
-                              size: 15,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              ' Informations et paramètres',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                      ],
-                    )),
-                SizedBox(
-                  height: 20,
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20),
                   height: 600,
-                  width: 800,
-                  color: Colors.blue,
+                  width: page_width * 2 / 3,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['special_bureautique_2']),
+                    // border: Border.all(width: 1.0),
+                  ),
                   child: Form(
                     key: _createContenantKeyForm,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _nomTypeContenantController,
                             decoration: InputDecoration(
-                              labelText: 'Nom du type*:',
+                              labelText: graphique
+                                      .languagefr['create_type_contenant_page']
+                                  ['field_1_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
                                   value == '') {
-                                return 'This can not be null';
+                                return graphique.languagefr['warning']
+                                    ['not_null'];
                               } else if (value.contains('/')) {
+                                // fix later
                                 return 'This name can not have /';
                               }
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _poidContenantController,
                             decoration: InputDecoration(
-                              labelText: 'Poid*:',
+                              labelText: graphique
+                                      .languagefr['create_type_contenant_page']
+                                  ['field_2_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
                                   value == '') {
-                                return 'This can not be null';
+                                return graphique.languagefr['warning']
+                                    ['not_null'];
                               } else if (!isNumericUsing_tryParse(value)) {
+                                // fix later
                                 return 'This must be a number';
                               }
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _limitPoidContenantController,
                             decoration: InputDecoration(
-                              labelText: 'Limit Poid:',
+                              labelText: graphique
+                                      .languagefr['create_type_contenant_page']
+                                  ['field_3_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (value!.isNotEmpty &&
@@ -304,31 +380,52 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: TextField(
+                                style: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2'])),
+                                cursorColor:
+                                    Color(graphique.color['main_color_2']),
                                 controller: _noteContenantController,
                                 maxLines: 4,
-                                decoration:
-                                    InputDecoration.collapsed(hintText: "Note"),
+                                decoration: InputDecoration(
+                                  hintText: graphique.languagefr[
+                                          'create_type_contenant_page']
+                                      ['field_4_title'],
+                                  hintStyle: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                  ),
+                                ),
                               ),
                             )),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Collecter',
+                              graphique.languagefr['create_type_contenant_page']
+                                  ['field_5_title'],
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Color(graphique.color['default_black']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -344,8 +441,10 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                                   print('collecte $collecte');
                                 });
                               },
-                              activeTrackColor: Colors.lightGreenAccent,
-                              activeColor: Colors.green,
+                              activeTrackColor:
+                                  Color(graphique.color['main_color_2']),
+                              activeColor:
+                                  Color(graphique.color['main_color_2']),
                             ),
                           ],
                         ),
@@ -356,9 +455,10 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Préparer',
+                              graphique.languagefr['create_type_contenant_page']
+                                  ['field_6_title'],
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Color(graphique.color['default_black']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -374,8 +474,10 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                                   print('prepare $prepare');
                                 });
                               },
-                              activeTrackColor: Colors.lightGreenAccent,
-                              activeColor: Colors.green,
+                              activeTrackColor:
+                                  Color(graphique.color['main_color_2']),
+                              activeColor:
+                                  Color(graphique.color['main_color_2']),
                             ),
                           ],
                         ),
@@ -386,9 +488,10 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Pesée',
+                              graphique.languagefr['create_type_contenant_page']
+                                  ['field_7_title'],
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Color(graphique.color['default_black']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -404,25 +507,26 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                                   print('pesee $pesee');
                                 });
                               },
-                              activeTrackColor: Colors.lightGreenAccent,
-                              activeColor: Colors.green,
+                              activeTrackColor:
+                                  Color(graphique.color['main_color_2']),
+                              activeColor:
+                                  Color(graphique.color['main_color_2']),
                             ),
                           ],
-                        ),
-                        SizedBox(
-                          height: 20,
                         ),
                       ],
                     ),
                   ),
                 ),
-                Divider(
-                  thickness: 5,
-                ),
                 Container(
                   width: 800,
                   height: 80,
-                  color: Colors.red,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
                   child: Row(
                     children: [
                       SizedBox(
@@ -431,29 +535,33 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
                           child: GestureDetector(
                             onTap: () {
-                              // Navigator.of(context).pushReplacement(
-                              //     MaterialPageRoute(
-                              //         builder: (context) => ContactPage()));
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TypeContenantPage()));
                             },
                             child: Row(
                               children: [
                                 Icon(
                                   Icons.delete,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Cancel',
+                                  graphique.languagefr['create_matieres_page']
+                                      ['button_2'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -464,7 +572,7 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -483,7 +591,7 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                                     .get();
                                 if (query.docs.isNotEmpty) {
                                   Fluttertoast.showToast(
-                                      msg: " We had this type Contenant",
+                                      msg: "We had this type Contenant",
                                       gravity: ToastGravity.TOP);
                                 } else {
                                   String idNewTypeContenant =
@@ -525,15 +633,18 @@ class _CreateTypeContenantPageState extends State<CreateTypeContenantPage> {
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Create',
+                                  graphique.languagefr['create_matieres_page']
+                                      ['button_1'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
