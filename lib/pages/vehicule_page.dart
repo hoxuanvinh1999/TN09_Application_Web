@@ -8,6 +8,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:tn09_app_web_demo/pages/create_vehicule_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
@@ -184,7 +185,11 @@ class _VehiculePageState extends State<VehiculePage> {
                                     right: 10, top: 20, bottom: 20),
                                 child: GestureDetector(
                                   onTap: () {
-                                    showCreateVehicule();
+                                    //showCreateVehicule();
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CreateVehiculePage()));
                                   },
                                   child: Row(
                                     children: [
