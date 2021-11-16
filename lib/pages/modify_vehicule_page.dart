@@ -12,14 +12,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 import 'package:tn09_app_web_demo/pages/vehicule_page.dart';
 
-class CreateVehiculePage extends StatefulWidget {
+class ModifyVehiculePage extends StatefulWidget {
+  Map dataVehicule;
+  ModifyVehiculePage({
+    Key? key,
+    required this.dataVehicule,
+  }) : super(key: key);
   @override
-  _CreateVehiculePageState createState() => _CreateVehiculePageState();
+  _ModifyVehiculePageState createState() => _ModifyVehiculePageState();
 }
 
-class _CreateVehiculePageState extends State<CreateVehiculePage> {
-  //For Create Vehicule
-  final _createVehiculeKeyForm = GlobalKey<FormState>();
+class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
+  //For Modify Vehicule
+  final _modifyVehiculeKeyForm = GlobalKey<FormState>();
   String _siteVehicule = 'Bordeaux';
   int _orderVehicule = 1;
   List<String> list_site = ['Bordeaux', 'Paris', 'Lille'];
@@ -34,6 +39,21 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
       .collection("Vehicule")
       .orderBy('orderVehicule')
       .snapshots();
+  //Init Data
+  void initState() {
+    setState(() {
+      _siteVehicule = widget.dataVehicule['siteVehicule'];
+      _orderVehicule = int.parse(widget.dataVehicule['orderVehicule']);
+      _nomVehiculeController.text = widget.dataVehicule['nomVehicule'];
+      _numeroImmatriculationVehicule.text =
+          widget.dataVehicule['numeroImmatriculation'];
+      _typeVehiculeController.text = widget.dataVehicule['typeVehicule'];
+      _colorVehicule =
+          Color(int.parse(widget.dataVehicule['colorIconVehicule']));
+    });
+    super.initState();
+  }
+
   //For Pick Color
   Color _colorVehicule = Color(graphique.color['default_white']);
   pickColor(BuildContext context) {
@@ -41,7 +61,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
         context: context,
         builder: (context) => AlertDialog(
               title: Text(
-                graphique.languagefr['create_vehicule_page']
+                graphique.languagefr['modify_vehicule_page']
                     ['field_6_form_title'],
                 style:
                     TextStyle(color: Color(graphique.color['default_black'])),
@@ -62,7 +82,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                   ),
                   TextButton(
                     child: Text(
-                      graphique.languagefr['create_vehicule_page']
+                      graphique.languagefr['modify_vehicule_page']
                           ['field_6_form_button'],
                       style: TextStyle(
                           fontSize: 15,
@@ -168,7 +188,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: graphique.languagefr['create_vehicule_page']
+                      text: graphique.languagefr['modify_vehicule_page']
                           ['nom_page'],
                       style: TextStyle(
                           color: Color(graphique.color['default_grey']),
@@ -218,7 +238,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                       width: 10,
                     ),
                     Text(
-                      graphique.languagefr['create_vehicule_page']
+                      graphique.languagefr['modify_vehicule_page']
                           ['form_title'],
                       style: TextStyle(
                         color: Color(graphique.color['main_color_2']),
@@ -253,7 +273,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                       width: 10,
                     ),
                     Text(
-                      graphique.languagefr['create_vehicule_page']
+                      graphique.languagefr['modify_vehicule_page']
                           ['form_subtitle'],
                       style: TextStyle(
                         color: Color(graphique.color['main_color_2']),
@@ -273,7 +293,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                   // border: Border.all(width: 1.0),
                 ),
                 child: Form(
-                    key: _createVehiculeKeyForm,
+                    key: _modifyVehiculeKeyForm,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -296,7 +316,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                             controller: _nomVehiculeController,
                             decoration: InputDecoration(
                               labelText:
-                                  graphique.languagefr['create_vehicule_page']
+                                  graphique.languagefr['modify_vehicule_page']
                                       ['field_1_title'],
                               labelStyle: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -335,7 +355,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                             controller: _numeroImmatriculationVehicule,
                             decoration: InputDecoration(
                               labelText:
-                                  graphique.languagefr['create_vehicule_page']
+                                  graphique.languagefr['modify_vehicule_page']
                                       ['field_2_title'],
                               labelStyle: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -372,7 +392,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                             controller: _typeVehiculeController,
                             decoration: InputDecoration(
                               labelText:
-                                  graphique.languagefr['create_vehicule_page']
+                                  graphique.languagefr['modify_vehicule_page']
                                       ['field_3_title'],
                               labelStyle: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -415,7 +435,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                                 width: 10,
                               ),
                               Text(
-                                  graphique.languagefr['create_vehicule_page']
+                                  graphique.languagefr['modify_vehicule_page']
                                       ['field_4_title'],
                                   style: TextStyle(
                                       fontSize: 16,
@@ -469,7 +489,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                                 width: 10,
                               ),
                               Text(
-                                  graphique.languagefr['create_vehicule_page']
+                                  graphique.languagefr['modify_vehicule_page']
                                       ['field_5_title'],
                                   style: TextStyle(
                                       fontSize: 16,
@@ -525,7 +545,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                                 width: 10,
                               ),
                               Text(
-                                  graphique.languagefr['create_vehicule_page']
+                                  graphique.languagefr['modify_vehicule_page']
                                       ['field_6_title'],
                                   style: TextStyle(
                                       fontSize: 16,
@@ -545,7 +565,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                                     },
                                     child: Text(
                                       graphique.languagefr[
-                                              'create_vehicule_page']
+                                              'modify_vehicule_page']
                                           ['field_6_button'],
                                       style: TextStyle(
                                         color: Color(
@@ -597,7 +617,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                                 width: 10,
                               ),
                               Text(
-                                graphique.languagefr['create_vehicule_page']
+                                graphique.languagefr['modify_vehicule_page']
                                     ['button_2'],
                                 style: TextStyle(
                                   color:
@@ -618,33 +638,43 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                             right: 10, top: 20, bottom: 20),
                         child: GestureDetector(
                           onTap: () async {
-                            if (_createVehiculeKeyForm.currentState!
+                            if (_modifyVehiculeKeyForm.currentState!
                                 .validate()) {
                               if (_typeVehiculeController.text == '') {
                                 _typeVehiculeController.text = 'null';
                               }
-                              String newidVehicule = _vehicule.doc().id;
-                              await _vehicule.doc(newidVehicule).set({
-                                'nomVehicule': _nomVehiculeController.text,
-                                'numeroImmatriculation':
-                                    _numeroImmatriculationVehicule.text,
-                                'siteVehicule': _siteVehicule,
-                                'typeVehicule':
-                                    _typeVehiculeController.text.toLowerCase(),
-                                'orderVehicule': _orderVehicule.toString(),
-                                'colorIconVehicule':
-                                    _colorVehicule.toString().substring(6, 16),
-                                'idVehicule': newidVehicule
-                              }).then((value) {
-                                print("Vehicule Added");
-                                Fluttertoast.showToast(
-                                    msg: "Vehicule Added",
-                                    gravity: ToastGravity.TOP);
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) => VehiculePage()));
-                              }).catchError((error) =>
-                                  print("Failed to add user: $error"));
+                              await _vehicule
+                                  .where('idVehicule',
+                                      isEqualTo:
+                                          widget.dataVehicule['idVehicule'])
+                                  .limit(1)
+                                  .get()
+                                  .then((QuerySnapshot querySnapshot) {
+                                querySnapshot.docs.forEach((doc) {
+                                  _vehicule.doc(doc.id).update({
+                                    'nomVehicule': _nomVehiculeController.text,
+                                    'numeroImmatriculation':
+                                        _numeroImmatriculationVehicule.text,
+                                    'siteVehicule': _siteVehicule,
+                                    'typeVehicule': _typeVehiculeController.text
+                                        .toLowerCase(),
+                                    'orderVehicule': _orderVehicule.toString(),
+                                    'colorIconVehicule': _colorVehicule
+                                        .toString()
+                                        .substring(6, 16),
+                                  }).then((value) {
+                                    print("Vehicule Modified");
+                                    Fluttertoast.showToast(
+                                        msg: "Vehicule Modified",
+                                        gravity: ToastGravity.TOP);
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                VehiculePage()));
+                                  }).catchError((error) =>
+                                      print("Failed to update user: $error"));
+                                });
+                              });
                             }
                           },
                           child: Row(

@@ -9,6 +9,7 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:tn09_app_web_demo/pages/create_vehicule_page.dart';
+import 'package:tn09_app_web_demo/pages/modify_vehicule_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
@@ -451,9 +452,16 @@ class _VehiculePageState extends State<VehiculePage> {
                                               graphique.color['default_black']),
                                           tooltip: 'Modify Vehicule',
                                           onPressed: () {
-                                            showModifyVehiculeDialog(
-                                                context: context,
-                                                dataVehicule: vehicule);
+                                            // showModifyVehiculeDialog(
+                                            //     context: context,
+                                            //     dataVehicule: vehicule);
+                                            Navigator.of(context)
+                                                .pushReplacement(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ModifyVehiculePage(
+                                                                dataVehicule:
+                                                                    vehicule)));
                                           },
                                         ),
                                       )
