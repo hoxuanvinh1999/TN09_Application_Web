@@ -10,6 +10,7 @@ import 'package:tn09_app_web_demo/pages/create_contact_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
 import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class ContactPage extends StatefulWidget {
   @override
@@ -36,14 +37,22 @@ class _ContactPageState extends State<ContactPage> {
   String isPrincipal = 'true';
   @override
   Widget build(BuildContext context) {
+    // Fow width of table
+    double page_width = MediaQuery.of(context).size.width * 0.9;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
       header(context: context),
       menu(context: context),
       Container(
-          color: Colors.yellow,
-          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(graphique.color['default_yellow']),
+            border: Border(
+              bottom: BorderSide(
+                  width: 1.0, color: Color(graphique.color['default_black'])),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           height: 40,
           child: Row(
             children: [
@@ -53,15 +62,16 @@ class _ContactPageState extends State<ContactPage> {
               Icon(
                 FontAwesomeIcons.home,
                 size: 12,
+                color: Color(graphique.color['default_black']),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               RichText(
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
                         text: 'Home',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -87,9 +97,9 @@ class _ContactPageState extends State<ContactPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Contact',
+                      text: graphique.languagefr['contact_page']['nom_page'],
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -98,155 +108,165 @@ class _ContactPageState extends State<ContactPage> {
               ),
             ],
           )),
-      SizedBox(height: 20),
       Align(
           alignment: Alignment(-0.9, 0),
           child: Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 1200,
-              height: 1500,
-              color: Colors.green,
+              margin: const EdgeInsets.only(left: 20, top: 20),
+              width: page_width,
+              height: 2000,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(children: [
                 Container(
-                  color: Colors.blue,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(width: 20),
-                          Icon(
-                            FontAwesomeIcons.user,
-                            size: 17,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Contact',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 900,
-                          ),
-                          Container(
-                              width: 150,
-                              decoration: BoxDecoration(
-                                  color: Colors.yellow,
-                                  borderRadius: BorderRadius.circular(10)),
-                              margin: const EdgeInsets.only(
-                                  right: 10, top: 20, bottom: 20),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CreateContactPage()));
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      'New Contact',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      const Divider(
-                        thickness: 5,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      )
-                    ],
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
                   ),
-                ),
-                Container(
-                    color: Colors.red,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
+                  width: page_width,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 20),
+                        child: Row(
                           children: [
-                            SizedBox(
-                              width: 20,
+                            Icon(
+                              FontAwesomeIcons.user,
+                              size: 17,
+                              color: Color(graphique.color['main_color_2']),
+                            ),
+                            const SizedBox(
+                              width: 10,
                             ),
                             Text(
-                              'Prenom et nom',
+                              graphique.languagefr['contact_page']
+                                  ['table_title'],
                               style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 150,
-                            ),
-                            Text(
-                              'Email',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 250,
-                            ),
-                            Text(
-                              'Telephone(s)',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 300,
-                            ),
-                            Text(
-                              'Partenaire(s)',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
+                                color: Color(graphique.color['main_color_2']),
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        )
-                      ],
-                    )),
+                      ),
+                      Container(
+                          width: 180,
+                          decoration: BoxDecoration(
+                              color: Color(graphique.color['default_yellow']),
+                              borderRadius: BorderRadius.circular(10)),
+                          margin: const EdgeInsets.only(
+                              right: 10, top: 20, bottom: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreateContactPage()));
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color:
+                                      Color(graphique.color['default_black']),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  graphique.languagefr['contact_page']
+                                      ['button_1'],
+                                  style: TextStyle(
+                                    color:
+                                        Color(graphique.color['default_black']),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
                 Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  width: page_width,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          graphique.languagefr['contact_page']
+                              ['column_1_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 150,
+                        ),
+                        Text(
+                          graphique.languagefr['contact_page']
+                              ['column_2_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 250,
+                        ),
+                        Text(
+                          graphique.languagefr['contact_page']
+                              ['column_3_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 300,
+                        ),
+                        Text(
+                          graphique.languagefr['contact_page']
+                              ['column_4_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
                   height: 1000,
                   child: SingleChildScrollView(
                     child: StreamBuilder<QuerySnapshot>(
@@ -273,319 +293,395 @@ class _ContactPageState extends State<ContactPage> {
                                     //     double.parse(contact['nombredePartenaire']) *
                                     //         50,
                                     100,
-                                color: Colors.white,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 20,
+                                width: page_width,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                decoration: BoxDecoration(
+                                  color: Color(
+                                      graphique.color['special_bureautique_2']),
+                                  border: Border(
+                                      top: BorderSide(
+                                          width: 1.0,
+                                          color: Color(graphique
+                                              .color['default_black'])),
+                                      bottom: BorderSide(
+                                          width: 1.0,
+                                          color: Color(graphique
+                                              .color['default_black']))),
+                                ),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 20),
+                                        width: 200,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              FontAwesomeIcons.user,
+                                              size: 17,
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text: limitString(
+                                                          text: contact[
+                                                                  'nomContact'] +
+                                                              ' ' +
+                                                              contact[
+                                                                  'prenomContact'],
+                                                          limit_long: 15),
+                                                      style: TextStyle(
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      recognizer:
+                                                          TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                  builder: (context) => ViewContactPage(
+                                                                      partenaire:
+                                                                          nullPartenaire,
+                                                                      from:
+                                                                          'contactpage',
+                                                                      dataContact:
+                                                                          contact)));
+                                                            }),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 200,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                FontAwesomeIcons.user,
-                                                size: 17,
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 50),
+                                        width: 300,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              FontAwesomeIcons.envelope,
+                                              size: 17,
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              contact['emailContact'] == ''
+                                                  ? 'N/A'
+                                                  : contact['emailContact'],
+                                              style: TextStyle(
+                                                color: Color(graphique
+                                                    .color['default_black']),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              RichText(
-                                                text: TextSpan(
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                        text: limitString(
-                                                            text: contact[
-                                                                    'nomContact'] +
-                                                                ' ' +
-                                                                contact[
-                                                                    'prenomContact'],
-                                                            limit_long: 15),
-                                                        style: TextStyle(
-                                                            color: Colors.red,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                        recognizer:
-                                                            TapGestureRecognizer()
-                                                              ..onTap = () {
-                                                                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                    builder: (context) => ViewContactPage(
-                                                                        partenaire:
-                                                                            nullPartenaire,
-                                                                        from:
-                                                                            'contactpage',
-                                                                        dataContact:
-                                                                            contact)));
-                                                              }),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 20),
+                                        width: 300,
+                                        height: 50,
+                                        color: Color(graphique
+                                            .color['special_bureautique_2']),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      FontAwesomeIcons.phone,
+                                                      size: 17,
+                                                      color: Color(
+                                                          graphique.color[
+                                                              'default_black']),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      contact['telephone1Contact'] ==
+                                                              ''
+                                                          ? 'N/A'
+                                                          : contact[
+                                                              'telephone1Contact'],
+                                                      style: TextStyle(
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 50,
-                                        ),
-                                        Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 300,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                FontAwesomeIcons.envelope,
-                                                size: 17,
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                contact['emailContact'],
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
+                                                SizedBox(
+                                                  height: 5,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      FontAwesomeIcons.phone,
+                                                      size: 17,
+                                                      color: Color(
+                                                          graphique.color[
+                                                              'default_black']),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      contact['telephone2Contact'] ==
+                                                              ''
+                                                          ? 'N/A'
+                                                          : contact[
+                                                              'telephone2Contact'],
+                                                      style: TextStyle(
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            )
+                                          ],
                                         ),
-                                        SizedBox(
-                                          width: 20,
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 20),
+                                        height: 50,
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          color: Color(
+                                              graphique.color['main_color_1']),
+                                          border: Border.all(
+                                              width: 1.0,
+                                              color: Color(graphique
+                                                  .color['default_black'])),
                                         ),
-                                        Container(
-                                          alignment: Alignment(-1, 0.15),
-                                          width: 300,
-                                          height: 50,
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        FontAwesomeIcons.phone,
-                                                        size: 17,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        contact[
-                                                            'telephone1Contact'],
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        FontAwesomeIcons.phone,
-                                                        size: 17,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        contact[
-                                                            'telephone2Contact'],
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        Container(
-                                          height: 50,
-                                          width: 200,
-                                          color: Colors.green,
-                                          child: StreamBuilder<QuerySnapshot>(
-                                            stream: _contactpartenaire
-                                                .where('idContact',
-                                                    isEqualTo:
-                                                        contact['idContact'])
-                                                .snapshots(),
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot<QuerySnapshot>
-                                                    snapshot) {
-                                              // print('snapshot ${snapshot.data}');
-                                              if (snapshot.hasError) {
-                                                return Text(
-                                                    'Something went wrong');
-                                              }
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              }
-                                              return SingleChildScrollView(
-                                                child: Column(
-                                                  children: snapshot.data!.docs
-                                                      .map((DocumentSnapshot
-                                                          document_link_contactpartenaire) {
-                                                    Map<String, dynamic>
-                                                        link_contactpartenaire =
-                                                        document_link_contactpartenaire
-                                                                .data()!
-                                                            as Map<String,
-                                                                dynamic>;
-                                                    // print('link_contactadresse $link_contactadresse');
-                                                    return Container(
-                                                      color: Colors.green,
-                                                      child: StreamBuilder<
-                                                          QuerySnapshot>(
-                                                        stream: FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                "Partenaire")
-                                                            .where(
-                                                                'idPartenaire',
-                                                                isEqualTo:
-                                                                    link_contactpartenaire[
-                                                                        'idPartenaire'])
-                                                            .snapshots(),
-                                                        builder: (BuildContext
-                                                                context,
-                                                            AsyncSnapshot<
-                                                                    QuerySnapshot>
-                                                                snapshot) {
-                                                          if (snapshot
-                                                              .hasError) {
-                                                            return Text(
-                                                                'Something went wrong');
-                                                          }
+                                        child: StreamBuilder<QuerySnapshot>(
+                                          stream: _contactpartenaire
+                                              .where('idContact',
+                                                  isEqualTo:
+                                                      contact['idContact'])
+                                              .snapshots(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  snapshot) {
+                                            // print('snapshot ${snapshot.data}');
+                                            if (snapshot.hasError) {
+                                              return Text(
+                                                  'Something went wrong');
+                                            }
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircularProgressIndicator();
+                                            }
+                                            return SingleChildScrollView(
+                                              child: Column(
+                                                children: snapshot.data!.docs
+                                                    .map((DocumentSnapshot
+                                                        document_link_contactpartenaire) {
+                                                  Map<String, dynamic>
+                                                      link_contactpartenaire =
+                                                      document_link_contactpartenaire
+                                                              .data()!
+                                                          as Map<String,
+                                                              dynamic>;
+                                                  // print('link_contactadresse $link_contactadresse');
+                                                  return Container(
+                                                    color: Color(graphique
+                                                        .color['main_color_1']),
+                                                    child: StreamBuilder<
+                                                        QuerySnapshot>(
+                                                      stream: FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              "Partenaire")
+                                                          .where('idPartenaire',
+                                                              isEqualTo:
+                                                                  link_contactpartenaire[
+                                                                      'idPartenaire'])
+                                                          .snapshots(),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<
+                                                                  QuerySnapshot>
+                                                              snapshot) {
+                                                        if (snapshot.hasError) {
+                                                          return Text(
+                                                              'Something went wrong');
+                                                        }
 
-                                                          if (snapshot
-                                                                  .connectionState ==
-                                                              ConnectionState
-                                                                  .waiting) {
-                                                            return CircularProgressIndicator();
-                                                          }
-                                                          return Column(
-                                                            children: snapshot
-                                                                .data!.docs
-                                                                .map((DocumentSnapshot
-                                                                    document_partenaire) {
-                                                              Map<String,
-                                                                      dynamic>
-                                                                  insidedataPartenaire =
-                                                                  document_partenaire
-                                                                          .data()!
-                                                                      as Map<
-                                                                          String,
-                                                                          dynamic>;
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return CircularProgressIndicator();
+                                                        }
+                                                        return Column(
+                                                          children: snapshot
+                                                              .data!.docs
+                                                              .map((DocumentSnapshot
+                                                                  document_partenaire) {
+                                                            Map<String, dynamic>
+                                                                insidedataPartenaire =
+                                                                document_partenaire
+                                                                        .data()!
+                                                                    as Map<
+                                                                        String,
+                                                                        dynamic>;
 
-                                                              // print(
-                                                              //     'insidedataContact $insidedataContact');
-                                                              return Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    SizedBox(
-                                                                      height:
-                                                                          10,
-                                                                    ),
-                                                                    Row(
-                                                                      children: [
-                                                                        RichText(
-                                                                          text:
-                                                                              TextSpan(
-                                                                            children: <TextSpan>[
-                                                                              TextSpan(
-                                                                                  text: limitString(text: insidedataPartenaire['nomPartenaire'], limit_long: 15),
-                                                                                  style: TextStyle(color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold),
-                                                                                  recognizer: TapGestureRecognizer()
-                                                                                    ..onTap = () {
-                                                                                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ViewPartenairePage(partenaire: insidedataPartenaire)));
-                                                                                    }),
-                                                                            ],
-                                                                          ),
+                                                            // print(
+                                                            //     'insidedataContact $insidedataContact');
+                                                            return Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      RichText(
+                                                                        text:
+                                                                            TextSpan(
+                                                                          children: <
+                                                                              TextSpan>[
+                                                                            TextSpan(
+                                                                                text: limitString(text: insidedataPartenaire['nomPartenaire'], limit_long: 15),
+                                                                                style: TextStyle(
+                                                                                  color: Color(graphique.color['default_red']),
+                                                                                  fontSize: 15,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                                recognizer: TapGestureRecognizer()
+                                                                                  ..onTap = () {
+                                                                                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ViewPartenairePage(partenaire: insidedataPartenaire)));
+                                                                                  }),
+                                                                          ],
                                                                         ),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          10,
-                                                                    ),
-                                                                  ]);
-                                                            }).toList(),
-                                                          );
-                                                        },
-                                                      ),
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 50,
-                                          height: 50,
-                                          color: Colors.red,
-                                          child: Row(
-                                            children: [
-                                              IconButton(
-                                                onPressed: () {
-                                                  showEditPartenaireDialog(
-                                                      context: context,
-                                                      dataContact: contact);
-                                                },
-                                                icon: const Icon(
-                                                  FontAwesomeIcons.edit,
-                                                  size: 15,
-                                                ),
-                                                tooltip: 'Edit Partenaire',
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                ]);
+                                                          }).toList(),
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                }).toList(),
                                               ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    const Divider(
-                                      thickness: 5,
-                                    ),
-                                  ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            color: Color(
+                                                graphique.color['default_red']),
+                                            border: Border.all(
+                                              width: 1.0,
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                            )),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                showEditPartenaireDialog(
+                                                    context: context,
+                                                    dataContact: contact);
+                                              },
+                                              icon: Icon(
+                                                FontAwesomeIcons.edit,
+                                                size: 15,
+                                                color: Color(graphique
+                                                    .color['default_black']),
+                                              ),
+                                              tooltip: graphique.languagefr[
+                                                      'contact_page']
+                                                  ['icon_button_1_title'],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ));
                           }).toList(),
                         );
@@ -599,15 +695,20 @@ class _ContactPageState extends State<ContactPage> {
 
   showEditPartenaireDialog(
       {required BuildContext context, required Map dataContact}) {
+    double form_width = MediaQuery.of(context).size.width * 0.7;
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return Dialog(
               child: Container(
             height: 800,
-            width: 800,
+            width: form_width,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Color(graphique.color['default_white']),
+              border: Border.all(
+                width: 1.0,
+                color: Color(graphique.color['default_black']),
+              ),
             ),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -616,27 +717,34 @@ class _ContactPageState extends State<ContactPage> {
                   Container(
                       height: 80,
                       alignment: Alignment(-0.9, 0),
-                      color: Colors.blue,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['special_bureautique_2']),
+                        border: Border.all(
+                            width: 1.0,
+                            color: Color(graphique.color['default_black'])),
+                      ),
                       child: Text(
-                        'Modify Partenaire of ' +
+                        graphique.languagefr['contact_page']
+                                ['edit_partenaire_form']['form_title'] +
+                            ': ' +
                             dataContact['nomContact'] +
                             ' ' +
                             dataContact['prenomContact'],
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
+                            color: Color(graphique.color['default_black']),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
                       )),
-                  Divider(
-                    thickness: 5,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
                     height: 200,
-                    width: 600,
-                    color: Colors.green,
+                    width: form_width * 2 / 3,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['default_green']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
                     child: StreamBuilder<QuerySnapshot>(
                       stream: _contactpartenaire
                           .where('idContact',
@@ -663,9 +771,17 @@ class _ContactPageState extends State<ContactPage> {
                               // print('link_contactadresse $link_contactadresse');
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
-                                width: 580,
+                                width: form_width * 0.6,
                                 height: 60,
-                                color: Colors.white,
+                                decoration: BoxDecoration(
+                                  color:
+                                      Color(graphique.color['default_white']),
+                                  border: Border.all(
+                                      width: 1.0,
+                                      color: Color(
+                                        graphique.color['default_black'],
+                                      )),
+                                ),
                                 child: StreamBuilder<QuerySnapshot>(
                                   stream: FirebaseFirestore.instance
                                       .collection("Partenaire")
@@ -684,6 +800,10 @@ class _ContactPageState extends State<ContactPage> {
                                       return CircularProgressIndicator();
                                     }
                                     return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: snapshot.data!.docs
                                           .map((DocumentSnapshot document) {
                                         Map<String, dynamic>
@@ -693,160 +813,160 @@ class _ContactPageState extends State<ContactPage> {
 
                                         // print(
                                         //     'insidedataContact $insidedataContact');
-                                        return Column(children: [
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                  width: 400,
-                                                  child: Row(
-                                                    children: [
-                                                      SizedBox(width: 20),
-                                                      Icon(
-                                                        FontAwesomeIcons.flag,
-                                                        color: Colors.black,
-                                                        size: 15,
+                                        return Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                                width: 400,
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(width: 20),
+                                                    Icon(
+                                                      FontAwesomeIcons.flag,
+                                                      color: Color(
+                                                          graphique.color[
+                                                              'default_black']),
+                                                      size: 15,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        children: <TextSpan>[
+                                                          TextSpan(
+                                                              text: insidedataPartenaire[
+                                                                  'nomPartenaire'],
+                                                              style: TextStyle(
+                                                                  color: Color(graphique
+                                                                          .color[
+                                                                      'default_red']),
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                              recognizer:
+                                                                  TapGestureRecognizer()
+                                                                    ..onTap =
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pushReplacement(
+                                                                              MaterialPageRoute(builder: (context) => ViewPartenairePage(partenaire: insidedataPartenaire)));
+                                                                    }),
+                                                        ],
                                                       ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          children: <TextSpan>[
-                                                            TextSpan(
-                                                                text: insidedataPartenaire[
-                                                                    'nomPartenaire'],
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .red,
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                                recognizer:
-                                                                    TapGestureRecognizer()
-                                                                      ..onTap =
-                                                                          () {
-                                                                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                ViewPartenairePage(partenaire: insidedataPartenaire)));
-                                                                      }),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )),
-                                              Container(
-                                                width: 50,
-                                                child: IconButton(
-                                                  onPressed: () async {
-                                                    await _contact
-                                                        .where('idContact',
-                                                            isEqualTo:
-                                                                dataContact[
-                                                                    'idContact'])
-                                                        .limit(1)
-                                                        .get()
-                                                        .then((QuerySnapshot
-                                                            querySnapshot) {
-                                                      querySnapshot.docs
-                                                          .forEach((doc) {
-                                                        _contact
-                                                            .doc(doc.id)
-                                                            .update({
-                                                          'nombredePartenaire':
-                                                              (int.parse(doc[
-                                                                          'nombredePartenaire']) -
-                                                                      1)
-                                                                  .toString(),
-                                                        });
+                                                    ),
+                                                  ],
+                                                )),
+                                            Container(
+                                              width: 50,
+                                              child: IconButton(
+                                                onPressed: () async {
+                                                  await _contact
+                                                      .where('idContact',
+                                                          isEqualTo:
+                                                              dataContact[
+                                                                  'idContact'])
+                                                      .limit(1)
+                                                      .get()
+                                                      .then((QuerySnapshot
+                                                          querySnapshot) {
+                                                    querySnapshot.docs
+                                                        .forEach((doc) {
+                                                      _contact
+                                                          .doc(doc.id)
+                                                          .update({
+                                                        'nombredePartenaire':
+                                                            (int.parse(doc[
+                                                                        'nombredePartenaire']) -
+                                                                    1)
+                                                                .toString(),
                                                       });
                                                     });
+                                                  });
 
-                                                    _contactpartenaire
-                                                        .where("idContact",
-                                                            isEqualTo:
-                                                                dataContact[
-                                                                    'idContact'])
-                                                        .where('idPartenaire',
-                                                            isEqualTo:
-                                                                insidedataPartenaire[
-                                                                    'idPartenaire'])
-                                                        .get()
-                                                        .then((value) {
-                                                      value.docs
-                                                          .forEach((doc) async {
-                                                        await _partenaire
-                                                            .where(
-                                                                'idPartenaire',
-                                                                isEqualTo:
-                                                                    insidedataPartenaire[
-                                                                        'idPartenaire'])
-                                                            .limit(1)
-                                                            .get()
-                                                            .then((QuerySnapshot
-                                                                querySnapshot) {
-                                                          querySnapshot.docs
-                                                              .forEach((doc) {
-                                                            if (doc['nombredeContact'] ==
-                                                                '1') {
-                                                              _partenaire
-                                                                  .doc(doc.id)
-                                                                  .update({
-                                                                'idContactPartenaire':
-                                                                    'null',
-                                                              });
-                                                            }
+                                                  _contactpartenaire
+                                                      .where("idContact",
+                                                          isEqualTo:
+                                                              dataContact[
+                                                                  'idContact'])
+                                                      .where('idPartenaire',
+                                                          isEqualTo:
+                                                              insidedataPartenaire[
+                                                                  'idPartenaire'])
+                                                      .get()
+                                                      .then((value) {
+                                                    value.docs
+                                                        .forEach((doc) async {
+                                                      await _partenaire
+                                                          .where('idPartenaire',
+                                                              isEqualTo:
+                                                                  insidedataPartenaire[
+                                                                      'idPartenaire'])
+                                                          .limit(1)
+                                                          .get()
+                                                          .then((QuerySnapshot
+                                                              querySnapshot) {
+                                                        querySnapshot.docs
+                                                            .forEach((doc) {
+                                                          if (doc['nombredeContact'] ==
+                                                              '1') {
                                                             _partenaire
                                                                 .doc(doc.id)
                                                                 .update({
-                                                              'nombredeContact':
-                                                                  (int.parse(doc[
-                                                                              'nombredeContact']) -
-                                                                          1)
-                                                                      .toString(),
+                                                              'idContactPartenaire':
+                                                                  'null',
                                                             });
+                                                          }
+                                                          _partenaire
+                                                              .doc(doc.id)
+                                                              .update({
+                                                            'nombredeContact':
+                                                                (int.parse(doc[
+                                                                            'nombredeContact']) -
+                                                                        1)
+                                                                    .toString(),
                                                           });
                                                         });
-                                                        _contactpartenaire
-                                                            .doc(doc.id)
-                                                            .delete()
-                                                            .then((value) {
-                                                          Fluttertoast.showToast(
-                                                              msg:
-                                                                  "Contact Added",
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .TOP);
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          showEditPartenaireDialog(
-                                                              context: context,
-                                                              dataContact:
-                                                                  dataContact);
-                                                        });
+                                                      });
+                                                      _contactpartenaire
+                                                          .doc(doc.id)
+                                                          .delete()
+                                                          .then((value) {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "Contact Added",
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .TOP);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        showEditPartenaireDialog(
+                                                            context: context,
+                                                            dataContact:
+                                                                dataContact);
                                                       });
                                                     });
-                                                  },
-                                                  icon: const Icon(
-                                                    FontAwesomeIcons.minus,
-                                                    size: 15,
-                                                  ),
-                                                  tooltip:
-                                                      'Remove Partenaire from that Contact',
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  FontAwesomeIcons.minus,
+                                                  size: 15,
                                                 ),
+                                                tooltip: graphique.languagefr[
+                                                            'contact_page']
+                                                        ['edit_partenaire_form']
+                                                    ['icon_button_2'],
                                               ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                        ]);
+                                            ),
+                                          ],
+                                        );
                                       }).toList(),
                                     );
                                   },
@@ -858,13 +978,16 @@ class _ContactPageState extends State<ContactPage> {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Container(
-                    width: 600,
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    width: form_width * 2 / 3,
                     height: 150,
-                    color: Colors.blue,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['default_blue']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
                     child: StreamBuilder<QuerySnapshot>(
                       stream: _partenaire
                           .where('nomPartenaire', isNotEqualTo: 'None')
@@ -889,9 +1012,17 @@ class _ContactPageState extends State<ContactPage> {
                               // print('link_contactadresse $link_contactadresse');
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
-                                width: 580,
+                                width: form_width * 0.6,
                                 height: 50,
-                                color: Colors.white,
+                                decoration: BoxDecoration(
+                                  color:
+                                      Color(graphique.color['default_white']),
+                                  border: Border.all(
+                                    width: 1.0,
+                                    color:
+                                        Color(graphique.color['default_black']),
+                                  ),
+                                ),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -905,7 +1036,8 @@ class _ContactPageState extends State<ContactPage> {
                                             ),
                                             Icon(
                                               FontAwesomeIcons.flag,
-                                              color: Colors.black,
+                                              color: Color(graphique
+                                                  .color['default_black']),
                                               size: 15,
                                             ),
                                             SizedBox(
@@ -919,7 +1051,9 @@ class _ContactPageState extends State<ContactPage> {
                                                           insidedataPartenaire[
                                                               'nomPartenaire'],
                                                       style: TextStyle(
-                                                          color: Colors.red,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_red']),
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -1044,11 +1178,16 @@ class _ContactPageState extends State<ContactPage> {
                                                     gravity: ToastGravity.TOP);
                                               }
                                             },
-                                            icon: const Icon(
+                                            icon: Icon(
                                               FontAwesomeIcons.plus,
                                               size: 15,
+                                              color: Color(graphique
+                                                  .color['default_black']),
                                             ),
-                                            tooltip: 'Add Partenaire',
+                                            tooltip: graphique.languagefr[
+                                                        'contact_page']
+                                                    ['edit_partenaire_form']
+                                                ['icon_button_1'],
                                           ),
                                         ]))
                                   ],
@@ -1060,22 +1199,24 @@ class _ContactPageState extends State<ContactPage> {
                       },
                     ),
                   ),
-                  Divider(
-                    thickness: 5,
-                  ),
                   Container(
-                    width: 800,
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    width: form_width * 3 / 4,
                     height: 80,
-                    color: Colors.red,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                      color: Color(graphique.color['main_color_1']),
+                    ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: 600,
-                        ),
                         Container(
                             width: 150,
                             decoration: BoxDecoration(
-                                color: Colors.yellow,
+                                color: Color(graphique.color['default_yellow']),
                                 borderRadius: BorderRadius.circular(10)),
                             margin: const EdgeInsets.only(
                                 right: 10, top: 20, bottom: 20),
@@ -1087,15 +1228,18 @@ class _ContactPageState extends State<ContactPage> {
                                 children: [
                                   Icon(
                                     Icons.delete,
-                                    color: Colors.white,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
                                   Text(
-                                    'Cancel',
+                                    graphique.languagefr['contact_page']
+                                        ['edit_partenaire_form']['button_1'],
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['default_black']),
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
