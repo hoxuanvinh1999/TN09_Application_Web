@@ -29,10 +29,6 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
   TextEditingController _prenomCollecteurController = TextEditingController();
   CollectionReference _collecteur =
       FirebaseFirestore.instance.collection("Collecteur");
-  Stream<QuerySnapshot> _collecteurStream = FirebaseFirestore.instance
-      .collection("Collecteur")
-      .orderBy('nomCollecteur')
-      .snapshots();
 
   // For get Date
   DateTime date = DateTime.now();

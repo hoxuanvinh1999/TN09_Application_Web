@@ -11,6 +11,7 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 import 'package:tn09_app_web_demo/pages/create_collecteur_page.dart';
+import 'package:tn09_app_web_demo/pages/modify_collecteur_page.dart';
 
 class CollecteurPage extends StatefulWidget {
   @override
@@ -376,7 +377,9 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                 'special_bureautique_2']),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
                                               children: [
                                                 Icon(
                                                   Icons.place,
@@ -411,9 +414,17 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                   .color['default_black']),
                                               tooltip: 'Modify Collecteur',
                                               onPressed: () {
-                                                showModifyCollecteurDialog(
-                                                    context: context,
-                                                    dataCollecteur: collecteur);
+                                                // showModifyCollecteurDialog(
+                                                //     context: context,
+                                                //     dataCollecteur: collecteur);
+                                                Navigator.of(context)
+                                                    .pushReplacement(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ModifyCollecteurPage(
+                                                                  dataCollecteur:
+                                                                      collecteur,
+                                                                )));
                                               },
                                             ),
                                           )
