@@ -450,7 +450,9 @@ class _VehiculePageState extends State<VehiculePage> {
                                           icon: const Icon(Icons.edit),
                                           color: Color(
                                               graphique.color['default_black']),
-                                          tooltip: 'Modify Vehicule',
+                                          tooltip: graphique
+                                                  .languagefr['vehicule_page']
+                                              ['icon_button_1_title'],
                                           onPressed: () {
                                             // showModifyVehiculeDialog(
                                             //     context: context,
