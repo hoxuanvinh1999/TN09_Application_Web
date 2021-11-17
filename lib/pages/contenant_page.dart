@@ -394,7 +394,9 @@ class _ContenantPageState extends State<ContenantPage> {
                                         height: 50,
                                         child: IconButton(
                                           icon: const Icon(Icons.download),
-                                          tooltip: 'Modify Contenant',
+                                          tooltip: graphique
+                                                  .languagefr['contenant_page']
+                                              ['icon_button_1_title'],
                                           onPressed: () {
                                             // showModifyContenantDialog(
                                             //     context: context,
