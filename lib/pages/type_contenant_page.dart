@@ -528,7 +528,9 @@ class _TypeContenantPageState extends State<TypeContenantPage> {
                                         icon: const Icon(Icons.edit),
                                         color: Color(
                                             graphique.color['default_black']),
-                                        tooltip: 'Modify Type Contenant',
+                                        tooltip: graphique.languagefr[
+                                                'type_contenant_page']
+                                            ['icon_button_1_title'],
                                         onPressed: () {
                                           // showModifyContenantDialog(
                                           //     context: context,
