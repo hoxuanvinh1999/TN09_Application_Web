@@ -35,10 +35,6 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
   TextEditingController _typeVehiculeController = TextEditingController();
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
-  Stream<QuerySnapshot> _vehiculeStream = FirebaseFirestore.instance
-      .collection("Vehicule")
-      .orderBy('orderVehicule')
-      .snapshots();
   //Init Data
   void initState() {
     setState(() {
