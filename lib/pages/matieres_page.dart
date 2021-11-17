@@ -500,7 +500,9 @@ class _MatieresPageState extends State<MatieresPage> {
                                                 'special_bureautique_2']),
                                             child: IconButton(
                                               icon: const Icon(Icons.edit),
-                                              tooltip: 'Modify Matiere',
+                                              tooltip: graphique.languagefr[
+                                                      'matieres_page']
+                                                  ['icon_button_1_title'],
                                               onPressed: () {
                                                 //print('Modify Matiere');
                                                 Navigator.of(context)
@@ -523,8 +525,9 @@ class _MatieresPageState extends State<MatieresPage> {
                                             child: IconButton(
                                               icon: const Icon(
                                                   FontAwesomeIcons.truck),
-                                              tooltip:
-                                                  'Historique des collectes',
+                                              tooltip: graphique.languagefr[
+                                                      'matieres_page']
+                                                  ['icon_button_2_title'],
                                               onPressed: () {},
                                             ),
                                           )
@@ -639,7 +642,9 @@ class _MatieresPageState extends State<MatieresPage> {
                                                 'special_bureautique_2']),
                                             child: IconButton(
                                               icon: const Icon(Icons.edit),
-                                              tooltip: 'Modify Matiere',
+                                              tooltip: graphique.languagefr[
+                                                      'matieres_page']
+                                                  ['icon_button_1_title'],
                                               onPressed: () {
                                                 //print('Modify Matiere');
                                                 Navigator.of(context)
