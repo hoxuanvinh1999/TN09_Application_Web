@@ -10,6 +10,7 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
+import 'package:tn09_app_web_demo/pages/create_collecteur_page.dart';
 
 class CollecteurPage extends StatefulWidget {
   @override
@@ -205,7 +206,11 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                     right: 10, top: 20, bottom: 20),
                                 child: GestureDetector(
                                   onTap: () {
-                                    showCreateCollecteur();
+                                    // showCreateCollecteur();
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CreateCollecteurPage()));
                                   },
                                   child: Row(
                                     children: [
