@@ -7,6 +7,7 @@ import 'package:tn09_app_web_demo/menu/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tn09_app_web_demo/pages/add_contact_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
@@ -462,7 +463,11 @@ class _PartenairePageState extends State<PartenairePage> {
             tooltip: graphique.languagefr['partenaire_page']
                 ['icon_button_1_title_1'],
             onPressed: () {
-              addContactPartenaire(dataPartenaire: dataPartenaire);
+              //addContactPartenaire(dataPartenaire: dataPartenaire);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => AddContactPartenairePage(
+                        dataPartenaire: dataPartenaire,
+                      )));
             },
           );
         }
