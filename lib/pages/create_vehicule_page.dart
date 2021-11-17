@@ -422,7 +422,9 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                                       color: Color(
                                           graphique.color['main_color_2']),
                                       fontWeight: FontWeight.w600)),
-                              SizedBox(width: 10),
+                              const SizedBox(
+                                width: 10,
+                              ),
                               DropdownButton<String>(
                                   onChanged: (String? changedValue) {
                                     setState(() {
@@ -448,7 +450,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           width: 400,
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -465,7 +467,7 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                                 size: 15,
                                 color: Color(graphique.color['main_color_2']),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
@@ -532,9 +534,9 @@ class _CreateVehiculePageState extends State<CreateVehiculePage> {
                                       color: Color(
                                           graphique.color['main_color_2']),
                                       fontWeight: FontWeight.w600)),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Container(
-                                  alignment: Alignment(-0.8, 0),
+                                  alignment: const Alignment(-0.8, 0),
                                   width: 150,
                                   decoration: BoxDecoration(
                                       color: _colorVehicule,
