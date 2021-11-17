@@ -185,6 +185,16 @@ const Map<String, dynamic> languagefr = {
     'field_6_title': 'Préparé',
     'field_7_title': 'Pesée',
   },
+  'partenaire_page': {
+    'nom_page': 'Partenaires',
+    'button_1': 'Nouveau Partenaire',
+    'table_title': 'Liste des partenaires',
+    'column_2_title': 'Actif',
+    'column_3_title': 'Désignation',
+    'column_4_title': 'Contact',
+    'icon_button_1_title_1': 'Ajouter le contact',
+    'icon_button_1_title_2': 'Afficher le contact principal'
+  },
   'warning': {
     'not_null': 'Cela ne peut pas être nul',
   },
