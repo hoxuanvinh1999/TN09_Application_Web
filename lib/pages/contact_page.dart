@@ -941,7 +941,7 @@ class _ContactPageState extends State<ContactPage> {
                                                           .then((value) {
                                                         Fluttertoast.showToast(
                                                             msg:
-                                                                "Contact Added",
+                                                                "Partenaire Removed",
                                                             gravity:
                                                                 ToastGravity
                                                                     .TOP);

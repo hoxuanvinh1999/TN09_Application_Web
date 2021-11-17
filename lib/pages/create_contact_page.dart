@@ -47,14 +47,22 @@ class _CreateContactPageState extends State<CreateContactPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Fow width of table
+    double page_width = MediaQuery.of(context).size.width * 0.6;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
       header(context: context),
       menu(context: context),
       Container(
-          color: Colors.yellow,
-          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(graphique.color['default_yellow']),
+            border: Border(
+              bottom: BorderSide(
+                  width: 1.0, color: Color(graphique.color['default_black'])),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           height: 40,
           child: Row(
             children: [
@@ -64,15 +72,16 @@ class _CreateContactPageState extends State<CreateContactPage> {
               Icon(
                 FontAwesomeIcons.home,
                 size: 12,
+                color: Color(graphique.color['default_black']),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               RichText(
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
                         text: 'Home',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -98,9 +107,9 @@ class _CreateContactPageState extends State<CreateContactPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Contact',
+                        text: graphique.languagefr['contact_page']['nom_page'],
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -126,9 +135,10 @@ class _CreateContactPageState extends State<CreateContactPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Create Contact',
+                      text: graphique.languagefr['create_contact_page']
+                          ['nom_page'],
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -137,108 +147,131 @@ class _CreateContactPageState extends State<CreateContactPage> {
               ),
             ],
           )),
-      SizedBox(height: 20),
       Align(
           alignment: Alignment(-0.9, 0),
           child: Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 600,
-              height: 1200,
-              color: Colors.green,
+              margin: const EdgeInsets.only(
+                left: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: page_width,
+              height: 1250,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(children: [
                 Container(
                   height: 60,
-                  color: Colors.blue,
-                  child: Column(
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 20),
-                          Icon(
-                            FontAwesomeIcons.flag,
-                            size: 17,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Create New Contact',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      SizedBox(width: 20),
+                      Icon(
+                        FontAwesomeIcons.user,
+                        size: 17,
+                        color: Color(graphique.color['main_color_2']),
                       ),
                       SizedBox(
-                        height: 5,
+                        width: 10,
                       ),
-                      const Divider(
-                        thickness: 5,
+                      Text(
+                        graphique.languagefr['create_contact_page']
+                            ['form_title'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                    height: 60,
-                    color: Colors.red,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 5,
+                  margin: const EdgeInsets.only(top: 20),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(
+                        FontAwesomeIcons.cog,
+                        size: 15,
+                        color: Color(graphique.color['main_color_2']),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        graphique.languagefr['create_contact_page']
+                            ['form_subtitle'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.cog,
-                              size: 15,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              ' Informations et paramètres',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                      ],
-                    )),
-                SizedBox(
-                  height: 20,
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
-                  height: 800,
-                  width: 800,
-                  color: Colors.blue,
+                  height: 950,
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  width: page_width * 2 / 3,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['special_bureautique_2']),
+                    // border: Border.all(width: 1.0),
+                  ),
                   child: Form(
                     key: _createContactKeyForm,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _nomContactController,
                             decoration: InputDecoration(
-                              labelText: 'Nom*:',
+                              labelText:
+                                  graphique.languagefr['create_contact_page']
+                                      ['field_1_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (value == null ||
@@ -250,16 +283,34 @@ class _CreateContactPageState extends State<CreateContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _prenomContractController,
                             decoration: InputDecoration(
-                              labelText: 'Prenom*:',
+                              labelText:
+                                  graphique.languagefr['create_contact_page']
+                                      ['field_2_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (value == null ||
@@ -271,16 +322,34 @@ class _CreateContactPageState extends State<CreateContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _telephone1ContactController,
                             decoration: InputDecoration(
-                              labelText: 'Telephone 1:',
+                              labelText:
+                                  graphique.languagefr['create_contact_page']
+                                      ['field_3_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (!checkTelephone(
@@ -292,16 +361,34 @@ class _CreateContactPageState extends State<CreateContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _telephone2ContactController,
                             decoration: InputDecoration(
-                              labelText: 'Telephone2:',
+                              labelText:
+                                  graphique.languagefr['create_contact_page']
+                                      ['field_4_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (!checkTelephone(
@@ -313,16 +400,34 @@ class _CreateContactPageState extends State<CreateContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _emailContactController,
                             decoration: InputDecoration(
-                              labelText: 'Email:',
+                              labelText:
+                                  graphique.languagefr['create_contact_page']
+                                      ['field_5_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (!checkEmail(_emailContactController.text) &&
@@ -332,28 +437,45 @@ class _CreateContactPageState extends State<CreateContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              width: 20,
-                            ),
                             Container(
+                              margin:
+                                  EdgeInsets.only(top: 10, right: 10, left: 10),
                               width: 310,
-                              color: Colors.red,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(graphique.color['main_color_1']),
+                                ),
+                                color: Color(
+                                    graphique.color['special_bureautique_1']),
+                              ),
                               child: TextFormField(
+                                style: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2'])),
+                                cursorColor:
+                                    Color(graphique.color['main_color_2']),
                                 readOnly: true,
                                 controller: _passwordContactController,
                                 decoration: InputDecoration(
-                                  labelText: 'Password:',
+                                  labelText: graphique
+                                          .languagefr['create_contact_page']
+                                      ['field_6_title'],
+                                  labelStyle: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 20,
                             ),
                             IconButton(
                                 onPressed: () {
@@ -363,7 +485,8 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                 icon: Icon(
                                   FontAwesomeIcons.syncAlt,
                                   size: 17,
-                                  color: Colors.black,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 )),
                             SizedBox(
                               width: 10,
@@ -384,35 +507,57 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                 icon: Icon(
                                   FontAwesomeIcons.copy,
                                   size: 17,
-                                  color: Colors.black,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ))
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                            margin: EdgeInsets.symmetric(vertical: 20),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: TextField(
+                                style: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2'])),
+                                cursorColor:
+                                    Color(graphique.color['main_color_2']),
                                 controller: _noteContactController,
                                 maxLines: 4,
-                                decoration:
-                                    InputDecoration.collapsed(hintText: "Note"),
+                                decoration: InputDecoration(
+                                  hintText: graphique
+                                          .languagefr['create_contact_page']
+                                      ['field_7_title'],
+                                  labelStyle: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                  ),
+                                ),
                               ),
                             )),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Recoit Facture',
+                              graphique.languagefr['create_contact_page']
+                                  ['field_8_title'],
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Color(graphique.color['default_black']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -428,8 +573,10 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                   print('recoitFacture $recoitFacture');
                                 });
                               },
-                              activeTrackColor: Colors.lightGreenAccent,
-                              activeColor: Colors.green,
+                              activeTrackColor:
+                                  Color(graphique.color['main_color_2']),
+                              activeColor:
+                                  Color(graphique.color['main_color_2']),
                             ),
                           ],
                         ),
@@ -440,9 +587,10 @@ class _CreateContactPageState extends State<CreateContactPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Recoit Rapport',
+                              graphique.languagefr['create_contact_page']
+                                  ['field_9_title'],
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Color(graphique.color['default_black']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -458,8 +606,10 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                   print('recoitRapport $recoitRapport');
                                 });
                               },
-                              activeTrackColor: Colors.lightGreenAccent,
-                              activeColor: Colors.green,
+                              activeTrackColor:
+                                  Color(graphique.color['main_color_2']),
+                              activeColor:
+                                  Color(graphique.color['main_color_2']),
                             ),
                           ],
                         ),
@@ -470,9 +620,10 @@ class _CreateContactPageState extends State<CreateContactPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Access Etranet',
+                              graphique.languagefr['create_contact_page']
+                                  ['field_10_title'],
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Color(graphique.color['default_black']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -488,34 +639,37 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                   print('accessExtranet $accessExtranet');
                                 });
                               },
-                              activeTrackColor: Colors.lightGreenAccent,
-                              activeColor: Colors.green,
+                              activeTrackColor:
+                                  Color(graphique.color['main_color_2']),
+                              activeColor:
+                                  Color(graphique.color['main_color_2']),
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
                           width: 400,
-                          height: 50,
-                          color: Colors.red,
+                          height: 80,
+                          color: Color(graphique.color['main_color_1']),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Icon(
                                 FontAwesomeIcons.flag,
-                                size: 30,
+                                size: 15,
+                                color: Color(graphique.color['main_color_2']),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text('Partenaire',
+                              Text(
+                                  graphique.languagefr['create_contact_page']
+                                      ['field_11_title'],
                                   style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['main_color_2']),
                                       fontWeight: FontWeight.w600)),
                               SizedBox(width: 10),
                               StreamBuilder<QuerySnapshot>(
@@ -547,8 +701,14 @@ class _CreateContactPageState extends State<CreateContactPage> {
 
                                         return DropdownMenuItem<String>(
                                           value: partenaire['idPartenaire'],
-                                          child: new Text(
-                                              partenaire['nomPartenaire']),
+                                          child: Text(
+                                            partenaire['nomPartenaire'],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Color(graphique
+                                                    .color['main_color_2']),
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         );
                                       }).toList(),
                                     );
@@ -560,22 +720,23 @@ class _CreateContactPageState extends State<CreateContactPage> {
                     ),
                   ),
                 ),
-                Divider(
-                  thickness: 5,
-                ),
                 Container(
-                  width: 800,
+                  width: page_width * 3 / 4,
                   height: 80,
-                  color: Colors.red,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 250,
-                      ),
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -589,15 +750,18 @@ class _CreateContactPageState extends State<CreateContactPage> {
                               children: [
                                 Icon(
                                   Icons.delete,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Cancel',
+                                  graphique.languagefr['create_contact_page']
+                                      ['button_2'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -608,7 +772,7 @@ class _CreateContactPageState extends State<CreateContactPage> {
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -687,15 +851,18 @@ class _CreateContactPageState extends State<CreateContactPage> {
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Create',
+                                  graphique.languagefr['create_contact_page']
+                                      ['button_1'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
