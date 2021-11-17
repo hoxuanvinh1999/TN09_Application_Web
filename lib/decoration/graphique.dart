@@ -279,6 +279,28 @@ const Map<String, dynamic> languagefr = {
       'icon_button_2': 'Dissocier le partenaire de ce contact',
     },
   },
+  'view_contact_page': {
+    'nom_page': 'Contact',
+    'contact_form': {
+      'nom_form': 'Contact',
+      'button_1': 'Enregistrer',
+      'button_2': 'Annuler',
+      'form_subtitle': 'Informations et paramètres',
+      'field_1_title': 'Nom*',
+      'field_2_title': 'Prenom*',
+      'field_3_title': 'Telephone 1',
+      'field_4_title': 'Telephone 2',
+      'field_5_title': 'Email',
+      'field_6_title': 'Mot de passe',
+      'field_7_title': 'Note/Remarque',
+      // 'field_8_title': 'Reçoit les factures',
+      // 'field_9_title': 'Reçoit les rapports',
+      // 'field_10_title': 'Accès à extranet',
+    },
+    'partenaire_form': {
+      'nom_form': 'Liste des partenaires',
+    },
+  },
   'warning': {
     'not_null': 'Cela ne peut pas être nul',
   },
