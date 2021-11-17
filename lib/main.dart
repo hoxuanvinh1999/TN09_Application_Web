@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:tn09_app_web_demo/google_map/blocs/application_bloc.dart';
-import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/login_page.dart';
-import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
-import 'package:tn09_app_web_demo/pages/contenant_page.dart';
-import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
-import 'package:tn09_app_web_demo/pages/user_infor_page.dart';
-import 'package:tn09_app_web_demo/pages/vehicule_page.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +22,14 @@ class MyApp extends StatelessWidget {
       create: (context) => ApplicationBloc(),
       child: MaterialApp(
         title: 'TN09 App Web Demo',
-        theme: ThemeData(accentColor: Colors.green, primarySwatch: Colors.blue),
+        theme: ThemeData(
+          accentColor: Colors.green,
+          primarySwatch: Colors.blue,
+          colorScheme: ColorScheme.light(
+              primary: Color(graphique.color['special_bureautique_2'])),
+          buttonTheme:
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+        ),
         home: LoginPage(),
       ),
     );
