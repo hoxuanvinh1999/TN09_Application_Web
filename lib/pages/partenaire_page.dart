@@ -13,6 +13,7 @@ import 'package:tn09_app_web_demo/pages/math_function/check_email.dart';
 import 'package:tn09_app_web_demo/pages/math_function/check_telephone.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/generate_password.dart';
+import 'package:tn09_app_web_demo/pages/view_contact_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
@@ -481,7 +482,11 @@ class _PartenairePageState extends State<PartenairePage> {
             tooltip: graphique.languagefr['partenaire_page']
                 ['icon_button_1_title_2'],
             onPressed: () {
-              viewContactPartenaire(dataPartenaire: dataPartenaire);
+              // viewContactPartenaire(dataPartenaire: dataPartenaire);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => ViewContactPartenairePage(
+                        dataPartenaire: dataPartenaire,
+                      )));
             },
           );
         }
