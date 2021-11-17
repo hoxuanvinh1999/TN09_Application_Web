@@ -189,7 +189,11 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
                   children: <TextSpan>[
                     TextSpan(
                       text: graphique.languagefr['modify_vehicule_page']
-                          ['nom_page'],
+                              ['nom_page'] +
+                          ': ' +
+                          widget.dataVehicule['nomVehicule'] +
+                          ' ' +
+                          widget.dataVehicule['numeroImmatriculation'],
                       style: TextStyle(
                           color: Color(graphique.color['default_grey']),
                           fontSize: 15,
