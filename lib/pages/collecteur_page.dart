@@ -412,7 +412,9 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                               icon: const Icon(Icons.edit),
                                               color: Color(graphique
                                                   .color['default_black']),
-                                              tooltip: 'Modify Collecteur',
+                                              tooltip: graphique.languagefr[
+                                                      'collecteur_page']
+                                                  ['icon_button_1_title'],
                                               onPressed: () {
                                                 // showModifyCollecteurDialog(
                                                 //     context: context,
