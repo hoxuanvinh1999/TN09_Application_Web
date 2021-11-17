@@ -41,7 +41,8 @@ const Map<String, dynamic> languagefr = {
     'button_1': 'Nouveau Chauffeur',
     'table_title': 'Chauffeurs',
     'column_1_title': 'Nom',
-    'column_2_title': 'Sites'
+    'column_2_title': 'Sites',
+    'icon_button_1_title': 'Modifier Chauffeur',
   },
   'vehicule_page': {
     'nom_page': 'Véhicules',
@@ -50,6 +51,7 @@ const Map<String, dynamic> languagefr = {
     'column_1_title': 'Nom Véhicules',
     'column_2_title': 'Immatriculation',
     'column_3_title': 'Site',
+    'icon_button_1_title': 'Modifier Véhicule'
   },
   'contenant_page': {
     'nom_page': 'Contenants',
@@ -58,6 +60,7 @@ const Map<String, dynamic> languagefr = {
     'column_1_title': 'Code-barres',
     'column_2_title': 'Type',
     'column_3_title': 'Actuellement',
+    'icon_button_1_title': 'Modifier Contenant'
   },
   'type_contenant_page': {
     'nom_page': 'Types de contenants',
@@ -69,6 +72,7 @@ const Map<String, dynamic> languagefr = {
     'column_4_title': 'Pesée',
     'column_5_title': 'Limit',
     'column_6_title': 'Nombre',
+    'icon_button_1_title': 'Modifier Type Contenant'
   },
   'matieres_page': {
     'nom_page': 'Matières collectées',
@@ -77,6 +81,8 @@ const Map<String, dynamic> languagefr = {
     'column_1_title': 'Désignation',
     'column_2_title': 'Référence',
     'column_3_title': 'Traitement',
+    'icon_button_1_title': 'Modifier Type Contenant',
+    'icon_button_2_title': 'Historique des collectes',
   },
   'create_collecteur_page': {
     'nom_page': 'Nouveau chauffeur',
