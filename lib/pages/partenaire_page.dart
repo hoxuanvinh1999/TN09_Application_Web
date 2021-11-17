@@ -33,14 +33,22 @@ class _PartenairePageState extends State<PartenairePage> {
       .snapshots();
   @override
   Widget build(BuildContext context) {
+    // Fow width of table
+    double page_width = MediaQuery.of(context).size.width * 0.6;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
       header(context: context),
       menu(context: context),
       Container(
-          color: Colors.yellow,
-          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(graphique.color['default_yellow']),
+            border: Border(
+              bottom: BorderSide(
+                  width: 1.0, color: Color(graphique.color['default_black'])),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           height: 40,
           child: Row(
             children: [
@@ -50,6 +58,7 @@ class _PartenairePageState extends State<PartenairePage> {
               Icon(
                 FontAwesomeIcons.home,
                 size: 12,
+                color: Color(graphique.color['default_black']),
               ),
               SizedBox(width: 5),
               RichText(
@@ -58,7 +67,7 @@ class _PartenairePageState extends State<PartenairePage> {
                     TextSpan(
                         text: 'Home',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -84,9 +93,9 @@ class _PartenairePageState extends State<PartenairePage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Partenaire',
+                      text: graphique.languagefr['partenaire_page']['nom_page'],
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -95,146 +104,161 @@ class _PartenairePageState extends State<PartenairePage> {
               ),
             ],
           )),
-      SizedBox(height: 20),
       Align(
           alignment: Alignment(-0.9, 0),
           child: Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 800,
-              height: 1000,
-              color: Colors.green,
+              margin: const EdgeInsets.only(
+                left: 20,
+                top: 20,
+              ),
+              width: page_width,
+              height: 1500,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(children: [
                 Container(
-                  color: Colors.blue,
-                  child: Column(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          SizedBox(width: 20),
-                          Icon(
-                            FontAwesomeIcons.flag,
-                            size: 17,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Partenaire',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                      Container(
+                        margin: const EdgeInsets.only(left: 20),
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.flag,
+                              size: 17,
+                              color: Color(graphique.color['main_color_2']),
                             ),
-                          ),
-                          SizedBox(
-                            width: 500,
-                          ),
-                          Container(
-                              width: 150,
-                              decoration: BoxDecoration(
-                                  color: Colors.yellow,
-                                  borderRadius: BorderRadius.circular(10)),
-                              margin: const EdgeInsets.only(
-                                  right: 10, top: 20, bottom: 20),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CreatePartenairePage()));
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      'New Partenaire',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              graphique.languagefr['partenaire_page']
+                                  ['table_title'],
+                              style: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                          width: 180,
+                          decoration: BoxDecoration(
+                              color: Color(graphique.color['default_yellow']),
+                              borderRadius: BorderRadius.circular(10)),
+                          margin: const EdgeInsets.only(
+                              right: 10, top: 20, bottom: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              //showCreateContenant();
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreatePartenairePage()));
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
-                              )),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      const Divider(
-                        thickness: 5,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      )
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  graphique.languagefr['partenaire_page']
+                                      ['button_1'],
+                                  style: TextStyle(
+                                    color:
+                                        Color(graphique.color['default_black']),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                     ],
                   ),
                 ),
                 Container(
-                    color: Colors.red,
-                    child: Column(
+                  margin: const EdgeInsets.only(top: 10),
+                  width: page_width,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 5,
+                          width: 20,
                         ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.building,
-                              size: 17,
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Text(
-                              'Actif',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 100,
-                            ),
-                            Text(
-                              'Nom Partenaire',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 300,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.user,
-                              size: 17,
-                            ),
-                          ],
+                        Icon(
+                          FontAwesomeIcons.building,
+                          size: 17,
+                          color: Color(graphique.color['main_color_2']),
                         ),
                         SizedBox(
-                          height: 5,
+                          width: 30,
                         ),
-                        const Divider(
-                          thickness: 5,
+                        Text(
+                          graphique.languagefr['partenaire_page']
+                              ['column_2_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(
-                          height: 15,
-                        )
+                          width: 100,
+                        ),
+                        Text(
+                          graphique.languagefr['partenaire_page']
+                              ['column_3_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 300,
+                        ),
+                        Text(
+                          graphique.languagefr['partenaire_page']
+                              ['column_4_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
-                    )),
+                    ),
+                  ),
+                ),
                 StreamBuilder<QuerySnapshot>(
                   stream: _partenaireStream,
                   builder: (BuildContext context,
@@ -254,83 +278,86 @@ class _PartenairePageState extends State<PartenairePage> {
                             document.data()! as Map<String, dynamic>;
                         // print('$vehicule');
                         if (partenaire['idPartenaire'] == 'null') {
-                          return SizedBox.shrink();
+                          return const SizedBox.shrink();
                         }
                         return Container(
-                            color: Colors.white,
-                            child: Column(
+                          width: page_width,
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color:
+                                Color(graphique.color['special_bureautique_2']),
+                            border: Border(
+                                top: BorderSide(
+                                    width: 1.0,
+                                    color: Color(
+                                        graphique.color['default_black'])),
+                                bottom: BorderSide(
+                                    width: 1.0,
+                                    color: Color(
+                                        graphique.color['default_black']))),
+                          ),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  height: 5,
+                                  width: 20,
                                 ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    buildTypePartenaireIcon(
-                                        typePartenaire:
-                                            partenaire['typePartenaire']),
-                                    SizedBox(
-                                      width: 30,
-                                    ),
-                                    buildStatusPartenaireIcon(
-                                        actifPartenaire:
-                                            partenaire['actifPartenaire']),
-                                    SizedBox(
-                                      width: 120,
-                                    ),
-                                    Container(
-                                        alignment: Alignment(-1, 0.15),
-                                        width: 300,
-                                        height: 50,
-                                        color: Colors.green,
-                                        child: RichText(
-                                          text: TextSpan(
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: partenaire[
-                                                      'nomPartenaire'],
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          Navigator.of(context)
-                                                              .pushReplacement(
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) =>
-                                                                          ViewPartenairePage(
-                                                                            partenaire:
-                                                                                partenaire,
-                                                                          )));
-                                                        }),
-                                            ],
-                                          ),
-                                        )),
-                                    SizedBox(
-                                      width: 120,
-                                    ),
-                                    Container(
-                                        alignment: Alignment(-1, 0.15),
-                                        width: 50,
-                                        height: 50,
-                                        color: Colors.green,
-                                        child: contactPartenaire(
-                                            dataPartenaire: partenaire))
-                                  ],
-                                ),
+                                buildTypePartenaireIcon(
+                                    typePartenaire:
+                                        partenaire['typePartenaire']),
                                 SizedBox(
-                                  height: 5,
+                                  width: 30,
                                 ),
-                                const Divider(
-                                  thickness: 5,
-                                ),
+                                buildStatusPartenaireIcon(
+                                    actifPartenaire:
+                                        partenaire['actifPartenaire']),
+                                Container(
+                                    margin: const EdgeInsets.only(left: 120),
+                                    alignment: Alignment.centerLeft,
+                                    width: 300,
+                                    height: 50,
+                                    color: Color(graphique
+                                        .color['special_bureautique_2']),
+                                    child: RichText(
+                                      text: TextSpan(
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: partenaire['nomPartenaire'],
+                                              style: TextStyle(
+                                                  color: Color(graphique
+                                                      .color['default_black']),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  Navigator.of(context)
+                                                      .pushReplacement(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ViewPartenairePage(
+                                                                    partenaire:
+                                                                        partenaire,
+                                                                  )));
+                                                }),
+                                        ],
+                                      ),
+                                    )),
+                                Container(
+                                    margin: const EdgeInsets.only(left: 100),
+                                    alignment: Alignment.centerLeft,
+                                    width: 50,
+                                    height: 50,
+                                    color: Color(graphique
+                                        .color['special_bureautique_2']),
+                                    child: contactPartenaire(
+                                        dataPartenaire: partenaire))
                               ],
-                            ));
+                            ),
+                          ),
+                        );
                       }).toList(),
                     );
                   },
@@ -432,7 +459,8 @@ class _PartenairePageState extends State<PartenairePage> {
               FontAwesomeIcons.plus,
               size: 17,
             ),
-            tooltip: 'Add Contact',
+            tooltip: graphique.languagefr['partenaire_page']
+                ['icon_button_1_title_1'],
             onPressed: () {
               addContactPartenaire(dataPartenaire: dataPartenaire);
             },
@@ -445,7 +473,8 @@ class _PartenairePageState extends State<PartenairePage> {
               FontAwesomeIcons.user,
               size: 17,
             ),
-            tooltip: 'View Contact',
+            tooltip: graphique.languagefr['partenaire_page']
+                ['icon_button_1_title_2'],
             onPressed: () {
               viewContactPartenaire(dataPartenaire: dataPartenaire);
             },
