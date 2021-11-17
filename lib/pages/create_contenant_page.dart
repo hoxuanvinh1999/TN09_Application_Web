@@ -10,7 +10,6 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/contenant_page.dart';
-import 'package:tn09_app_web_demo/pages/type_contenant_page.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class CreateContenantPage extends StatefulWidget {
