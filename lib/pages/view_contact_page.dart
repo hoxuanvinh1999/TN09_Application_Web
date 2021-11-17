@@ -38,8 +38,8 @@ class _ViewContactPageState extends State<ViewContactPage> {
   TextEditingController _emailContactController = TextEditingController();
   TextEditingController _passwordContactController = TextEditingController();
   TextEditingController _noteContactController = TextEditingController();
-  getInputContact() async {
-    await _contact
+  void initState() {
+    _contact
         .where('idContact', isEqualTo: widget.dataContact['idContact'])
         .limit(1)
         .get()
@@ -55,6 +55,7 @@ class _ViewContactPageState extends State<ViewContactPage> {
         _noteContactController.text = dataContact['noteContact'];
       });
     });
+    super.initState();
   }
 
   //For partenaire
@@ -66,15 +67,23 @@ class _ViewContactPageState extends State<ViewContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    getInputContact();
+    // Fow width of table
+    double column1_width = MediaQuery.of(context).size.width * 0.5;
+    double column2_width = MediaQuery.of(context).size.width * 0.4;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
       header(context: context),
       menu(context: context),
       Container(
-          color: Colors.yellow,
-          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(graphique.color['default_yellow']),
+            border: Border(
+              bottom: BorderSide(
+                  width: 1.0, color: Color(graphique.color['default_black'])),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           height: 40,
           child: Row(
             children: [
@@ -84,6 +93,7 @@ class _ViewContactPageState extends State<ViewContactPage> {
               Icon(
                 FontAwesomeIcons.home,
                 size: 12,
+                color: Color(graphique.color['default_black']),
               ),
               SizedBox(width: 5),
               RichText(
@@ -92,7 +102,7 @@ class _ViewContactPageState extends State<ViewContactPage> {
                     TextSpan(
                         text: 'Home',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -118,9 +128,9 @@ class _ViewContactPageState extends State<ViewContactPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Contact',
+                        text: graphique.languagefr['contact_page']['nom_page'],
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -146,11 +156,14 @@ class _ViewContactPageState extends State<ViewContactPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: widget.dataContact['nomContact'] +
+                      text: graphique.languagefr['view_contact_page']
+                              ['nom_page'] +
+                          ': ' +
+                          widget.dataContact['nomContact'] +
                           ' ' +
                           widget.dataContact['prenomContact'],
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -159,110 +172,132 @@ class _ViewContactPageState extends State<ViewContactPage> {
               ),
             ],
           )),
-      SizedBox(height: 20),
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 600,
-              height: 1000,
-              color: Colors.green,
+              margin: const EdgeInsets.only(
+                left: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: column1_width,
+              height: 950,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(children: [
                 Container(
                   height: 60,
-                  color: Colors.blue,
-                  child: Column(
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
                     children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 20),
-                          Icon(
-                            FontAwesomeIcons.user,
-                            size: 17,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'View Contact',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      SizedBox(width: 20),
+                      Icon(
+                        FontAwesomeIcons.user,
+                        size: 17,
+                        color: Color(graphique.color['main_color_2']),
                       ),
                       SizedBox(
-                        height: 5,
+                        width: 10,
                       ),
-                      const Divider(
-                        thickness: 5,
+                      Text(
+                        graphique.languagefr['view_contact_page']
+                            ['contact_form']['nom_form'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                    height: 60,
-                    color: Colors.red,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 5,
+                  margin: const EdgeInsets.only(top: 20),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(
+                        FontAwesomeIcons.cog,
+                        size: 15,
+                        color: Color(graphique.color['main_color_2']),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        graphique.languagefr['view_contact_page']
+                            ['contact_form']['form_subtitle'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.cog,
-                              size: 15,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              ' Informations et paramètres',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                      ],
-                    )),
-                SizedBox(
-                  height: 20,
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
-                  height: 600,
-                  width: 800,
-                  color: Colors.blue,
+                  height: 650,
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  width: column1_width * 2 / 3,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['special_bureautique_2']),
+                    // border: Border.all(width: 1.0),
+                  ),
                   child: Form(
                     key: _viewContactKeyForm,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _nomContactController,
                             decoration: InputDecoration(
-                              labelText: 'Nom*:',
+                              labelText:
+                                  graphique.languagefr['view_contact_page']
+                                      ['contact_form']['field_1_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (value == null ||
@@ -274,16 +309,34 @@ class _ViewContactPageState extends State<ViewContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _prenomContractController,
                             decoration: InputDecoration(
-                              labelText: 'Prenom*:',
+                              labelText:
+                                  graphique.languagefr['view_contact_page']
+                                      ['contact_form']['field_2_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (value == null ||
@@ -295,16 +348,34 @@ class _ViewContactPageState extends State<ViewContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _telephone1ContactController,
                             decoration: InputDecoration(
-                              labelText: 'Telephone 1:',
+                              labelText:
+                                  graphique.languagefr['view_contact_page']
+                                      ['contact_form']['field_3_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (!checkTelephone(
@@ -316,16 +387,34 @@ class _ViewContactPageState extends State<ViewContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _telephone2ContactController,
                             decoration: InputDecoration(
-                              labelText: 'Telephone2:',
+                              labelText:
+                                  graphique.languagefr['view_contact_page']
+                                      ['contact_form']['field_4_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (!checkTelephone(
@@ -337,16 +426,34 @@ class _ViewContactPageState extends State<ViewContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: TextFormField(
+                            style: TextStyle(
+                                color: Color(graphique.color['main_color_2'])),
+                            cursorColor: Color(graphique.color['main_color_2']),
                             controller: _emailContactController,
                             decoration: InputDecoration(
-                              labelText: 'Email:',
+                              labelText:
+                                  graphique.languagefr['view_contact_page']
+                                      ['contact_form']['field_5_title'],
+                              labelStyle: TextStyle(
+                                color: Color(graphique.color['main_color_2']),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                              ),
                             ),
                             validator: (value) {
                               if (!checkEmail(_emailContactController.text) &&
@@ -356,28 +463,33 @@ class _ViewContactPageState extends State<ViewContactPage> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              width: 20,
-                            ),
                             Container(
+                              margin:
+                                  EdgeInsets.only(top: 10, right: 10, left: 10),
                               width: 310,
-                              color: Colors.red,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(graphique.color['main_color_1']),
+                                ),
+                                color: Color(
+                                    graphique.color['special_bureautique_1']),
+                              ),
                               child: TextFormField(
+                                style: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2'])),
+                                cursorColor:
+                                    Color(graphique.color['main_color_2']),
                                 readOnly: true,
                                 controller: _passwordContactController,
                                 decoration: InputDecoration(
                                   labelText: 'Password:',
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 20,
                             ),
                             IconButton(
                                 onPressed: () {
@@ -387,7 +499,8 @@ class _ViewContactPageState extends State<ViewContactPage> {
                                 icon: Icon(
                                   FontAwesomeIcons.syncAlt,
                                   size: 17,
-                                  color: Colors.black,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 )),
                             SizedBox(
                               width: 10,
@@ -408,48 +521,70 @@ class _ViewContactPageState extends State<ViewContactPage> {
                                 icon: Icon(
                                   FontAwesomeIcons.copy,
                                   size: 17,
-                                  color: Colors.black,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ))
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                            margin: EdgeInsets.symmetric(vertical: 20),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: TextField(
+                                style: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2'])),
+                                cursorColor:
+                                    Color(graphique.color['main_color_2']),
                                 controller: _noteContactController,
                                 maxLines: 4,
-                                decoration:
-                                    InputDecoration.collapsed(hintText: "Note"),
+                                decoration: InputDecoration(
+                                  hintText:
+                                      graphique.languagefr['view_contact_page']
+                                          ['contact_form']['field_10_title'],
+                                  labelStyle: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                  ),
+                                ),
                               ),
                             )),
-                        SizedBox(
-                          height: 20,
-                        ),
                       ],
                     ),
                   ),
                 ),
-                Divider(
-                  thickness: 5,
-                ),
                 Container(
-                  width: 800,
+                  width: column1_width * 3 / 4,
                   height: 80,
-                  color: Colors.red,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 250,
-                      ),
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -472,15 +607,18 @@ class _ViewContactPageState extends State<ViewContactPage> {
                               children: [
                                 Icon(
                                   Icons.delete,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Cancel',
+                                  graphique.languagefr['view_contact_page']
+                                      ['contact_form']['button_2'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -491,7 +629,7 @@ class _ViewContactPageState extends State<ViewContactPage> {
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -551,15 +689,18 @@ class _ViewContactPageState extends State<ViewContactPage> {
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Change',
+                                  graphique.languagefr['view_contact_page']
+                                      ['contact_form']['button_1'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -575,57 +716,59 @@ class _ViewContactPageState extends State<ViewContactPage> {
             width: 30,
           ),
           Container(
-              width: 600,
+              margin: const EdgeInsets.only(
+                left: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: column2_width,
               height: 100 +
                   double.parse(widget.dataContact['nombredePartenaire']) * 150,
-              color: Colors.green,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(
                 children: [
                   Container(
                     height: 60,
-                    color: Colors.blue,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
                       children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(width: 20),
-                            Icon(
-                              FontAwesomeIcons.flag,
-                              size: 17,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Partenaire Related',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        SizedBox(width: 20),
+                        Icon(
+                          FontAwesomeIcons.flag,
+                          size: 17,
+                          color: Color(graphique.color['main_color_2']),
                         ),
                         SizedBox(
-                          height: 5,
+                          width: 10,
                         ),
-                        const Divider(
-                          thickness: 5,
+                        Text(
+                          graphique.languagefr['view_contact_page']
+                              ['partenaire_form']['nom_form'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 20),
-                    width: 580,
+                    width: column2_width * 5 / 6,
                     height:
                         double.parse(widget.dataContact['nombredePartenaire']) *
                             150,
-                    color: Colors.red,
+                    color: Color(graphique.color['special_bureautique_2']),
                     child: StreamBuilder<QuerySnapshot>(
                       stream: _contactpartenaire
                           .where('idContact',
@@ -658,9 +801,15 @@ class _ViewContactPageState extends State<ViewContactPage> {
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 alignment: Alignment.center,
-                                color: Colors.white,
+                                decoration: BoxDecoration(
+                                    color:
+                                        Color(graphique.color['main_color_1']),
+                                    border: Border.all(
+                                        width: 1.0,
+                                        color: Color(
+                                            graphique.color['default_black']))),
                                 height: 50,
-                                width: 560,
+                                width: column2_width * 5 / 6,
                                 child: StreamBuilder<QuerySnapshot>(
                                   stream: _partenaire
                                       .where('idPartenaire',
@@ -695,7 +844,8 @@ class _ViewContactPageState extends State<ViewContactPage> {
                                                   as Map<String, dynamic>;
                                           // print('$collecteur');
                                           return Container(
-                                              color: Colors.white,
+                                              color: Color(graphique
+                                                  .color['main_color_1']),
                                               child: Row(
                                                 children: [
                                                   SizedBox(
@@ -708,8 +858,9 @@ class _ViewContactPageState extends State<ViewContactPage> {
                                                             text: partenaire[
                                                                 'nomPartenaire'],
                                                             style: TextStyle(
-                                                                color:
-                                                                    Colors.red,
+                                                                color: Color(graphique
+                                                                        .color[
+                                                                    'main_color_2']),
                                                                 fontSize: 15,
                                                                 fontWeight:
                                                                     FontWeight
