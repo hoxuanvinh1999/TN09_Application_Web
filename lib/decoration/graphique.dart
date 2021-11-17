@@ -78,6 +78,18 @@ const Map<String, dynamic> languagefr = {
     'column_2_title': 'Référence',
     'column_3_title': 'Traitement',
   },
+  'create_collecteur_page': {
+    'nom_page': 'Nouveau chauffeur',
+    'button_1': 'Enregistrer',
+    'button_2': 'Annuler',
+    'form_title': 'Nouveau chauffeur',
+    'form_subtitle': 'Informations',
+    'field_1_title': 'Nom*',
+    'field_2_title': 'Prenom*',
+    'field_3_title': 'Site*',
+    'field_4_title': 'Date de naissance*',
+    'field_4_button': 'Choisir la date',
+  },
   'create_vehicule_page': {
     'nom_page': 'Nouveau véhicule',
     'button_1': 'Enregistrer',
