@@ -195,6 +195,20 @@ const Map<String, dynamic> languagefr = {
     'icon_button_1_title_1': 'Ajouter le contact',
     'icon_button_1_title_2': 'Afficher le contact principal'
   },
+  'create_partenaire_page': {
+    'nom_page': 'Nouveau partenaire',
+    'button_1': 'Enregistrer',
+    'button_2': 'Annuler',
+    'form_title': ' Nouveau partenaire',
+    'form_subtitle': 'Informations et paramètres',
+    'field_1_title': 'Nom*',
+    'field_2_title': 'Siret',
+    'field_3_title': 'Type',
+    'field_4_title': 'Actif*',
+    'field_4_choice_1': 'Actif',
+    'field_4_choice_2': 'Pas Actif',
+    'field_5_title': 'Noter',
+  },
   'warning': {
     'not_null': 'Cela ne peut pas être nul',
   },
