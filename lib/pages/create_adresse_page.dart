@@ -156,6 +156,9 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
 
   @override
   Widget build(BuildContext context) {
+    // For width of table
+    double column1_width = MediaQuery.of(context).size.width * 0.45;
+    double column2_width = MediaQuery.of(context).size.width * 0.45;
     inputData();
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     _markers.add(company.companyMarker);
@@ -165,8 +168,14 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
       header(context: context),
       menu(context: context),
       Container(
-          color: Colors.yellow,
-          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(graphique.color['default_yellow']),
+            border: Border(
+              bottom: BorderSide(
+                  width: 1.0, color: Color(graphique.color['default_black'])),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           height: 40,
           child: Row(
             children: [
@@ -176,6 +185,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
               Icon(
                 FontAwesomeIcons.home,
                 size: 12,
+                color: Color(graphique.color['default_black']),
               ),
               SizedBox(width: 5),
               RichText(
@@ -184,7 +194,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                     TextSpan(
                         text: 'Home',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -210,9 +220,10 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Partenaire',
+                        text: graphique.languagefr['partenaire_page']
+                            ['nom_page'],
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -240,7 +251,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                     TextSpan(
                         text: widget.partenaire['nomPartenaire'],
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -268,9 +279,10 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Create Adresse',
+                      text: graphique.languagefr['create_adresse_page']
+                          ['nom_page'],
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -279,99 +291,96 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
               ),
             ],
           )),
-      SizedBox(height: 20),
       Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-              margin: EdgeInsets.only(left: 50),
-              width: 600,
-              height: 3000,
-              color: Colors.green,
+              height: 1600,
+              margin: const EdgeInsets.only(
+                left: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: column1_width,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(children: [
                 Container(
                   height: 60,
-                  color: Colors.blue,
-                  child: Column(
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
                     children: [
-                      SizedBox(
-                        height: 10,
+                      SizedBox(width: 20),
+                      Icon(
+                        FontAwesomeIcons.building,
+                        size: 17,
+                        color: Color(graphique.color['main_color_2']),
                       ),
-                      Row(
-                        children: [
-                          SizedBox(width: 20),
-                          Icon(
-                            FontAwesomeIcons.building,
-                            size: 17,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Create New Adresse',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(
+                        width: 10,
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      const Divider(
-                        thickness: 5,
+                      Text(
+                        graphique.languagefr['create_adresse_page']['nom_page'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                    height: 60,
-                    color: Colors.red,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 5,
+                  margin: const EdgeInsets.only(top: 20),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(
+                        FontAwesomeIcons.cog,
+                        size: 15,
+                        color: Color(graphique.color['main_color_2']),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        graphique.languagefr['create_adresse_page']
+                            ['form_subtitle'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.cog,
-                              size: 15,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              ' Informations et paramètres',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                      ],
-                    )),
-                SizedBox(
-                  height: 20,
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
-                  height: 1500,
-                  width: 800,
-                  color: Colors.blue,
+                  height: 1350,
+                  width: column1_width,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['special_bureautique_2']),
+                    // border: Border.all(width: 1.0),
+                  ),
                   child: Form(
                       key: _createAdresseKeyForm,
                       child: Column(
@@ -379,14 +388,36 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            padding: EdgeInsets.only(left: 8.0),
-                            margin: EdgeInsets.symmetric(vertical: 20),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _nomPartenaireAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Nom Adresse:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_1_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null ||
@@ -399,16 +430,36 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _ligne1AdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Adresse 1*:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_2_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null ||
@@ -421,30 +472,70 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _ligne2AdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Adresse 2:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_3_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _codepostalAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Code Postal*:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_4_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null ||
@@ -457,16 +548,36 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _villeAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Ville*:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_5_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null ||
@@ -479,16 +590,36 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _paysAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Pays*:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_6_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null ||
@@ -502,7 +633,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                           ),
                           Container(
                             width: 400,
-                            height: 80,
+                            height: 50,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -511,9 +642,12 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Position',
+                                      graphique
+                                              .languagefr['create_adresse_page']
+                                          ['field_7_title'],
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -526,10 +660,14 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                               _ligne1AdresseController.text);
                                         });
                                       },
-                                      tooltip: 'Search by Google Map',
+                                      tooltip: graphique
+                                              .languagefr['create_adresse_page']
+                                          ['field_7_hint'],
                                       icon: Icon(
                                         FontAwesomeIcons.search,
                                         size: 15,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                       ),
                                     )
                                   ],
@@ -538,30 +676,70 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(
-                              bottom: 20,
+                            margin: EdgeInsets.only(bottom: 10),
+                            width: 400,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
                             ),
-                            padding: EdgeInsets.only(left: 8.0),
-                            width: 200,
-                            color: Colors.red,
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _latitudeAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Latitude:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_8_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            width: 400,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
                             ),
-                            padding: EdgeInsets.only(left: 8.0),
-                            width: 200,
-                            color: Colors.red,
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _longitudeAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Longitude:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_9_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -574,16 +752,36 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                           //   color: Colors.red,
                           // ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _etageAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Étage*:',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_10_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null ||
@@ -600,9 +798,11 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Ascenseur',
+                                graphique.languagefr['create_adresse_page']
+                                    ['field_11_title'],
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -619,8 +819,10 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                         '_ascenseurAdresse $_ascenseurAdresse');
                                   });
                                 },
-                                activeTrackColor: Colors.lightGreenAccent,
-                                activeColor: Colors.green,
+                                activeTrackColor:
+                                    Color(graphique.color['main_color_2']),
+                                activeColor:
+                                    Color(graphique.color['main_color_2']),
                               ),
                             ],
                           ),
@@ -631,9 +833,11 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Passages',
+                                graphique.languagefr['create_adresse_page']
+                                    ['field_12_title'],
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -649,8 +853,10 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                     print('_passagesAdresse $_passagesAdresse');
                                   });
                                 },
-                                activeTrackColor: Colors.lightGreenAccent,
-                                activeColor: Colors.green,
+                                activeTrackColor:
+                                    Color(graphique.color['main_color_2']),
+                                activeColor:
+                                    Color(graphique.color['main_color_2']),
                               ),
                             ],
                           ),
@@ -661,9 +867,11 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Facturation',
+                                graphique.languagefr['create_adresse_page']
+                                    ['field_13_title'],
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -680,37 +888,82 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                         '_facturationAdresse $_facturationAdresse');
                                   });
                                 },
-                                activeTrackColor: Colors.lightGreenAccent,
-                                activeColor: Colors.green,
+                                activeTrackColor:
+                                    Color(graphique.color['main_color_2']),
+                                activeColor:
+                                    Color(graphique.color['main_color_2']),
                               ),
                             ],
                           ),
                           Container(
-                              margin: EdgeInsets.symmetric(
-                                vertical: 20,
-                              ),
+                              margin: EdgeInsets.symmetric(vertical: 10),
                               width: 400,
-                              color: Colors.red,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(graphique.color['main_color_1']),
+                                ),
+                                color: Color(
+                                    graphique.color['special_bureautique_1']),
+                              ),
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: TextField(
+                                  style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2'])),
+                                  cursorColor:
+                                      Color(graphique.color['main_color_2']),
                                   controller: _noteAdresseController,
                                   maxLines: 4,
-                                  decoration: InputDecoration.collapsed(
-                                      hintText: "Note"),
+                                  decoration: InputDecoration(
+                                    hintText: graphique
+                                            .languagefr['create_adresse_page']
+                                        ['field_14_title'],
+                                    hintStyle: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               )),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _tarifpassageAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Prix du passage',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_15_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (!value!.isEmpty &&
@@ -721,16 +974,36 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _tempspassageAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Temps sur place',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_16_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (!value!.isEmpty &&
@@ -741,16 +1014,36 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 20,
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
+                            margin: EdgeInsets.symmetric(vertical: 10),
                             width: 400,
-                            color: Colors.red,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
                             child: TextFormField(
+                              style: TextStyle(
+                                  color:
+                                      Color(graphique.color['main_color_2'])),
+                              cursorColor:
+                                  Color(graphique.color['main_color_2']),
                               controller: _surfacepassageAdresseController,
                               decoration: InputDecoration(
-                                labelText: 'Surface plancher',
+                                labelText:
+                                    graphique.languagefr['create_adresse_page']
+                                        ['field_17_title'],
+                                labelStyle: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (!value!.isEmpty &&
@@ -763,22 +1056,23 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                         ],
                       )),
                 ),
-                Divider(
-                  thickness: 5,
-                ),
                 Container(
-                  width: 800,
+                  width: column1_width * 3 / 4,
                   height: 80,
-                  color: Colors.red,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 250,
-                      ),
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -794,15 +1088,18 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                               children: [
                                 Icon(
                                   Icons.delete,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Cancel',
+                                  graphique.languagefr['create_adresse_page']
+                                      ['button_2'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -813,7 +1110,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                       Container(
                           width: 150,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -930,15 +1227,18 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Create',
+                                  graphique.languagefr['create_adresse_page']
+                                      ['button_1'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -950,51 +1250,52 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                   ),
                 ),
               ])),
-          SizedBox(
-            width: 30,
-          ),
           Visibility(
               visible: searchAdresse,
               child: Container(
-                width: 600,
-                height: 2000,
-                color: Colors.green,
+                height: 1000,
+                margin: const EdgeInsets.only(
+                  right: 20,
+                  top: 20,
+                  bottom: 20,
+                ),
+                width: column2_width,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['special_bureautique_2']),
+                  border: Border.all(
+                      width: 1.0,
+                      color: Color(graphique.color['default_black'])),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
                       height: 60,
-                      color: Colors.blue,
-                      child: Column(
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['main_color_1']),
+                        border: Border.all(
+                            width: 1.0,
+                            color: Color(graphique.color['default_black'])),
+                      ),
+                      child: Row(
                         children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(width: 20),
-                              Icon(
-                                FontAwesomeIcons.search,
-                                size: 17,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Search Posistion',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          SizedBox(width: 20),
+                          Icon(
+                            FontAwesomeIcons.search,
+                            size: 17,
+                            color: Color(graphique.color['main_color_2']),
                           ),
                           SizedBox(
-                            height: 5,
+                            width: 10,
                           ),
-                          const Divider(
-                            thickness: 5,
+                          Text(
+                            graphique.languagefr['create_adresse_page']
+                                ['position_form']['form_nom'],
+                            style: TextStyle(
+                              color: Color(graphique.color['main_color_2']),
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -1011,10 +1312,29 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                               Container(
                                 padding: const EdgeInsets.only(left: 8),
                                 child: TextField(
+                                  style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2'])),
+                                  cursorColor:
+                                      Color(graphique.color['main_color_2']),
                                   textCapitalization: TextCapitalization.words,
                                   decoration: InputDecoration(
-                                    hintText: 'Search Location',
-                                    suffixIcon: Icon(Icons.search),
+                                    hintText: graphique
+                                            .languagefr['create_adresse_page']
+                                        ['position_form']['hint_1'],
+                                    suffixIcon: Icon(Icons.search,
+                                        color: Color(
+                                            graphique.color['main_color_2'])),
+                                    hintStyle: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                      ),
+                                    ),
                                   ),
                                   onChanged: (value) =>
                                       applicationBloc.searchPlaces(value),
@@ -1024,7 +1344,7 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                 alignment: Alignment.center,
                                 children: [
                                   Container(
-                                    height: 600,
+                                    height: column2_width,
                                     child: GoogleMap(
                                       myLocationButtonEnabled: false,
                                       zoomControlsEnabled: true,
@@ -1052,9 +1372,11 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                       applicationBloc.searchResults.length != 0)
                                     Container(
                                         height: 600,
-                                        width: 600,
+                                        width: column2_width,
                                         decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(.6),
+                                          color: Color(graphique
+                                                  .color['default_black'])
+                                              .withOpacity(.6),
                                         )),
                                   if (applicationBloc.searchResults != [])
                                     Container(
@@ -1086,16 +1408,18 @@ class _CreateAdressePageState extends State<CreateAdressePage> {
                                 ],
                               ),
                               Container(
-                                width: 200,
+                                width: column2_width * 0.5,
                                 height: 100,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 20),
                                 child: ElevatedButton(
                                   child: Text(
-                                    'Select Location',
+                                    graphique.languagefr['create_adresse_page']
+                                        ['position_form']['button_1'],
                                     style: TextStyle(
                                       fontSize: 20,
-                                      color: Colors.white,
+                                      color: Color(
+                                          graphique.color['default_white']),
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
