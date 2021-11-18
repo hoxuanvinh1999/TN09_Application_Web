@@ -45,10 +45,16 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   String _typePartenaire = 'PRIVE';
   List<String> list_type = ['PRIVE', 'PUBLIC', 'EXPERIMENTATION', 'AUTRES'];
   String _actifPartenaire = 'true';
-  void inputData() {
-    _nomPartenaireController.text = widget.partenaire['nomPartenaire'];
-    _notePartenaireController.text = widget.partenaire['notePartenaire'];
-    _siretPartenaireController.text = widget.partenaire['siretPartenaire'];
+
+  // Init Data
+  void initState() {
+    setState(() {
+      _nomPartenaireController.text = widget.partenaire['nomPartenaire'];
+      _notePartenaireController.text = widget.partenaire['notePartenaire'];
+      _siretPartenaireController.text = widget.partenaire['siretPartenaire'];
+      _actifPartenaire = widget.partenaire['actifPartenaire'];
+    });
+    super.initState();
   }
 
   Map<String, String> test = {};
@@ -129,19 +135,20 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       FirebaseFirestore.instance.collection("Contenant");
   //for Etape
   CollectionReference _etape = FirebaseFirestore.instance.collection('Etape');
+  // build Vehicule for Frequence
   Widget buildVehiculeFrequence({required idVehiculeFrequence}) {
     if (idVehiculeFrequence == 'null') {
       return Container(
         width: 550,
         height: 20,
-        color: Colors.green,
+        color: Color(graphique.color['default_green']),
         child: Row(
           children: [
             SizedBox(width: 20),
             Icon(
               FontAwesomeIcons.truck,
               size: 15,
-              color: Colors.red,
+              color: Color(graphique.color['default_red']),
             ),
             SizedBox(
               width: 10,
@@ -149,7 +156,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
             Text(
               'Inconnu',
               style: TextStyle(
-                color: Colors.black,
+                color: Color(graphique.color['default_black']),
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
@@ -177,9 +184,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
               Map<String, dynamic> vehicule =
                   document.data()! as Map<String, dynamic>;
               return Container(
-                width: 550,
+                width: MediaQuery.of(context).size.width * 0.45 * 0.9,
                 height: 20,
-                color: Colors.green,
+                color: Color(graphique.color['default_green']),
                 child: Row(
                   children: [
                     SizedBox(width: 20),
@@ -193,7 +200,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     Text(
                       vehicule['nomVehicule'],
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Color(graphique.color['default_black']),
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -208,15 +215,24 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
 
   @override
   Widget build(BuildContext context) {
-    inputData();
+    // For width of table
+    double column1_width = MediaQuery.of(context).size.width * 0.45;
+    double column2_width = MediaQuery.of(context).size.width * 0.45;
+
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
       header(context: context),
       menu(context: context),
       Container(
-          color: Colors.yellow,
-          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(graphique.color['default_yellow']),
+            border: Border(
+              bottom: BorderSide(
+                  width: 1.0, color: Color(graphique.color['default_black'])),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           height: 40,
           child: Row(
             children: [
@@ -226,15 +242,16 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
               Icon(
                 FontAwesomeIcons.home,
                 size: 12,
+                color: Color(graphique.color['default_black']),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               RichText(
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
                         text: 'Home',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -260,9 +277,10 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Partenaire',
+                        text: graphique.languagefr['partenaire_page']
+                            ['nom_page'],
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -288,9 +306,12 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: widget.partenaire['nomPartenaire'],
+                      text: graphique.languagefr['view_partenaire_page']
+                              ['nom_page'] +
+                          ': ' +
+                          widget.partenaire['nomPartenaire'],
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -299,99 +320,100 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
               ),
             ],
           )),
-      SizedBox(height: 20),
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(children: [
             Container(
-                margin: EdgeInsets.only(left: 20),
-                width: 600,
-                height: 800,
-                color: Colors.green,
+                margin: const EdgeInsets.only(
+                  left: 20,
+                  top: 20,
+                  bottom: 20,
+                ),
+                width: column1_width,
+                height: 750,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['special_bureautique_2']),
+                  border: Border.all(
+                      width: 1.0,
+                      color: Color(graphique.color['default_black'])),
+                ),
                 child: Column(children: [
                   Container(
                     height: 60,
-                    color: Colors.blue,
-                    child: Column(
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
                       children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(width: 20),
-                            Icon(
-                              FontAwesomeIcons.flag,
-                              size: 17,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Partenaire',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        SizedBox(width: 20),
+                        Icon(
+                          FontAwesomeIcons.flag,
+                          size: 17,
+                          color: Color(graphique.color['main_color_2']),
                         ),
                         SizedBox(
-                          height: 5,
+                          width: 10,
                         ),
-                        const Divider(
-                          thickness: 5,
+                        Text(
+                          graphique.languagefr['view_partenaire_page']
+                              ['partenaire_form']['nom_form'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                      height: 60,
-                      color: Colors.red,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 5,
+                    margin: const EdgeInsets.only(top: 20),
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Icon(
+                          FontAwesomeIcons.cog,
+                          size: 15,
+                          color: Color(graphique.color['main_color_2']),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          graphique.languagefr['view_partenaire_page']
+                              ['partenaire_form']['form_subtitle'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.cog,
-                                size: 15,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                ' Informations et paramètres',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          const Divider(
-                            thickness: 5,
-                          ),
-                        ],
-                      )),
-                  SizedBox(
-                    height: 20,
+                        ),
+                      ],
+                    ),
                   ),
                   Container(
-                    height: 400,
-                    width: 800,
-                    color: Colors.blue,
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    height: 450,
+                    width: column1_width * 2 / 3,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['special_bureautique_2']),
+                      // border: Border.all(width: 1.0),
+                    ),
                     child: Form(
                         key: _createPartenaireKeyForm,
                         child: Column(
@@ -399,12 +421,37 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
                               width: 400,
-                              color: Colors.red,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(graphique.color['main_color_1']),
+                                ),
+                                color: Color(
+                                    graphique.color['special_bureautique_1']),
+                              ),
                               child: TextFormField(
+                                style: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2'])),
+                                cursorColor:
+                                    Color(graphique.color['main_color_2']),
                                 controller: _nomPartenaireController,
                                 decoration: InputDecoration(
-                                  labelText: 'Nom* :',
+                                  labelText: graphique
+                                          .languagefr['view_partenaire_page']
+                                      ['partenaire_form']['field_1_title'],
+                                  labelStyle: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                  ),
                                 ),
                                 validator: (value) {
                                   if (value == null ||
@@ -416,16 +463,38 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 },
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
                             Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
                               width: 400,
-                              color: Colors.red,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(graphique.color['main_color_1']),
+                                ),
+                                color: Color(
+                                    graphique.color['special_bureautique_1']),
+                              ),
                               child: TextFormField(
+                                style: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2'])),
+                                cursorColor:
+                                    Color(graphique.color['main_color_2']),
                                 controller: _siretPartenaireController,
                                 decoration: InputDecoration(
-                                  labelText: 'SIRET :',
+                                  labelText: graphique
+                                          .languagefr['view_partenaire_page']
+                                      ['partenaire_form']['field_2_title'],
+                                  labelStyle: TextStyle(
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                  ),
                                 ),
                                 validator: (value) {
                                   if (value != '' &&
@@ -436,26 +505,36 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 },
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
                             Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
                               width: 400,
-                              height: 50,
-                              color: Colors.red,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(graphique.color['main_color_1']),
+                                ),
+                                color: Color(
+                                    graphique.color['special_bureautique_1']),
+                              ),
                               child: Row(
                                 children: [
                                   Icon(
-                                    Icons.place,
-                                    size: 30,
+                                    FontAwesomeIcons.building,
+                                    size: 15,
+                                    color:
+                                        Color(graphique.color['main_color_2']),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text('Type',
+                                  Text(
+                                      graphique.languagefr[
+                                              'view_partenaire_page']
+                                          ['partenaire_form']['field_3_title'],
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.black,
+                                          color: Color(
+                                              graphique.color['main_color_2']),
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(width: 10),
                                   //dropdown have bug
@@ -471,29 +550,41 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       items: list_type.map((String value) {
                                         return new DropdownMenuItem<String>(
                                           value: value,
-                                          child: new Text(value),
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Color(graphique
+                                                    .color['main_color_2']),
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         );
                                       }).toList()),
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
                             Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
                               width: 400,
-                              height: 50,
-                              color: Colors.red,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(graphique.color['main_color_1']),
+                                ),
+                                color: Color(
+                                    graphique.color['special_bureautique_1']),
+                              ),
                               child: Row(
                                 children: [
                                   Text(
-                                    'Actif*: ',
+                                    graphique.languagefr['view_partenaire_page']
+                                        ['partenaire_form']['field_4_title'],
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  //bug with Radio
                                   Radio(
                                     value: 'true',
                                     groupValue: _actifPartenaire,
@@ -506,8 +597,13 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     },
                                   ),
                                   Text(
-                                    'Actif',
-                                    style: new TextStyle(fontSize: 17.0),
+                                    graphique.languagefr['view_partenaire_page']
+                                        ['partenaire_form']['field_4_choice_1'],
+                                    style: TextStyle(
+                                      fontSize: 17.0,
+                                      color: Color(
+                                          graphique.color['default_black']),
+                                    ),
                                   ),
                                   Radio(
                                     value: 'false',
@@ -521,48 +617,77 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     },
                                   ),
                                   Text(
-                                    'PasActif',
-                                    style: new TextStyle(
+                                    graphique.languagefr['view_partenaire_page']
+                                        ['partenaire_form']['field_4_choice_2'],
+                                    style: TextStyle(
                                       fontSize: 17.0,
+                                      color: Color(
+                                          graphique.color['default_black']),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
                             Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 width: 400,
-                                color: Colors.red,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color:
+                                        Color(graphique.color['main_color_1']),
+                                  ),
+                                  color: Color(
+                                      graphique.color['special_bureautique_1']),
+                                ),
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: TextField(
+                                    style: TextStyle(
+                                        color: Color(
+                                            graphique.color['main_color_2'])),
+                                    cursorColor:
+                                        Color(graphique.color['main_color_2']),
                                     controller: _notePartenaireController,
                                     maxLines: 4,
-                                    decoration: InputDecoration.collapsed(
-                                        hintText: "Note"),
+                                    decoration: InputDecoration(
+                                      hintText: graphique.languagefr[
+                                              'view_partenaire_page']
+                                          ['partenaire_form']['field_5_title'],
+                                      labelStyle: TextStyle(
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(
+                                              graphique.color['main_color_2']),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 )),
                           ],
                         )),
                   ),
-                  Divider(
-                    thickness: 5,
-                  ),
                   Container(
-                    width: 800,
+                    width: column1_width * 3 / 4,
                     height: 80,
-                    color: Colors.red,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: 400,
-                        ),
                         Container(
                             width: 150,
                             decoration: BoxDecoration(
-                                color: Colors.yellow,
+                                color: Color(graphique.color['default_yellow']),
                                 borderRadius: BorderRadius.circular(10)),
                             margin: const EdgeInsets.only(
                                 right: 10, top: 20, bottom: 20),
@@ -626,16 +751,19 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                               child: Row(
                                 children: [
                                   Icon(
-                                    Icons.add,
-                                    color: Colors.white,
+                                    Icons.delete,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
                                   Text(
-                                    'Update',
+                                    graphique.languagefr['view_partenaire_page']
+                                        ['partenaire_form']['button_1'],
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['default_black']),
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -647,136 +775,135 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     ),
                   ),
                 ])),
-            SizedBox(height: 20),
             Container(
-              margin: EdgeInsets.only(left: 20),
               height: 300 +
                   100 * double.parse(widget.partenaire['nombredeContact']),
-              width: 600,
-              color: Colors.green,
+              margin: const EdgeInsets.only(
+                left: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: column1_width,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(
                 children: [
                   Container(
                     height: 60,
-                    color: Colors.blue,
-                    child: Column(
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
                       children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(width: 20),
-                            Icon(
-                              FontAwesomeIcons.users,
-                              size: 17,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Contact',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        SizedBox(width: 20),
+                        Icon(
+                          FontAwesomeIcons.users,
+                          size: 17,
+                          color: Color(graphique.color['main_color_2']),
                         ),
                         SizedBox(
-                          height: 5,
+                          width: 10,
                         ),
-                        const Divider(
-                          thickness: 5,
+                        Text(
+                          graphique.languagefr['view_partenaire_page']
+                              ['contact_form']['nom_form'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                      height: 60,
-                      color: Colors.red,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 5,
+                    margin: const EdgeInsets.only(top: 20),
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Icon(
+                          FontAwesomeIcons.users,
+                          size: 15,
+                          color: Color(graphique.color['main_color_2']),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          graphique.languagefr['view_partenaire_page']
+                              ['contact_form']['column_1_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.users,
-                                size: 15,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Contact',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 120,
-                              ),
-                              Text(
-                                'Principal',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Text(
-                                'Rapports',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Text(
-                                'Factures',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Text(
-                                'Accès',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                        ),
+                        SizedBox(
+                          width: 120,
+                        ),
+                        Text(
+                          graphique.languagefr['view_partenaire_page']
+                              ['contact_form']['column_2_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(
-                            height: 5,
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Text(
+                          graphique.languagefr['view_partenaire_page']
+                              ['contact_form']['column_3_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const Divider(
-                            thickness: 5,
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Text(
+                          graphique.languagefr['view_partenaire_page']
+                              ['contact_form']['column_4_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      )),
-                  SizedBox(
-                    height: 20,
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Text(
+                          graphique.languagefr['view_partenaire_page']
+                              ['contact_form']['column_5_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
@@ -800,7 +927,14 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                               document.data()! as Map<String, dynamic>;
 
                           return Container(
-                            color: Colors.white,
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Color(graphique.color['main_color_1']),
+                              border: Border.all(
+                                  width: 1.0,
+                                  color:
+                                      Color(graphique.color['default_black'])),
+                            ),
                             child: StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
                                   .collection("Contact")
@@ -824,11 +958,13 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     Map<String, dynamic> dataContact = document
                                         .data()! as Map<String, dynamic>;
 
-                                    return Column(children: [
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
+                                    return SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           SizedBox(width: 20),
                                           Container(
@@ -845,7 +981,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                   'prenomContact'],
                                                           limit_long: 15),
                                                       style: TextStyle(
-                                                          color: Colors.red,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_red']),
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -870,7 +1008,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                           Container(
                                             height: 50,
                                             width: 50,
-                                            color: Colors.blue,
+                                            color: Color(graphique
+                                                .color['main_color_1']),
                                             child: StreamBuilder<QuerySnapshot>(
                                               stream: FirebaseFirestore.instance
                                                   .collection(
@@ -899,7 +1038,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                 // print('$snapshot');
                                                 return Column(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.start,
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   children: snapshot.data!.docs
                                                       .map((DocumentSnapshot
                                                           document_link_contactpartenaire) {
@@ -911,8 +1052,16 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                 dynamic>;
                                                     // print('$contenant');
                                                     return Container(
-                                                        color: Colors.white,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'main_color_1']),
                                                         child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
                                                           children: [
                                                             IconButton(
                                                               icon: buildBoolIcon(
@@ -920,7 +1069,13 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                       check: link_datacontactpartenaire[
                                                                           'isPrincipal']),
                                                                   sizeIcon: 15),
-                                                              tooltip: 'Change',
+                                                              tooltip: graphique
+                                                                              .languagefr[
+                                                                          'view_partenaire_page']
+                                                                      [
+                                                                      'contact_form']
+                                                                  [
+                                                                  'hint_text_1'],
                                                               onPressed:
                                                                   () async {
                                                                 if (convertBool(
@@ -1041,7 +1196,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                     check: dataContact[
                                                         'recoitRapport']),
                                                 sizeIcon: 15),
-                                            tooltip: 'Change',
+                                            tooltip: graphique.languagefr[
+                                                    'view_partenaire_page']
+                                                ['contact_form']['hint_text_1'],
                                             onPressed: () async {
                                               await _contact
                                                   .where('idContact',
@@ -1077,7 +1234,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                     check: dataContact[
                                                         'recoitFacture']),
                                                 sizeIcon: 15),
-                                            tooltip: 'Change',
+                                            tooltip: graphique.languagefr[
+                                                    'view_partenaire_page']
+                                                ['contact_form']['hint_text_1'],
                                             onPressed: () async {
                                               await _contact
                                                   .where('idContact',
@@ -1106,14 +1265,16 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                               });
                                             },
                                           ),
-                                          SizedBox(width: 50),
+                                          SizedBox(width: 40),
                                           IconButton(
                                             icon: buildBoolIcon(
                                                 check: convertBool(
                                                     check: dataContact[
                                                         'accessExtranet']),
                                                 sizeIcon: 15),
-                                            tooltip: 'Change',
+                                            tooltip: graphique.languagefr[
+                                                    'view_partenaire_page']
+                                                ['contact_form']['hint_text_1'],
                                             onPressed: () async {
                                               await _contact
                                                   .where('idContact',
@@ -1145,8 +1306,12 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                           SizedBox(width: 20),
                                           IconButton(
                                             icon: Icon(FontAwesomeIcons.trash,
-                                                size: 15),
-                                            tooltip: 'Remove',
+                                                size: 15,
+                                                color: Color(graphique
+                                                    .color['default_black'])),
+                                            tooltip: graphique.languagefr[
+                                                    'view_partenaire_page']
+                                                ['contact_form']['hint_text_2'],
                                             onPressed: () async {
                                               await _contact
                                                   .where('idContact',
@@ -1293,10 +1458,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                    ]);
+                                    );
                                   }).toList(),
                                 );
                               },
@@ -1310,97 +1472,105 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
               ),
             )
           ]),
-          SizedBox(
-            width: 50,
-          ),
           SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  width: 600,
                   height: 200 +
                       300 * double.parse(widget.partenaire['nombredeAdresses']),
-                  color: Colors.green,
+                  margin: const EdgeInsets.only(
+                    right: 20,
+                    top: 20,
+                    bottom: 20,
+                  ),
+                  width: column2_width,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['special_bureautique_2']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
                   child: Column(
                     children: [
                       Container(
                         height: 60,
-                        color: Colors.blue,
-                        child: Column(
+                        decoration: BoxDecoration(
+                          color: Color(graphique.color['main_color_1']),
+                          border: Border.all(
+                              width: 1.0,
+                              color: Color(graphique.color['default_black'])),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(width: 20),
-                                Icon(
-                                  FontAwesomeIcons.mapMarker,
-                                  size: 17,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Adresses',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
+                            Container(
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 20),
+                                  Icon(
+                                    FontAwesomeIcons.mapMarker,
+                                    size: 17,
+                                    color:
+                                        Color(graphique.color['main_color_2']),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 300,
-                                ),
-                                Container(
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                        color: Colors.yellow,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    margin: const EdgeInsets.only(
-                                      right: 10,
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    graphique.languagefr['view_partenaire_page']
+                                        ['adresse_form']['nom_form'],
+                                    style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        // showCreateAdressesDialog();
-                                        Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CreateAdressePage(
-                                                      partenaire:
-                                                          widget.partenaire,
-                                                    )));
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            'New Adresse',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: Color(
+                                        graphique.color['default_yellow']),
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.only(
+                                  right: 10,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // showCreateAdressesDialog();
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CreateAdressePage(
+                                                  partenaire: widget.partenaire,
+                                                )));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                       ),
-                                    )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            const Divider(
-                              thickness: 5,
-                            ),
+                                      Text(
+                                        graphique.languagefr[
+                                                'view_partenaire_page']
+                                            ['adresse_form']['button_1'],
+                                        style: TextStyle(
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
                           ],
                         ),
                       ),
@@ -1434,126 +1604,160 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 }
                                 // print('$contenant');
                                 return Container(
-                                  width: 600,
+                                  margin: const EdgeInsets.only(top: 20),
+                                  width: column2_width * 0.9,
                                   height: 300,
-                                  color: Colors.red,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Color(graphique.color['main_color_1']),
+                                    border: Border.all(
+                                        width: 1.0,
+                                        color: Color(
+                                            graphique.color['default_black'])),
+                                  ),
                                   child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 20),
                                       Container(
-                                        color: Colors.white,
-                                        width: 550,
+                                        color: Color(
+                                            graphique.color['main_color_1']),
+                                        width: column2_width * 0.9,
                                         height: 200,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  height: 40,
-                                                  width: 550,
-                                                  color: Colors.blue,
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 8,
-                                                              ),
-                                                              Icon(
-                                                                FontAwesomeIcons
-                                                                    .locationArrow,
-                                                                size: 15,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              Text(
-                                                                adresse[
-                                                                    'nomPartenaireAdresse'],
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Container(
-                                                              width: 150,
-                                                              decoration: BoxDecoration(
-                                                                  color: Colors
-                                                                      .yellow,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10)),
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                right: 10,
-                                                              ),
-                                                              child:
-                                                                  GestureDetector(
-                                                                onTap: () {
-                                                                  showModifyAdressDialog(
-                                                                      context:
-                                                                          context,
-                                                                      dataAdresse:
-                                                                          adresse);
-                                                                },
-                                                                child: Row(
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons.add,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 10,
-                                                                    ),
-                                                                    Text(
-                                                                      'Modify Adresse',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              )),
-                                                        ],
-                                                      ),
-                                                    ],
+                                            Container(
+                                              height: 40,
+                                              width: column2_width * 0.9,
+                                              decoration: BoxDecoration(
+                                                color: Color(graphique
+                                                    .color['default_blue']),
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    width: 1.0,
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_black']),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Icon(
+                                                          FontAwesomeIcons
+                                                              .locationArrow,
+                                                          size: 15,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          adresse[
+                                                              'nomPartenaireAdresse'],
+                                                          style: TextStyle(
+                                                            color: Color(graphique
+                                                                    .color[
+                                                                'default_black']),
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              right: 10),
+                                                      width: 150,
+                                                      decoration: BoxDecoration(
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_yellow']),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          showModifyAdressDialog(
+                                                              context: context,
+                                                              dataAdresse:
+                                                                  adresse);
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.add,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
+                                                            ),
+                                                            Text(
+                                                              graphique.languagefr[
+                                                                          'view_partenaire_page']
+                                                                      [
+                                                                      'adresse_form']
+                                                                  [
+                                                                  'sub_form_button_1'],
+                                                              style: TextStyle(
+                                                                color: Color(graphique
+                                                                        .color[
+                                                                    'default_black']),
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )),
+                                                ],
+                                              ),
                                             ),
                                             Container(
+                                              margin: const EdgeInsets.only(
+                                                  top: 40),
                                               height: 100,
-                                              width: 550,
-                                              color: Colors.green,
+                                              width: column2_width * 0.9,
+                                              decoration: BoxDecoration(
+                                                color: Color(graphique
+                                                    .color['default_green']),
+                                                border: Border(
+                                                  top: BorderSide(
+                                                    width: 1.0,
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_black']),
+                                                  ),
+                                                  bottom: BorderSide(
+                                                    width: 1.0,
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_black']),
+                                                  ),
+                                                ),
+                                              ),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
@@ -1564,6 +1768,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       SizedBox(
                                                         width: 16,
@@ -1572,6 +1779,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                         FontAwesomeIcons
                                                             .mapMarker,
                                                         size: 15,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
                                                       ),
                                                       SizedBox(
                                                         width: 10,
@@ -1585,7 +1795,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             adresse[
                                                                 'villeAdresse'],
                                                         style: TextStyle(
-                                                          color: Colors.black,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -1599,6 +1811,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       SizedBox(
                                                         width: 16,
@@ -1606,6 +1821,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                       Icon(
                                                         FontAwesomeIcons.clock,
                                                         size: 15,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
                                                       ),
                                                       SizedBox(
                                                         width: 5,
@@ -1617,8 +1835,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                     'tempspassageAdresse']) +
                                                             ' min',
                                                         style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 15,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -1630,6 +1849,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                         FontAwesomeIcons
                                                             .moneyCheckAlt,
                                                         size: 15,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
                                                       ),
                                                       SizedBox(
                                                         width: 5,
@@ -1641,7 +1863,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                     'tarifpassageAdresse']) +
                                                             ' €',
                                                         style: TextStyle(
-                                                          color: Colors.black,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -1654,6 +1878,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                         FontAwesomeIcons
                                                             .truckLoading,
                                                         size: 15,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
                                                       ),
                                                       SizedBox(
                                                         width: 5,
@@ -1665,7 +1892,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                     'surfacepassageAdresse']) +
                                                             ' €',
                                                         style: TextStyle(
-                                                          color: Colors.black,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -1680,6 +1909,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
                                                       children: [
                                                         SizedBox(
                                                           width: 16,
@@ -1688,6 +1920,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                           FontAwesomeIcons
                                                               .exclamationTriangle,
                                                           size: 15,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
                                                         ),
                                                         SizedBox(
                                                           width: 5,
@@ -1697,7 +1932,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                               text: adresse[
                                                                   'noteAdresse']),
                                                           style: TextStyle(
-                                                            color: Colors.black,
+                                                            color: Color(graphique
+                                                                    .color[
+                                                                'default_black']),
                                                             fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -1719,94 +1956,108 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      width: 600,
                       height: 100 +
                           300 *
                               double.parse(
                                   widget.partenaire['nombredeFrequence']),
-                      color: Colors.green,
+                      margin: const EdgeInsets.only(
+                        right: 20,
+                        top: 20,
+                        bottom: 20,
+                      ),
+                      width: column2_width,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['special_bureautique_2']),
+                        border: Border.all(
+                            width: 1.0,
+                            color: Color(graphique.color['default_black'])),
+                      ),
                       child: Column(
                         children: [
                           Container(
                             height: 60,
-                            color: Colors.blue,
-                            child: Column(
+                            decoration: BoxDecoration(
+                              color: Color(graphique.color['main_color_1']),
+                              border: Border.all(
+                                  width: 1.0,
+                                  color:
+                                      Color(graphique.color['default_black'])),
+                            ),
+                            margin: const EdgeInsets.only(
+                              bottom: 20,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(
-                                  height: 10,
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 20),
+                                      Icon(
+                                        FontAwesomeIcons.calendar,
+                                        size: 17,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        graphique.languagefr[
+                                                'view_partenaire_page']
+                                            ['frequence_form']['nom_form'],
+                                        style: TextStyle(
+                                          color: Color(
+                                              graphique.color['main_color_2']),
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
+                                Container(
+                                    width: 180,
+                                    decoration: BoxDecoration(
+                                        color: Color(
+                                            graphique.color['default_yellow']),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    margin: const EdgeInsets.only(
+                                      right: 10,
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        //Update later
+                                      },
                                       child: Row(
                                         children: [
-                                          SizedBox(width: 20),
                                           Icon(
-                                            FontAwesomeIcons.calendar,
-                                            size: 17,
+                                            Icons.add,
+                                            color: Color(graphique
+                                                .color['default_black']),
                                           ),
                                           SizedBox(
                                             width: 10,
                                           ),
                                           Text(
-                                            'Fréquences de passage',
+                                            graphique.languagefr[
+                                                    'view_partenaire_page']
+                                                ['frequence_form']['button_1'],
                                             style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 17,
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                        width: 180,
-                                        decoration: BoxDecoration(
-                                            color: Colors.yellow,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        margin: const EdgeInsets.only(
-                                          right: 10,
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            //Update later
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.add,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                'New Frequence',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                const Divider(
-                                  thickness: 5,
-                                ),
+                                    )),
                               ],
                             ),
                           ),
@@ -1841,129 +2092,166 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       return SizedBox.shrink();
                                     }
                                     return Container(
-                                      width: 600,
+                                      width: column2_width * 0.9,
                                       height: 300,
-                                      color: Colors.red,
+                                      color: Color(graphique
+                                          .color['special_bureautique_2']),
                                       child: Column(
                                         children: [
-                                          SizedBox(height: 20),
                                           Container(
-                                            color: Colors.white,
-                                            width: 550,
+                                            width: column2_width * 0.9,
                                             height: 200,
+                                            decoration: BoxDecoration(
+                                                color: Color(graphique
+                                                    .color['main_color_1']),
+                                                border: Border.all(
+                                                  width: 1.0,
+                                                  color: Color(graphique
+                                                      .color['default_black']),
+                                                )),
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      height: 40,
-                                                      width: 550,
-                                                      color: Colors.blue,
-                                                      child: Column(
-                                                        children: [
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    width: 8,
-                                                                  ),
-                                                                  Icon(
-                                                                    FontAwesomeIcons
-                                                                        .check,
-                                                                    size: 15,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 10,
-                                                                  ),
-                                                                  Text(
-                                                                    titleFrequence(
-                                                                        frequence:
-                                                                            frequence[
-                                                                                'frequence'],
-                                                                        jourFrequence:
-                                                                            frequence['jourFrequence']),
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              Container(
-                                                                  width: 180,
-                                                                  decoration: BoxDecoration(
-                                                                      color: Colors
-                                                                          .yellow,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10)),
-                                                                  margin:
-                                                                      const EdgeInsets
-                                                                          .only(
-                                                                    right: 10,
-                                                                  ),
-                                                                  child:
-                                                                      GestureDetector(
-                                                                    onTap: () {
-                                                                      modifyFrequence(
-                                                                          dataFrequence:
-                                                                              frequence);
-                                                                    },
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Icon(
-                                                                          Icons
-                                                                              .add,
-                                                                          color:
-                                                                              Colors.white,
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                        ),
-                                                                        Text(
-                                                                          'Modify Frequence',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  )),
-                                                            ],
-                                                          ),
-                                                        ],
+                                                Container(
+                                                  height: 40,
+                                                  width: column2_width * 0.9,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(graphique
+                                                        .color['default_blue']),
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        child: Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            Icon(
+                                                              FontAwesomeIcons
+                                                                  .check,
+                                                              size: 15,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_green']),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Text(
+                                                              titleFrequence(
+                                                                  frequence:
+                                                                      frequence[
+                                                                          'frequence'],
+                                                                  jourFrequence:
+                                                                      frequence[
+                                                                          'jourFrequence']),
+                                                              style: TextStyle(
+                                                                  color: Color(graphique
+                                                                          .color[
+                                                                      'default_black']),
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                          width: 180,
+                                                          decoration: BoxDecoration(
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_yellow']),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            right: 10,
+                                                          ),
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              modifyFrequence(
+                                                                  dataFrequence:
+                                                                      frequence);
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.add,
+                                                                  color: Color(graphique
+                                                                          .color[
+                                                                      'default_black']),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                                Text(
+                                                                  graphique.languagefr[
+                                                                              'view_partenaire_page']
+                                                                          [
+                                                                          'frequence_form']
+                                                                      [
+                                                                      'sub_form_button_1'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Color(
+                                                                        graphique
+                                                                            .color['default_black']),
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )),
+                                                    ],
+                                                  ),
                                                 ),
                                                 Container(
                                                   height: 120,
-                                                  width: 550,
-                                                  color: Colors.green,
+                                                  width: column2_width * 0.9,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_green']),
+                                                    border: Border(
+                                                      top: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      bottom: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  margin: const EdgeInsets.only(
+                                                      top: 10),
                                                   child: Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
@@ -1983,6 +2271,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             FontAwesomeIcons
                                                                 .locationArrow,
                                                             size: 15,
+                                                            color: Color(graphique
+                                                                    .color[
+                                                                'default_black']),
                                                           ),
                                                           SizedBox(
                                                             width: 10,
@@ -1991,8 +2282,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             frequence[
                                                                 'nomAdresseFrequence'],
                                                             style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
                                                               fontSize: 15,
                                                               fontWeight:
                                                                   FontWeight
@@ -2023,6 +2315,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             FontAwesomeIcons
                                                                 .clock,
                                                             size: 15,
+                                                            color: Color(graphique
+                                                                    .color[
+                                                                'default_black']),
                                                           ),
                                                           SizedBox(
                                                             width: 5,
@@ -2033,8 +2328,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                     'dureeFrequence'] +
                                                                 ' min',
                                                             style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
                                                               fontSize: 15,
                                                               fontWeight:
                                                                   FontWeight
@@ -2048,6 +2344,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                             FontAwesomeIcons
                                                                 .moneyCheckAlt,
                                                             size: 15,
+                                                            color: Color(graphique
+                                                                    .color[
+                                                                'default_black']),
                                                           ),
                                                           SizedBox(
                                                             width: 5,
@@ -2059,8 +2358,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                         'tarifFrequence']) +
                                                                 ' €',
                                                             style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
                                                               fontSize: 15,
                                                               fontWeight:
                                                                   FontWeight
@@ -2087,6 +2387,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                               FontAwesomeIcons
                                                                   .calendarWeek,
                                                               size: 15,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
                                                             ),
                                                             SizedBox(
                                                               width: 5,
@@ -2095,6 +2398,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                               FontAwesomeIcons
                                                                   .greaterThanEqual,
                                                               size: 15,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
                                                             ),
                                                             SizedBox(
                                                               width: 5,
@@ -2103,8 +2409,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                               frequence[
                                                                   'dateMinimaleFrequence'],
                                                               style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
+                                                                color: Color(graphique
+                                                                        .color[
+                                                                    'default_black']),
                                                                 fontSize: 15,
                                                                 fontWeight:
                                                                     FontWeight
@@ -2118,6 +2425,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                               FontAwesomeIcons
                                                                   .calendarWeek,
                                                               size: 15,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
                                                             ),
                                                             SizedBox(
                                                               width: 5,
@@ -2126,6 +2436,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                               FontAwesomeIcons
                                                                   .lessThanEqual,
                                                               size: 15,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
                                                             ),
                                                             SizedBox(
                                                               width: 5,
@@ -2134,8 +2447,9 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                               frequence[
                                                                   'dateMaximaleFrequence'],
                                                               style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
+                                                                color: Color(graphique
+                                                                        .color[
+                                                                    'default_black']),
                                                                 fontSize: 15,
                                                                 fontWeight:
                                                                     FontWeight
@@ -2160,88 +2474,101 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                     )
                   ],
                 ),
-                SizedBox(height: 20),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      width: 600,
                       height: 300 +
                           double.parse(widget.partenaire['nombredeAdresses']) *
                               500,
-                      color: Colors.green,
+                      margin: const EdgeInsets.only(
+                        right: 20,
+                        top: 20,
+                        bottom: 20,
+                      ),
+                      width: column2_width,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['special_bureautique_2']),
+                        border: Border.all(
+                            width: 1.0,
+                            color: Color(graphique.color['default_black'])),
+                      ),
                       child: Column(
                         children: [
                           Container(
                             height: 60,
-                            color: Colors.blue,
-                            child: Column(
+                            decoration: BoxDecoration(
+                              color: Color(graphique.color['main_color_1']),
+                              border: Border.all(
+                                width: 1.0,
+                                color: Color(graphique.color['default_black']),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(width: 20),
-                                    Icon(
-                                      FontAwesomeIcons.boxOpen,
-                                      size: 17,
+                                Container(
+                                    child: Row(children: [
+                                  SizedBox(width: 20),
+                                  Icon(
+                                    FontAwesomeIcons.boxOpen,
+                                    size: 17,
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    graphique.languagefr['view_partenaire_page']
+                                        ['contenant_form']['nom_form'],
+                                    style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    SizedBox(
-                                      width: 10,
+                                  ),
+                                ])),
+                                Container(
+                                    width: 180,
+                                    decoration: BoxDecoration(
+                                        color: Color(
+                                            graphique.color['default_yellow']),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    margin: const EdgeInsets.only(
+                                      right: 10,
                                     ),
-                                    Text(
-                                      'Contenants et matières',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 200,
-                                    ),
-                                    Container(
-                                        width: 150,
-                                        decoration: BoxDecoration(
-                                            color: Colors.yellow,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        margin: const EdgeInsets.only(
-                                          right: 10,
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            //Update later
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.add,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                'New Contenant',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        //Update later
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.add,
+                                            color: Color(graphique
+                                                .color['default_black']),
                                           ),
-                                        )),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                const Divider(
-                                  thickness: 5,
-                                ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            graphique.languagefr[
+                                                    'view_partenaire_page']
+                                                ['contenant_form']['button_1'],
+                                            style: TextStyle(
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                               ],
                             ),
                           ),
@@ -2281,224 +2608,227 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                       return SizedBox.shrink();
                                     }
                                     return Container(
-                                      width: 600,
+                                      width: column2_width,
                                       height: 600,
-                                      color: Colors.red,
+                                      color: Color(graphique
+                                          .color['special_bureautique_2']),
                                       child: Column(
                                         children: [
-                                          SizedBox(height: 20),
                                           Container(
-                                            color: Colors.white,
-                                            width: 550,
+                                            margin:
+                                                const EdgeInsets.only(top: 10),
+                                            width: column2_width * 0.9,
                                             height: 500,
+                                            decoration: BoxDecoration(
+                                              color: Color(graphique
+                                                  .color['main_color_1']),
+                                              border: Border.all(
+                                                width: 1.0,
+                                                color: Color(graphique
+                                                    .color['default_black']),
+                                              ),
+                                            ),
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      height: 40,
-                                                      width: 550,
-                                                      color: Colors.blue,
-                                                      child: Column(
-                                                        children: [
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    width: 8,
-                                                                  ),
-                                                                  Icon(
-                                                                    FontAwesomeIcons
-                                                                        .boxOpen,
-                                                                    size: 15,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 10,
-                                                                  ),
-                                                                  Text(
-                                                                    'Informations sur les contenant',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              // This is a Button
-                                                              // Container(
-                                                              //     width: 150,
-                                                              //     decoration: BoxDecoration(
-                                                              //         color: Colors
-                                                              //             .yellow,
-                                                              //         borderRadius:
-                                                              //             BorderRadius.circular(
-                                                              //                 10)),
-                                                              //     margin:
-                                                              //         const EdgeInsets
-                                                              //             .only(
-                                                              //       right: 10,
-                                                              //     ),
-                                                              //     child:
-                                                              //         GestureDetector(
-                                                              //       onTap: () {
-                                                              //         // AddContenantAdressDialog(
-                                                              //         //     context:
-                                                              //         //         context,
-                                                              //         //     dataAdresse:
-                                                              //         //         adresse);
-                                                              //       },
-                                                              //       child: Row(
-                                                              //         children: [
-                                                              //           Icon(
-                                                              //             Icons
-                                                              //                 .add,
-                                                              //             color: Colors
-                                                              //                 .white,
-                                                              //           ),
-                                                              //           SizedBox(
-                                                              //             width:
-                                                              //                 10,
-                                                              //           ),
-                                                              //           Text(
-                                                              //             'Add Contenant',
-                                                              //             style:
-                                                              //                 TextStyle(
-                                                              //               color:
-                                                              //                   Colors.black,
-                                                              //               fontSize:
-                                                              //                   15,
-                                                              //               fontWeight:
-                                                              //                   FontWeight.bold,
-                                                              //             ),
-                                                              //           ),
-                                                              //         ],
-                                                              //       ),
-                                                              //     )),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
                                                 Container(
                                                   height: 40,
-                                                  width: 500,
-                                                  color: Colors.blue,
-                                                  child: Column(
+                                                  width: column2_width * 0.9,
+                                                  color: Color(graphique
+                                                      .color['default_blue']),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .boxOpen,
+                                                            size: 15,
+                                                            color: Color(graphique
+                                                                    .color[
+                                                                'default_black']),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Text(
+                                                            adresse['nomPartenaireAdresse'] +
+                                                                ': ',
+                                                            style: TextStyle(
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            'Informations sur les contenant',
+                                                            style: TextStyle(
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      // This is a Button
+                                                      // Container(
+                                                      //     width: 150,
+                                                      //     decoration: BoxDecoration(
+                                                      //         color: Colors
+                                                      //             .yellow,
+                                                      //         borderRadius:
+                                                      //             BorderRadius.circular(
+                                                      //                 10)),
+                                                      //     margin:
+                                                      //         const EdgeInsets
+                                                      //             .only(
+                                                      //       right: 10,
+                                                      //     ),
+                                                      //     child:
+                                                      //         GestureDetector(
+                                                      //       onTap: () {
+                                                      //         // AddContenantAdressDialog(
+                                                      //         //     context:
+                                                      //         //         context,
+                                                      //         //     dataAdresse:
+                                                      //         //         adresse);
+                                                      //       },
+                                                      //       child: Row(
+                                                      //         children: [
+                                                      //           Icon(
+                                                      //             Icons
+                                                      //                 .add,
+                                                      //             color: Colors
+                                                      //                 .white,
+                                                      //           ),
+                                                      //           SizedBox(
+                                                      //             width:
+                                                      //                 10,
+                                                      //           ),
+                                                      //           Text(
+                                                      //             'Add Contenant',
+                                                      //             style:
+                                                      //                 TextStyle(
+                                                      //               color:
+                                                      //                   Colors.black,
+                                                      //               fontSize:
+                                                      //                   15,
+                                                      //               fontWeight:
+                                                      //                   FontWeight.bold,
+                                                      //             ),
+                                                      //           ),
+                                                      //         ],
+                                                      //       ),
+                                                      //     )),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 10),
+                                                  height: 40,
+                                                  width: column2_width * 0.8,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_green']),
+                                                    border: Border(
+                                                      top: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      left: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      right: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Row(
                                                     children: [
                                                       SizedBox(
-                                                        height: 10,
+                                                        width: 8,
                                                       ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 8,
-                                                              ),
-                                                              Icon(
-                                                                FontAwesomeIcons
-                                                                    .locationArrow,
-                                                                size: 15,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              Text(
-                                                                'A collecter',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          //This is a button
-                                                          // Container(
-                                                          //     width: 150,
-                                                          //     decoration: BoxDecoration(
-                                                          //         color: Colors
-                                                          //             .yellow,
-                                                          //         borderRadius:
-                                                          //             BorderRadius
-                                                          //                 .circular(
-                                                          //                     10)),
-                                                          //     margin:
-                                                          //         const EdgeInsets
-                                                          //             .only(
-                                                          //       right: 10,
-                                                          //     ),
-                                                          //     child:
-                                                          //         GestureDetector(
-                                                          //       onTap: () {
-                                                          //         // AddContenantAdressDialog(
-                                                          //         //     context:
-                                                          //         //         context,
-                                                          //         //     dataAdresse:
-                                                          //         //         adresse);
-                                                          //       },
-                                                          //       child: Row(
-                                                          //         children: [
-                                                          //           Icon(
-                                                          //             Icons.add,
-                                                          //             color: Colors
-                                                          //                 .white,
-                                                          //           ),
-                                                          //           SizedBox(
-                                                          //             width: 10,
-                                                          //           ),
-                                                          //           Text(
-                                                          //             'Add Contenant',
-                                                          //             style:
-                                                          //                 TextStyle(
-                                                          //               color: Colors
-                                                          //                   .black,
-                                                          //               fontSize:
-                                                          //                   15,
-                                                          //               fontWeight:
-                                                          //                   FontWeight
-                                                          //                       .bold,
-                                                          //             ),
-                                                          //           ),
-                                                          //         ],
-                                                          //       ),
-                                                          //     )),
-                                                        ],
+                                                      Icon(
+                                                        FontAwesomeIcons
+                                                            .locationArrow,
+                                                        size: 15,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        graphique.languagefr[
+                                                                    'view_partenaire_page']
+                                                                [
+                                                                'contenant_form']
+                                                            [
+                                                            'sub_column_1_title'],
+                                                        style: TextStyle(
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Container(
-                                                  width: 500,
+                                                  width: column2_width * 0.8,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(graphique
+                                                        .color['default_red']),
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      left: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      right: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                    ),
+                                                  ),
                                                   height: 150,
-                                                  color: Colors.red,
                                                   child: StreamBuilder<
                                                           QuerySnapshot>(
                                                       stream: FirebaseFirestore
@@ -2564,7 +2894,10 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                                 SizedBox(
                                                                                   width: 10,
                                                                                 ),
-                                                                                Text(limitString(text: insidedataContenant['typeContenant'] + ' ' + insidedataContenant['barCodeContenant'], limit_long: 30), style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
+                                                                                Text(
+                                                                                  limitString(text: insidedataContenant['typeContenant'] + ' ' + insidedataContenant['barCodeContenant'], limit_long: 30),
+                                                                                  style: TextStyle(color: Color(graphique.color['default_black']), fontSize: 15, fontWeight: FontWeight.bold),
+                                                                                ),
                                                                               ])),
                                                                           Container(
                                                                             width:
@@ -2604,7 +2937,11 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                                         });
                                                                                       });
                                                                                     },
-                                                                                    icon: Icon(FontAwesomeIcons.minus, size: 15))
+                                                                                    icon: Icon(
+                                                                                      FontAwesomeIcons.minus,
+                                                                                      size: 15,
+                                                                                      color: Color(graphique.color['default_black']),
+                                                                                    ))
                                                                               ],
                                                                             ),
                                                                           ),
@@ -2617,13 +2954,37 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                         );
                                                       }),
                                                 ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
+
                                                 Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 10),
                                                   height: 40,
-                                                  width: 500,
-                                                  color: Colors.blue,
+                                                  width: column2_width * 0.8,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_green']),
+                                                    border: Border(
+                                                      top: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      left: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      right: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                    ),
+                                                  ),
                                                   child: Column(
                                                     children: [
                                                       SizedBox(
@@ -2717,9 +3078,32 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                   ),
                                                 ),
                                                 Container(
-                                                  width: 500,
                                                   height: 150,
-                                                  color: Colors.red,
+                                                  width: column2_width * 0.8,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(graphique
+                                                        .color['default_red']),
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      left: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                      right: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'default_black']),
+                                                      ),
+                                                    ),
+                                                  ),
                                                   child: StreamBuilder<
                                                       QuerySnapshot>(
                                                     stream: FirebaseFirestore
@@ -2768,7 +3152,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                         .center,
                                                                 children: [
                                                                   SizedBox(
-                                                                    height: 10,
+                                                                    height: 5,
                                                                   ),
                                                                   Row(
                                                                     mainAxisAlignment:
@@ -2785,7 +3169,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                               width: 10,
                                                                             ),
                                                                             Text(limitString(text: insidedataContenant['typeContenant'] + ' ' + insidedataContenant['barCodeContenant'], limit_long: 30),
-                                                                                style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold)),
+                                                                                style: TextStyle(color: Color(graphique.color['default_black']), fontSize: 15, fontWeight: FontWeight.bold)),
                                                                           ],
                                                                         ),
                                                                       ),
@@ -2839,14 +3223,18 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                                     });
                                                                                   });
                                                                                 },
-                                                                                icon: Icon(FontAwesomeIcons.plus, size: 15))
+                                                                                icon: Icon(
+                                                                                  FontAwesomeIcons.plus,
+                                                                                  size: 15,
+                                                                                  color: Color(graphique.color['default_black']),
+                                                                                ))
                                                                           ],
                                                                         ),
                                                                       )
                                                                     ],
                                                                   ),
                                                                   SizedBox(
-                                                                    height: 10,
+                                                                    height: 5,
                                                                   ),
                                                                 ]);
                                                           }).toList(),

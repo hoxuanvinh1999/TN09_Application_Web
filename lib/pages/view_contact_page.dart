@@ -67,7 +67,7 @@ class _ViewContactPageState extends State<ViewContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Fow width of table
+    // For width of table
     double column1_width = MediaQuery.of(context).size.width * 0.5;
     double column2_width = MediaQuery.of(context).size.width * 0.4;
     return Scaffold(
