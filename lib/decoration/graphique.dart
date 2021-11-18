@@ -319,6 +319,48 @@ const Map<String, dynamic> languagefr = {
     'field_10_title': 'Accès à extranet',
     'field_11_title': 'Partenaire',
   },
+  'view_partenaire_page': {
+    'nom_page': 'Voir Partenaire',
+    'partenaire_form': {
+      'nom_form': 'Partenaire',
+      'button_1': 'Enregistrer',
+      'form_subtitle': 'Informations et paramètres',
+      'field_1_title': 'Nom',
+      'field_2_title': 'Siret',
+      'field_3_title': 'Type',
+      'field_4_title': 'Actif*',
+      'field_4_choice_1': 'Actif',
+      'field_4_choice_2': 'Pas Actif',
+      'field_5_title': 'Noter',
+    },
+    'contact_form': {
+      'nom_form': 'Contact',
+      'column_1_title': 'Contact',
+      'column_2_title': 'Principal',
+      'column_3_title': 'Rapports',
+      'column_4_title': 'Factures',
+      'column_5_title': 'Accès',
+      'hint_text_1': 'Modifier',
+      'hint_text_2': 'Dissocier',
+    },
+    'adresse_form': {
+      'nom_form': 'Adresses',
+      'button_1': 'Nouvelle adresse',
+      'sub_form_button_1': 'Modifier Adresse'
+    },
+    'frequence_form': {
+      'nom_form': 'Fréquences de passage',
+      'button_1': 'Nouvelle fréquence',
+      'sub_form_button_1': 'Modifier fréquence'
+    },
+    'contenant_form': {
+      'nom_form': 'Contenants et matières',
+      'button_1': 'Nouveau contenant',
+      'sub_form_title': 'Modifier fréquence',
+      'sub_column_1_title': 'A collecter',
+      'sub_column_2_title': 'Modifier fréquence'
+    },
+  },
   'warning': {
     'not_null': 'Cela ne peut pas être nul',
   },
