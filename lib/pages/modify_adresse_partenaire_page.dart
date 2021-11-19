@@ -18,6 +18,7 @@ import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
 import 'package:tn09_app_web_demo/pages/view_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
+import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
 class ModifyAdressePartenairePage extends StatefulWidget {
   Map partenaire;
@@ -1698,19 +1699,33 @@ class _ModifyAdressePartenairePageState
                                                   as Map<String, dynamic>;
 
                                           return DropdownMenuItem<String>(
-                                            value: vehicule[
-                                                'numeroImmatriculation'],
-                                            child: Text(
-                                              vehicule['nomVehicule'] +
-                                                  ' ' +
-                                                  vehicule[
-                                                      'numeroImmatriculation'],
-                                              style: TextStyle(
-                                                  color: Color(graphique
-                                                      .color['main_color_2']),
-                                                  fontSize: 15),
-                                            ),
-                                          );
+                                              value: vehicule[
+                                                  'numeroImmatriculation'],
+                                              child: Row(
+                                                children: [
+                                                  buildVehiculeIcon(
+                                                      icontype: vehicule[
+                                                          'typeVehicule'],
+                                                      iconcolor: vehicule[
+                                                              'colorIconVehicule']
+                                                          .toUpperCase(),
+                                                      sizeIcon: 15.0),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    vehicule['nomVehicule'] +
+                                                        ' ' +
+                                                        vehicule[
+                                                            'numeroImmatriculation'],
+                                                    style: TextStyle(
+                                                        color: Color(graphique
+                                                                .color[
+                                                            'main_color_2']),
+                                                        fontSize: 15),
+                                                  ),
+                                                ],
+                                              ));
                                         }).toList(),
                                       );
                                     }),
