@@ -30,6 +30,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:tn09_app_web_demo/.env.dart';
 import 'package:tn09_app_web_demo/pages/widget/company_position.dart'
     as company;
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class PeserDailyEtapePage extends StatefulWidget {
   DateTime thisDay;
@@ -110,8 +111,14 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
             header(context: context),
             menu(context: context),
             Container(
-                color: Colors.yellow,
-                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['default_yellow']),
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                ),
                 height: 40,
                 child: Row(
                   children: [
@@ -121,6 +128,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                     Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
                     SizedBox(width: 5),
                     RichText(
@@ -129,7 +137,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                           TextSpan(
                               text: 'Home',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -175,45 +183,44 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
               child: Column(
                 children: [
                   Container(
-                    color: Colors.blue,
-                    child: Column(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 600,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    width: 120,
-                                    height: 50,
-                                    color: Colors.yellow,
-                                    child: Row(
-                                      children: [],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Peser $thisDay ${widget.thisDay.year}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                        Container(
+                          width: 600,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
                               ),
-                            ),
-                          ],
-                        ),
-                        const Divider(
-                          thickness: 5,
+                              Container(
+                                width: 120,
+                                height: 50,
+                                color: Color(graphique.color['default_yellow']),
+                                child: Row(
+                                  children: [],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Peser $thisDay ${widget.thisDay.year}',
+                                style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -228,7 +235,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                         ),
                         width: 500,
                         height: 2000,
-                        color: Colors.yellow,
+                        color: Color(graphique.color['default_yellow']),
                         child: StreamBuilder<QuerySnapshot>(
                           stream: _tournee
                               .where('dateTournee',
@@ -258,7 +265,8 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                   return Container(
                                       margin:
                                           EdgeInsets.symmetric(vertical: 20),
-                                      color: Colors.red,
+                                      color:
+                                          Color(graphique.color['default_red']),
                                       width: 500,
                                       height: 150 +
                                           300 *
@@ -657,8 +665,9 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                                                 .centerLeft,
                                                             width: 400,
                                                             height: 50,
-                                                            color:
-                                                                Colors.yellow,
+                                                            color: Color(graphique
+                                                                    .color[
+                                                                'default_yellow']),
                                                             child: Text(
                                                                 'Etape #' +
                                                                     etape[
@@ -768,7 +777,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                         margin: EdgeInsets.only(
                           top: 20,
                         ),
-                        color: Colors.yellow,
+                        color: Color(graphique.color['default_yellow']),
                         height: 800,
                         width: 500,
                         child: Column(
@@ -1046,7 +1055,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                 margin: EdgeInsets.only(top: 20),
                                 width: 350,
                                 height: 50,
-                                color: Colors.red,
+                                color: Color(graphique.color['default_red']),
                                 child: GestureDetector(
                                   onTap: () async {
                                     if (typeMatiere == 'null') {
