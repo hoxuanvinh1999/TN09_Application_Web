@@ -414,7 +414,9 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                                                     width: 150,
                                                     height: 40,
                                                     decoration: BoxDecoration(
-                                                      color: Colors.white,
+                                                      color: Color(
+                                                          graphique.color[
+                                                              'default_white']),
                                                     ),
                                                     margin:
                                                         const EdgeInsets.only(
