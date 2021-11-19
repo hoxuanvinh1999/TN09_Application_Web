@@ -110,8 +110,14 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
             header(context: context),
             menu(context: context),
             Container(
-                color: Colors.yellow,
-                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['default_yellow']),
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                ),
                 height: 40,
                 child: Row(
                   children: [
@@ -121,6 +127,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                     Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
                     SizedBox(width: 5),
                     RichText(
@@ -129,7 +136,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                           TextSpan(
                               text: 'Home',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -157,7 +164,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                           TextSpan(
                               text: 'Semaine #$weeknumber',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -188,7 +195,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                           TextSpan(
                               text: thisDay,
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -219,7 +226,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                           TextSpan(
                             text: 'Tournee ${widget.dataTournee['idTournee']}',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Color(graphique.color['default_grey']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -236,136 +243,132 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
               child: Column(
                 children: [
                   Container(
-                    color: Colors.blue,
-                    child: Column(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      // border: Border.all(
+                      //     width: 1.0,
+                      //     color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 700,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Tournee ${widget.dataTournee['idTournee']} du $thisDay ${widget.thisDay.year} - ',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  buildVehiculeIcon(
-                                      icontype:
-                                          widget.dataVehicule['typeVehicule'],
-                                      iconcolor: widget
-                                          .dataVehicule['colorIconVehicule']
-                                          .toUpperCase(),
-                                      sizeIcon: 15.0),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    '${widget.dataVehicule['nomVehicule']} ( ${widget.dataVehicule['numeroImmatriculation']}) ',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                        Container(
+                          width: 700,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 10,
                               ),
-                            ),
-                            Container(
-                              width: 500,
-                              height: 80,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                      width: 180,
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      margin: const EdgeInsets.only(
-                                          right: 10, top: 20, bottom: 20),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'New Rendez-Vous',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      margin: const EdgeInsets.only(
-                                          right: 10, top: 20, bottom: 20),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          showActionSubMenu(context: context);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              FontAwesomeIcons
-                                                  .chevronCircleRight,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'Action',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                ],
+                              Text(
+                                'Tournee ${widget.dataTournee['idTournee']} du $thisDay ${widget.thisDay.year} - ',
+                                style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            )
-                          ],
+                              SizedBox(
+                                width: 5,
+                              ),
+                              buildVehiculeIcon(
+                                  icontype: widget.dataVehicule['typeVehicule'],
+                                  iconcolor: widget
+                                      .dataVehicule['colorIconVehicule']
+                                      .toUpperCase(),
+                                  sizeIcon: 15.0),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                '${widget.dataVehicule['nomVehicule']} ( ${widget.dataVehicule['numeroImmatriculation']}) ',
+                                style: TextStyle(
+                                  color:
+                                      Color(graphique.color['default_black']),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                        SizedBox(
-                          height: 10,
+                        Container(
+                          width: 500,
+                          height: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                  width: 180,
+                                  decoration: BoxDecoration(
+                                      color: Color(
+                                          graphique.color['default_yellow']),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                      right: 10, top: 20, bottom: 20),
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'New Rendez-Vous',
+                                          style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_black']),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      color: Color(
+                                          graphique.color['default_yellow']),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                      right: 10, top: 20, bottom: 20),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showActionSubMenu(context: context);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.chevronCircleRight,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Action',
+                                          style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_black']),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -373,7 +376,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                   Container(
                     width: 1190,
                     height: 2500,
-                    color: Colors.yellow,
+                    color: Color(graphique.color['default_yellow']),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,13 +393,13 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                   double.parse(
                                       widget.dataTournee['nombredeEtape']) +
                               500,
-                          color: Colors.red,
+                          color: Color(graphique.color['default_red']),
                           child: Column(
                             children: [
                               Container(
                                 width: 790,
                                 height: 50,
-                                color: Colors.grey,
+                                color: Color(graphique.color['default_grey']),
                                 child: Row(
                                   children: [
                                     SizedBox(
@@ -413,7 +416,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                     Text(
                                       'Paramètres de la tournée',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -456,7 +460,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                           margin: EdgeInsets.symmetric(
                                               vertical: 10),
                                           width: 400,
-                                          color: Colors.red,
+                                          color: Color(
+                                              graphique.color['default_red']),
                                           child: TextFormField(
                                             enabled: false,
                                             controller:
@@ -493,7 +498,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                           margin: EdgeInsets.symmetric(
                                               vertical: 10),
                                           width: 100,
-                                          color: Colors.red,
+                                          color: Color(
+                                              graphique.color['default_red']),
                                           child: StreamBuilder<QuerySnapshot>(
                                               stream: _collecteur
                                                   .where('idCollecteur',
@@ -568,7 +574,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                         Container(
                                           width: 100,
                                           height: 50,
-                                          color: Colors.red,
+                                          color: Color(
+                                              graphique.color['default_red']),
                                           child: TextFormField(
                                             enabled: false,
                                             controller: _newCollecteur,
@@ -681,7 +688,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                           margin: EdgeInsets.symmetric(
                                               vertical: 10),
                                           width: 100,
-                                          color: Colors.red,
+                                          color: Color(
+                                              graphique.color['default_red']),
                                           child: StreamBuilder<QuerySnapshot>(
                                               stream: _collecteur.snapshots(),
                                               builder: (BuildContext context,
@@ -753,7 +761,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                         Container(
                                           width: 100,
                                           height: 50,
-                                          color: Colors.red,
+                                          color: Color(
+                                              graphique.color['default_red']),
                                           child: TextFormField(
                                             enabled: false,
                                             controller: _new2eCollecteur,
@@ -866,7 +875,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                         Container(
                                           width: 100,
                                           height: 50,
-                                          color: Colors.red,
+                                          color: Color(
+                                              graphique.color['default_red']),
                                           child: TextFormField(
                                             controller: _timeStartController,
                                           ),
@@ -1001,7 +1011,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                   Container(
                                                     height: 50,
                                                     width: 400,
-                                                    color: Colors.grey,
+                                                    color: Color(graphique
+                                                        .color['default_grey']),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -1524,7 +1535,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                   Container(
                                                     width: 390,
                                                     height: 200,
-                                                    color: Colors.red,
+                                                    color: Color(graphique
+                                                        .color['default_red']),
                                                     child: StreamBuilder<
                                                         QuerySnapshot>(
                                                       stream: _frequence
@@ -1567,8 +1579,9 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                               return Container(
                                                                 width: 380,
                                                                 height: 200,
-                                                                color:
-                                                                    Colors.red,
+                                                                color: Color(graphique
+                                                                        .color[
+                                                                    'default_red']),
                                                                 child: Row(
                                                                   children: [
                                                                     SizedBox(
@@ -1670,7 +1683,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                                               Text(
                                                                                 'Durée ' + frequence['dureeFrequence'] + ' min',
                                                                                 style: TextStyle(
-                                                                                  color: Colors.black,
+                                                                                  color: Color(graphique.color['default_black']),
                                                                                   fontSize: 12,
                                                                                   fontWeight: FontWeight.bold,
                                                                                 ),
@@ -1693,7 +1706,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                                               Text(
                                                                                 'Start ' + ' min',
                                                                                 style: TextStyle(
-                                                                                  color: Colors.black,
+                                                                                  color: Color(graphique.color['default_black']),
                                                                                   fontSize: 12,
                                                                                   fontWeight: FontWeight.bold,
                                                                                 ),
@@ -1716,7 +1729,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                                               Text(
                                                                                 'Tarif ' + isInconnu(text: frequence['tarifFrequence']) + ' €',
                                                                                 style: TextStyle(
-                                                                                  color: Colors.black,
+                                                                                  color: Color(graphique.color['default_black']),
                                                                                   fontSize: 12,
                                                                                   fontWeight: FontWeight.bold,
                                                                                 ),
@@ -1757,7 +1770,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                     Text(
                                       '#',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -1768,7 +1782,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                     Text(
                                       'Vehicule',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -1779,7 +1794,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                     Text(
                                       'Collecteur',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -1790,7 +1806,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                     Text(
                                       'Start',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -1801,7 +1818,8 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                     Text(
                                       'Etape',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color(
+                                            graphique.color['default_black']),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -1969,7 +1987,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                                               Text(
                                                                                 '${vehicule['nomVehicule']} ( ${vehicule['numeroImmatriculation']}) ',
                                                                                 style: TextStyle(
-                                                                                  color: Colors.black,
+                                                                                  color: Color(graphique.color['default_black']),
                                                                                   fontSize: 15,
                                                                                   fontWeight: FontWeight.bold,
                                                                                 ),
@@ -2053,7 +2071,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                                               Text(
                                                                                 collecteur['nomCollecteur'],
                                                                                 style: TextStyle(
-                                                                                  color: Colors.black,
+                                                                                  color: Color(graphique.color['default_black']),
                                                                                   fontSize: 15,
                                                                                   fontWeight: FontWeight.bold,
                                                                                 ),
@@ -2074,7 +2092,9 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                       Text(
                                                         tournee['startTime'],
                                                         style: TextStyle(
-                                                          color: Colors.black,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -2087,7 +2107,9 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                                                         tournee[
                                                             'nombredeEtape'],
                                                         style: TextStyle(
-                                                          color: Colors.black,
+                                                          color: Color(graphique
+                                                                  .color[
+                                                              'default_black']),
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -2144,7 +2166,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -2171,7 +2193,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -2198,7 +2220,7 @@ class _ViewTourneePageState extends State<ViewTourneePage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
