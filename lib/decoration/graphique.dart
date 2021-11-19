@@ -37,6 +37,27 @@ const Map<String, dynamic> languagefr = {
     'function_3_title': 'Créer tournée',
     'function_4_title': 'Peser',
   },
+  'header_page': {
+    'user_infor_form': {
+      'button_1': 'Informations utilisateur',
+      'button_2': 'Se déconnecter',
+    },
+  },
+  'user_infor_page': {
+    'nom_page': 'Informations utilisateur',
+    'change_user_name_form': {
+      'form_title': 'Changer le nom utilisateur',
+      'button_1': 'Changer',
+      'field_1_title': 'Nom utilisateur',
+    },
+    'change_password_form': {
+      'form_title': 'Changer le mot de passe',
+      'button_1': 'Changer',
+      'field_1_title': 'Mot de passe actuel',
+      'field_2_title': 'Nouveau mot de passe',
+      'field_3_title': 'Confirmez le mot de passe',
+    },
+  },
   'collecteur_page': {
     'nom_page': 'Chauffeurs',
     'button_1': 'Nouveau Chauffeur',
