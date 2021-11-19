@@ -14,6 +14,7 @@ import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class CreateTourneePage extends StatefulWidget {
   @override
@@ -110,7 +111,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
   CollectionReference _tournee =
       FirebaseFirestore.instance.collection("Tournee");
   bool confirm = true;
-  Color confirm_color = Colors.blue;
+  Color confirm_color = Color(graphique.color['default_blue']);
   String newIdTournee = '';
   // For Step
   CollectionReference _etape = FirebaseFirestore.instance.collection("Etape");
@@ -131,6 +132,11 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Fow width of table
+    double page_width =
+        MediaQuery.of(context).size.width * 0.6; // For width of table
+    double column1_width = MediaQuery.of(context).size.width * 0.45;
+    double column2_width = MediaQuery.of(context).size.width * 0.45;
     // For the list view
     List<Widget> list_step =
         List.generate(_count, (int i) => addStepWidget(element: i));
@@ -140,8 +146,14 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
       header(context: context),
       menu(context: context),
       Container(
-          color: Colors.yellow,
-          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(graphique.color['default_yellow']),
+            border: Border(
+              bottom: BorderSide(
+                  width: 1.0, color: Color(graphique.color['default_black'])),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           height: 40,
           child: Row(
             children: [
@@ -151,6 +163,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
               Icon(
                 FontAwesomeIcons.home,
                 size: 12,
+                color: Color(graphique.color['default_black']),
               ),
               SizedBox(width: 5),
               RichText(
@@ -159,7 +172,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                     TextSpan(
                         text: 'Home',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Color(graphique.color['default_red']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
@@ -185,9 +198,10 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Create Tournee',
+                      text: graphique.languagefr['create_tournee_page']
+                          ['nom_page'],
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -196,125 +210,579 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
               ),
             ],
           )),
-      SizedBox(height: 20),
-      Align(
-          alignment: Alignment(-0.9, 0),
-          child: Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 600,
-              height: 2500,
-              color: Colors.green,
-              child: Column(children: [
-                Container(
-                  height: 60,
-                  color: Colors.blue,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
+      Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+                margin: const EdgeInsets.only(
+                  left: 20,
+                  top: 20,
+                  bottom: 20,
+                ),
+                width: column1_width,
+                height: 1000,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['special_bureautique_2']),
+                  border: Border.all(
+                      width: 1.0,
+                      color: Color(graphique.color['default_black'])),
+                ),
+                child: Column(children: [
+                  Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20),
+                        Icon(
+                          FontAwesomeIcons.truck,
+                          size: 17,
+                          color: Color(graphique.color['main_color_2']),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          graphique.languagefr['create_tournee_page']
+                              ['form_title'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Icon(
+                          FontAwesomeIcons.cog,
+                          size: 15,
+                          color: Color(graphique.color['main_color_2']),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          graphique.languagefr['create_tournee_page']
+                              ['form_subtitle'],
+                          style: TextStyle(
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 400,
+                    width: column1_width * 0.8,
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      color: confirm_color,
+                      border: Border.all(
+                        width: 1,
+                        color: Color(graphique.color['default_black']),
                       ),
-                      Row(
+                    ),
+                    child: Form(
+                      key: _createTourneeKeyForm,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(width: 20),
-                          Icon(
-                            FontAwesomeIcons.truck,
-                            size: 17,
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            width: 400,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.user,
+                                  size: 15,
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                    graphique.languagefr['create_tournee_page']
+                                        ['field_1_title'],
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                        fontWeight: FontWeight.w600)),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: _collecteur.snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text('Something went wrong');
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+                                      return DropdownButton(
+                                        onChanged: (String? changedValue) {
+                                          if (confirm) {
+                                            setState(() {
+                                              choiceIdCollecteur =
+                                                  changedValue!;
+                                            });
+                                          } else {
+                                            null;
+                                          }
+                                        },
+                                        value: choiceIdCollecteur,
+                                        items: snapshot.data!.docs.map(
+                                            (DocumentSnapshot
+                                                document_collecteur) {
+                                          Map<String, dynamic> dataCollecteur =
+                                              document_collecteur.data()!
+                                                  as Map<String, dynamic>;
+
+                                          return DropdownMenuItem<String>(
+                                            value:
+                                                dataCollecteur['idCollecteur'],
+                                            child: Text(
+                                              dataCollecteur['nomCollecteur'] +
+                                                  ' ' +
+                                                  dataCollecteur[
+                                                      'prenomCollecteur'],
+                                              style: TextStyle(
+                                                  color: Color(graphique
+                                                      .color['main_color_2']),
+                                                  fontSize: 15),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      );
+                                    }),
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                            width: 10,
+                          Container(
+                            width: 400,
+                            height: 50,
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.truck,
+                                  size: 15,
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                    graphique.languagefr['create_tournee_page']
+                                        ['field_2_title'],
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                        fontWeight: FontWeight.w600)),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: _vehicule.snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text('Something went wrong');
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+                                      return DropdownButton(
+                                        onChanged: (String? changedValue) {
+                                          if (confirm) {
+                                            setState(() {
+                                              choiceIdVehicule = changedValue!;
+                                            });
+                                          } else {
+                                            null;
+                                          }
+                                        },
+                                        value: choiceIdVehicule,
+                                        items: snapshot.data!.docs.map(
+                                            (DocumentSnapshot
+                                                document_vehicule) {
+                                          Map<String, dynamic> dataVehicule =
+                                              document_vehicule.data()!
+                                                  as Map<String, dynamic>;
+
+                                          return DropdownMenuItem<String>(
+                                              value: dataVehicule['idVehicule'],
+                                              child: Row(children: [
+                                                buildVehiculeIcon(
+                                                    icontype: dataVehicule[
+                                                        'typeVehicule'],
+                                                    iconcolor: dataVehicule[
+                                                            'colorIconVehicule']
+                                                        .toUpperCase(),
+                                                    sizeIcon: 15.0),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  dataVehicule['nomVehicule'] +
+                                                      ' ' +
+                                                      dataVehicule[
+                                                          'numeroImmatriculation'],
+                                                  style: TextStyle(
+                                                      color: Color(
+                                                          graphique.color[
+                                                              'main_color_2']),
+                                                      fontSize: 15),
+                                                ),
+                                              ]));
+                                        }).toList(),
+                                      );
+                                    }),
+                              ],
+                            ),
                           ),
-                          Text(
-                            'Create New Tournee',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            width: 400,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.calendar_today_rounded,
+                                  size: 15,
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                    graphique.languagefr['create_tournee_page']
+                                        ['field_3_title'],
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(width: 10),
+                                Container(
+                                  height: 50,
+                                  width: 150,
+                                  color: Color(
+                                      graphique.color['special_bureautique_1']),
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        if (confirm) {
+                                          pickDate(context);
+                                        } else {
+                                          null;
+                                        }
+                                      },
+                                      child: Text(
+                                        getDateText(date: date),
+                                        style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_white']),
+                                            fontSize: 15),
+                                      )),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            width: 400,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(graphique.color['main_color_1']),
+                              ),
+                              color: Color(
+                                  graphique.color['special_bureautique_1']),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.calendar_today_rounded,
+                                  size: 15,
+                                  color: Color(graphique.color['main_color_2']),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                    graphique.languagefr['create_tournee_page']
+                                        ['field_4_title'],
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(width: 10),
+                                Container(
+                                  height: 50,
+                                  width: 150,
+                                  color: Color(
+                                      graphique.color['special_bureautique_1']),
+                                  child: ButtonWidget(
+                                    icon: FontAwesomeIcons.clock,
+                                    text: getTimeText(time: timeStart),
+                                    onClicked: () => pickTime(
+                                        context: context, time: timeStart),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: column1_width * 3 / 4,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Color(graphique.color['main_color_1']),
+                              border: Border.all(
+                                  width: 1.0,
+                                  color:
+                                      Color(graphique.color['default_black'])),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Visibility(
+                                  visible: !confirm,
+                                  child: Container(
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                          color: Color(graphique
+                                              .color['default_yellow']),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      margin: const EdgeInsets.only(
+                                          right: 10, top: 20, bottom: 20),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          setState(() {
+                                            confirm = true;
+                                            confirm_color = Color(graphique
+                                                .color['default_blue']);
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.add,
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              graphique.languagefr[
+                                                      'create_tournee_page']
+                                                  ['change_button'],
+                                              style: TextStyle(
+                                                color: Color(graphique
+                                                    .color['default_black']),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                                Visibility(
+                                  visible: confirm,
+                                  child: Container(
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                          color: Color(graphique
+                                              .color['default_yellow']),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      margin: const EdgeInsets.only(
+                                          right: 10, top: 20, bottom: 20),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          if (choiceIdCollecteur == 'null' ||
+                                              choiceIdVehicule == 'null') {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Please Select Collecteur and Vehicule",
+                                                gravity: ToastGravity.TOP);
+                                          } else {
+                                            if (newIdTournee == '') {
+                                              newIdTournee =
+                                                  _tournee.doc().id.toString();
+                                              await _tournee
+                                                  .doc(newIdTournee)
+                                                  .set({
+                                                'idTournee': newIdTournee,
+                                                'idCollecteur':
+                                                    choiceIdCollecteur,
+                                                'idVehicule': choiceIdVehicule,
+                                                'dateTournee':
+                                                    getDateText(date: date),
+                                                'startTime': getTimeText(
+                                                    time: timeStart),
+                                                'isCreating': 'true',
+                                              });
+                                            } else {
+                                              await _tournee
+                                                  .doc(newIdTournee)
+                                                  .update({
+                                                'idCollecteur':
+                                                    choiceIdCollecteur,
+                                                'idVehicule': choiceIdVehicule,
+                                                'dateTournee':
+                                                    getDateText(date: date),
+                                                'startTime': getTimeText(
+                                                    time: timeStart),
+                                              });
+                                            }
+                                            setState(() {
+                                              confirm = false;
+                                              confirm_color = Color(graphique
+                                                  .color['default_grey']);
+                                            });
+                                          }
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.add,
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              graphique.languagefr[
+                                                      'create_tournee_page']
+                                                  ['confirm_button'],
+                                              style: TextStyle(
+                                                color: Color(graphique
+                                                    .color['default_black']),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                )
+                              ],
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      const Divider(
-                        thickness: 5,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                Container(
-                    height: 60,
-                    color: Colors.red,
+                  // ignore: prefer_const_constructors
+                  Divider(
+                    thickness: 5,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    width: column1_width * 0.8,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['default_blue']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.cog,
-                              size: 15,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              ' Informations et paramètres',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                      ],
-                    )),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 500,
-                  width: 800,
-                  color: confirm_color,
-                  child: Form(
-                    key: _createTourneeKeyForm,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          height: 50,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: Row(
                             children: [
                               Icon(
-                                FontAwesomeIcons.user,
-                                size: 30,
+                                FontAwesomeIcons.flag,
+                                size: 15,
+                                color: Color(graphique.color['main_color_2']),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text('Collecteur',
+                              Text(
+                                  graphique.languagefr['create_tournee_page']
+                                      ['field_5_title'],
                                   style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['main_color_2']),
                                       fontWeight: FontWeight.w600)),
-                              SizedBox(width: 10),
+                              SizedBox(
+                                width: 10,
+                              ),
                               StreamBuilder<QuerySnapshot>(
-                                  stream: _collecteur.snapshots(),
+                                  stream: _partenaire.snapshots(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     if (snapshot.hasError) {
@@ -327,29 +795,28 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                     }
                                     return DropdownButton(
                                       onChanged: (String? changedValue) {
-                                        if (confirm) {
-                                          setState(() {
-                                            choiceIdCollecteur = changedValue!;
-                                          });
-                                        } else {
-                                          null;
-                                        }
+                                        setState(() {
+                                          choiceIdPartenaire = changedValue!;
+                                          choiceIdAdresse = 'null';
+                                        });
                                       },
-                                      value: choiceIdCollecteur,
+                                      value: choiceIdPartenaire,
                                       items: snapshot.data!.docs.map(
                                           (DocumentSnapshot
-                                              document_collecteur) {
-                                        Map<String, dynamic> dataCollecteur =
-                                            document_collecteur.data()!
+                                              document_partenaire) {
+                                        Map<String, dynamic> dataPartenaire =
+                                            document_partenaire.data()!
                                                 as Map<String, dynamic>;
 
                                         return DropdownMenuItem<String>(
-                                          value: dataCollecteur['idCollecteur'],
-                                          child: new Text(
-                                              dataCollecteur['nomCollecteur'] +
-                                                  ' ' +
-                                                  dataCollecteur[
-                                                      'prenomCollecteur']),
+                                          value: dataPartenaire['idPartenaire'],
+                                          child: Text(
+                                              dataPartenaire['nomPartenaire'],
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Color(graphique
+                                                    .color['main_color_2']),
+                                              )),
                                         );
                                       }).toList(),
                                     );
@@ -357,32 +824,43 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           width: 400,
-                          height: 50,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: Row(
                             children: [
                               Icon(
-                                FontAwesomeIcons.truck,
-                                size: 30,
+                                FontAwesomeIcons.mapMarker,
+                                size: 15,
+                                color: Color(graphique.color['main_color_2']),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text('Vehicule',
+                              Text(
+                                  graphique.languagefr['create_tournee_page']
+                                      ['field_6_title'],
                                   style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['main_color_2']),
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 width: 10,
                               ),
                               StreamBuilder<QuerySnapshot>(
-                                  stream: _vehicule.snapshots(),
+                                  stream: _adresse
+                                      .where('idPartenaireAdresse',
+                                          isEqualTo: choiceIdPartenaire)
+                                      .snapshots(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     if (snapshot.hasError) {
@@ -395,544 +873,126 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                     }
                                     return DropdownButton(
                                       onChanged: (String? changedValue) {
-                                        if (confirm) {
-                                          setState(() {
-                                            choiceIdVehicule = changedValue!;
-                                          });
-                                        } else {
-                                          null;
-                                        }
+                                        setState(() {
+                                          choiceIdAdresse = changedValue!;
+                                          choiceIdFrequence = 'null';
+                                        });
                                       },
-                                      value: choiceIdVehicule,
+                                      value: choiceIdAdresse,
                                       items: snapshot.data!.docs.map(
-                                          (DocumentSnapshot document_vehicule) {
-                                        Map<String, dynamic> dataVehicule =
-                                            document_vehicule.data()!
+                                          (DocumentSnapshot document_adresse) {
+                                        Map<String, dynamic> dataAdresse =
+                                            document_adresse.data()!
                                                 as Map<String, dynamic>;
 
                                         return DropdownMenuItem<String>(
-                                            value: dataVehicule['idVehicule'],
-                                            child: Row(children: [
-                                              buildVehiculeIcon(
-                                                  icontype: dataVehicule[
-                                                      'typeVehicule'],
-                                                  iconcolor: dataVehicule[
-                                                          'colorIconVehicule']
-                                                      .toUpperCase(),
-                                                  sizeIcon: 15.0),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(dataVehicule['nomVehicule'] +
-                                                  ' ' +
-                                                  dataVehicule[
-                                                      'numeroImmatriculation']),
-                                            ]));
+                                          value: dataAdresse['idAdresse'],
+                                          child: Text(
+                                            dataAdresse['nomPartenaireAdresse'],
+                                            style: TextStyle(
+                                              color: Color(graphique
+                                                  .color['main_color_2']),
+                                            ),
+                                          ),
+                                        );
                                       }).toList(),
                                     );
                                   }),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Container(
+                          height: 50,
+                          margin: EdgeInsets.only(top: 10, bottom: 20),
                           width: 400,
-                          height: 100,
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(graphique.color['main_color_1']),
+                            ),
+                            color:
+                                Color(graphique.color['special_bureautique_1']),
+                          ),
                           child: Row(
                             children: [
                               Icon(
-                                Icons.calendar_today_rounded,
-                                size: 30,
+                                FontAwesomeIcons.flag,
+                                size: 17,
+                                color: Color(graphique.color['main_color_2']),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text('Date de Planning',
+                              Text(
+                                  graphique.languagefr['create_tournee_page']
+                                      ['field_7_title'],
                                   style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.black,
+                                      color: Color(
+                                          graphique.color['main_color_2']),
                                       fontWeight: FontWeight.w600)),
-                              SizedBox(width: 10),
-                              Container(
-                                height: 50,
-                                width: 150,
-                                color: Colors.red,
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      if (confirm) {
-                                        pickDate(context);
-                                      } else {
-                                        null;
-                                      }
-                                    },
-                                    child: Text(
-                                      DateFormat('yMd').format(date).toString(),
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 15),
-                                    )),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: 400,
-                          height: 100,
-                          color: Colors.red,
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.calendar_today_rounded,
-                                size: 30,
-                              ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text('Date de Planning',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(width: 10),
-                              Container(
-                                height: 50,
-                                width: 200,
-                                color: Colors.red,
-                                child: ButtonWidget(
-                                  icon: Icons.calendar_today,
-                                  text: 'StartTime: ' +
-                                      //     '${timeStart.hour}:${timeStart.minute}'
-                                      getTimeText(time: timeStart),
-                                  onClicked: () => pickTime(
-                                      context: context, time: timeStart),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: 800,
-                          height: 80,
-                          color: Colors.red,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Visibility(
-                                visible: !confirm,
-                                child: Container(
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                        color: Colors.yellow,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    margin: const EdgeInsets.only(
-                                        right: 10, top: 20, bottom: 20),
-                                    child: GestureDetector(
-                                      onTap: () async {
+                              StreamBuilder<QuerySnapshot>(
+                                  stream: _frequence
+                                      .where('idAdresseFrequence',
+                                          isEqualTo: choiceIdAdresse)
+                                      .snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Something went wrong');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    return DropdownButton(
+                                      onChanged: (String? changedValue) {
                                         setState(() {
-                                          confirm = true;
-                                          confirm_color = Colors.blue;
+                                          choiceIdFrequence = changedValue!;
                                         });
                                       },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            'Change',
+                                      value: choiceIdFrequence,
+                                      items: snapshot.data!.docs.map(
+                                          (DocumentSnapshot
+                                              document_frequence) {
+                                        Map<String, dynamic> dataFrequence =
+                                            document_frequence.data()!
+                                                as Map<String, dynamic>;
+
+                                        return DropdownMenuItem<String>(
+                                          value: dataFrequence['idFrequence'],
+                                          child: Text(
+                                            dataFrequence['jourFrequence'] +
+                                                ' ' +
+                                                dataFrequence[
+                                                    'startFrequence'] +
+                                                ' - ' +
+                                                dataFrequence['endFrequence'],
                                             style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
+                                              color: Color(graphique
+                                                  .color['main_color_2']),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    )),
-                              ),
-                              Visibility(
-                                visible: confirm,
-                                child: Container(
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                        color: Colors.yellow,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    margin: const EdgeInsets.only(
-                                        right: 10, top: 20, bottom: 20),
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        if (choiceIdCollecteur == 'null' ||
-                                            choiceIdVehicule == 'null') {
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "Please Select Collecteur and Vehicule",
-                                              gravity: ToastGravity.TOP);
-                                        } else {
-                                          if (newIdTournee == '') {
-                                            newIdTournee =
-                                                _tournee.doc().id.toString();
-                                            await _tournee
-                                                .doc(newIdTournee)
-                                                .set({
-                                              'idTournee': newIdTournee,
-                                              'idCollecteur':
-                                                  choiceIdCollecteur,
-                                              'idVehicule': choiceIdVehicule,
-                                              'dateTournee':
-                                                  getDateText(date: date),
-                                              'startTime':
-                                                  getTimeText(time: timeStart),
-                                              'isCreating': 'true',
-                                            });
-                                          } else {
-                                            await _tournee
-                                                .doc(newIdTournee)
-                                                .update({
-                                              'idCollecteur':
-                                                  choiceIdCollecteur,
-                                              'idVehicule': choiceIdVehicule,
-                                              'dateTournee':
-                                                  getDateText(date: date),
-                                              'startTime':
-                                                  getTimeText(time: timeStart),
-                                            });
-                                          }
-                                          setState(() {
-                                            confirm = false;
-                                            confirm_color = Colors.grey;
-                                          });
-                                        }
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            'Confirm',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              )
+                                        );
+                                      }).toList(),
+                                    );
+                                  }),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                // ignore: prefer_const_constructors
-                Divider(
-                  thickness: 5,
-                ),
-                Container(
-                  width: 600,
-                  height: 300,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 400,
-                        height: 50,
-                        color: Colors.red,
-                        child: Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.flag,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('Partenaire',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600)),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            StreamBuilder<QuerySnapshot>(
-                                stream: _partenaire.snapshots(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text('Something went wrong');
-                                  }
-
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  }
-                                  return DropdownButton(
-                                    onChanged: (String? changedValue) {
-                                      setState(() {
-                                        choiceIdPartenaire = changedValue!;
-                                        choiceIdAdresse = 'null';
-                                      });
-                                    },
-                                    value: choiceIdPartenaire,
-                                    items: snapshot.data!.docs.map(
-                                        (DocumentSnapshot document_partenaire) {
-                                      Map<String, dynamic> dataPartenaire =
-                                          document_partenaire.data()!
-                                              as Map<String, dynamic>;
-
-                                      return DropdownMenuItem<String>(
-                                        value: dataPartenaire['idPartenaire'],
-                                        child: Text(
-                                            dataPartenaire['nomPartenaire']),
-                                      );
-                                    }).toList(),
-                                  );
-                                }),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: 400,
-                        height: 50,
-                        color: Colors.red,
-                        child: Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.mapMarker,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('Adresse',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600)),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            StreamBuilder<QuerySnapshot>(
-                                stream: _adresse
-                                    .where('idPartenaireAdresse',
-                                        isEqualTo: choiceIdPartenaire)
-                                    .snapshots(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text('Something went wrong');
-                                  }
-
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  }
-                                  return DropdownButton(
-                                    onChanged: (String? changedValue) {
-                                      setState(() {
-                                        choiceIdAdresse = changedValue!;
-                                        choiceIdFrequence = 'null';
-                                      });
-                                    },
-                                    value: choiceIdAdresse,
-                                    items: snapshot.data!.docs.map(
-                                        (DocumentSnapshot document_adresse) {
-                                      Map<String, dynamic> dataAdresse =
-                                          document_adresse.data()!
-                                              as Map<String, dynamic>;
-
-                                      return DropdownMenuItem<String>(
-                                        value: dataAdresse['idAdresse'],
-                                        child: Text(dataAdresse[
-                                            'nomPartenaireAdresse']),
-                                      );
-                                    }).toList(),
-                                  );
-                                }),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: 400,
-                        height: 50,
-                        color: Colors.red,
-                        child: Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.flag,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('Frequence',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600)),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            StreamBuilder<QuerySnapshot>(
-                                stream: _frequence
-                                    .where('idAdresseFrequence',
-                                        isEqualTo: choiceIdAdresse)
-                                    .snapshots(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text('Something went wrong');
-                                  }
-
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  }
-                                  return DropdownButton(
-                                    onChanged: (String? changedValue) {
-                                      setState(() {
-                                        choiceIdFrequence = changedValue!;
-                                      });
-                                    },
-                                    value: choiceIdFrequence,
-                                    items: snapshot.data!.docs.map(
-                                        (DocumentSnapshot document_frequence) {
-                                      Map<String, dynamic> dataFrequence =
-                                          document_frequence.data()!
-                                              as Map<String, dynamic>;
-
-                                      return DropdownMenuItem<String>(
-                                        value: dataFrequence['idFrequence'],
-                                        child: Text(dataFrequence[
-                                                'jourFrequence'] +
-                                            ' ' +
-                                            dataFrequence['startFrequence'] +
-                                            ' - ' +
-                                            dataFrequence['endFrequence']),
-                                      );
-                                    }).toList(),
-                                  );
-                                }),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          late DateTime dateMinimale;
-                          late DateTime dateMaximale;
-                          bool min_after = false;
-                          bool max_after = false;
-                          bool time_start_after = false;
-                          bool time_end_after = false;
-                          String datelimit = '';
-                          await _frequence
-                              .where('idFrequence',
-                                  isEqualTo: choiceIdFrequence)
-                              .limit(1)
-                              .get()
-                              .then((QuerySnapshot querySnapshot) {
-                            querySnapshot.docs.forEach((doc) {
-                              _jourPlanning = doc['jourFrequence'];
-                              DateTime dateMinimale = DateTime(
-                                  int.parse(doc['dateMinimaleFrequence']
-                                      .substring(6)),
-                                  int.parse(doc['dateMinimaleFrequence']
-                                      .substring(3, 5)),
-                                  int.parse(doc['dateMinimaleFrequence']
-                                      .substring(0, 2)));
-                              DateTime dateMaximale = DateTime(
-                                  int.parse(doc['dateMaximaleFrequence']
-                                      .substring(6)),
-                                  int.parse(doc['dateMaximaleFrequence']
-                                      .substring(3, 5)),
-                                  int.parse(doc['dateMaximaleFrequence']
-                                      .substring(0, 2)));
-                              min_after = dateMinimale.isAfter(date);
-                              max_after = date.isAfter(dateMaximale);
-                              datelimit = 'Date Limit is: ' +
-                                  DateFormat('yMd')
-                                      .format(dateMinimale)
-                                      .toString() +
-                                  ' - ' +
-                                  DateFormat('yMd')
-                                      .format(dateMaximale)
-                                      .toString();
-                              TimeOfDay startTime = TimeOfDay(
-                                  hour: int.parse(
-                                      doc['startFrequence'].substring(0, 2)),
-                                  minute: int.parse(
-                                      doc['startFrequence'].substring(3)));
-                              TimeOfDay endTime = TimeOfDay(
-                                  hour: int.parse(
-                                      doc['endFrequence'].substring(0, 2)),
-                                  minute: int.parse(
-                                      doc['endFrequence'].substring(3)));
-                              if (startTime.hour < timeStart.hour &&
-                                  startTime.minute < timeStart.minute) {
-                                time_start_after = true;
-                              }
-                            });
-                          });
-                          print('$min_after');
-                          print('$max_after');
-                          print('$datelimit');
-                          if (confirm) {
-                            Fluttertoast.showToast(
-                                msg:
-                                    "Please Confirm Collecteur, Vehicule and Date before",
-                                gravity: ToastGravity.TOP);
-                          } else if (choiceIdAdresse == 'null' ||
-                              choiceIdPartenaire == 'null') {
-                            Fluttertoast.showToast(
-                                msg: "Please select Partenaire and Adresse",
-                                gravity: ToastGravity.TOP);
-                          } else if (choiceIdFrequence == 'null') {
-                            Fluttertoast.showToast(
-                                msg: "Please select a Frequence",
-                                gravity: ToastGravity.TOP);
-                          } else if (checkday(check_date: date) !=
-                              _jourPlanning) {
-                            Fluttertoast.showToast(
-                                msg: "That Frequence is not in that day",
-                                gravity: ToastGravity.TOP);
-                          } else if (min_after || max_after) {
-                            Fluttertoast.showToast(
-                                msg: datelimit, gravity: ToastGravity.TOP);
-                          } else if (time_start_after) {
-                            Fluttertoast.showToast(
-                                msg: 'Please check your time',
-                                gravity: ToastGravity.TOP);
-                          } else {
+                        ElevatedButton(
+                          onPressed: () async {
+                            late DateTime dateMinimale;
+                            late DateTime dateMaximale;
+                            bool min_after = false;
+                            bool max_after = false;
+                            bool time_start_after = false;
+                            bool time_end_after = false;
+                            String datelimit = '';
                             await _frequence
                                 .where('idFrequence',
                                     isEqualTo: choiceIdFrequence)
@@ -940,85 +1000,234 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                 .get()
                                 .then((QuerySnapshot querySnapshot) {
                               querySnapshot.docs.forEach((doc) {
-                                list_choiceIdFrequence.add(doc['idFrequence']);
-                                list_startFrequence.add(doc['startFrequence']);
-                                list_endFrequence.add(doc['endFrequence']);
-                                list_tarifFrequence.add(doc['tarifFrequence']);
-                                list_dateMaximaleFrequence.add(DateTime(
-                                    int.parse(doc['dateMaximaleFrequence']
-                                        .substring(6)),
-                                    int.parse(doc['dateMaximaleFrequence']
-                                        .substring(3, 5)),
-                                    int.parse(doc['dateMaximaleFrequence']
-                                        .substring(0, 2))));
-                                list_dateMinimaleFrequence.add(DateTime(
+                                _jourPlanning = doc['jourFrequence'];
+                                DateTime dateMinimale = DateTime(
                                     int.parse(doc['dateMinimaleFrequence']
                                         .substring(6)),
                                     int.parse(doc['dateMinimaleFrequence']
                                         .substring(3, 5)),
                                     int.parse(doc['dateMinimaleFrequence']
-                                        .substring(0, 2))));
+                                        .substring(0, 2)));
+                                DateTime dateMaximale = DateTime(
+                                    int.parse(doc['dateMaximaleFrequence']
+                                        .substring(6)),
+                                    int.parse(doc['dateMaximaleFrequence']
+                                        .substring(3, 5)),
+                                    int.parse(doc['dateMaximaleFrequence']
+                                        .substring(0, 2)));
+                                min_after = dateMinimale.isAfter(date);
+                                max_after = date.isAfter(dateMaximale);
+                                datelimit = 'Date Limit is: ' +
+                                    DateFormat('yMd')
+                                        .format(dateMinimale)
+                                        .toString() +
+                                    ' - ' +
+                                    DateFormat('yMd')
+                                        .format(dateMaximale)
+                                        .toString();
+                                TimeOfDay startTime = TimeOfDay(
+                                    hour: int.parse(
+                                        doc['startFrequence'].substring(0, 2)),
+                                    minute: int.parse(
+                                        doc['startFrequence'].substring(3)));
+                                TimeOfDay endTime = TimeOfDay(
+                                    hour: int.parse(
+                                        doc['endFrequence'].substring(0, 2)),
+                                    minute: int.parse(
+                                        doc['endFrequence'].substring(3)));
+                                if (startTime.hour < timeStart.hour &&
+                                    startTime.minute < timeStart.minute) {
+                                  time_start_after = true;
+                                }
                               });
                             });
+                            print('$min_after');
+                            print('$max_after');
+                            print('$datelimit');
+                            if (confirm) {
+                              Fluttertoast.showToast(
+                                  msg:
+                                      "Please Confirm Collecteur, Vehicule and Date before",
+                                  gravity: ToastGravity.TOP);
+                            } else if (choiceIdAdresse == 'null' ||
+                                choiceIdPartenaire == 'null') {
+                              Fluttertoast.showToast(
+                                  msg: "Please select Partenaire and Adresse",
+                                  gravity: ToastGravity.TOP);
+                            } else if (choiceIdFrequence == 'null') {
+                              Fluttertoast.showToast(
+                                  msg: "Please select a Frequence",
+                                  gravity: ToastGravity.TOP);
+                            } else if (checkday(check_date: date) !=
+                                _jourPlanning) {
+                              Fluttertoast.showToast(
+                                  msg: "That Frequence is not in that day",
+                                  gravity: ToastGravity.TOP);
+                            } else if (min_after || max_after) {
+                              Fluttertoast.showToast(
+                                  msg: datelimit, gravity: ToastGravity.TOP);
+                            } else if (time_start_after) {
+                              Fluttertoast.showToast(
+                                  msg: 'Please check your time',
+                                  gravity: ToastGravity.TOP);
+                            } else {
+                              await _frequence
+                                  .where('idFrequence',
+                                      isEqualTo: choiceIdFrequence)
+                                  .limit(1)
+                                  .get()
+                                  .then((QuerySnapshot querySnapshot) {
+                                querySnapshot.docs.forEach((doc) {
+                                  list_choiceIdFrequence
+                                      .add(doc['idFrequence']);
+                                  list_startFrequence
+                                      .add(doc['startFrequence']);
+                                  list_endFrequence.add(doc['endFrequence']);
+                                  list_tarifFrequence
+                                      .add(doc['tarifFrequence']);
+                                  list_dateMaximaleFrequence.add(DateTime(
+                                      int.parse(doc['dateMaximaleFrequence']
+                                          .substring(6)),
+                                      int.parse(doc['dateMaximaleFrequence']
+                                          .substring(3, 5)),
+                                      int.parse(doc['dateMaximaleFrequence']
+                                          .substring(0, 2))));
+                                  list_dateMinimaleFrequence.add(DateTime(
+                                      int.parse(doc['dateMinimaleFrequence']
+                                          .substring(6)),
+                                      int.parse(doc['dateMinimaleFrequence']
+                                          .substring(3, 5)),
+                                      int.parse(doc['dateMinimaleFrequence']
+                                          .substring(0, 2))));
+                                });
+                              });
 
-                            await _partenaire
-                                .where('idPartenaire',
-                                    isEqualTo: choiceIdPartenaire)
-                                .limit(1)
-                                .get()
-                                .then((QuerySnapshot querySnapshot) {
-                              querySnapshot.docs.forEach((doc) {
-                                list_choiceIdPartenaire
-                                    .add(doc['idPartenaire']);
-                                list_choiceNomPartenaire
-                                    .add(doc['nomPartenaire']);
+                              await _partenaire
+                                  .where('idPartenaire',
+                                      isEqualTo: choiceIdPartenaire)
+                                  .limit(1)
+                                  .get()
+                                  .then((QuerySnapshot querySnapshot) {
+                                querySnapshot.docs.forEach((doc) {
+                                  list_choiceIdPartenaire
+                                      .add(doc['idPartenaire']);
+                                  list_choiceNomPartenaire
+                                      .add(doc['nomPartenaire']);
+                                });
                               });
-                            });
-                            await _adresse
-                                .where('idAdresse', isEqualTo: choiceIdAdresse)
-                                .limit(1)
-                                .get()
-                                .then((QuerySnapshot querySnapshot) {
-                              querySnapshot.docs.forEach((doc) {
-                                list_choiceIdAdresse.add(doc['idAdresse']);
-                                list_choiceNomPartenaireAdresse
-                                    .add(doc['nomPartenaireAdresse']);
-                                list_latitudeAdresse
-                                    .add(doc['latitudeAdresse']);
-                                list_longitudeAdresse
-                                    .add(doc['longitudeAdresse']);
-                                list_ligne1Adresse.add(doc['ligne1Adresse']);
+                              await _adresse
+                                  .where('idAdresse',
+                                      isEqualTo: choiceIdAdresse)
+                                  .limit(1)
+                                  .get()
+                                  .then((QuerySnapshot querySnapshot) {
+                                querySnapshot.docs.forEach((doc) {
+                                  list_choiceIdAdresse.add(doc['idAdresse']);
+                                  list_choiceNomPartenaireAdresse
+                                      .add(doc['nomPartenaireAdresse']);
+                                  list_latitudeAdresse
+                                      .add(doc['latitudeAdresse']);
+                                  list_longitudeAdresse
+                                      .add(doc['longitudeAdresse']);
+                                  list_ligne1Adresse.add(doc['ligne1Adresse']);
+                                });
                               });
-                            });
-                            list_Etape_confirm.add(false);
-                            list_IdEtape.add(_etape.doc().id);
-                            list_color_etape.add(Colors.blue);
-                            setState(() {
-                              _count++;
-                            });
-                          }
-                        },
-                        child: const Icon(Icons.add),
+                              list_Etape_confirm.add(false);
+                              list_IdEtape.add(_etape.doc().id);
+                              list_color_etape
+                                  .add(Color(graphique.color['default_blue']));
+                              setState(() {
+                                _count++;
+                              });
+                            }
+                          },
+                          child: Icon(Icons.add,
+                              color: Color(graphique.color['default_yellow'])),
+                        ),
+                      ],
+                    ),
+                  ),
+                ])),
+            Container(
+              margin: const EdgeInsets.only(
+                right: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: column2_width,
+              height: 1200,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
+              child: Column(children: [
+                Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(width: 20),
+                      Icon(
+                        FontAwesomeIcons.listUl,
+                        size: 17,
+                        color: Color(graphique.color['main_color_2']),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        graphique.languagefr['create_tournee_page']['step_form']
+                            ['form_title'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                Divider(
-                  thickness: 5,
-                ),
                 Container(
-                    width: 600,
-                    height: 50,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 20),
-                        Text('Steps:',
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600)),
-                      ],
-                    )),
+                  margin: const EdgeInsets.only(top: 20),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['main_color_1']),
+                    border: Border.all(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(
+                        FontAwesomeIcons.cog,
+                        size: 15,
+                        color: Color(graphique.color['main_color_2']),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        graphique.languagefr['create_tournee_page']['step_form']
+                            ['form_subtitle'],
+                        style: TextStyle(
+                          color: Color(graphique.color['main_color_2']),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 20),
                     height: 800,
@@ -1030,27 +1239,45 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 20),
                   alignment: Alignment.centerLeft,
+                  width: column2_width * 0.95,
                   height: 80,
-                  color: Colors.blue,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['default_blue']),
+                    border: Border.all(
+                      width: 1.0,
+                      color: Color(graphique.color['default_black']),
+                    ),
+                  ),
                   child: Text(
-                    'Duration: ' + left_limit + '-' + right_limit,
+                    graphique.languagefr['create_tournee_page']
+                            ['duration_line'] +
+                        ':  ' +
+                        left_limit +
+                        ' - ' +
+                        right_limit,
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Color(graphique.color['default_black']),
                         fontWeight: FontWeight.bold,
                         fontSize: 15),
                   ),
                 ),
                 Container(
-                  width: 800,
+                  width: column2_width * 0.95,
                   height: 80,
-                  color: Colors.red,
+                  decoration: BoxDecoration(
+                    color: Color(graphique.color['default_red']),
+                    border: Border.all(
+                      width: 1.0,
+                      color: Color(graphique.color['default_black']),
+                    ),
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
                           width: 100,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -1084,16 +1311,19 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                             child: Row(
                               children: [
                                 Icon(
-                                  Icons.add,
-                                  color: Colors.white,
+                                  Icons.delete,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Cancel',
+                                  graphique.languagefr['create_tournee_page']
+                                      ['button_1'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -1107,7 +1337,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                       Container(
                           width: 200,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -1524,15 +1754,18 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Add Planning in duration',
+                                  graphique.languagefr['create_tournee_page']
+                                      ['button_2'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -1546,7 +1779,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                       Container(
                           width: 180,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -1714,15 +1947,18 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Add New Planning',
+                                  graphique.languagefr['create_tournee_page']
+                                      ['button_3'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -1733,70 +1969,132 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                     ],
                   ),
                 ),
-              ])))
+              ]),
+            ),
+          ]),
     ])));
   }
 
   addStepWidget({required int element}) {
+    double step_width = MediaQuery.of(context).size.width * 0.45 * 0.9;
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
       height: 320,
-      width: 600,
-      color: list_color_etape[element],
+      width: step_width,
+      decoration: BoxDecoration(
+        color: list_color_etape[element],
+        border: Border.all(
+            width: 1.0, color: Color(graphique.color['default_black'])),
+      ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 20),
-              Text('Etape: ' + (element + 1).toString())
+              Text(
+                graphique.languagefr['create_tournee_page']['step_form']
+                        ['field_1_title'] +
+                    ': ' +
+                    (element + 1).toString(),
+                style: TextStyle(
+                  color: Color(graphique.color['default_black']),
+                ),
+              )
             ],
           ),
           SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 20),
-              Text('Nom Partenaire: ' + list_choiceNomPartenaire[element])
+              Text(
+                graphique.languagefr['create_tournee_page']['step_form']
+                        ['field_2_title'] +
+                    ': ' +
+                    list_choiceNomPartenaire[element],
+                style: TextStyle(
+                  color: Color(graphique.color['default_black']),
+                ),
+              )
             ],
           ),
           SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 20),
-              Text('Nom Partenaire Adresse: ' +
-                  list_choiceNomPartenaireAdresse[element])
+              Text(
+                graphique.languagefr['create_tournee_page']['step_form']
+                        ['field_3_title'] +
+                    ': ' +
+                    list_choiceNomPartenaireAdresse[element],
+                style: TextStyle(
+                  color: Color(graphique.color['default_black']),
+                ),
+              )
             ],
           ),
           SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 20),
-              Text('Adresse ' + list_ligne1Adresse[element])
+              Text(
+                graphique.languagefr['create_tournee_page']['step_form']
+                        ['field_4_title'] +
+                    ': ' +
+                    list_ligne1Adresse[element],
+                style: TextStyle(
+                  color: Color(graphique.color['default_black']),
+                ),
+              )
             ],
           ),
           SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 20),
-              Text('Duree ' +
-                  list_startFrequence[element] +
-                  ' - ' +
-                  list_endFrequence[element])
+              Text(
+                graphique.languagefr['create_tournee_page']['step_form']
+                        ['field_5_title'] +
+                    ': ' +
+                    list_startFrequence[element] +
+                    ' - ' +
+                    list_endFrequence[element],
+                style: TextStyle(
+                  color: Color(graphique.color['default_black']),
+                ),
+              )
             ],
           ),
           SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 20),
-              Text('Tarif ' + list_tarifFrequence[element])
+              Text(
+                graphique.languagefr['create_tournee_page']['step_form']
+                        ['field_6_title'] +
+                    ': ' +
+                    list_tarifFrequence[element],
+                style: TextStyle(
+                  color: Color(graphique.color['default_black']),
+                ),
+              )
             ],
           ),
           SizedBox(height: 20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 600,
+                alignment: Alignment.center,
+                width: step_width * 0.9,
                 height: 80,
-                color: Colors.red,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['main_color_1']),
+                  border: Border.all(
+                      width: 1.0,
+                      color: Color(graphique.color['default_black'])),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -1805,7 +2103,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                       child: Container(
                           width: 100,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -1820,12 +2118,14 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                   left_limit = '';
                                   right_limit = '';
                                   list_Etape_confirm[element] = false;
-                                  list_color_etape[element] = Colors.blue;
+                                  list_color_etape[element] =
+                                      Color(graphique.color['default_blue']);
                                 });
                               } else {
                                 setState(() {
                                   list_Etape_confirm[element] = false;
-                                  list_color_etape[element] = Colors.blue;
+                                  list_color_etape[element] =
+                                      Color(graphique.color['default_blue']);
                                 });
                                 bool find_first_true_element = false;
                                 late DateTime newMinFrequence;
@@ -1865,15 +2165,18 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Remove',
+                                  graphique.languagefr['create_tournee_page']
+                                      ['step_form']['remove_button'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -1885,9 +2188,9 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                     Visibility(
                       visible: !list_Etape_confirm[element],
                       child: Container(
-                          width: 80,
+                          width: 100,
                           decoration: BoxDecoration(
-                              color: Colors.yellow,
+                              color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(
                               right: 10, top: 20, bottom: 20),
@@ -1902,7 +2205,8 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                       date:
                                           list_dateMaximaleFrequence[element]);
                                   list_Etape_confirm[element] = true;
-                                  list_color_etape[element] = Colors.grey;
+                                  list_color_etape[element] =
+                                      Color(graphique.color['default_grey']);
                                 });
                               } else {
                                 DateTime date_left_limit = DateTime(
@@ -1928,7 +2232,8 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                                               element])
                                       : right_limit;
                                   list_Etape_confirm[element] = true;
-                                  list_color_etape[element] = Colors.grey;
+                                  list_color_etape[element] =
+                                      Color(graphique.color['default_grey']);
                                 });
                               }
                             },
@@ -1936,15 +2241,18 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                               children: [
                                 Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color:
+                                      Color(graphique.color['default_black']),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Add',
+                                  graphique.languagefr['create_tournee_page']
+                                      ['step_form']['add_button'],
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:
+                                        Color(graphique.color['default_black']),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
