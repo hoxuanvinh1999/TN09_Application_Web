@@ -36,8 +36,11 @@ class _UserInforPageState extends State<UserInforPage> {
 
   @override
   Widget build(BuildContext context) {
+    // For width of table
+    double column1_width = MediaQuery.of(context).size.width * 0.45;
+    double column2_width = MediaQuery.of(context).size.width * 0.45;
     inputData();
-    print('$check');
+    // print('$check');
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(
@@ -45,8 +48,14 @@ class _UserInforPageState extends State<UserInforPage> {
         header(context: context),
         menu(context: context),
         Container(
-            color: Colors.yellow,
-            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Color(graphique.color['default_yellow']),
+              border: Border(
+                bottom: BorderSide(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
+            ),
+            width: MediaQuery.of(context).size.width,
             height: 40,
             child: Row(
               children: [
@@ -55,6 +64,7 @@ class _UserInforPageState extends State<UserInforPage> {
                 ),
                 Icon(
                   FontAwesomeIcons.home,
+                  color: Color(graphique.color['default_black']),
                   size: 12,
                 ),
                 SizedBox(width: 5),
@@ -64,7 +74,7 @@ class _UserInforPageState extends State<UserInforPage> {
                       TextSpan(
                           text: 'Home',
                           style: TextStyle(
-                              color: Colors.red,
+                              color: Color(graphique.color['default_red']),
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                           recognizer: TapGestureRecognizer()
@@ -90,9 +100,10 @@ class _UserInforPageState extends State<UserInforPage> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'User Infor',
+                        text: graphique.languagefr['user_infor_page']
+                            ['nom_page'],
                         style: TextStyle(
-                            color: Colors.grey,
+                            color: Color(graphique.color['default_grey']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                       ),
@@ -101,65 +112,104 @@ class _UserInforPageState extends State<UserInforPage> {
                 ),
               ],
             )),
-        SizedBox(height: 20),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 600,
-              height: 400,
-              color: Colors.green,
+              margin: const EdgeInsets.only(
+                left: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: column1_width,
+              height: 650,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(
                 children: [
                   Container(
-                    height: 50,
-                    color: Colors.blue,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
                     child: Row(
                       children: [
                         SizedBox(width: 20),
                         Icon(
                           FontAwesomeIcons.user,
-                          color: Colors.black,
+                          size: 17,
+                          color: Color(graphique.color['main_color_2']),
                         ),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
-                          'Change User Name',
+                          graphique.languagefr['user_infor_page']
+                              ['change_user_name_form']['form_title'],
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 17,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  const Divider(
-                    thickness: 5,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Container(
-                      color: Colors.yellow,
+                      margin: const EdgeInsets.symmetric(vertical: 20),
                       height: 100,
-                      width: 400,
+                      width: column1_width * 2 / 3,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['special_bureautique_2']),
+                        // border: Border.all(width: 1.0),
+                      ),
                       child: Form(
                           key: _changeUserDisplayKeyForm,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                width: 300,
-                                color: Colors.red,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                width: 400,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color:
+                                        Color(graphique.color['main_color_1']),
+                                  ),
+                                  color: Color(
+                                      graphique.color['special_bureautique_1']),
+                                ),
                                 child: TextFormField(
+                                  style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2'])),
+                                  cursorColor:
+                                      Color(graphique.color['main_color_2']),
                                   controller: _displaynameController,
                                   decoration: InputDecoration(
-                                    labelText: 'User Name:',
+                                    labelText:
+                                        graphique.languagefr['user_infor_page']
+                                                ['change_user_name_form']
+                                            ['field_1_title'],
+                                    labelStyle: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                      ),
+                                    ),
                                   ),
                                   validator: (value) {
                                     if (value == null ||
@@ -176,9 +226,9 @@ class _UserInforPageState extends State<UserInforPage> {
                   Container(
                       alignment: Alignment.center,
                       height: 50,
-                      width: 150,
+                      width: column1_width * 3 / 4,
                       decoration: BoxDecoration(
-                          color: Colors.yellow,
+                          color: Color(graphique.color['default_yellow']),
                           borderRadius: BorderRadius.circular(10)),
                       margin:
                           const EdgeInsets.only(right: 10, top: 20, bottom: 20),
@@ -201,9 +251,10 @@ class _UserInforPageState extends State<UserInforPage> {
                           }
                         },
                         child: Text(
-                          'Change',
+                          graphique.languagefr['user_infor_page']
+                              ['change_user_name_form']['button_1'],
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Color(graphique.color['default_black']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
@@ -212,65 +263,99 @@ class _UserInforPageState extends State<UserInforPage> {
                 ],
               ),
             ),
-            SizedBox(
-              width: 20,
-            ),
             Container(
-              margin: EdgeInsets.only(left: 20),
-              width: 600,
-              height: 600,
-              color: Colors.green,
+              margin: const EdgeInsets.only(
+                right: 20,
+                top: 20,
+                bottom: 20,
+              ),
+              width: column2_width,
+              height: 650,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(
                 children: [
                   Container(
-                    height: 50,
-                    color: Colors.blue,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
                     child: Row(
                       children: [
                         SizedBox(width: 20),
                         Icon(
                           FontAwesomeIcons.key,
-                          color: Colors.black,
+                          size: 17,
+                          color: Color(graphique.color['main_color_2']),
                         ),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
-                          'Change Password',
+                          graphique.languagefr['user_infor_page']
+                              ['change_password_form']['form_title'],
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
+                            color: Color(graphique.color['main_color_2']),
+                            fontSize: 17,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  const Divider(
-                    thickness: 5,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Container(
-                      color: Colors.yellow,
                       height: 300,
-                      width: 400,
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      width: column1_width * 2 / 3,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['special_bureautique_2']),
+                        // border: Border.all(width: 1.0),
+                      ),
                       child: Form(
                           key: _changePasswordKeyForm,
                           child: Column(
                             children: [
                               Container(
-                                width: 300,
-                                color: Colors.red,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                width: 400,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color:
+                                        Color(graphique.color['main_color_1']),
+                                  ),
+                                  color: Color(
+                                      graphique.color['special_bureautique_1']),
+                                ),
                                 child: TextFormField(
+                                  style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2'])),
+                                  cursorColor:
+                                      Color(graphique.color['main_color_2']),
                                   obscureText: true,
                                   controller: _currentPasswordController,
                                   decoration: InputDecoration(
-                                    labelText: 'Current Password:',
+                                    labelText:
+                                        graphique.languagefr['user_infor_page']
+                                                ['change_password_form']
+                                            ['field_1_title'],
+                                    labelStyle: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                      ),
+                                    ),
                                   ),
                                   validator: (value) {
                                     if (value == null ||
@@ -281,24 +366,45 @@ class _UserInforPageState extends State<UserInforPage> {
                                     }
                                   },
                                 ),
-                              ),
-                              SizedBox(
-                                height: 5,
                               ),
                               Divider(
                                 thickness: 3,
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
                               Container(
-                                width: 300,
-                                color: Colors.red,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                width: 400,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color:
+                                        Color(graphique.color['main_color_1']),
+                                  ),
+                                  color: Color(
+                                      graphique.color['special_bureautique_1']),
+                                ),
                                 child: TextFormField(
+                                  style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2'])),
+                                  cursorColor:
+                                      Color(graphique.color['main_color_2']),
                                   obscureText: true,
                                   controller: _newPasswordController,
                                   decoration: InputDecoration(
-                                    labelText: 'New Password:',
+                                    labelText:
+                                        graphique.languagefr['user_infor_page']
+                                                ['change_password_form']
+                                            ['field_2_title'],
+                                    labelStyle: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                      ),
+                                    ),
                                   ),
                                   validator: (value) {
                                     if (value == null ||
@@ -310,17 +416,41 @@ class _UserInforPageState extends State<UserInforPage> {
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
                               Container(
-                                width: 300,
-                                color: Colors.red,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                width: 400,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color:
+                                        Color(graphique.color['main_color_1']),
+                                  ),
+                                  color: Color(
+                                      graphique.color['special_bureautique_1']),
+                                ),
                                 child: TextFormField(
+                                  style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2'])),
+                                  cursorColor:
+                                      Color(graphique.color['main_color_2']),
                                   obscureText: true,
                                   controller: _checknewPasswordController,
                                   decoration: InputDecoration(
-                                    labelText: 'Confirm Password:',
+                                    labelText:
+                                        graphique.languagefr['user_infor_page']
+                                                ['change_password_form']
+                                            ['field_3_title'],
+                                    labelStyle: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                      ),
+                                    ),
                                   ),
                                   validator: (value) {
                                     if (value == null ||
@@ -341,9 +471,9 @@ class _UserInforPageState extends State<UserInforPage> {
                   Container(
                       alignment: Alignment.center,
                       height: 50,
-                      width: 150,
+                      width: column1_width * 3 / 4,
                       decoration: BoxDecoration(
-                          color: Colors.yellow,
+                          color: Color(graphique.color['default_yellow']),
                           borderRadius: BorderRadius.circular(10)),
                       margin:
                           const EdgeInsets.only(right: 10, top: 20, bottom: 20),
@@ -358,9 +488,10 @@ class _UserInforPageState extends State<UserInforPage> {
                           }
                         },
                         child: Text(
-                          'Change',
+                          graphique.languagefr['user_infor_page']
+                              ['change_password_form']['button_1'],
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Color(graphique.color['default_black']),
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),

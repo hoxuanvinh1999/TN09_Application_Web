@@ -62,13 +62,20 @@ Widget header({required BuildContext context}) {
                                     Icon(
                                       FontAwesomeIcons.user,
                                       size: 15,
+                                      color: Color(
+                                          graphique.color['default_black']),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
-                                      'User Infor',
-                                      style: TextStyle(fontSize: 15),
+                                      graphique.languagefr['header_page']
+                                          ['user_infor_form']['button_1'],
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(
+                                            graphique.color['default_black']),
+                                      ),
                                     ),
                                   ],
                                 )),
@@ -93,11 +100,21 @@ Widget header({required BuildContext context}) {
                                     Icon(
                                       FontAwesomeIcons.signOutAlt,
                                       size: 15,
+                                      color: Color(
+                                          graphique.color['default_black']),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
-                                    Text('Log Out'),
+                                    Text(
+                                      graphique.languagefr['header_page']
+                                          ['user_infor_form']['button_2'],
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(
+                                            graphique.color['default_black']),
+                                      ),
+                                    ),
                                   ],
                                 )),
                           ),
@@ -134,7 +151,7 @@ Widget header({required BuildContext context}) {
                     Text(
                       displayName!,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Color(graphique.color['default_black']),
                         fontSize: 15,
                       ),
                     ),
