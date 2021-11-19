@@ -15,6 +15,7 @@ import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class ViewPlanningCollecteurPage extends StatefulWidget {
   DateTime thisDay;
@@ -120,8 +121,15 @@ class _ViewPlanningCollecteurPageState
             header(context: context),
             menu(context: context),
             Container(
-                color: Colors.yellow,
-                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['default_yellow']),
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                ),
+                width: MediaQuery.of(context).size.width,
                 height: 40,
                 child: Row(
                   children: [
@@ -131,6 +139,7 @@ class _ViewPlanningCollecteurPageState
                     Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
                     SizedBox(width: 5),
                     RichText(
@@ -139,7 +148,7 @@ class _ViewPlanningCollecteurPageState
                           TextSpan(
                               text: 'Home',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -167,7 +176,7 @@ class _ViewPlanningCollecteurPageState
                           TextSpan(
                               text: 'Semaine #$weeknumber',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -198,7 +207,7 @@ class _ViewPlanningCollecteurPageState
                           TextSpan(
                             text: 'View Collecteur',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Color(graphique.color['default_grey']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -210,167 +219,172 @@ class _ViewPlanningCollecteurPageState
             SizedBox(height: 20),
             Container(
               width: 1200,
-              height: 3000,
-              color: Colors.yellow,
+              height: 4000,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(
                 children: [
                   Container(
-                    color: Colors.blue,
-                    child: Column(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 600,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    width: 120,
-                                    height: 50,
-                                    color: Colors.yellow,
+                        Container(
+                          width: 600,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                width: 120,
+                                height: 50,
+                                color: Color(graphique.color['default_yellow']),
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ViewPlanningCollecteurPage(
+                                                        thisDay: previousWeek,
+                                                      )));
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.stepBackward,
+                                          size: 15,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          pickDate(context);
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.calendar,
+                                          size: 15,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ViewPlanningCollecteurPage(
+                                                        thisDay: nextWeek,
+                                                      )));
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.stepForward,
+                                          size: 15,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Semaine #$weeknumber: Planning du ${firstDayOfWeek.day}/${firstDayOfWeek.month} au ${lastDayOfWeek.day}/${lastDayOfWeek.month}',
+                                style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 500,
+                          height: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                  width: 180,
+                                  decoration: BoxDecoration(
+                                      color: Color(
+                                          graphique.color['default_yellow']),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                      right: 10, top: 20, bottom: 20),
+                                  child: GestureDetector(
+                                    onTap: () {},
                                     child: Row(
                                       children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pushReplacement(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ViewPlanningCollecteurPage(
-                                                            thisDay:
-                                                                previousWeek,
-                                                          )));
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.stepBackward,
-                                              size: 15,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              pickDate(context);
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.calendar,
-                                              size: 15,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pushReplacement(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ViewPlanningCollecteurPage(
-                                                            thisDay: nextWeek,
-                                                          )));
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.stepForward,
-                                              size: 15,
-                                            ))
+                                        Icon(
+                                          Icons.add,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'New Rendez-Vous',
+                                          style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_black']),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Semaine #$weeknumber: Planning du ${firstDayOfWeek.day}/${firstDayOfWeek.month} au ${lastDayOfWeek.day}/${lastDayOfWeek.month}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                                  )),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      color: Color(
+                                          graphique.color['default_yellow']),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                      right: 10, top: 20, bottom: 20),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showActionSubMenu(context: context);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.chevronCircleRight,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Action',
+                                          style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_black']),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 500,
-                              height: 80,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                      width: 180,
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      margin: const EdgeInsets.only(
-                                          right: 10, top: 20, bottom: 20),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'New Rendez-Vous',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      margin: const EdgeInsets.only(
-                                          right: 10, top: 20, bottom: 20),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          showActionSubMenu(context: context);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              FontAwesomeIcons
-                                                  .chevronCircleRight,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'Action',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                        SizedBox(
-                          height: 10,
+                                  )),
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -387,10 +401,12 @@ class _ViewPlanningCollecteurPageState
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: Text(
                             'Collecteur',
-                            style: TextStyle(color: Colors.black, fontSize: 15),
+                            style: TextStyle(
+                                color: Color(graphique.color['default_black']),
+                                fontSize: 15),
                           ),
                         ),
                         SizedBox(width: 2),
@@ -398,7 +414,7 @@ class _ViewPlanningCollecteurPageState
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -427,7 +443,7 @@ class _ViewPlanningCollecteurPageState
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -456,7 +472,7 @@ class _ViewPlanningCollecteurPageState
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -485,7 +501,7 @@ class _ViewPlanningCollecteurPageState
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -514,7 +530,7 @@ class _ViewPlanningCollecteurPageState
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -542,7 +558,7 @@ class _ViewPlanningCollecteurPageState
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -571,7 +587,7 @@ class _ViewPlanningCollecteurPageState
                             width: 140,
                             height: 50,
                             alignment: Alignment.center,
-                            color: Colors.grey,
+                            color: Color(graphique.color['default_grey']),
                             child: Text(
                               'Total',
                               style: TextStyle(fontSize: 15),
@@ -638,7 +654,9 @@ class _ViewPlanningCollecteurPageState
                                                               'prenomCollecteur'],
                                                       limit_long: 15),
                                                   style: TextStyle(
-                                                    color: Colors.black,
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_black']),
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -700,8 +718,9 @@ class _ViewPlanningCollecteurPageState
                                                             Container(
                                                               height: 20,
                                                               width: 130,
-                                                              color:
-                                                                  Colors.yellow,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_yellow']),
                                                               child: Text(
                                                                 'Tournee: ' +
                                                                     limitString(
@@ -908,8 +927,9 @@ class _ViewPlanningCollecteurPageState
                                                             Container(
                                                               height: 20,
                                                               width: 130,
-                                                              color:
-                                                                  Colors.yellow,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_yellow']),
                                                               child: Text(
                                                                 'Tournee: ' +
                                                                     limitString(
@@ -1116,8 +1136,9 @@ class _ViewPlanningCollecteurPageState
                                                             Container(
                                                               height: 20,
                                                               width: 130,
-                                                              color:
-                                                                  Colors.yellow,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_yellow']),
                                                               child: Text(
                                                                 'Tournee: ' +
                                                                     limitString(
@@ -1324,8 +1345,9 @@ class _ViewPlanningCollecteurPageState
                                                             Container(
                                                               height: 20,
                                                               width: 130,
-                                                              color:
-                                                                  Colors.yellow,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_yellow']),
                                                               child: Text(
                                                                 'Tournee: ' +
                                                                     limitString(
@@ -1532,8 +1554,9 @@ class _ViewPlanningCollecteurPageState
                                                             Container(
                                                               height: 20,
                                                               width: 130,
-                                                              color:
-                                                                  Colors.yellow,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_yellow']),
                                                               child: Text(
                                                                 'Tournee: ' +
                                                                     limitString(
@@ -1740,8 +1763,9 @@ class _ViewPlanningCollecteurPageState
                                                             Container(
                                                               height: 20,
                                                               width: 130,
-                                                              color:
-                                                                  Colors.yellow,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_yellow']),
                                                               child: Text(
                                                                 'Tournee: ' +
                                                                     limitString(
@@ -2049,9 +2073,10 @@ class _ViewPlanningCollecteurPageState
                                                 ];
                                               } else if (snapshot.hasError) {
                                                 children = <Widget>[
-                                                  const Icon(
+                                                  Icon(
                                                     Icons.error_outline,
-                                                    color: Colors.red,
+                                                    color: Color(graphique
+                                                        .color['default_red']),
                                                     size: 60,
                                                   ),
                                                   Padding(
@@ -2134,7 +2159,7 @@ class _ViewPlanningCollecteurPageState
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -2143,9 +2168,15 @@ class _ViewPlanningCollecteurPageState
                         Icon(
                           FontAwesomeIcons.print,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Imprimer'),
+                        Text(
+                          'Imprimer',
+                          style: TextStyle(
+                            color: Color(graphique.color['default_black']),
+                          ),
+                        ),
                       ],
                     )),
               ),
@@ -2161,7 +2192,7 @@ class _ViewPlanningCollecteurPageState
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -2170,9 +2201,15 @@ class _ViewPlanningCollecteurPageState
                         Icon(
                           FontAwesomeIcons.cropAlt,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Vue Compacte'),
+                        Text(
+                          'Vue Compacte',
+                          style: TextStyle(
+                            color: Color(graphique.color['default_black']),
+                          ),
+                        ),
                       ],
                     )),
               ),
@@ -2188,7 +2225,7 @@ class _ViewPlanningCollecteurPageState
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -2197,9 +2234,15 @@ class _ViewPlanningCollecteurPageState
                         Icon(
                           FontAwesomeIcons.userClock,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Vue Collecteur'),
+                        Text(
+                          'Vue Collecteur',
+                          style: TextStyle(
+                            color: Color(graphique.color['default_black']),
+                          ),
+                        ),
                       ],
                     )),
               ),
