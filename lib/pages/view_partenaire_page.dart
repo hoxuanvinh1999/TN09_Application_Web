@@ -19,6 +19,7 @@ import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/bool_icon.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
+import 'package:tn09_app_web_demo/pages/modify_frequence_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
@@ -2199,9 +2200,21 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                           child:
                                                               GestureDetector(
                                                             onTap: () {
-                                                              modifyFrequence(
-                                                                  dataFrequence:
-                                                                      frequence);
+                                                              // modifyFrequence(
+                                                              //     dataFrequence:
+                                                              //         frequence);
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => ModifyFrequencePartenairePage(
+                                                                        partenaire:
+                                                                            widget
+                                                                                .partenaire,
+                                                                        dataFrequence:
+                                                                            frequence)),
+                                                              ).then((value) =>
+                                                                  setState(
+                                                                      () {}));
                                                             },
                                                             child: Row(
                                                               children: [
@@ -5967,6 +5980,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   // for control table
   CollectionReference _contactadresse =
       FirebaseFirestore.instance.collection("ContactAdresse");
+  // Modify Contact of Adresse function
   showModifyContactAdresse(
       {required BuildContext context, required Map dataAdresse}) {
     return showDialog(

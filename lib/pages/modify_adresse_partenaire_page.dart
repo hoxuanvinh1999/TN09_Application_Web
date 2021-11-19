@@ -1496,9 +1496,7 @@ class _ModifyAdressePartenairePageState
                                         'modify_addresse_partenaice_page']
                                     ['horaires_form']['field_3_title'] +
                                 ': ' +
-                                DateFormat('yMd')
-                                    .format(dateMinimale)
-                                    .toString(),
+                                getDateText(date: dateMinimale),
                             onClicked: () => pickDateMinimale(context),
                           ),
                           SizedBox(
@@ -1510,9 +1508,7 @@ class _ModifyAdressePartenairePageState
                                         'modify_addresse_partenaice_page']
                                     ['horaires_form']['field_4_title'] +
                                 ': ' +
-                                DateFormat('yMd')
-                                    .format(dateMaximale)
-                                    .toString(),
+                                getDateText(date: dateMaximale),
                             onClicked: () => pickDateMaximale(context),
                           ),
                           SizedBox(
