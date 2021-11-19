@@ -16,6 +16,7 @@ import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/view_compacte_page.dart';
 import 'package:tn09_app_web_demo/pages/view_planning_collecteur_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class PlanningWeeklyPage extends StatefulWidget {
   DateTime thisDay;
@@ -125,8 +126,15 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
             header(context: context),
             menu(context: context),
             Container(
-                color: Colors.yellow,
-                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['default_yellow']),
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                ),
+                width: MediaQuery.of(context).size.width,
                 height: 40,
                 child: Row(
                   children: [
@@ -136,6 +144,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                     Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
                     SizedBox(width: 5),
                     RichText(
@@ -144,7 +153,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           TextSpan(
                               text: 'Home',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -172,7 +181,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           TextSpan(
                             text: 'Semaine #$weeknumber',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Color(graphique.color['default_grey']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -185,169 +194,171 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
             Container(
               width: 1200,
               height: 6000,
-              color: Colors.yellow,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(
                 children: [
                   Container(
-                    color: Colors.blue,
-                    child: Column(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 600,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    width: 120,
-                                    height: 50,
-                                    color: Colors.yellow,
+                        Container(
+                          width: 600,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                width: 120,
+                                height: 50,
+                                color: Color(graphique.color['default_yellow']),
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PlanningWeeklyPage(
+                                                        thisDay: previousWeek,
+                                                      )));
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.stepBackward,
+                                          size: 15,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          pickDate(context);
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.calendar,
+                                          size: 15,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PlanningWeeklyPage(
+                                                        thisDay: nextWeek,
+                                                      )));
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.stepForward,
+                                          size: 15,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Semaine #$weeknumber: Planning du ${firstDayOfWeek.day}/${firstDayOfWeek.month} au ${lastDayOfWeek.day}/${lastDayOfWeek.month}',
+                                style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 500,
+                          height: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                  width: 180,
+                                  decoration: BoxDecoration(
+                                      color: Color(
+                                          graphique.color['default_yellow']),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                      right: 10, top: 20, bottom: 20),
+                                  child: GestureDetector(
+                                    onTap: () {},
                                     child: Row(
                                       children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PlanningWeeklyPage(
-                                                                thisDay:
-                                                                    previousWeek,
-                                                              )));
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.stepBackward,
-                                              size: 15,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              pickDate(context);
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.calendar,
-                                              size: 15,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PlanningWeeklyPage(
-                                                                thisDay:
-                                                                    nextWeek,
-                                                              )));
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.stepForward,
-                                              size: 15,
-                                            ))
+                                        Icon(
+                                          Icons.add,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'New Rendez-Vous',
+                                          style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_black']),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Semaine #$weeknumber: Planning du ${firstDayOfWeek.day}/${firstDayOfWeek.month} au ${lastDayOfWeek.day}/${lastDayOfWeek.month}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                                  )),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      color: Color(
+                                          graphique.color['default_yellow']),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                      right: 10, top: 20, bottom: 20),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showActionSubMenu(context: context);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.chevronCircleRight,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Action',
+                                          style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_black']),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 500,
-                              height: 80,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                      width: 180,
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      margin: const EdgeInsets.only(
-                                          right: 10, top: 20, bottom: 20),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'New Rendez-Vous',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      margin: const EdgeInsets.only(
-                                          right: 10, top: 20, bottom: 20),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          showActionSubMenu(context: context);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              FontAwesomeIcons
-                                                  .chevronCircleRight,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'Action',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                        SizedBox(
-                          height: 10,
+                                  )),
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -364,10 +375,14 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: Text(
                             'Vehicule',
-                            style: TextStyle(color: Colors.black, fontSize: 15),
+                            style: TextStyle(
+                              color: Color(graphique.color['default_black']),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         SizedBox(width: 2),
@@ -375,7 +390,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -404,7 +419,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -433,7 +448,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -462,7 +477,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -491,7 +506,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -519,7 +534,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -548,7 +563,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                           width: 140,
                           height: 50,
                           alignment: Alignment.center,
-                          color: Colors.grey,
+                          color: Color(graphique.color['default_grey']),
                           child: RichText(
                             text: TextSpan(
                               children: <TextSpan>[
@@ -630,7 +645,9 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                       dataVehicule[
                                                           'numeroImmatriculation'],
                                                   style: TextStyle(
-                                                    color: Colors.black,
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_black']),
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -775,7 +792,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 2),
                                                                             Icon(
                                                                               FontAwesomeIcons.user,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -783,7 +800,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 5),
                                                                             Icon(
                                                                               FontAwesomeIcons.clock,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1001,7 +1018,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 2),
                                                                             Icon(
                                                                               FontAwesomeIcons.user,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1009,7 +1026,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 5),
                                                                             Icon(
                                                                               FontAwesomeIcons.clock,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1227,7 +1244,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 2),
                                                                             Icon(
                                                                               FontAwesomeIcons.user,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1235,7 +1252,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 5),
                                                                             Icon(
                                                                               FontAwesomeIcons.clock,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1453,7 +1470,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 2),
                                                                             Icon(
                                                                               FontAwesomeIcons.user,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1461,7 +1478,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 5),
                                                                             Icon(
                                                                               FontAwesomeIcons.clock,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1679,7 +1696,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 2),
                                                                             Icon(
                                                                               FontAwesomeIcons.user,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1687,7 +1704,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 5),
                                                                             Icon(
                                                                               FontAwesomeIcons.clock,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1905,7 +1922,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 2),
                                                                             Icon(
                                                                               FontAwesomeIcons.user,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -1913,7 +1930,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 5),
                                                                             Icon(
                                                                               FontAwesomeIcons.clock,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -2131,7 +2148,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 2),
                                                                             Icon(
                                                                               FontAwesomeIcons.user,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -2139,7 +2156,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                                                                             SizedBox(width: 5),
                                                                             Icon(
                                                                               FontAwesomeIcons.clock,
-                                                                              color: Colors.black,
+                                                                              color: Color(graphique.color['default_black']),
                                                                               size: 8,
                                                                             ),
                                                                             SizedBox(width: 2),
@@ -2267,7 +2284,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -2276,9 +2293,13 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                         Icon(
                           FontAwesomeIcons.print,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Imprimer'),
+                        Text('Imprimer',
+                            style: TextStyle(
+                              color: Color(graphique.color['default_black']),
+                            )),
                       ],
                     )),
               ),
@@ -2293,7 +2314,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -2302,9 +2323,13 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                         Icon(
                           FontAwesomeIcons.cropAlt,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Vue Compacte'),
+                        Text('Vue Compacte',
+                            style: TextStyle(
+                              color: Color(graphique.color['default_black']),
+                            )),
                       ],
                     )),
               ),
@@ -2319,7 +2344,7 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -2328,9 +2353,13 @@ class _PlanningWeeklyPageState extends State<PlanningWeeklyPage> {
                         Icon(
                           FontAwesomeIcons.userClock,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Vue Collecteur'),
+                        Text('Vue Collecteur',
+                            style: TextStyle(
+                              color: Color(graphique.color['default_black']),
+                            )),
                       ],
                     )),
               ),
