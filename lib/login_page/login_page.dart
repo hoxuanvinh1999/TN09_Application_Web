@@ -6,8 +6,15 @@ import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/forget_password_page.dart';
 import 'package:tn09_app_web_demo/login_page/verify_email_page.dart';
 import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
+import 'package:tn09_app_web_demo/pages/contact_page.dart';
 import 'package:tn09_app_web_demo/pages/contenant_page.dart';
+import 'package:tn09_app_web_demo/pages/create_collecteur_page.dart';
+import 'package:tn09_app_web_demo/pages/create_contact_page.dart';
+import 'package:tn09_app_web_demo/pages/create_contenant_page.dart';
+import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/create_tournee_page.dart';
 import 'package:tn09_app_web_demo/pages/create_type_contenant_page.dart';
+import 'package:tn09_app_web_demo/pages/create_vehicule_page.dart';
 import 'package:tn09_app_web_demo/pages/matieres_page.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
@@ -338,8 +345,8 @@ class _LoginPageState extends State<LoginPage> {
 
   _signinAnonymous() async {
     await auth.signInAnonymously();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => CreateTypeContenantPage()
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()
             // PlanningDailyPage(
             //       thisDay: DateTime.parse("2021-10-18 20:18:04Z"),
             //     )

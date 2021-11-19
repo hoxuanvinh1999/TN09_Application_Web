@@ -2101,7 +2101,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                     Visibility(
                       visible: list_Etape_confirm[element],
                       child: Container(
-                          width: 100,
+                          width: 120,
                           decoration: BoxDecoration(
                               color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),
@@ -2188,7 +2188,7 @@ class _CreateTourneePageState extends State<CreateTourneePage> {
                     Visibility(
                       visible: !list_Etape_confirm[element],
                       child: Container(
-                          width: 100,
+                          width: 120,
                           decoration: BoxDecoration(
                               color: Color(graphique.color['default_yellow']),
                               borderRadius: BorderRadius.circular(10)),

@@ -268,7 +268,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                 ),
                               ),
                               const SizedBox(
-                                width: 230,
+                                width: 200,
                               ),
                               Text(
                                 graphique.languagefr['collecteur_page']

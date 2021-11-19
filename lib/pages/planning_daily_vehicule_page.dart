@@ -1474,19 +1474,22 @@ class _PlanningDailyVehiculePageState extends State<PlanningDailyVehiculePage> {
                                                                         querySnapshot
                                                                             .docs
                                                                             .forEach((doc_adresse) {
+                                                                          // print(
+                                                                          //     'k');
                                                                           Map<String, dynamic>
                                                                               adresse =
                                                                               doc_adresse.data()! as Map<String, dynamic>;
-                                                                          if (adresse['latitudeAdresse'] != '0' &&
-                                                                              adresse['longitudeAdresse'] != '0' &&
-                                                                              adresse['idPosition'] != 'null') {
+                                                                          if (adresse['latitudeAdresse'] != '0' && adresse['longitudeAdresse'] != '0'
+                                                                              // &&  adresse['idPosition'] != 'null'
+                                                                              ) {
+                                                                            // print('j');
                                                                             if (_markers.length <
                                                                                 int.parse(tournee['nombredeEtape'])) {
                                                                               numberofMarker++;
                                                                               listlatitudeLocation.add(double.parse(adresse['latitudeAdresse']));
                                                                               listlongitudeLocation.add(double.parse(adresse['longitudeAdresse']));
                                                                               _markers.add(Marker(
-                                                                                markerId: MarkerId(adresse['idPosition']),
+                                                                                markerId: MarkerId(adresse['idAdresse']), // it can be idPosition but doesnt work now
                                                                                 infoWindow: InfoWindow(title: adresse['nomPartenaireAdresse']),
                                                                                 icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
                                                                                 position: LatLng(double.parse(adresse['latitudeAdresse']), double.parse(adresse['longitudeAdresse'])),
