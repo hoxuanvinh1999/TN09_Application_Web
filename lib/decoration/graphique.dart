@@ -438,6 +438,21 @@ const Map<String, dynamic> languagefr = {
       'hint_2_title': 'Ajouter le contact',
     }
   },
+  'modify_frequence_partenaire_page': {
+    'nom_page': 'Modifier Fréquence',
+    'button_1': 'Enregistrer',
+    'button_2': 'Annuler',
+    'form_title': 'Fréquence',
+    'form_subtitle': 'Informations sur le horaire',
+    'field_1_title': 'Heure de début',
+    'field_2_title': 'Heure de fin',
+    'field_3_title': 'Date de début',
+    'field_4_title': 'Date de fin',
+    'field_5_title': 'Frequence*(Toutes les X semaines) : ',
+    'field_6_title': 'Tarif',
+    'field_7_title': 'Jour',
+    'field_8_title': 'Véhicule',
+  },
   'warning': {
     'not_null': 'Cela ne peut pas être nul',
   },
