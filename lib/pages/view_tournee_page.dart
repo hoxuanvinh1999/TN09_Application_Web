@@ -18,6 +18,7 @@ import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class ViewTourneePage extends StatefulWidget {
   DateTime thisDay;

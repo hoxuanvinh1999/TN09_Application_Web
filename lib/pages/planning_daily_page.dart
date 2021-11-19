@@ -12,6 +12,7 @@ import 'package:tn09_app_web_demo/pages/math_function/week_of_year.dart';
 import 'package:tn09_app_web_demo/pages/planning_daily_vehicule_page.dart';
 import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
+import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 class PlanningDailyPage extends StatefulWidget {
   DateTime thisDay;
@@ -90,8 +91,14 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
             header(context: context),
             menu(context: context),
             Container(
-                color: Colors.yellow,
-                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(graphique.color['default_yellow']),
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: Color(graphique.color['default_black'])),
+                  ),
+                ),
                 height: 40,
                 child: Row(
                   children: [
@@ -101,6 +108,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                     Icon(
                       FontAwesomeIcons.home,
                       size: 12,
+                      color: Color(graphique.color['default_black']),
                     ),
                     SizedBox(width: 5),
                     RichText(
@@ -109,7 +117,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                           TextSpan(
                               text: 'Home',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -137,7 +145,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                           TextSpan(
                               text: 'Semaine #$weeknumber',
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Color(graphique.color['default_red']),
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
@@ -168,7 +176,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                           TextSpan(
                             text: thisDay,
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Color(graphique.color['default_grey']),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -181,169 +189,165 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
             Container(
               width: 1200,
               height: 3000,
-              color: Colors.green,
+              decoration: BoxDecoration(
+                color: Color(graphique.color['special_bureautique_2']),
+                border: Border.all(
+                    width: 1.0, color: Color(graphique.color['default_black'])),
+              ),
               child: Column(
                 children: [
                   Container(
-                    color: Colors.blue,
-                    child: Column(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['main_color_1']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 600,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    width: 120,
-                                    height: 50,
-                                    color: Colors.yellow,
+                        Container(
+                          width: 600,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                width: 120,
+                                height: 50,
+                                color: Color(graphique.color['default_yellow']),
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PlanningDailyPage(
+                                                        thisDay: previousDay,
+                                                      )));
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.stepBackward,
+                                          size: 15,
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          pickDate(context);
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.calendar,
+                                          size: 15,
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PlanningDailyPage(
+                                                        thisDay: nextDay,
+                                                      )));
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.stepForward,
+                                          size: 15,
+                                        ))
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Planning of $thisDay ${widget.thisDay.year}',
+                                style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 500,
+                          height: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                  width: 180,
+                                  decoration: BoxDecoration(
+                                      color: Color(
+                                          graphique.color['default_yellow']),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                      right: 10, top: 20, bottom: 20),
+                                  child: GestureDetector(
+                                    onTap: () {},
                                     child: Row(
                                       children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PlanningDailyPage(
-                                                                thisDay:
-                                                                    previousDay,
-                                                              )));
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.stepBackward,
-                                              size: 15,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              pickDate(context);
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.calendar,
-                                              size: 15,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PlanningDailyPage(
-                                                                thisDay:
-                                                                    nextDay,
-                                                              )));
-                                            },
-                                            icon: Icon(
-                                              FontAwesomeIcons.stepForward,
-                                              size: 15,
-                                            ))
+                                        Icon(
+                                          Icons.add,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'New Rendez-Vous',
+                                          style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_black']),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Planning of $thisDay ${widget.thisDay.year}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                                  )),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      color: Color(
+                                          graphique.color['default_yellow']),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.only(
+                                      right: 10, top: 20, bottom: 20),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showActionSubMenu(context: context);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.chevronCircleRight,
+                                          color: Color(
+                                              graphique.color['default_black']),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Action',
+                                          style: TextStyle(
+                                            color: Color(graphique
+                                                .color['default_black']),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 500,
-                              height: 80,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                      width: 180,
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      margin: const EdgeInsets.only(
-                                          right: 10, top: 20, bottom: 20),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'New Rendez-Vous',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      margin: const EdgeInsets.only(
-                                          right: 10, top: 20, bottom: 20),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          showActionSubMenu(context: context);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              FontAwesomeIcons
-                                                  .chevronCircleRight,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'Action',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        const Divider(
-                          thickness: 5,
-                        ),
-                        SizedBox(
-                          height: 10,
+                                  )),
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -351,7 +355,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                   Container(
                     width: 1190,
                     height: 1000,
-                    color: Colors.yellow,
+                    color: Color(graphique.color['default_yellow']),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,7 +367,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                         Container(
                           width: 200,
                           height: 800,
-                          color: Colors.red,
+                          color: Color(graphique.color['default_red']),
                         ),
                         SizedBox(
                           width: 50,
@@ -371,14 +375,15 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                         Container(
                           width: 900,
                           height: 800,
-                          color: Colors.red,
+                          color: Color(graphique.color['default_red']),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
                                   height: 50,
                                   width: 900,
-                                  color: Colors.green,
+                                  color:
+                                      Color(graphique.color['default_green']),
                                   child: StreamBuilder<QuerySnapshot>(
                                     stream: _vehicule
                                         .where('idVehicule',
@@ -442,8 +447,9 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                                                             vehicule[
                                                                 'nomVehicule'],
                                                             style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Color(graphique
+                                                                      .color[
+                                                                  'default_black']),
                                                               fontSize: 15,
                                                               fontWeight:
                                                                   FontWeight
@@ -508,7 +514,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -517,9 +523,15 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                         Icon(
                           FontAwesomeIcons.print,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Imprimer'),
+                        Text(
+                          'Imprimer',
+                          style: TextStyle(
+                            color: Color(graphique.color['default_black']),
+                          ),
+                        ),
                       ],
                     )),
               ),
@@ -535,7 +547,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -544,9 +556,15 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                         Icon(
                           FontAwesomeIcons.cropAlt,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Vue Compacte'),
+                        Text(
+                          'Vue Compacte',
+                          style: TextStyle(
+                            color: Color(graphique.color['default_black']),
+                          ),
+                        ),
                       ],
                     )),
               ),
@@ -562,7 +580,7 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                 },
                 child: Container(
                     margin: EdgeInsets.only(left: 0),
-                    color: Colors.red,
+                    color: Color(graphique.color['default_red']),
                     width: 100,
                     height: 30,
                     child: Row(
@@ -571,9 +589,15 @@ class _PlanningDailyPageState extends State<PlanningDailyPage> {
                         Icon(
                           FontAwesomeIcons.userClock,
                           size: 12,
+                          color: Color(graphique.color['default_black']),
                         ),
                         SizedBox(width: 10),
-                        Text('Vue Collecteur'),
+                        Text(
+                          'Vue Collecteur',
+                          style: TextStyle(
+                            color: Color(graphique.color['default_black']),
+                          ),
+                        ),
                       ],
                     )),
               ),
