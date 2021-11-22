@@ -17,7 +17,9 @@ samples, guidance on mobile development, and a full API reference.
 
 ## LogIn Page
 
-This is the first image of the login page. Everything else is being created.  
+Hi there 👋
+
+This is the first image of the login page. Everything else is being created.
 
 ![alt text](images/login_page_v1.png)  
 
