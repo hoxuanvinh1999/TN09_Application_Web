@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/hoxuanvinh1999/TN09_Application_Web#readme",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "mustache": "^4.2.0"
   }
 }
