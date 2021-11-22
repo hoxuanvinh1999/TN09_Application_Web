@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'Les Detritivores',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color(graphique.color['default_white']),
                       fontSize: 30,
                     ),
                   ),
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 480,
                     width: 400,
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color(graphique.color['default_white']),
                         borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       children: [
@@ -88,7 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Text(
                           'Log into our DataBase',
-                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Color(graphique.color['default_grey'])),
                         ),
                         SizedBox(
                           height: 20,
@@ -171,7 +173,8 @@ class _LoginPageState extends State<LoginPage> {
                               padding: EdgeInsets.all(12.0),
                               child: Text('Sign In',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color:
+                                        Color(graphique.color['default_white']),
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   )),
@@ -199,7 +202,8 @@ class _LoginPageState extends State<LoginPage> {
                               padding: EdgeInsets.all(12.0),
                               child: Text('Sign Up',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color:
+                                        Color(graphique.color['default_white']),
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   )),
@@ -329,7 +333,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: EdgeInsets.all(12.0),
                         child: Text('Sign Up',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Color(graphique.color['default_white']),
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             )),

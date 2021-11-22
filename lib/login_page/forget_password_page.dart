@@ -147,7 +147,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                     padding: EdgeInsets.all(12.0),
                                     child: Text('Send Request',
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: Color(
+                                              graphique.color['default_white']),
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         )),
