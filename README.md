@@ -19,7 +19,11 @@ samples, guidance on mobile development, and a full API reference.
 
 ## LogIn Page
 
+<<<<<<< HEAD
 Hi there 👋.  
+=======
+Hi there 👋
+>>>>>>> 1784fb093bef75abe8a36f9d723a1bff7ee77d30
 
 This is the first image of the login page. Everything else is being created.
 
@@ -27,4 +31,8 @@ This is the first image of the login page. Everything else is being created.
 
 ![alt text](images/login_page_v2.png)  
 
+<<<<<<< HEAD
 ![alt text](images/home_page_v2.png)  
+=======
+![alt text](images/home_page_v2.png)  
+>>>>>>> 1784fb093bef75abe8a36f9d723a1bff7ee77d30
