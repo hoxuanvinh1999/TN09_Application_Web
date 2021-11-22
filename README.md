@@ -19,4 +19,8 @@ samples, guidance on mobile development, and a full API reference.
 
 This is the first image of the login page. Everything else is being created.  
 
-![alt text](images/readme_photo.png)
+![alt text](images/login_page_v1.png)  
+
+![alt text](images/login_page_v2.png)  
+
+![alt text](images/home_page_v2.png)  
