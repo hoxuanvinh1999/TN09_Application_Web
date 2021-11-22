@@ -1,0 +1,36 @@
+name: Auto Update Readme
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '05 15 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current repository to main branch
+        uses: actions/checkout@v2.3.4
+      - name: Setup Node.js 13.x
+        uses: actions/setup-node@v2.3.0
+        with:
+          node-version: '13.x'
+      - name: Cache dependencies and build outputs
+        uses: actions/cache@v2.1.6
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-js-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
+      - name: Generate README file
+        run: node index.js
+      - name: Commit and push new README.md
+        run: |-
+          git add README.md
+          git config --global user.email hoxuanvinh1999@gmail.com
+          git config --global user.name hoxuanvinh1999
+          git commit -a -m "Hourly content update" || exit 0
+          git push
