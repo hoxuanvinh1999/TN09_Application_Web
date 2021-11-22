@@ -35,6 +35,7 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
   TextEditingController _typeVehiculeController = TextEditingController();
   CollectionReference _vehicule =
       FirebaseFirestore.instance.collection("Vehicule");
+  String oldColorVehicule = '';
   //Init Data
   void initState() {
     setState(() {
@@ -46,6 +47,7 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
       _typeVehiculeController.text = widget.dataVehicule['typeVehicule'];
       _colorVehicule =
           Color(int.parse(widget.dataVehicule['colorIconVehicule']));
+      oldColorVehicule = widget.dataVehicule['colorIconVehicule'];
     });
     super.initState();
   }
@@ -642,6 +644,27 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
                                 .validate()) {
                               if (_typeVehiculeController.text == '') {
                                 _typeVehiculeController.text = 'null';
+                              }
+                              if (oldColorVehicule !=
+                                  _colorVehicule.toString().substring(6, 16)) {
+                                await FirebaseFirestore.instance
+                                    .collection("Tournee")
+                                    .where('idVehicule',
+                                        isEqualTo:
+                                            widget.dataVehicule['idVehicule'])
+                                    .get()
+                                    .then((QuerySnapshot querySnapshot) {
+                                  querySnapshot.docs.forEach((doc) {
+                                    FirebaseFirestore.instance
+                                        .collection("Tournee")
+                                        .doc(doc.id)
+                                        .update({
+                                      'colorTournee': _colorVehicule
+                                          .toString()
+                                          .substring(6, 16),
+                                    });
+                                  });
+                                });
                               }
                               await _vehicule
                                   .where('idVehicule',
