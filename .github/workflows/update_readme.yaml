@@ -32,5 +32,5 @@ jobs:
           git add README.md
           git config --global user.email hoxuanvinh1999@gmail.com
           git config --global user.name hoxuanvinh1999
-          git commit -a -m "Hourly content update" || exit 0
+          git commit -a -m "Readme Updated" || exit 0
           git push
