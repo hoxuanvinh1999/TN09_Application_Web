@@ -1,0 +1,26 @@
+{
+  "name": "tn09_app_web_demo",
+  "version": "1.0.0",
+  "description": "My project was during my TN09 internship at the \"Les detritivores\". I continue with the web version for data management.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/hoxuanvinh1999/TN09_Application_Web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hoxuanvinh1999/TN09_Application_Web/issues"
+  },
+  "homepage": "https://github.com/hoxuanvinh1999/TN09_Application_Web#readme",
+  "dependencies": {
+    "mustache": "^4.2.0"
+  }
+}
