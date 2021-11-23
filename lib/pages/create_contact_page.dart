@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,9 @@ class CreateContactPage extends StatefulWidget {
 }
 
 class _CreateContactPageState extends State<CreateContactPage> {
+  final auth = FirebaseAuth.instance;
+  //For Send mail
+  CollectionReference _mail = FirebaseFirestore.instance.collection("mail");
   //For Create Contact
   CollectionReference _contact =
       FirebaseFirestore.instance.collection("Contact");
@@ -44,6 +48,17 @@ class _CreateContactPageState extends State<CreateContactPage> {
   //for controll table
   CollectionReference _contactpartenaire =
       FirebaseFirestore.instance.collection("ContactPartenaire");
+  @override
+  void dispose() {
+    super.dispose();
+    _nomContactController.dispose();
+    _prenomContractController.dispose();
+    _telephone1ContactController.dispose();
+    _telephone2ContactController.dispose();
+    _emailContactController.dispose();
+    _passwordContactController.dispose();
+    _noteContactController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -781,6 +796,12 @@ class _CreateContactPageState extends State<CreateContactPage> {
                               if (_createContactKeyForm.currentState!
                                   .validate()) {
                                 idNewContact = _contact.doc().id.toString();
+                                String idmail = _contact.doc().id.toString();
+                                String email_body =
+                                    'Your account information is: \rEmail: ' +
+                                        _emailContactController.text +
+                                        '\rPassword: ' +
+                                        _passwordContactController.text;
                                 String nombredePartenaire = '0';
                                 if (choiceIdPartenaire != 'null') {
                                   nombredePartenaire = '1';
@@ -817,6 +838,32 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                     'isPrincipal': isPrincipal.toString(),
                                   });
                                 }
+                                try {
+                                  //Create Get Firebase Auth User
+                                  await auth.createUserWithEmailAndPassword(
+                                      email: _emailContactController.text,
+                                      password:
+                                          _passwordContactController.text);
+
+                                  //Success
+                                  Fluttertoast.showToast(
+                                      msg: 'Account Created',
+                                      gravity: ToastGravity.TOP);
+                                } on FirebaseAuthException catch (error) {
+                                  //String msgerror = 'Error sign up';
+                                  Fluttertoast.showToast(
+                                    msg: (error.message).toString(),
+                                    gravity: ToastGravity.TOP,
+                                  );
+                                }
+                                await _mail.doc(idmail).set({
+                                  'to': _emailContactController.text,
+                                  'message': {
+                                    'subject': "Hello from Les detritivores!",
+                                    'text': email_body,
+                                  },
+                                });
+
                                 await _contact.doc(idNewContact).set({
                                   'nomContact': _nomContactController.text,
                                   'prenomContact':

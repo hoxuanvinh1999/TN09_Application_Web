@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_return_type_for_catch_error, avoid_function_literals_in_foreach_calls, avoid_print
+// ignore_for_file: invalid_return_type_for_catch_error, avoid_function_literals_in_foreach_calls, avoid_print, non_constant_identifier_names, prefer_const_declarations
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  //For Send mail
+  CollectionReference _mail = FirebaseFirestore.instance.collection("mail");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,81 +77,111 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Color(graphique.color['special_bureautique_2']),
               child: Column(
                 children: [
-                  // Container(
-                  //     margin: const EdgeInsets.only(left: 80),
-                  //     width: 150,
-                  //     height: 50,
-                  //     color: Colors.yellow,
-                  //     alignment: Alignment.center,
-                  //     child: GestureDetector(
-                  //       onTap: () async {
-                  //         //delete test result in 10/11/2021 and 17/11/2021
-                  //         await FirebaseFirestore.instance
-                  //             .collection("Tournee")
-                  //             .where('dateTournee',
-                  //                 whereIn: ['10/11/2021', '17/11/2021'])
-                  //             .get()
-                  //             .then((QuerySnapshot querySnapshot) {
-                  //               querySnapshot.docs.forEach((tournee) {
-                  //                 FirebaseFirestore.instance
-                  //                     .collection('Tournee')
-                  //                     .doc(tournee.id)
-                  //                     .delete()
-                  //                     .then((value) {
-                  //                   Fluttertoast.showToast(
-                  //                       msg: 'Delete Tournee',
-                  //                       gravity: ToastGravity.TOP);
-                  //                 }).catchError((error) =>
-                  //                         print("Failed to add user: $error"));
-                  //               });
-                  //             })
-                  //             .then((value) {
-                  //               Fluttertoast.showToast(
-                  //                   msg: 'Finish clean data',
-                  //                   gravity: ToastGravity.TOP);
-                  //             })
-                  //             .catchError((error) =>
-                  //                 print("Failed to add user: $error"));
-                  //         await FirebaseFirestore.instance
-                  //             .collection("Etape")
-                  //             .where('jourEtape',
-                  //                 whereIn: ['10/11/2021', '17/11/2021'])
-                  //             .get()
-                  //             .then((QuerySnapshot querySnapshot) {
-                  //               querySnapshot.docs.forEach((etape) {
-                  //                 FirebaseFirestore.instance
-                  //                     .collection('Etape')
-                  //                     .doc(etape.id)
-                  //                     .delete()
-                  //                     .then((value) {
-                  //                   Fluttertoast.showToast(
-                  //                       msg: 'Delete Etape',
-                  //                       gravity: ToastGravity.TOP);
-                  //                 }).catchError((error) =>
-                  //                         print("Failed to add user: $error"));
-                  //               });
-                  //             })
-                  //             .then((value) {
-                  //               Fluttertoast.showToast(
-                  //                   msg: 'Finish clean data',
-                  //                   gravity: ToastGravity.TOP);
-                  //             })
-                  //             .catchError((error) =>
-                  //                 print("Failed to add user: $error"));
-                  //       },
-                  //       child: Row(
-                  //         children: [
-                  //           Text(
-                  //             'Function Button',
-                  //             style: TextStyle(
-                  //               color: Colors.black,
-                  //               fontSize: 15,
-                  //               fontWeight: FontWeight.bold,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     )),
+                  Container(
+                      margin: const EdgeInsets.only(left: 80),
+                      width: 150,
+                      height: 50,
+                      color: Colors.yellow,
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        onTap: () async {
+                          await _mail.doc(_mail.doc().id.toString()).set({
+                            'to': 'hoxuanvinh1999@gmail.com',
+                            'message': {
+                              'subject': "Hello from Les detritivores!",
+                              'text': 'Testing',
+                            },
+                          });
+                          //Creating new function send email
+                          // final email_body = 'Hello Vinh is testing functions';
+                          // final Email email = Email(
+                          //   body: email_body,
+                          //   subject: 'Testing Function',
+                          //   recipients: ['hoxuanvinh1999@gmail.com'],
+                          //   //cc: ['cc@example.com'],
+                          //   //bcc: ['bcc@example.com'],
+                          //   //attachmentPaths: ['/path/to/attachment.zip'],
+                          //   isHTML: false,
+                          // );
+
+                          // await FlutterEmailSender.send(email);
+                          // final mailtoLink = Mailto(
+                          //   to: ['hoxuanvinh1999@gmail.com'],
+                          //   //cc: ['cc1@example.com', 'cc2@example.com'],
+                          //   subject: 'Example subject',
+                          //   body: 'Testing',
+                          // );
+                          // // Convert the Mailto instance into a string.
+                          // // Use either Dart's string interpolation
+                          // // or the toString() method.
+                          // await launch('$mailtoLink');
+                          //delete test result in 10/11/2021 and 17/11/2021
+                          // await FirebaseFirestore.instance
+                          //     .collection("Tournee")
+                          //     .where('dateTournee',
+                          //         whereIn: ['10/11/2021', '17/11/2021'])
+                          //     .get()
+                          //     .then((QuerySnapshot querySnapshot) {
+                          //       querySnapshot.docs.forEach((tournee) {
+                          //         FirebaseFirestore.instance
+                          //             .collection('Tournee')
+                          //             .doc(tournee.id)
+                          //             .delete()
+                          //             .then((value) {
+                          //           Fluttertoast.showToast(
+                          //               msg: 'Delete Tournee',
+                          //               gravity: ToastGravity.TOP);
+                          //         }).catchError((error) =>
+                          //                 print("Failed to add user: $error"));
+                          //       });
+                          //     })
+                          //     .then((value) {
+                          //       Fluttertoast.showToast(
+                          //           msg: 'Finish clean data',
+                          //           gravity: ToastGravity.TOP);
+                          //     })
+                          //     .catchError((error) =>
+                          //         print("Failed to add user: $error"));
+                          // await FirebaseFirestore.instance
+                          //     .collection("Etape")
+                          //     .where('jourEtape',
+                          //         whereIn: ['10/11/2021', '17/11/2021'])
+                          //     .get()
+                          //     .then((QuerySnapshot querySnapshot) {
+                          //       querySnapshot.docs.forEach((etape) {
+                          //         FirebaseFirestore.instance
+                          //             .collection('Etape')
+                          //             .doc(etape.id)
+                          //             .delete()
+                          //             .then((value) {
+                          //           Fluttertoast.showToast(
+                          //               msg: 'Delete Etape',
+                          //               gravity: ToastGravity.TOP);
+                          //         }).catchError((error) =>
+                          //                 print("Failed to add user: $error"));
+                          //       });
+                          //     })
+                          //     .then((value) {
+                          //       Fluttertoast.showToast(
+                          //           msg: 'Finish clean data',
+                          //           gravity: ToastGravity.TOP);
+                          //     })
+                          //     .catchError((error) =>
+                          //         print("Failed to add user: $error"));
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'Function Button',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
                 ],
               ),
             )
