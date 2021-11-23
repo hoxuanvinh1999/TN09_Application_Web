@@ -2,7 +2,7 @@
 
 My project was during my TN09 internship at the "Les detritivores". I continue with the web version for data management.
 
-Process: after 83 days  
+Process: after  days
 
 ## Getting Started
 
@@ -23,8 +23,8 @@ Hi there 👋
 
 This is the first image of the login page. Everything else is being created.
 
-![alt text](images/login_page_v1.png)  
+![alt text](images/login_page_v1.png)
 
-![alt text](images/login_page_v2.png)  
+![alt text](images/login_page_v2.png)
 
-![alt text](images/home_page_v2.png)  
+![alt text](images/home_page_v2.png)
