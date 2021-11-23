@@ -796,7 +796,7 @@ class _CreateContactPageState extends State<CreateContactPage> {
                               if (_createContactKeyForm.currentState!
                                   .validate()) {
                                 idNewContact = _contact.doc().id.toString();
-                                String idmail = _contact.doc().id.toString();
+                                String idmail = _mail.doc().id.toString();
                                 String email_body =
                                     'Your account information is: \rEmail: ' +
                                         _emailContactController.text +
