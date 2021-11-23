@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '55 5 * * *'
+    - cron: '0 9,10 * * *'
 
 jobs:
   build:
@@ -29,7 +29,8 @@ jobs:
         run: node index.js
       - name: Commit and push new README.md
         run: |-
-          git add README.md
+          git add .
+          git diff
           git config --global user.email hoxuanvinh1999@gmail.com
           git config --global user.name hoxuanvinh1999
           git commit -a -m "Readme Updated" || exit 0
