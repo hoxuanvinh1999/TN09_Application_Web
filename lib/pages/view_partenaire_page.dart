@@ -14,6 +14,7 @@ import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_Inconnu.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
+import 'package:tn09_app_web_demo/pages/modify_adresse_multiple.dart';
 import 'package:tn09_app_web_demo/pages/modify_adresse_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/view_contact_page.dart';
@@ -1705,9 +1706,19 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                           //     context: context,
                                                           //     dataAdresse:
                                                           //         adresse);
+                                                          // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                          //     builder: (context) =>
+                                                          //         ModifyAdressePartenairePage(
+                                                          //             partenaire:
+                                                          //                 widget
+                                                          //                     .partenaire,
+                                                          //             dataAdresse:
+                                                          //                 adresse,
+                                                          //             form_start:
+                                                          //                 1)));
                                                           Navigator.of(context).pushReplacement(MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  ModifyAdressePartenairePage(
+                                                                  ModifyAdresseMultiple(
                                                                       partenaire:
                                                                           widget
                                                                               .partenaire,

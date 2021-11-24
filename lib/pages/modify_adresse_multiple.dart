@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_final_fields, unused_field
 
+import 'dart:ui';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,23 +22,21 @@ import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 
-class ModifyAdressePartenairePage extends StatefulWidget {
+class ModifyAdresseMultiple extends StatefulWidget {
   Map partenaire;
   Map dataAdresse;
   int form_start;
-  ModifyAdressePartenairePage({
+  ModifyAdresseMultiple({
     Key? key,
     required this.partenaire,
     required this.dataAdresse,
     required this.form_start,
   }) : super(key: key);
   @override
-  _ModifyAdressePartenairePageState createState() =>
-      _ModifyAdressePartenairePageState();
+  _ModifyAdresseMultipleState createState() => _ModifyAdresseMultipleState();
 }
 
-class _ModifyAdressePartenairePageState
-    extends State<ModifyAdressePartenairePage> {
+class _ModifyAdresseMultipleState extends State<ModifyAdresseMultiple> {
   int form_number = 1;
   //forPartenaire
   CollectionReference _partenaire =
@@ -116,7 +116,11 @@ class _ModifyAdressePartenairePageState
       TextEditingController();
   TextEditingController _surfacepassageAdresseController =
       TextEditingController();
-
+  var list_frequenceTextController = List<TextEditingController>.generate(
+      7, (index) => TextEditingController(text: ''));
+  var list_frequenceTarifController = List<TextEditingController>.generate(
+      7, (index) => TextEditingController(text: ''));
+  var list_choiceVehicule = List<String>.generate(7, (index) => 'None');
   //For frequence
   CollectionReference _frequence =
       FirebaseFirestore.instance.collection("Frequence");
@@ -138,6 +142,8 @@ class _ModifyAdressePartenairePageState
   // for control table
   CollectionReference _contactadresse =
       FirebaseFirestore.instance.collection("ContactAdresse");
+  CollectionReference _contenantadresse =
+      FirebaseFirestore.instance.collection("ContenantAdresse");
 
   //For Add Frequence
   String choiceVehicule = 'None';
@@ -148,24 +154,39 @@ class _ModifyAdressePartenairePageState
   TextEditingController _frequenceTextController = TextEditingController();
   TextEditingController _frequenceTarifController = TextEditingController();
 
-  Future pickTimeStart(
-      {required BuildContext context, required TimeOfDay time}) async {
+  //For Save information about date
+  var list_timeStart = new List<TimeOfDay>.generate(7, (i) => TimeOfDay.now());
+  var list_timeEnd = new List<TimeOfDay>.generate(7, (i) => TimeOfDay.now());
+  var list_idVehicule = new List<String>.generate(7, (i) => '');
+  //For confirm button
+  var list_color = new List<Color>.generate(
+      7, (index) => Color(graphique.color['default_blue']));
+  var confirm_value = new List<bool>.generate(7, (index) => false);
+
+  Future pickTimeStart({
+    required BuildContext context,
+    required TimeOfDay time,
+    required int index,
+  }) async {
     final newTime = await showTimePicker(context: context, initialTime: time);
 
     if (newTime == null) {
       return;
     }
-    setState(() => timeStart = newTime);
+    setState(() => list_timeStart[index] = newTime);
   }
 
-  Future pickTimeEnd(
-      {required BuildContext context, required TimeOfDay time}) async {
+  Future pickTimeEnd({
+    required BuildContext context,
+    required TimeOfDay time,
+    required int index,
+  }) async {
     final newTime = await showTimePicker(context: context, initialTime: time);
 
     if (newTime == null) {
       return;
     }
-    setState(() => timeEnd = newTime);
+    setState(() => list_timeEnd[index] = newTime);
   }
 
   double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
@@ -173,8 +194,14 @@ class _ModifyAdressePartenairePageState
 
   DateTime dateMinimale = DateTime.now();
   DateTime dateMaximale = DateTime.now();
-
-  Future pickDateMinimale(BuildContext context) async {
+  var list_dateMinimale = new List<DateTime>.generate(7, (i) => DateTime.now());
+  var list_dateMaximale = new List<DateTime>.generate(7, (i) => DateTime.now());
+  var list_frequence =
+      new List<Map<String, dynamic>>.generate(7, (index) => {});
+  Future pickDateMinimale({
+    required BuildContext context,
+    required index,
+  }) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
       context: context,
@@ -185,10 +212,13 @@ class _ModifyAdressePartenairePageState
 
     if (newDate == null) return;
 
-    setState(() => dateMinimale = newDate);
+    setState(() => list_dateMinimale[index] = newDate);
   }
 
-  Future pickDateMaximale(BuildContext context) async {
+  Future pickDateMaximale({
+    required BuildContext context,
+    required index,
+  }) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
       context: context,
@@ -199,13 +229,320 @@ class _ModifyAdressePartenairePageState
 
     if (newDate == null) return;
 
-    setState(() => dateMaximale = newDate);
+    setState(() => list_dateMaximale[index] = newDate);
+  }
+
+  Widget frequence_row({
+    required BuildContext context,
+    required int index,
+  }) {
+    double row_width = MediaQuery.of(context).size.width * 0.9;
+    return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        width: row_width,
+        decoration: BoxDecoration(
+          color: Color(graphique.color['main_color_2']),
+          border: Border(
+            top: BorderSide(
+              color: Color(graphique.color['default_black']),
+              width: 1.0,
+            ),
+            bottom: BorderSide(
+              color: Color(graphique.color['default_black']),
+              width: 1.0,
+            ),
+          ),
+        ),
+        height: 80,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                alignment: Alignment.centerLeft,
+                width: row_width * 0.1,
+                child: Text(
+                  list_jour[index],
+                  style: TextStyle(
+                    color: Color(graphique.color['default_black']),
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                alignment: Alignment.centerLeft,
+                width: row_width * 0.1,
+                child: ButtonWidget(
+                  icon: Icons.calendar_today,
+                  text: getTimeText(time: list_timeStart[index]),
+                  onClicked: () => pickTimeStart(
+                    context: context,
+                    time: list_timeStart[index],
+                    index: index,
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                alignment: Alignment.centerLeft,
+                width: row_width * 0.1,
+                child: ButtonWidget(
+                  icon: Icons.calendar_today,
+                  text: getTimeText(time: list_timeEnd[index]),
+                  onClicked: () => pickTimeEnd(
+                    context: context,
+                    time: list_timeStart[index],
+                    index: index,
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                alignment: Alignment.centerLeft,
+                width: row_width * 0.15,
+                child: ButtonWidget(
+                  icon: Icons.calendar_today,
+                  text: getDateText(date: list_dateMinimale[index]),
+                  onClicked: () =>
+                      pickDateMinimale(context: context, index: index),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                alignment: Alignment.centerLeft,
+                width: row_width * 0.15,
+                child: ButtonWidget(
+                  icon: Icons.calendar_today,
+                  text: getDateText(date: list_dateMaximale[index]),
+                  onClicked: () =>
+                      pickDateMaximale(context: context, index: index),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                width: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: Color(graphique.color['main_color_1']),
+                  ),
+                  color: Color(graphique.color['special_bureautique_1']),
+                ),
+                child: TextFormField(
+                  style:
+                      TextStyle(color: Color(graphique.color['main_color_2'])),
+                  cursorColor: Color(graphique.color['main_color_2']),
+                  controller: list_frequenceTextController[index],
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(graphique.color['main_color_2']),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                width: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: Color(graphique.color['main_color_1']),
+                  ),
+                  color: Color(graphique.color['special_bureautique_1']),
+                ),
+                child: TextFormField(
+                  style:
+                      TextStyle(color: Color(graphique.color['main_color_2'])),
+                  cursorColor: Color(graphique.color['main_color_2']),
+                  controller: list_frequenceTarifController[index],
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(graphique.color['main_color_2']),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                width: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: Color(graphique.color['main_color_1']),
+                  ),
+                  color: Color(graphique.color['special_bureautique_1']),
+                ),
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("Vehicule")
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Something went wrong');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      return DropdownButton(
+                        onChanged: (String? changedValue) {
+                          setState(() {
+                            list_choiceVehicule[index] = changedValue!;
+                          });
+                        },
+                        value: list_choiceVehicule[index],
+                        items: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          Map<String, dynamic> vehicule =
+                              document.data()! as Map<String, dynamic>;
+
+                          return DropdownMenuItem<String>(
+                              value: vehicule['numeroImmatriculation'],
+                              child: Row(
+                                children: [
+                                  buildVehiculeIcon(
+                                      icontype: vehicule['typeVehicule'],
+                                      iconcolor: vehicule['colorIconVehicule']
+                                          .toUpperCase(),
+                                      sizeIcon: 15.0),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    vehicule['nomVehicule'] +
+                                        ' ' +
+                                        vehicule['numeroImmatriculation'],
+                                    style: TextStyle(
+                                        color: Color(
+                                            graphique.color['main_color_2']),
+                                        fontSize: 15),
+                                  ),
+                                ],
+                              ));
+                        }).toList(),
+                      );
+                    }),
+              ),
+              Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  width: 80,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: confirm_value[index]
+                          ? Color(graphique.color['default_grey'])
+                          : Color(graphique.color['default_blue']),
+                      borderRadius: BorderRadius.circular(10)),
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (list_frequenceTextController[index].text.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please Input a frequence",
+                            gravity: ToastGravity.TOP);
+                      } else if (!list_frequenceTextController[index]
+                              .text
+                              .isEmpty &&
+                          int.tryParse(
+                                  list_frequenceTextController[index].text) ==
+                              null) {
+                        Fluttertoast.showToast(
+                            msg: "Please Input a real Number for frequence",
+                            gravity: ToastGravity.TOP);
+                      } else if (list_dateMinimale[index]
+                          .isAfter(list_dateMaximale[index])) {
+                        Fluttertoast.showToast(
+                            msg: "Please check your day",
+                            gravity: ToastGravity.TOP);
+                      } else if (!list_frequenceTarifController[index]
+                              .text
+                              .isEmpty &&
+                          int.tryParse(
+                                  list_frequenceTarifController[index].text) ==
+                              null) {
+                      } else if (toDouble(list_timeStart[index]) >
+                          toDouble(list_timeEnd[index])) {
+                        Fluttertoast.showToast(
+                            msg: "Please check your time",
+                            gravity: ToastGravity.TOP);
+                      } else {
+                        if (!confirm_value[index]) {
+                          String newIdFrequence = _frequence.doc().id;
+                          list_frequence[index] = {
+                            'frequence':
+                                list_frequenceTextController[index].text,
+                            'jourFrequence': list_jour[index],
+                            //'siretPartenaire': _siretPartenaireController.text,
+                            'idContactFrequence': 'null',
+                            'idVehiculeFrequence': list_choiceVehicule[index],
+                            'idAdresseFrequence':
+                                widget.dataAdresse['idAdresse'],
+                            'nomAdresseFrequence':
+                                widget.dataAdresse['nomPartenaireAdresse'],
+                            'idPartenaireFrequence':
+                                widget.partenaire['idPartenaire'],
+                            'dureeFrequence': (toMinute(list_timeEnd[index]) -
+                                    toMinute(list_timeStart[index]))
+                                .toString(),
+                            'startFrequence':
+                                getTimeText(time: list_timeStart[index]),
+                            'endFrequence':
+                                getTimeText(time: list_timeEnd[index]),
+                            'tarifFrequence':
+                                list_frequenceTarifController[index].text,
+                            'dateMinimaleFrequence':
+                                getDateText(date: list_dateMinimale[index]),
+                            'dateMaximaleFrequence':
+                                getDateText(date: list_dateMaximale[index]),
+                            'idFrequence': newIdFrequence
+                          };
+                        } else {
+                          list_frequence[index] = {};
+                        }
+                        setState(() {
+                          confirm_value[index] = !confirm_value[index];
+                        });
+                      }
+                    },
+                    child: Text(
+                      confirm_value[index]
+                          ? graphique
+                                  .languagefr['modify_addresse_multiple_page']
+                              ['horaires_form']['column_9_button_2']
+                          : graphique
+                                  .languagefr['modify_addresse_multiple_page']
+                              ['horaires_form']['column_9_button_2'],
+                      style: TextStyle(
+                        color: Color(graphique.color['default_black']),
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )),
+            ],
+          ),
+        ));
+    // return SizedBox.shrink();
   }
 
   @override
   Widget build(BuildContext context) {
     // For width of table
     double page_width = MediaQuery.of(context).size.width * 0.6;
+    double page_frequence = MediaQuery.of(context).size.width * 0.95;
+    double page_frequence_inside = MediaQuery.of(context).size.width * 0.9;
+    // For Table Frequence
+    var list_frequence_row = List<Widget>.generate(
+        7, (index) => frequence_row(context: context, index: index));
 
     return Scaffold(
         body: SingleChildScrollView(
@@ -324,11 +661,11 @@ class _ModifyAdressePartenairePageState
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: graphique
-                                  .languagefr['modify_addresse_partenaire_page']
-                              ['nom_page'] +
-                          ': ' +
-                          widget.dataAdresse['nomPartenaireAdresse'],
+                      text:
+                          graphique.languagefr['modify_addresse_multiple_page']
+                                  ['nom_page'] +
+                              ': ' +
+                              widget.dataAdresse['nomPartenaireAdresse'],
                       style: TextStyle(
                           color: Color(graphique.color['default_grey']),
                           fontSize: 15,
@@ -381,7 +718,7 @@ class _ModifyAdressePartenairePageState
                       width: 10,
                     ),
                     Text(
-                      graphique.languagefr['modify_addresse_partenaire_page']
+                      graphique.languagefr['modify_addresse_multiple_page']
                           ['adresse_form']['button_nom'],
                       style: TextStyle(
                         color: Color(graphique.color['default_black']),
@@ -416,7 +753,7 @@ class _ModifyAdressePartenairePageState
                       width: 10,
                     ),
                     Text(
-                      graphique.languagefr['modify_addresse_partenaire_page']
+                      graphique.languagefr['modify_addresse_multiple_page']
                           ['horaires_form']['button_nom'],
                       style: TextStyle(
                         color: Color(graphique.color['default_black']),
@@ -451,7 +788,7 @@ class _ModifyAdressePartenairePageState
                       width: 10,
                     ),
                     Text(
-                      graphique.languagefr['modify_addresse_partenaire_page']
+                      graphique.languagefr['modify_addresse_multiple_page']
                           ['contact_form']['button_nom'],
                       style: TextStyle(
                         color: Color(graphique.color['default_black']),
@@ -498,7 +835,7 @@ class _ModifyAdressePartenairePageState
                           color: Color(graphique.color['default_black'])),
                     ),
                     child: Text(
-                      graphique.languagefr['modify_addresse_partenaire_page']
+                      graphique.languagefr['modify_addresse_multiple_page']
                               ['subtitle_page'] +
                           ': ' +
                           widget.dataAdresse['nomPartenaireAdresse'],
@@ -532,8 +869,7 @@ class _ModifyAdressePartenairePageState
                           width: 10,
                         ),
                         Text(
-                          graphique
-                                  .languagefr['modify_addresse_partenaire_page']
+                          graphique.languagefr['modify_addresse_multiple_page']
                               ['adresse_form']['form_subtitle'],
                           style: TextStyle(
                             color: Color(graphique.color['main_color_2']),
@@ -577,7 +913,7 @@ class _ModifyAdressePartenairePageState
                               controller: _nomPartenaireAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_1_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -619,7 +955,7 @@ class _ModifyAdressePartenairePageState
                               controller: _ligne1AdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_2_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -661,7 +997,7 @@ class _ModifyAdressePartenairePageState
                               controller: _ligne2AdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_3_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -695,7 +1031,7 @@ class _ModifyAdressePartenairePageState
                               controller: _codepostalAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_4_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -737,7 +1073,7 @@ class _ModifyAdressePartenairePageState
                               controller: _villeAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_5_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -779,7 +1115,7 @@ class _ModifyAdressePartenairePageState
                               controller: _paysAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_6_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -821,7 +1157,7 @@ class _ModifyAdressePartenairePageState
                               controller: _latitudeAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_7_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -855,7 +1191,7 @@ class _ModifyAdressePartenairePageState
                               controller: _longitudeAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_8_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -889,7 +1225,7 @@ class _ModifyAdressePartenairePageState
                               controller: _etageAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_9_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -917,7 +1253,7 @@ class _ModifyAdressePartenairePageState
                             children: [
                               Text(
                                 graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_11_title'],
                                 style: TextStyle(
                                   color:
@@ -963,7 +1299,7 @@ class _ModifyAdressePartenairePageState
                                   maxLines: 4,
                                   decoration: InputDecoration(
                                     hintText: graphique.languagefr[
-                                            'modify_addresse_partenaire_page']
+                                            'modify_addresse_multiple_page']
                                         ['adresse_form']['field_10_title'],
                                     hintStyle: TextStyle(
                                       color: Color(
@@ -986,7 +1322,7 @@ class _ModifyAdressePartenairePageState
                             children: [
                               Text(
                                 graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_12_title'],
                                 style: TextStyle(
                                   color:
@@ -1021,7 +1357,7 @@ class _ModifyAdressePartenairePageState
                             children: [
                               Text(
                                 graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_13_title'],
                                 style: TextStyle(
                                   color:
@@ -1069,7 +1405,7 @@ class _ModifyAdressePartenairePageState
                               controller: _tarifpassageAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_14_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -1109,7 +1445,7 @@ class _ModifyAdressePartenairePageState
                               controller: _tempspassageAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_15_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -1149,7 +1485,7 @@ class _ModifyAdressePartenairePageState
                               controller: _surfacepassageAdresseController,
                               decoration: InputDecoration(
                                 labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
+                                        'modify_addresse_multiple_page']
                                     ['adresse_form']['field_16_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
@@ -1214,7 +1550,7 @@ class _ModifyAdressePartenairePageState
                                   ),
                                   Text(
                                     graphique.languagefr[
-                                            'modify_addresse_partenaire_page']
+                                            'modify_addresse_multiple_page']
                                         ['adresse_form']['button_2'],
                                     style: TextStyle(
                                       color: Color(
@@ -1354,7 +1690,7 @@ class _ModifyAdressePartenairePageState
                                   ),
                                   Text(
                                     graphique.languagefr[
-                                            'modify_addresse_partenaire_page']
+                                            'modify_addresse_multiple_page']
                                         ['adresse_form']['button_1'],
                                     style: TextStyle(
                                       color: Color(
@@ -1378,13 +1714,13 @@ class _ModifyAdressePartenairePageState
         child: Align(
             alignment: Alignment(-0.9, 0),
             child: Container(
-              height: 1000,
+              height: 1500,
               margin: const EdgeInsets.only(
                 left: 20,
                 top: 20,
                 bottom: 20,
               ),
-              width: page_width,
+              width: page_frequence,
               decoration: BoxDecoration(
                 color: Color(graphique.color['special_bureautique_2']),
                 border: Border.all(
@@ -1396,7 +1732,7 @@ class _ModifyAdressePartenairePageState
                   children: [
                     Container(
                       height: 60,
-                      width: page_width,
+                      width: page_frequence,
                       alignment: const Alignment(-0.9, 0),
                       decoration: BoxDecoration(
                         color: Color(graphique.color['main_color_1']),
@@ -1405,7 +1741,7 @@ class _ModifyAdressePartenairePageState
                             color: Color(graphique.color['default_black'])),
                       ),
                       child: Text(
-                        graphique.languagefr['modify_addresse_partenaire_page']
+                        graphique.languagefr['modify_addresse_multiple_page']
                                 ['subtitle_page'] +
                             ': ' +
                             widget.dataAdresse['nomPartenaireAdresse'],
@@ -1439,8 +1775,8 @@ class _ModifyAdressePartenairePageState
                             width: 10,
                           ),
                           Text(
-                            graphique.languagefr[
-                                    'modify_addresse_partenaire_page']
+                            graphique
+                                    .languagefr['modify_addresse_multiple_page']
                                 ['horaires_form']['form_subtitle'],
                             style: TextStyle(
                               color: Color(graphique.color['main_color_2']),
@@ -1452,287 +1788,158 @@ class _ModifyAdressePartenairePageState
                       ),
                     ),
                     Container(
-                      height: 700,
-                      decoration: BoxDecoration(
-                        color: Color(graphique.color['special_bureautique_2']),
-                        // border: Border.all(width: 1.0),
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 10,
                       ),
-                      child: Column(
+                      height: 100,
+                      width: page_frequence_inside,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['main_color_1']),
+                        border: Border.all(width: 1.0),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            height: 50,
-                          ),
-                          ButtonWidget(
-                            icon: Icons.calendar_today,
-                            text: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
-                                    ['horaires_form']['field_1_title'] +
-                                ': ' +
-                                //     '${timeStart.hour}:${timeStart.minute}'
-                                getTimeText(time: timeStart),
-                            onClicked: () => pickTimeStart(
-                                context: context, time: timeStart),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ButtonWidget(
-                            icon: Icons.calendar_today,
-                            text: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
-                                    ['horaires_form']['field_2_title'] +
-                                ': ' +
-                                // '${timeEnd.hour}:${timeEnd.minute}'
-                                getTimeText(time: timeEnd),
-                            onClicked: () =>
-                                pickTimeEnd(context: context, time: timeEnd),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ButtonWidget(
-                            icon: Icons.calendar_today,
-                            text: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
-                                    ['horaires_form']['field_3_title'] +
-                                ': ' +
-                                getDateText(date: dateMinimale),
-                            onClicked: () => pickDateMinimale(context),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ButtonWidget(
-                            icon: Icons.calendar_today,
-                            text: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
-                                    ['horaires_form']['field_4_title'] +
-                                ': ' +
-                                getDateText(date: dateMaximale),
-                            onClicked: () => pickDateMaximale(context),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            width: 400,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Color(graphique.color['main_color_1']),
-                              ),
-                              color: Color(
-                                  graphique.color['special_bureautique_1']),
-                            ),
-                            child: TextFormField(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            alignment: Alignment.centerLeft,
+                            width: page_frequence_inside * 0.1,
+                            child: Text(
+                              graphique.languagefr[
+                                      'modify_addresse_multiple_page']
+                                  ['horaires_form']['column_1_title'],
                               style: TextStyle(
-                                  color:
-                                      Color(graphique.color['main_color_2'])),
-                              cursorColor:
-                                  Color(graphique.color['main_color_2']),
-                              controller: _frequenceTextController,
-                              decoration: InputDecoration(
-                                labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
-                                    ['horaires_form']['field_5_title'],
-                                labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:
-                                        Color(graphique.color['main_color_2']),
-                                  ),
-                                ),
-                              ),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            width: 400,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Color(graphique.color['main_color_1']),
-                              ),
-                              color: Color(
-                                  graphique.color['special_bureautique_1']),
-                            ),
-                            child: TextFormField(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            alignment: Alignment.centerLeft,
+                            width: page_frequence_inside * 0.1,
+                            child: Text(
+                              graphique.languagefr[
+                                      'modify_addresse_multiple_page']
+                                  ['horaires_form']['column_2_title'],
                               style: TextStyle(
-                                  color:
-                                      Color(graphique.color['main_color_2'])),
-                              cursorColor:
-                                  Color(graphique.color['main_color_2']),
-                              controller: _frequenceTarifController,
-                              decoration: InputDecoration(
-                                labelText: graphique.languagefr[
-                                        'modify_addresse_partenaire_page']
-                                    ['horaires_form']['field_6_title'],
-                                labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color:
-                                        Color(graphique.color['main_color_2']),
-                                  ),
-                                ),
-                              ),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            width: 400,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Color(graphique.color['main_color_1']),
-                              ),
-                              color: Color(
-                                  graphique.color['special_bureautique_1']),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.calendar,
-                                  size: 15,
+                            margin: const EdgeInsets.only(left: 10, right: 20),
+                            alignment: Alignment.centerLeft,
+                            width: page_frequence_inside * 0.1,
+                            child: Text(
+                              graphique.languagefr[
+                                      'modify_addresse_multiple_page']
+                                  ['horaires_form']['column_3_title'],
+                              style: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                    graphique.languagefr[
-                                            'modify_addresse_partenaire_page']
-                                        ['horaires_form']['field_7_title'],
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Color(
-                                            graphique.color['main_color_2']),
-                                        fontWeight: FontWeight.w600)),
-                                SizedBox(width: 10),
-                                //dropdown have bug
-                                DropdownButton<String>(
-                                    onChanged: (String? changedValue) {
-                                      setState(() {
-                                        _jour = changedValue!;
-                                      });
-                                    },
-                                    value: _jour,
-                                    items: list_jour.map((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(
-                                              color: Color(graphique
-                                                  .color['main_color_2']),
-                                              fontSize: 15),
-                                        ),
-                                      );
-                                    }).toList()),
-                              ],
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            width: 400,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Color(graphique.color['main_color_1']),
-                              ),
-                              color: Color(
-                                  graphique.color['special_bureautique_1']),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.truck,
-                                  size: 15,
+                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            alignment: Alignment.centerLeft,
+                            width: page_frequence_inside * 0.1,
+                            child: Text(
+                              graphique.languagefr[
+                                      'modify_addresse_multiple_page']
+                                  ['horaires_form']['column_4_title'],
+                              style: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                    graphique.languagefr[
-                                            'modify_addresse_partenaire_page']
-                                        ['horaires_form']['field_8_title'],
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Color(
-                                            graphique.color['main_color_2']),
-                                        fontWeight: FontWeight.w600)),
-                                SizedBox(width: 10),
-                                StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection("Vehicule")
-                                        .snapshots(),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      if (snapshot.hasError) {
-                                        return Text('Something went wrong');
-                                      }
-
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
-                                      }
-                                      return DropdownButton(
-                                        onChanged: (String? changedValue) {
-                                          setState(() {
-                                            choiceVehicule = changedValue!;
-                                          });
-                                        },
-                                        value: choiceVehicule,
-                                        items: snapshot.data!.docs
-                                            .map((DocumentSnapshot document) {
-                                          Map<String, dynamic> vehicule =
-                                              document.data()!
-                                                  as Map<String, dynamic>;
-
-                                          return DropdownMenuItem<String>(
-                                              value: vehicule[
-                                                  'numeroImmatriculation'],
-                                              child: Row(
-                                                children: [
-                                                  buildVehiculeIcon(
-                                                      icontype: vehicule[
-                                                          'typeVehicule'],
-                                                      iconcolor: vehicule[
-                                                              'colorIconVehicule']
-                                                          .toUpperCase(),
-                                                      sizeIcon: 15.0),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    vehicule['nomVehicule'] +
-                                                        ' ' +
-                                                        vehicule[
-                                                            'numeroImmatriculation'],
-                                                    style: TextStyle(
-                                                        color: Color(graphique
-                                                                .color[
-                                                            'main_color_2']),
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ));
-                                        }).toList(),
-                                      );
-                                    }),
-                              ],
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          )
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 50, right: 10),
+                            alignment: Alignment.centerLeft,
+                            width: page_frequence_inside * 0.1,
+                            child: Text(
+                              graphique.languagefr[
+                                      'modify_addresse_multiple_page']
+                                  ['horaires_form']['column_5_title'],
+                              style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 20),
+                            alignment: Alignment.centerLeft,
+                            width: page_frequence_inside * 0.08,
+                            child: Text(
+                              graphique.languagefr[
+                                      'modify_addresse_multiple_page']
+                                  ['horaires_form']['column_6_title'],
+                              style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            width: page_frequence_inside * 0.1,
+                            child: Text(
+                              graphique.languagefr[
+                                      'modify_addresse_multiple_page']
+                                  ['horaires_form']['column_7_title'],
+                              style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            width: page_frequence_inside * 0.1,
+                            child: Text(
+                              graphique.languagefr[
+                                      'modify_addresse_multiple_page']
+                                  ['horaires_form']['column_8_title'],
+                              style: TextStyle(
+                                  color: Color(graphique.color['main_color_2']),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     Container(
-                      width: page_width * 3 / 4,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      height: 800,
+                      decoration: BoxDecoration(
+                        color: Color(graphique.color['special_bureautique_2']),
+                        border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black']),
+                        ),
+                        // border: Border(
+                        //   left: BorderSide(
+                        //     width: 1.0,
+                        //     color: Color(graphique.color['default_black']),
+                        //   ),
+                        //   right: BorderSide(
+                        //     width: 1.0,
+                        //     color: Color(graphique.color['default_black']),
+                        //   ),
+                        // ),
+                      ),
+                      child: Column(
+                        children: list_frequence_row,
+                      ),
+                    ),
+                    Container(
+                      width: page_frequence * 3 / 4,
                       height: 80,
                       decoration: BoxDecoration(
                         color: Color(graphique.color['main_color_1']),
@@ -1777,7 +1984,7 @@ class _ModifyAdressePartenairePageState
                                     ),
                                     Text(
                                       graphique.languagefr[
-                                              'modify_addresse_partenaire_page']
+                                              'modify_addresse_multiple_page']
                                           ['horaires_form']['button_2'],
                                       style: TextStyle(
                                         color: Color(
@@ -1799,33 +2006,13 @@ class _ModifyAdressePartenairePageState
                                   right: 10, top: 20, bottom: 20),
                               child: GestureDetector(
                                 onTap: () async {
-                                  if (_frequenceTextController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: "Please Input a frequence",
-                                        gravity: ToastGravity.TOP);
-                                  } else if (!_frequenceTextController
-                                          .text.isEmpty &&
-                                      int.tryParse(
-                                              _frequenceTextController.text) ==
-                                          null) {
+                                  int number_of_new_frequence = confirm_value
+                                      .where((element) => element == true)
+                                      .length;
+                                  if (number_of_new_frequence == 0) {
                                     Fluttertoast.showToast(
                                         msg:
-                                            "Please Input a real Number for frequence",
-                                        gravity: ToastGravity.TOP);
-                                  } else if (dateMinimale
-                                      .isAfter(dateMaximale)) {
-                                    Fluttertoast.showToast(
-                                        msg: "Please check your day",
-                                        gravity: ToastGravity.TOP);
-                                  } else if (!_frequenceTarifController
-                                          .text.isEmpty &&
-                                      int.tryParse(
-                                              _frequenceTarifController.text) ==
-                                          null) {
-                                  } else if (toDouble(timeStart) >
-                                      toDouble(timeEnd)) {
-                                    Fluttertoast.showToast(
-                                        msg: "Please check your time",
+                                            "You did not confirm any Frequence",
                                         gravity: ToastGravity.TOP);
                                   } else {
                                     await _partenaire
@@ -1840,81 +2027,46 @@ class _ModifyAdressePartenairePageState
                                           'nombredeFrequence': (int.parse(widget
                                                           .partenaire[
                                                       'nombredeFrequence']) +
-                                                  1)
+                                                  number_of_new_frequence)
                                               .toString(),
                                         });
                                       });
                                     });
-                                    await _vehicule
-                                        .where('numeroImmatriculation',
-                                            isEqualTo: choiceVehicule)
+                                    for (int i = 0; i < 7; i++) {
+                                      if (confirm_value[i]) {
+                                        await _frequence
+                                            .doc(list_frequence[i]
+                                                ['idFrequence'])
+                                            .set(list_frequence[i]);
+                                      }
+                                    }
+                                    await _partenaire
+                                        .where('idPartenaire',
+                                            isEqualTo: widget
+                                                .partenaire['idPartenaire'])
                                         .limit(1)
                                         .get()
                                         .then((QuerySnapshot querySnapshot) {
                                       querySnapshot.docs.forEach((doc) {
-                                        idVehiculeFrequence = doc['idVehicule'];
+                                        Map<String, dynamic> next_partenaire =
+                                            doc.data()! as Map<String, dynamic>;
+                                        print(
+                                            "$number_of_new_frequence Frequence(s) Added");
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "$number_of_new_frequence Frequence(s) Added",
+                                            gravity: ToastGravity.TOP);
+
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViewPartenairePage(
+                                                    partenaire: next_partenaire,
+                                                  )),
+                                        ).then((value) => setState(() {}));
                                       });
                                     });
-                                    String newIdFrequence = _frequence.doc().id;
-                                    await _frequence.doc(newIdFrequence).set({
-                                      'frequence':
-                                          _frequenceTextController.text,
-                                      'jourFrequence': _jour,
-                                      'siretPartenaire':
-                                          _siretPartenaireController.text,
-                                      'idContactFrequence': 'null',
-                                      'idVehiculeFrequence':
-                                          idVehiculeFrequence,
-                                      'idAdresseFrequence':
-                                          widget.dataAdresse['idAdresse'],
-                                      'nomAdresseFrequence': widget
-                                          .dataAdresse['nomPartenaireAdresse'],
-                                      'idPartenaireFrequence':
-                                          widget.partenaire['idPartenaire'],
-                                      'dureeFrequence': (toMinute(timeEnd) -
-                                              toMinute(timeStart))
-                                          .toString(),
-                                      'startFrequence':
-                                          getTimeText(time: timeStart),
-                                      'endFrequence':
-                                          getTimeText(time: timeEnd),
-                                      'tarifFrequence':
-                                          _frequenceTarifController.text,
-                                      'dateMinimaleFrequence':
-                                          getDateText(date: dateMinimale),
-                                      'dateMaximaleFrequence':
-                                          getDateText(date: dateMaximale),
-                                      'idFrequence': newIdFrequence
-                                    }).then((value) async {
-                                      await _partenaire
-                                          .where('idPartenaire',
-                                              isEqualTo: widget
-                                                  .partenaire['idPartenaire'])
-                                          .limit(1)
-                                          .get()
-                                          .then((QuerySnapshot querySnapshot) {
-                                        querySnapshot.docs.forEach((doc) {
-                                          Map<String, dynamic> next_partenaire =
-                                              doc.data()!
-                                                  as Map<String, dynamic>;
-                                          print("Frequence Added");
-                                          Fluttertoast.showToast(
-                                              msg: "Frequence Added",
-                                              gravity: ToastGravity.TOP);
-
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ViewPartenairePage(
-                                                      partenaire:
-                                                          next_partenaire,
-                                                    )),
-                                          ).then((value) => setState(() {}));
-                                        });
-                                      });
-                                    }).catchError((error) =>
-                                        print("Failed to update user: $error"));
                                   }
                                 },
                                 child: Row(
@@ -1929,7 +2081,7 @@ class _ModifyAdressePartenairePageState
                                     ),
                                     Text(
                                       graphique.languagefr[
-                                              'modify_addresse_partenaire_page']
+                                              'modify_addresse_multiple_page']
                                           ['horaires_form']['button_1'],
                                       style: TextStyle(
                                         color: Color(
@@ -1980,7 +2132,7 @@ class _ModifyAdressePartenairePageState
                           color: Color(graphique.color['default_black'])),
                     ),
                     child: Text(
-                      graphique.languagefr['modify_addresse_partenaire_page']
+                      graphique.languagefr['modify_addresse_multiple_page']
                               ['subtitle_page'] +
                           ': ' +
                           widget.dataAdresse['nomPartenaireAdresse'],
@@ -2014,8 +2166,7 @@ class _ModifyAdressePartenairePageState
                           width: 10,
                         ),
                         Text(
-                          graphique
-                                  .languagefr['modify_addresse_partenaire_page']
+                          graphique.languagefr['modify_addresse_multiple_page']
                               ['contact_form']['form_subtitle'],
                           style: TextStyle(
                             color: Color(graphique.color['main_color_2']),
@@ -2137,7 +2288,7 @@ class _ModifyAdressePartenairePageState
                                                                             partenaire: widget
                                                                                 .partenaire,
                                                                             from:
-                                                                                'ModifyAdressePartenairePage',
+                                                                                'ModifyAdresseMultiple',
                                                                             dataContact:
                                                                                 insidedataContact)));
                                                                   }),
@@ -2220,7 +2371,7 @@ class _ModifyAdressePartenairePageState
                                                                       .TOP);
                                                           Navigator.of(context).pushReplacement(MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  ModifyAdressePartenairePage(
+                                                                  ModifyAdresseMultiple(
                                                                       partenaire:
                                                                           widget
                                                                               .partenaire,
@@ -2238,7 +2389,7 @@ class _ModifyAdressePartenairePageState
                                                     size: 15,
                                                   ),
                                                   tooltip: graphique.languagefr[
-                                                              'modify_addresse_partenaire_page']
+                                                              'modify_addresse_multiple_page']
                                                           ['contact_form']
                                                       ['hint_1_title'],
                                                 ),
@@ -2446,7 +2597,7 @@ class _ModifyAdressePartenairePageState
                                                                     ToastGravity
                                                                         .TOP);
                                                             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                builder: (context) => ModifyAdressePartenairePage(
+                                                                builder: (context) => ModifyAdresseMultiple(
                                                                     partenaire:
                                                                         widget
                                                                             .partenaire,
@@ -2473,7 +2624,7 @@ class _ModifyAdressePartenairePageState
                                                       ),
                                                       tooltip: graphique
                                                                       .languagefr[
-                                                                  'modify_addresse_partenaire_page']
+                                                                  'modify_addresse_multiple_page']
                                                               ['contact_form']
                                                           ['hint_2_title'],
                                                     ),
@@ -2533,7 +2684,7 @@ class _ModifyAdressePartenairePageState
                                   ),
                                   Text(
                                     graphique.languagefr[
-                                            'modify_addresse_partenaire_page']
+                                            'modify_addresse_multiple_page']
                                         ['contact_form']['button_1'],
                                     style: TextStyle(
                                       color: Color(
@@ -2553,577 +2704,5 @@ class _ModifyAdressePartenairePageState
         ),
       )
     ])));
-  }
-
-  //for Adresse
-  CollectionReference _contenantadresse =
-      FirebaseFirestore.instance.collection("ContenantAdresse");
-
-  showAddFrequenceAdresse(
-      {required BuildContext context, required Map dataAdresse}) async {
-    //For Add Frequence
-    String choiceVehicule = 'None';
-    String idVehiculeFrequence = '';
-    String _jour = 'Lundi';
-    TimeOfDay timeStart = TimeOfDay.now();
-    TimeOfDay timeEnd = TimeOfDay.now();
-    TextEditingController _frequenceTextController = TextEditingController();
-    TextEditingController _frequenceTarifController = TextEditingController();
-    _frequenceTarifController.text = dataAdresse['tarifpassageAdresse'];
-
-    Future pickTimeStart(
-        {required BuildContext context, required TimeOfDay time}) async {
-      final newTime = await showTimePicker(context: context, initialTime: time);
-
-      if (newTime == null) {
-        return;
-      }
-      setState(() => timeStart = newTime);
-    }
-
-    Future pickTimeEnd(
-        {required BuildContext context, required TimeOfDay time}) async {
-      final newTime = await showTimePicker(context: context, initialTime: time);
-
-      if (newTime == null) {
-        return;
-      }
-      setState(() => timeEnd = newTime);
-    }
-
-    double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
-    double toMinute(TimeOfDay myTime) => myTime.hour * 60.0 + myTime.minute;
-
-    DateTime dateMinimale = DateTime.now();
-    DateTime dateMaximale = DateTime.now();
-
-    Future pickDateMinimale(BuildContext context) async {
-      final initialDate = DateTime.now();
-      final newDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year - 10),
-        lastDate: DateTime(DateTime.now().year + 10),
-      );
-
-      if (newDate == null) return;
-
-      setState(() => dateMinimale = newDate);
-    }
-
-    Future pickDateMaximale(BuildContext context) async {
-      final initialDate = DateTime.now();
-      final newDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year - 10),
-        lastDate: DateTime(DateTime.now().year + 10),
-      );
-
-      if (newDate == null) return;
-
-      setState(() => dateMaximale = newDate);
-    }
-
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-              child: Container(
-            height: 800,
-            width: 800,
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      height: 80,
-                      alignment: Alignment(-0.9, 0),
-                      color: Colors.blue,
-                      child: Text(
-                        'Modify Adresses ' +
-                            dataAdresse['nomPartenaireAdresse'],
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      )),
-                  Divider(
-                    thickness: 5,
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 50,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.mapMarker,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Localisation',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: null,
-                        child: Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.clock,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Horaires',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          // showModifyContactAdresse(
-                          //     context: context, dataAdresse: dataAdresse);
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.users,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Contact',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 300,
-                    color: Colors.green,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 50,
-                          ),
-                          ButtonWidget(
-                            icon: Icons.calendar_today,
-                            text: 'StartTime: ' +
-                                //     '${timeStart.hour}:${timeStart.minute}'
-                                getTimeText(time: timeStart),
-                            onClicked: () => pickTimeStart(
-                                context: context, time: timeStart),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ButtonWidget(
-                            icon: Icons.calendar_today,
-                            text: 'EndTime: ' +
-                                // '${timeEnd.hour}:${timeEnd.minute}'
-                                getTimeText(time: timeEnd),
-                            onClicked: () =>
-                                pickTimeEnd(context: context, time: timeEnd),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ButtonWidget(
-                            icon: Icons.calendar_today,
-                            text: 'DateMinimale: ' +
-                                DateFormat('yMd')
-                                    .format(dateMinimale)
-                                    .toString(),
-                            onClicked: () => pickDateMinimale(context),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ButtonWidget(
-                            icon: Icons.calendar_today,
-                            text: 'DateMaximale: ' +
-                                DateFormat('yMd')
-                                    .format(dateMaximale)
-                                    .toString(),
-                            onClicked: () => pickDateMaximale(context),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 400,
-                            color: Colors.red,
-                            child: TextFormField(
-                              controller: _frequenceTextController,
-                              decoration: InputDecoration(
-                                labelText:
-                                    'Frequence*(Toutes les X semaines) : ',
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 400,
-                            color: Colors.red,
-                            child: TextFormField(
-                              controller: _frequenceTarifController,
-                              decoration: InputDecoration(
-                                labelText: 'Tarif : ',
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 400,
-                            height: 50,
-                            color: Colors.red,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.calendar,
-                                  size: 30,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('Jour',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600)),
-                                SizedBox(width: 10),
-                                //dropdown have bug
-                                DropdownButton<String>(
-                                    onChanged: (String? changedValue) {
-                                      setState(() {
-                                        _jour = changedValue!;
-                                      });
-                                    },
-                                    value: _jour,
-                                    items: list_jour.map((String value) {
-                                      return new DropdownMenuItem<String>(
-                                        value: value,
-                                        child: new Text(value),
-                                      );
-                                    }).toList()),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: 400,
-                            height: 50,
-                            color: Colors.red,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.truck,
-                                  size: 30,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('Vehicule',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600)),
-                                SizedBox(width: 10),
-                                StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection("Vehicule")
-                                        .snapshots(),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      if (snapshot.hasError) {
-                                        return Text('Something went wrong');
-                                      }
-
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
-                                      }
-                                      return DropdownButton(
-                                        onChanged: (String? changedValue) {
-                                          setState(() {
-                                            choiceVehicule = changedValue!;
-                                          });
-                                        },
-                                        value: choiceVehicule,
-                                        items: snapshot.data!.docs
-                                            .map((DocumentSnapshot document) {
-                                          Map<String, dynamic> vehicule =
-                                              document.data()!
-                                                  as Map<String, dynamic>;
-
-                                          return DropdownMenuItem<String>(
-                                            value: vehicule[
-                                                'numeroImmatriculation'],
-                                            child: new Text(vehicule[
-                                                    'nomVehicule'] +
-                                                ' ' +
-                                                vehicule[
-                                                    'numeroImmatriculation']),
-                                          );
-                                        }).toList(),
-                                      );
-                                    }),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 5,
-                  ),
-                  Container(
-                    width: 800,
-                    height: 80,
-                    color: Colors.red,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 400,
-                        ),
-                        Container(
-                            width: 150,
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: const EdgeInsets.only(
-                                right: 10, top: 20, bottom: 20),
-                            child: GestureDetector(
-                              onTap: () {
-                                print(getTimeText(time: timeStart));
-                                print(getTimeText(time: timeEnd));
-                                print('$choiceVehicule');
-                                print('$_jour');
-                                Navigator.of(context).pop();
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                        Container(
-                            width: 150,
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: const EdgeInsets.only(
-                                right: 10, top: 20, bottom: 20),
-                            child: GestureDetector(
-                              onTap: () async {
-                                if (_frequenceTextController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please Input a frequence",
-                                      gravity: ToastGravity.TOP);
-                                } else if (!_frequenceTextController
-                                        .text.isEmpty &&
-                                    int.tryParse(
-                                            _frequenceTextController.text) ==
-                                        null) {
-                                  Fluttertoast.showToast(
-                                      msg:
-                                          "Please Input a real Number for frequence",
-                                      gravity: ToastGravity.TOP);
-                                } else if (dateMinimale.isAfter(dateMaximale)) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please check your day",
-                                      gravity: ToastGravity.TOP);
-                                } else if (!_frequenceTarifController
-                                        .text.isEmpty &&
-                                    int.tryParse(
-                                            _frequenceTarifController.text) ==
-                                        null) {
-                                } else if (toDouble(timeStart) >
-                                    toDouble(timeEnd)) {
-                                  Fluttertoast.showToast(
-                                      msg: "Please check your time",
-                                      gravity: ToastGravity.TOP);
-                                } else {
-                                  await _partenaire
-                                      .where('idPartenaire',
-                                          isEqualTo:
-                                              widget.partenaire['idPartenaire'])
-                                      .limit(1)
-                                      .get()
-                                      .then((QuerySnapshot querySnapshot) {
-                                    querySnapshot.docs.forEach((doc) {
-                                      _partenaire.doc(doc.id).update({
-                                        'nombredeFrequence': (int.parse(
-                                                    widget.partenaire[
-                                                        'nombredeFrequence']) +
-                                                1)
-                                            .toString(),
-                                      });
-                                    });
-                                  });
-                                  await _vehicule
-                                      .where('numeroImmatriculation',
-                                          isEqualTo: choiceVehicule)
-                                      .limit(1)
-                                      .get()
-                                      .then((QuerySnapshot querySnapshot) {
-                                    querySnapshot.docs.forEach((doc) {
-                                      idVehiculeFrequence = doc['idVehicule'];
-                                    });
-                                  });
-                                  String newIdFrequence = _frequence.doc().id;
-                                  await _frequence.doc(newIdFrequence).set({
-                                    'frequence': _frequenceTextController.text,
-                                    'jourFrequence': _jour,
-                                    'siretPartenaire':
-                                        _siretPartenaireController.text,
-                                    'idContactFrequence': 'null',
-                                    'idVehiculeFrequence': idVehiculeFrequence,
-                                    'idAdresseFrequence':
-                                        dataAdresse['idAdresse'],
-                                    'nomAdresseFrequence':
-                                        dataAdresse['nomPartenaireAdresse'],
-                                    'idPartenaireFrequence':
-                                        widget.partenaire['idPartenaire'],
-                                    'dureeFrequence': (toMinute(timeEnd) -
-                                            toMinute(timeStart))
-                                        .toString(),
-                                    'startFrequence':
-                                        getTimeText(time: timeStart),
-                                    'endFrequence': getTimeText(time: timeEnd),
-                                    'tarifFrequence':
-                                        _frequenceTarifController.text,
-                                    'dateMinimaleFrequence':
-                                        getDateText(date: dateMinimale),
-                                    'dateMaximaleFrequence':
-                                        getDateText(date: dateMaximale),
-                                    'idFrequence': newIdFrequence
-                                  }).then((value) async {
-                                    await _partenaire
-                                        .where('idPartenaire',
-                                            isEqualTo: widget
-                                                .partenaire['idPartenaire'])
-                                        .limit(1)
-                                        .get()
-                                        .then((QuerySnapshot querySnapshot) {
-                                      querySnapshot.docs.forEach((doc) {
-                                        Map<String, dynamic> next_partenaire =
-                                            doc.data()! as Map<String, dynamic>;
-                                        print("Frequence Added");
-                                        Fluttertoast.showToast(
-                                            msg: "Frequence Added",
-                                            gravity: ToastGravity.TOP);
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ModifyAdressePartenairePage(
-                                                    partenaire: next_partenaire,
-                                                    dataAdresse:
-                                                        widget.dataAdresse,
-                                                    form_start: 1,
-                                                  )),
-                                        ).then((value) => setState(() {}));
-                                      });
-                                    });
-                                  }).catchError((error) =>
-                                      print("Failed to update user: $error"));
-                                }
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Save',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                ]),
-          ));
-        });
   }
 }
