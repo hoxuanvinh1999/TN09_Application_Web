@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/pages/menu2/contact_page.dart';
 import 'package:tn09_app_web_demo/pages/menu2/partenaire_page.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
+import 'package:tn09_app_web_demo/pages/menu2/type_partenaire_page.dart';
 
 showSubMenu2({required BuildContext context}) {
   return showDialog(
@@ -58,6 +59,46 @@ showSubMenu2({required BuildContext context}) {
                                   Text(
                                     graphique.languagefr['button_2']
                                         ['function_1_title'],
+                                    style: TextStyle(
+                                      color: Color(
+                                          graphique.color['main_color_2']),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ))),
+                    ),
+                    Divider(
+                      thickness: 2,
+                      color: Color(graphique.color['secondary_color_2']),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => TypePartenairePage()));
+                      },
+                      child: Container(
+                          margin: const EdgeInsets.only(left: 20),
+                          color: Color(graphique.color['main_color_1']),
+                          width: 380,
+                          height: 30,
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 10, top: 5),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.flagCheckered,
+                                    size: 15,
+                                    color:
+                                        Color(graphique.color['main_color_2']),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    graphique.languagefr['button_2']
+                                        ['sub_function_1_title'],
                                     style: TextStyle(
                                       color: Color(
                                           graphique.color['main_color_2']),
