@@ -371,10 +371,10 @@ class _PartenairePageState extends State<PartenairePage> {
   Widget buildTypePartenaireIcon({required String typePartenaire}) {
     // print('$typePartenaire');
     switch (typePartenaire) {
-      case 'PRIVE':
+      case 'prive':
         {
           return Tooltip(
-            message: 'PRIVE',
+            message: typePartenaire,
             child: Icon(
               FontAwesomeIcons.building,
               size: 17,
@@ -382,20 +382,20 @@ class _PartenairePageState extends State<PartenairePage> {
           );
         }
 
-      case 'PUBLIC':
+      case 'Public':
         {
           return Tooltip(
-            message: 'PUBLIC',
+            message: typePartenaire,
             child: Icon(
               FontAwesomeIcons.city,
               size: 17,
             ),
           );
         }
-      case 'EXPERIMENTATION':
+      case 'Experimentation':
         {
           return Tooltip(
-            message: 'EXPERIMENTATION',
+            message: typePartenaire,
             child: Icon(
               FontAwesomeIcons.flask,
               size: 17,
@@ -405,7 +405,7 @@ class _PartenairePageState extends State<PartenairePage> {
       default:
         {
           return Tooltip(
-            message: 'AUTRES',
+            message: typePartenaire,
             child: Icon(
               FontAwesomeIcons.flag,
               size: 17,

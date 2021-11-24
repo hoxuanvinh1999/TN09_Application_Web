@@ -85,13 +85,67 @@ class _HomeScreenState extends State<HomeScreen> {
                       alignment: Alignment.center,
                       child: GestureDetector(
                         onTap: () async {
-                          await _mail.doc(_mail.doc().id.toString()).set({
-                            'to': 'hoxuanvinh1999@gmail.com',
-                            'message': {
-                              'subject': "Hello from Les detritivores!",
-                              'text': 'Testing',
-                            },
-                          });
+                          // add element to partenaire
+                          // await FirebaseFirestore.instance
+                          //     .collection("Partenaire")
+                          //     .get()
+                          //     .then((QuerySnapshot querySnapshot) {
+                          //   querySnapshot.docs.forEach((partenaire) {
+                          //     FirebaseFirestore.instance
+                          //         .collection('Partenaire')
+                          //         .doc(partenaire.id)
+                          //         .update({
+                          //       'idTypePartenaire': '',
+                          //     }).then((value) {
+                          //       Fluttertoast.showToast(
+                          //           msg: 'Added Element idTypePartenaire',
+                          //           gravity: ToastGravity.TOP);
+                          //     }).catchError((error) =>
+                          //             print("Failed to add user: $error"));
+                          //   });
+                          // }).then((value) {
+                          //   Fluttertoast.showToast(
+                          //       msg: 'Finish update data',
+                          //       gravity: ToastGravity.TOP);
+                          // }).catchError((error) =>
+                          //         print("Failed to add user: $error"));
+                          // await FirebaseFirestore.instance
+                          //     .collection("Partenaire")
+                          //     .get()
+                          //     .then((QuerySnapshot querySnapshot) {
+                          //   querySnapshot.docs.forEach((partenaire) {
+                          //     FirebaseFirestore.instance
+                          //         .collection('TypePartenaire')
+                          //         .where('nomTypePartenaire',
+                          //             isEqualTo: partenaire['typePartenaire'])
+                          //         .limit(1)
+                          //         .get()
+                          //         .then((QuerySnapshot querySnapshot) async {
+                          //       querySnapshot.docs.forEach((typepartenaire) {
+                          //         FirebaseFirestore.instance
+                          //             .collection('Partenaire')
+                          //             .doc(partenaire.id)
+                          //             .update({
+                          //           'idTypePartenaire':
+                          //               typepartenaire['idTypePartenaire'],
+                          //         });
+                          //       });
+                          //     });
+                          //   });
+                          // }).then((value) {
+                          //   Fluttertoast.showToast(
+                          //       msg: 'Finish update data',
+                          //       gravity: ToastGravity.TOP);
+                          // }).catchError((error) =>
+                          //         print("Failed to add user: $error"));
+                          //Test send email
+                          // await _mail.doc(_mail.doc().id.toString()).set({
+                          //   'to': 'hoxuanvinh1999@gmail.com',
+                          //   'message': {
+                          //     'subject': "Hello from Les detritivores!",
+                          //     'text': 'Testing',
+                          //   },
+                          // });
                           //Creating new function send email
                           // final email_body = 'Hello Vinh is testing functions';
                           // final Email email = Email(

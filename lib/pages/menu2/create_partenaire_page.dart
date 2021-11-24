@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/menu/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
@@ -28,7 +29,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
   TextEditingController _nomPartenaireController = TextEditingController();
   TextEditingController _notePartenaireController = TextEditingController();
   TextEditingController _siretPartenaireController = TextEditingController();
-  String _typePartenaire = 'PRIVE';
+  String _typePartenaire = 'null';
   List<String> list_type = ['PRIVE', 'PUBLIC', 'EXPERIMENTATION', 'AUTRES'];
   String _actifPartenaire = 'true';
 
@@ -346,28 +347,71 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                             graphique.color['main_color_2']),
                                         fontWeight: FontWeight.w600)),
                                 SizedBox(width: 10),
-                                DropdownButton<String>(
-                                    onChanged: (String? changedValue) {
-                                      setState(() {
-                                        _typePartenaire = changedValue!;
-                                        // print(
-                                        //     '$_typePartenaire  $changedValue');
-                                      });
-                                    },
-                                    value: _typePartenaire,
-                                    items: list_type.map((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Color(graphique
-                                                  .color['main_color_2']),
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("TypePartenaire")
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text('Something went wrong');
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+                                      return DropdownButton(
+                                        onChanged: (String? changedValue) {
+                                          setState(() {
+                                            _typePartenaire = changedValue!;
+                                          });
+                                        },
+                                        value: _typePartenaire,
+                                        items: snapshot.data!.docs.map(
+                                            (DocumentSnapshot
+                                                document_typepartenaire) {
+                                          Map<String, dynamic> typepartenaire =
+                                              document_typepartenaire.data()!
+                                                  as Map<String, dynamic>;
+                                          return DropdownMenuItem<String>(
+                                            value: typepartenaire[
+                                                'idTypePartenaire'],
+                                            child: Text(
+                                              typepartenaire[
+                                                  'nomTypePartenaire'],
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Color(graphique
+                                                      .color['main_color_2']),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          );
+                                        }).toList(),
                                       );
-                                    }).toList()),
+                                    }),
+                                // DropdownButton<String>(
+                                //     onChanged: (String? changedValue) {
+                                //       setState(() {
+                                //         _typePartenaire = changedValue!;
+                                //         // print(
+                                //         //     '$_typePartenaire  $changedValue');
+                                //       });
+                                //     },
+                                //     value: _typePartenaire,
+                                //     items: list_type.map((String value) {
+                                //       return DropdownMenuItem<String>(
+                                //         value: value,
+                                //         child: Text(
+                                //           value,
+                                //           style: TextStyle(
+                                //               fontSize: 16,
+                                //               color: Color(graphique
+                                //                   .color['main_color_2']),
+                                //               fontWeight: FontWeight.bold),
+                                //         ),
+                                //       );
+                                //     }).toList()),
                               ],
                             ),
                           ),
@@ -535,7 +579,11 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                               right: 10, top: 20, bottom: 20),
                           child: GestureDetector(
                             onTap: () async {
-                              if (_createPartenaireKeyForm.currentState!
+                              if (_typePartenaire == 'null') {
+                                Fluttertoast.showToast(
+                                    msg: "Your Type Partenaire is Null",
+                                    gravity: ToastGravity.TOP);
+                              } else if (_createPartenaireKeyForm.currentState!
                                   .validate()) {
                                 if (_siretPartenaireController.text.isEmpty) {
                                   _siretPartenaireController.text = '';
@@ -566,6 +614,29 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                   'nombredeContact': '0',
                                   'idAdresse': 'null',
                                 });
+                                String nom_typePartenaire = '';
+                                await FirebaseFirestore.instance
+                                    .collection("TypePartenaire")
+                                    .where('idTypePartenaire',
+                                        isEqualTo: _typePartenaire)
+                                    .limit(1)
+                                    .get()
+                                    .then((QuerySnapshot querySnapshot) {
+                                  querySnapshot.docs
+                                      .forEach((doc_typepartenaire) async {
+                                    nom_typePartenaire =
+                                        doc_typepartenaire['nomTypePartenaire'];
+                                    await FirebaseFirestore.instance
+                                        .collection("TypePartenaire")
+                                        .doc(_typePartenaire)
+                                        .update({
+                                      'nombre': (int.parse(doc_typepartenaire[
+                                                  'nombre']) +
+                                              1)
+                                          .toString(),
+                                    });
+                                  });
+                                });
                                 await _partenaire.doc(newIdPartenaire).set({
                                   'nomPartenaire':
                                       _nomPartenaireController.text,
@@ -575,7 +646,8 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                       _siretPartenaireController.text,
                                   'idContactPartenaire': 'null',
                                   'actifPartenaire': _actifPartenaire,
-                                  'typePartenaire': _typePartenaire,
+                                  'idTypePartenaire': _typePartenaire,
+                                  'typePartenaire': nom_typePartenaire,
                                   'nombredeAdresses': '0',
                                   'nombredeFrequence': '0',
                                   'nombredeContact': '0',

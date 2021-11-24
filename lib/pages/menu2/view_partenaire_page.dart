@@ -46,6 +46,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
   TextEditingController _notePartenaireController = TextEditingController();
   TextEditingController _siretPartenaireController = TextEditingController();
   String _typePartenaire = 'PRIVE';
+  String oldtypePartenaire = '';
   List<String> list_type = ['PRIVE', 'PUBLIC', 'EXPERIMENTATION', 'AUTRES'];
   String _actifPartenaire = 'true';
 
@@ -56,6 +57,12 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       _notePartenaireController.text = widget.partenaire['notePartenaire'];
       _siretPartenaireController.text = widget.partenaire['siretPartenaire'];
       _actifPartenaire = widget.partenaire['actifPartenaire'];
+      _typePartenaire = widget.partenaire['idTypePartenaire'] == ''
+          ? 'null'
+          : widget.partenaire['idTypePartenaire'];
+      oldtypePartenaire = widget.partenaire['idTypePartenaire'] == ''
+          ? 'null'
+          : widget.partenaire['idTypePartenaire'];
     });
     super.initState();
   }
@@ -540,29 +547,75 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                               graphique.color['main_color_2']),
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(width: 10),
-                                  //dropdown have bug
-                                  DropdownButton<String>(
-                                      onChanged: (String? changedValue) {
-                                        setState(() {
-                                          _typePartenaire = changedValue!;
-                                          // print(
-                                          //     '$_typePartenaire  $changedValue');
-                                        });
-                                      },
-                                      value: _typePartenaire,
-                                      items: list_type.map((String value) {
-                                        return new DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Color(graphique
-                                                    .color['main_color_2']),
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                  StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("TypePartenaire")
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Text('Something went wrong');
+                                        }
+
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                        }
+                                        return DropdownButton(
+                                          onChanged: (String? changedValue) {
+                                            setState(() {
+                                              _typePartenaire = changedValue!;
+                                            });
+                                          },
+                                          value: _typePartenaire,
+                                          items: snapshot.data!.docs.map(
+                                              (DocumentSnapshot
+                                                  document_typepartenaire) {
+                                            Map<String, dynamic>
+                                                typepartenaire =
+                                                document_typepartenaire.data()!
+                                                    as Map<String, dynamic>;
+                                            return DropdownMenuItem<String>(
+                                              value: typepartenaire[
+                                                  'idTypePartenaire'],
+                                              child: Text(
+                                                typepartenaire[
+                                                    'nomTypePartenaire'],
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Color(graphique
+                                                        .color['main_color_2']),
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            );
+                                          }).toList(),
                                         );
-                                      }).toList()),
+                                      }),
+                                  // DropdownButton<String>(
+                                  //   onChanged: (String? changedValue) {
+                                  //     setState(() {
+                                  //       _typePartenaire = changedValue!;
+                                  //       // print(
+                                  //       //     '$_typePartenaire  $changedValue');
+                                  //     });
+                                  //   },
+                                  //   value: _typePartenaire,
+                                  //   items: list_type.map((String value) {
+                                  //     return new DropdownMenuItem<String>(
+                                  //       value: value,
+                                  //       child: Text(
+                                  //         value,
+                                  //         style: TextStyle(
+                                  //             fontSize: 16,
+                                  //             color: Color(graphique
+                                  //                 .color['main_color_2']),
+                                  //             fontWeight: FontWeight.bold),
+                                  //       ),
+                                  //     );
+                                  //   }).toList(),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -696,8 +749,61 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                 right: 10, top: 20, bottom: 20),
                             child: GestureDetector(
                               onTap: () async {
-                                if (_createPartenaireKeyForm.currentState!
+                                if (_typePartenaire == 'null') {
+                                  Fluttertoast.showToast(
+                                      msg: "Your Type Partenaire is Null",
+                                      gravity: ToastGravity.TOP);
+                                } else if (_createPartenaireKeyForm
+                                    .currentState!
                                     .validate()) {
+                                  String new_nomTypePartenaire = '';
+                                  if (_typePartenaire != oldtypePartenaire) {
+                                    await FirebaseFirestore.instance
+                                        .collection("TypePartenaire")
+                                        .where('idTypePartenaire',
+                                            isEqualTo: _typePartenaire)
+                                        .limit(1)
+                                        .get()
+                                        .then((QuerySnapshot querySnapshot) {
+                                      querySnapshot.docs
+                                          .forEach((doc_typepartenaire) async {
+                                        new_nomTypePartenaire =
+                                            doc_typepartenaire[
+                                                'nomTypePartenaire'];
+                                        await FirebaseFirestore.instance
+                                            .collection("TypePartenaire")
+                                            .doc(_typePartenaire)
+                                            .update({
+                                          'nombre': (int.parse(
+                                                      doc_typepartenaire[
+                                                          'nombre']) +
+                                                  1)
+                                              .toString(),
+                                        });
+                                      });
+                                    });
+                                    await FirebaseFirestore.instance
+                                        .collection("TypePartenaire")
+                                        .where('idTypePartenaire',
+                                            isEqualTo: oldtypePartenaire)
+                                        .limit(1)
+                                        .get()
+                                        .then((QuerySnapshot querySnapshot) {
+                                      querySnapshot.docs
+                                          .forEach((doc_typepartenaire) async {
+                                        await FirebaseFirestore.instance
+                                            .collection("TypePartenaire")
+                                            .doc(doc_typepartenaire.id)
+                                            .update({
+                                          'nombre': (int.parse(
+                                                      doc_typepartenaire[
+                                                          'nombre']) -
+                                                  1)
+                                              .toString(),
+                                        });
+                                      });
+                                    });
+                                  }
                                   await _partenaire
                                       .where('idPartenaire',
                                           isEqualTo:
@@ -715,7 +821,8 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                             _siretPartenaireController.text,
                                         'idContactPartenaire': 'null',
                                         'actifPartenaire': _actifPartenaire,
-                                        'typePartenaire': _typePartenaire,
+                                        'idTypePartenaire': _typePartenaire,
+                                        'typePartenaire': new_nomTypePartenaire,
                                       }).then((value) async {
                                         await _partenaire
                                             .where('idPartenaire',
