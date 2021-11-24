@@ -5,21 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/login_page/forget_password_page.dart';
 import 'package:tn09_app_web_demo/login_page/verify_email_page.dart';
-import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
-import 'package:tn09_app_web_demo/pages/contact_page.dart';
-import 'package:tn09_app_web_demo/pages/contenant_page.dart';
-import 'package:tn09_app_web_demo/pages/create_collecteur_page.dart';
-import 'package:tn09_app_web_demo/pages/create_contact_page.dart';
-import 'package:tn09_app_web_demo/pages/create_contenant_page.dart';
-import 'package:tn09_app_web_demo/pages/create_partenaire_page.dart';
-import 'package:tn09_app_web_demo/pages/create_tournee_page.dart';
-import 'package:tn09_app_web_demo/pages/create_type_contenant_page.dart';
-import 'package:tn09_app_web_demo/pages/create_vehicule_page.dart';
-import 'package:tn09_app_web_demo/pages/matieres_page.dart';
-import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
-import 'package:tn09_app_web_demo/pages/type_contenant_page.dart';
-import 'package:tn09_app_web_demo/pages/vehicule_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override

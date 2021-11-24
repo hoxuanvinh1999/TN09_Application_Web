@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tn09_app_web_demo/pages/contact_page.dart';
-import 'package:tn09_app_web_demo/pages/partenaire_page.dart';
+import 'package:tn09_app_web_demo/pages/menu2/contact_page.dart';
+import 'package:tn09_app_web_demo/pages/menu2/partenaire_page.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 showSubMenu2({required BuildContext context}) {

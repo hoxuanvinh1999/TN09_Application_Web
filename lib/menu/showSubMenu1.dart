@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tn09_app_web_demo/pages/collecteur_page.dart';
-import 'package:tn09_app_web_demo/pages/contenant_page.dart';
-import 'package:tn09_app_web_demo/pages/matieres_page.dart';
-import 'package:tn09_app_web_demo/pages/type_contenant_page.dart';
-import 'package:tn09_app_web_demo/pages/vehicule_page.dart';
+import 'package:tn09_app_web_demo/pages/menu1/matieres_page.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
+import 'package:tn09_app_web_demo/pages/menu1/collecteur_page.dart';
+import 'package:tn09_app_web_demo/pages/menu1/contenant_page.dart';
+import 'package:tn09_app_web_demo/pages/menu1/type_contenant_page.dart';
+import 'package:tn09_app_web_demo/pages/menu1/vehicule_page.dart';
 
 showSubMenu1({required BuildContext context}) {
   return showDialog(

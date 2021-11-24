@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tn09_app_web_demo/pages/create_tournee_page.dart';
-import 'package:tn09_app_web_demo/pages/peser_daily_page.dart';
-import 'package:tn09_app_web_demo/pages/planning_daily_page.dart';
-import 'package:tn09_app_web_demo/pages/planning_weekly_page.dart';
+import 'package:tn09_app_web_demo/pages/menu3/create_tournee_page.dart';
+import 'package:tn09_app_web_demo/pages/menu3/peser_daily_page.dart';
+import 'package:tn09_app_web_demo/pages/menu3/planning_daily_page.dart';
+import 'package:tn09_app_web_demo/pages/menu3/planning_weekly_page.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
 
 showSubMenu3({required BuildContext context}) {
