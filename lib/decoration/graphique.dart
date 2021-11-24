@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 const Map<String, dynamic> color = {
   'default_white': 0xfff4eeee,
   'default_black': 0xff060606,
@@ -28,6 +31,7 @@ const Map<String, dynamic> languagefr = {
   'button_2': {
     'title': 'Partenaires',
     'function_1_title': 'Liste des partenaires',
+    'sub_function_1_title': 'Type Partenaires',
     'function_2_title': 'Gestion des contacts',
   },
   'button_3': {
@@ -235,6 +239,28 @@ const Map<String, dynamic> languagefr = {
     'column_4_title': 'Contact',
     'icon_button_1_title_1': 'Ajouter le contact',
     'icon_button_1_title_2': 'Afficher le contact principal'
+  },
+  'type_partenaire_page': {
+    'nom_page': 'Types de partenaires',
+    'button_1': 'Nouveau Type',
+    'table_title': 'Types de partenaires',
+    'column_1_title': 'Désignation',
+    'column_2_title': 'Nombre',
+    'icon_button_1_title': 'Modifier Type Partenaires'
+  },
+  'create_type_partenaire_page': {
+    'nom_page': 'Nouveau type de partenaires',
+    'button_1': 'Enregistrer',
+    'button_2': 'Annuler',
+    'form_title': 'Nouveau type de partenaires',
+    'form_subtitle': 'Informations et paramètres',
+    'field_1_title': 'Désignation *',
+    'field_2_title': 'Poids*',
+    'field_3_title': 'Poids limite*',
+    'field_4_title': 'Noter',
+    'field_5_title': 'Collecté',
+    'field_6_title': 'Préparé',
+    'field_7_title': 'Pesée',
   },
   'create_partenaire_page': {
     'nom_page': 'Nouveau partenaire',
@@ -557,4 +583,17 @@ const Map<String, dynamic> languagefr = {
   'warning': {
     'not_null': 'Cela ne peut pas être nul',
   },
+};
+
+const Map<String, IconData> myIconCollection = {
+  'favorite': Icons.favorite,
+  'home': Icons.home,
+  'android': Icons.android,
+  'album': Icons.album,
+  'ac_unit': Icons.ac_unit,
+  'building': FontAwesomeIcons.building,
+  'city': FontAwesomeIcons.city,
+  'flask': FontAwesomeIcons.flask,
+  'flag': FontAwesomeIcons.flag,
+  'utensils': FontAwesomeIcons.utensils,
 };
