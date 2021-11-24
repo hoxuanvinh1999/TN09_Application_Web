@@ -165,7 +165,7 @@ class _CreateTypePartenairePageState extends State<CreateTypePartenairePage> {
                 bottom: 20,
               ),
               width: page_width,
-              height: 900,
+              height: 500,
               decoration: BoxDecoration(
                 color: Color(graphique.color['special_bureautique_2']),
                 border: Border.all(
@@ -241,7 +241,7 @@ class _CreateTypePartenairePageState extends State<CreateTypePartenairePage> {
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 20),
-                  height: 600,
+                  height: 200,
                   width: page_width * 2 / 3,
                   decoration: BoxDecoration(
                     color: Color(graphique.color['special_bureautique_2']),
