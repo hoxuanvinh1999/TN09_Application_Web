@@ -542,11 +542,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                     },
                     child: Text(
                       confirm_value[index]
-                          ? graphique
-                                  .languagefr['modify_addresse_multiple_page']
+                          ? graphique.languagefr['create_adresse_full_page']
                               ['horaires_form']['column_9_button_2']
-                          : graphique
-                                  .languagefr['modify_addresse_multiple_page']
+                          : graphique.languagefr['create_adresse_full_page']
                               ['horaires_form']['column_9_button_1'],
                       style: TextStyle(
                         color: Color(graphique.color['default_black']),
@@ -693,7 +691,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: graphique.languagefr['create_adresse_page']
+                      text: graphique.languagefr['create_adresse_full_page']
                           ['nom_page'],
                       style: TextStyle(
                           color: Color(graphique.color['default_grey']),
@@ -743,7 +741,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                         width: 10,
                       ),
                       Text(
-                        graphique.languagefr['create_adresse_page']['nom_page'],
+                        graphique.languagefr['create_adresse_full_page']
+                            ['adresse_form']['form_title'],
                         style: TextStyle(
                           color: Color(graphique.color['main_color_2']),
                           fontSize: 17,
@@ -777,8 +776,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                         width: 10,
                       ),
                       Text(
-                        graphique.languagefr['create_adresse_page']
-                            ['form_subtitle'],
+                        graphique.languagefr['create_adresse_full_page']
+                            ['adresse_form']['form_subtitle'],
                         style: TextStyle(
                           color: Color(graphique.color['main_color_2']),
                           fontSize: 15,
@@ -820,9 +819,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _nomPartenaireAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_1_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_1_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -862,9 +861,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _ligne1AdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_2_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_2_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -904,9 +903,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _ligne2AdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_3_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_3_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -938,9 +937,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _codepostalAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_4_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_4_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -980,9 +979,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _villeAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_5_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_5_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -1022,9 +1021,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _paysAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_6_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_6_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -1056,9 +1055,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      graphique
-                                              .languagefr['create_adresse_page']
-                                          ['field_7_title'],
+                                      graphique.languagefr[
+                                              'create_adresse_full_page']
+                                          ['adresse_form']['field_7_title'],
                                       style: TextStyle(
                                         color: Color(
                                             graphique.color['default_black']),
@@ -1074,9 +1073,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                               _ligne1AdresseController.text);
                                         });
                                       },
-                                      tooltip: graphique
-                                              .languagefr['create_adresse_page']
-                                          ['field_7_hint'],
+                                      tooltip: graphique.languagefr[
+                                              'create_adresse_full_page']
+                                          ['adresse_form']['field_7_hint'],
                                       icon: Icon(
                                         FontAwesomeIcons.search,
                                         size: 15,
@@ -1108,9 +1107,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _latitudeAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_8_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_8_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -1142,9 +1141,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _longitudeAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_9_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_9_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -1184,9 +1183,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _etageAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_10_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_10_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -1212,8 +1211,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                graphique.languagefr['create_adresse_page']
-                                    ['field_11_title'],
+                                graphique.languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_11_title'],
                                 style: TextStyle(
                                   color:
                                       Color(graphique.color['default_black']),
@@ -1247,8 +1246,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                graphique.languagefr['create_adresse_page']
-                                    ['field_12_title'],
+                                graphique.languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_12_title'],
                                 style: TextStyle(
                                   color:
                                       Color(graphique.color['default_black']),
@@ -1281,8 +1280,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                graphique.languagefr['create_adresse_page']
-                                    ['field_13_title'],
+                                graphique.languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_13_title'],
                                 style: TextStyle(
                                   color:
                                       Color(graphique.color['default_black']),
@@ -1331,9 +1330,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   controller: _noteAdresseController,
                                   maxLines: 4,
                                   decoration: InputDecoration(
-                                    hintText: graphique
-                                            .languagefr['create_adresse_page']
-                                        ['field_14_title'],
+                                    hintText: graphique.languagefr[
+                                            'create_adresse_full_page']
+                                        ['adresse_form']['field_14_title'],
                                     hintStyle: TextStyle(
                                       color: Color(
                                           graphique.color['main_color_2']),
@@ -1366,9 +1365,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _tarifpassageAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_15_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_15_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -1406,9 +1405,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _tempspassageAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_16_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_16_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -1446,9 +1445,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   Color(graphique.color['main_color_2']),
                               controller: _surfacepassageAdresseController,
                               decoration: InputDecoration(
-                                labelText:
-                                    graphique.languagefr['create_adresse_page']
-                                        ['field_17_title'],
+                                labelText: graphique
+                                        .languagefr['create_adresse_full_page']
+                                    ['adresse_form']['field_17_title'],
                                 labelStyle: TextStyle(
                                   color: Color(graphique.color['main_color_2']),
                                 ),
@@ -1510,7 +1509,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                             width: 10,
                           ),
                           Text(
-                            graphique.languagefr['create_adresse_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['position_form']['form_nom'],
                             style: TextStyle(
                               color: Color(graphique.color['main_color_2']),
@@ -1540,8 +1539,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                       Color(graphique.color['main_color_2']),
                                   textCapitalization: TextCapitalization.words,
                                   decoration: InputDecoration(
-                                    hintText: graphique
-                                            .languagefr['create_adresse_page']
+                                    hintText: graphique.languagefr[
+                                            'create_adresse_full_page']
                                         ['position_form']['hint_1'],
                                     suffixIcon: Icon(Icons.search,
                                         color: Color(
@@ -1635,7 +1634,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                     horizontal: 10, vertical: 20),
                                 child: ElevatedButton(
                                   child: Text(
-                                    graphique.languagefr['create_adresse_page']
+                                    graphique.languagefr[
+                                            'create_adresse_full_page']
                                         ['position_form']['button_1'],
                                     style: TextStyle(
                                       fontSize: 20,
@@ -1699,9 +1699,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           color: Color(graphique.color['default_black'])),
                     ),
                     child: Text(
-                      graphique.languagefr['modify_addresse_multiple_page']
-                          ['subtitle_page'] // Créer un horaire associé
-                      ,
+                      graphique.languagefr['create_adresse_full_page']
+                          ['horaires_form']['form_title'],
                       style: TextStyle(
                         color: Color(graphique.color['main_color_2']),
                         fontSize: 20,
@@ -1732,7 +1731,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           width: 10,
                         ),
                         Text(
-                          graphique.languagefr['modify_addresse_multiple_page']
+                          graphique.languagefr['create_adresse_full_page']
                               ['horaires_form']['form_subtitle'],
                           style: TextStyle(
                             color: Color(graphique.color['main_color_2']),
@@ -1762,8 +1761,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           alignment: Alignment.centerLeft,
                           width: page_frequence_inside * 0.1,
                           child: Text(
-                            graphique
-                                    .languagefr['modify_addresse_multiple_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['horaires_form']['column_1_title'],
                             style: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -1776,8 +1774,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           alignment: Alignment.centerLeft,
                           width: page_frequence_inside * 0.1,
                           child: Text(
-                            graphique
-                                    .languagefr['modify_addresse_multiple_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['horaires_form']['column_2_title'],
                             style: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -1790,8 +1787,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           alignment: Alignment.centerLeft,
                           width: page_frequence_inside * 0.1,
                           child: Text(
-                            graphique
-                                    .languagefr['modify_addresse_multiple_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['horaires_form']['column_3_title'],
                             style: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -1804,8 +1800,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           alignment: Alignment.centerLeft,
                           width: page_frequence_inside * 0.1,
                           child: Text(
-                            graphique
-                                    .languagefr['modify_addresse_multiple_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['horaires_form']['column_4_title'],
                             style: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -1818,8 +1813,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           alignment: Alignment.centerLeft,
                           width: page_frequence_inside * 0.1,
                           child: Text(
-                            graphique
-                                    .languagefr['modify_addresse_multiple_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['horaires_form']['column_5_title'],
                             style: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -1832,8 +1826,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           alignment: Alignment.centerLeft,
                           width: page_frequence_inside * 0.08,
                           child: Text(
-                            graphique
-                                    .languagefr['modify_addresse_multiple_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['horaires_form']['column_6_title'],
                             style: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -1845,8 +1838,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           alignment: Alignment.centerLeft,
                           width: page_frequence_inside * 0.1,
                           child: Text(
-                            graphique
-                                    .languagefr['modify_addresse_multiple_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['horaires_form']['column_7_title'],
                             style: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -1858,8 +1850,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           alignment: Alignment.centerLeft,
                           width: page_frequence_inside * 0.1,
                           child: Text(
-                            graphique
-                                    .languagefr['modify_addresse_multiple_page']
+                            graphique.languagefr['create_adresse_full_page']
                                 ['horaires_form']['column_8_title'],
                             style: TextStyle(
                                 color: Color(graphique.color['main_color_2']),
@@ -1926,7 +1917,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           color: Color(graphique.color['default_black'])),
                     ),
                     child: Text(
-                      'Contenant Form',
+                      graphique.languagefr['create_adresse_full_page']
+                          ['contenant_form']['form_title'],
                       style: TextStyle(
                         color: Color(graphique.color['main_color_2']),
                         fontSize: 20,
@@ -2144,7 +2136,7 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                     ),
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
@@ -2159,11 +2151,13 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   FontAwesomeIcons.locationArrow,
                                   size: 15,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  'Availabe Contenant',
+                                  graphique.languagefr[
+                                          'create_adresse_full_page']
+                                      ['contenant_form']['form_subtitle'],
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -2461,8 +2455,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           width: 10,
                         ),
                         Text(
-                          graphique.languagefr['modify_addresse_multiple_page']
-                              ['adresse_form']['button_2'],
+                          graphique.languagefr['create_adresse_full_page']
+                              ['confirm_form']['button_2'],
                           style: TextStyle(
                             color: Color(graphique.color['default_black']),
                             fontSize: 15,
@@ -2492,8 +2486,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           width: 10,
                         ),
                         Text(
-                          graphique.languagefr['modify_addresse_multiple_page']
-                              ['adresse_form']['button_1'],
+                          graphique.languagefr['create_adresse_full_page']
+                              ['confirm_form']['button_1'],
                           style: TextStyle(
                             color: Color(graphique.color['default_black']),
                             fontSize: 15,
@@ -2617,7 +2611,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                             color: Color(graphique.color['default_black'])),
                       ),
                       child: Text(
-                        'Confirm Form',
+                        graphique.languagefr['create_adresse_full_page']
+                            ['confirm_dialog']['dialog_title'],
                         style: TextStyle(
                             color: Color(graphique.color['default_black']),
                             fontSize: 20,
@@ -2627,7 +2622,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                     Container(
                       margin: const EdgeInsets.only(top: 20),
                       child: Text(
-                        'Finish creating that adresse?',
+                        graphique.languagefr['create_adresse_full_page']
+                            ['confirm_dialog']['question'],
                         style: TextStyle(
                           color: Color(
                             graphique.color['default_black'],
@@ -2639,7 +2635,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                     ),
                     Container(
                       child: Text(
-                        'Your Adresse have $number_of_contenant_added frequences',
+                        graphique.languagefr['create_adresse_full_page']
+                                ['confirm_dialog']['line_1'] +
+                            ' $number_of_contenant_added ',
                         style: TextStyle(
                           color: Color(
                             graphique.color['default_black'],
@@ -2652,7 +2650,9 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       child: Text(
-                        'Your Adresse have $number_of_new_frequence contenants',
+                        graphique.languagefr['create_adresse_full_page']
+                                ['confirm_dialog']['line_2'] +
+                            '$number_of_new_frequence',
                         style: TextStyle(
                           color: Color(
                             graphique.color['default_black'],
@@ -2728,8 +2728,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   children: [
                                     Text(
                                       graphique.languagefr[
-                                              'modify_addresse_multiple_page']
-                                          ['adresse_form']['button_2'],
+                                              'create_adresse_full_page']
+                                          ['confirm_dialog']['button_2'],
                                       style: TextStyle(
                                         color: Color(
                                             graphique.color['default_black']),
@@ -2876,8 +2876,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                   children: [
                                     Text(
                                       graphique.languagefr[
-                                              'modify_addresse_multiple_page']
-                                          ['adresse_form']['button_1'],
+                                              'create_adresse_full_page']
+                                          ['confirm_dialog']['button_1'],
                                       style: TextStyle(
                                         color: Color(
                                             graphique.color['default_black']),
@@ -2927,7 +2927,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                           color: Color(graphique.color['default_black'])),
                     ),
                     child: Text(
-                      'Cancel Form',
+                      graphique.languagefr['create_adresse_full_page']
+                          ['cancel_dialog']['dialog_title'],
                       style: TextStyle(
                           color: Color(graphique.color['default_black']),
                           fontSize: 20,
@@ -2939,7 +2940,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                     alignment: Alignment.center,
                     height: 50,
                     child: Text(
-                      'Are you sure to cancel creating that adresse?',
+                      graphique.languagefr['create_adresse_full_page']
+                          ['cancel_dialog']['question'],
                       style: TextStyle(
                         color: Color(graphique.color['default_black']),
                         fontSize: 15,
@@ -2969,8 +2971,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                 children: [
                                   Text(
                                     graphique.languagefr[
-                                            'modify_addresse_multiple_page']
-                                        ['adresse_form']['button_2'],
+                                            'create_adresse_full_page']
+                                        ['cancel_dialog']['button_2'],
                                     style: TextStyle(
                                       color: Color(
                                           graphique.color['default_black']),
@@ -3029,8 +3031,8 @@ class _CreateAdresseFullPageState extends State<CreateAdresseFullPage> {
                                 children: [
                                   Text(
                                     graphique.languagefr[
-                                            'modify_addresse_multiple_page']
-                                        ['adresse_form']['button_1'],
+                                            'create_adresse_full_page']
+                                        ['cancel_dialog']['button_1'],
                                     style: TextStyle(
                                       color: Color(
                                           graphique.color['default_black']),
