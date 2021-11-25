@@ -9,6 +9,8 @@ import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
+import 'package:tn09_app_web_demo/pages/math_function/toDouble.dart';
+import 'package:tn09_app_web_demo/pages/math_function/toMinute.dart';
 import 'package:tn09_app_web_demo/pages/menu2/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/menu2/view_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
@@ -95,9 +97,6 @@ class _ModifyFrequencePartenairePageState
     }
     setState(() => timeEnd = newTime);
   }
-
-  double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
-  double toMinute(TimeOfDay myTime) => myTime.hour * 60.0 + myTime.minute;
 
   Future pickDateMinimale(BuildContext context) async {
     final newDate = await showDatePicker(

@@ -15,6 +15,8 @@ import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
+import 'package:tn09_app_web_demo/pages/math_function/toDouble.dart';
+import 'package:tn09_app_web_demo/pages/math_function/toMinute.dart';
 import 'package:tn09_app_web_demo/pages/menu2/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/menu2/view_contact_page.dart';
 import 'package:tn09_app_web_demo/pages/menu2/view_partenaire_page.dart';
@@ -188,9 +190,6 @@ class _ModifyAdresseMultipleState extends State<ModifyAdresseMultiple> {
     }
     setState(() => list_timeEnd[index] = newTime);
   }
-
-  double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
-  double toMinute(TimeOfDay myTime) => myTime.hour * 60.0 + myTime.minute;
 
   DateTime dateMinimale = DateTime.now();
   DateTime dateMaximale = DateTime.now();
@@ -520,7 +519,7 @@ class _ModifyAdresseMultipleState extends State<ModifyAdresseMultiple> {
                               ['horaires_form']['column_9_button_2']
                           : graphique
                                   .languagefr['modify_addresse_multiple_page']
-                              ['horaires_form']['column_9_button_2'],
+                              ['horaires_form']['column_9_button_1'],
                       style: TextStyle(
                         color: Color(graphique.color['default_black']),
                         fontSize: 15,

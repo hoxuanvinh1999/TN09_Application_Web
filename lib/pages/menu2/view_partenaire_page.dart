@@ -7,6 +7,8 @@ import 'package:tn09_app_web_demo/menu/header.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tn09_app_web_demo/pages/math_function/toDouble.dart';
+import 'package:tn09_app_web_demo/pages/menu2/create_adresse_full_page.dart';
 import 'package:tn09_app_web_demo/pages/menu2/create_adresse_page.dart';
 import 'package:tn09_app_web_demo/pages/math_function/conver_string_bool.dart';
 import 'package:tn09_app_web_demo/pages/math_function/frequence_title.dart';
@@ -23,6 +25,8 @@ import 'package:tn09_app_web_demo/pages/widget/button_widget.dart';
 import 'package:tn09_app_web_demo/pages/menu2/modify_frequence_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/widget/vehicule_icon.dart';
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
+
+import '../math_function/toMinute.dart';
 
 class ViewPartenairePage extends StatefulWidget {
   Map partenaire;
@@ -1656,7 +1660,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CreateAdressePage(
+                                                CreateAdresseFullPage(
                                                   partenaire: widget.partenaire,
                                                 )));
                                   },
@@ -3068,7 +3072,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                                                               save_position = i;
                                                                                             }
                                                                                           }
-
                                                                                           String _quality = doc['${save_position.toString()}'].substring(doc['$save_position'].indexOf('/') + 1);
                                                                                           _contenantadresse.doc(doc.id).update({
                                                                                             '${save_position.toString()}': typeConenant + '/' + (int.parse(_quality) - 1).toString(),
@@ -5077,9 +5080,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       setState(() => timeEnd = newTime);
     }
 
-    double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
-    double toMinute(TimeOfDay myTime) => myTime.hour * 60.0 + myTime.minute;
-
     DateTime dateMinimale = DateTime.now();
     DateTime dateMaximale = DateTime.now();
 
@@ -5646,9 +5646,6 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
       }
       setState(() => timeEnd = newTime);
     }
-
-    double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
-    double toMinute(TimeOfDay myTime) => myTime.hour * 60.0 + myTime.minute;
 
     // DateTime dateMinimale = DateTime(
     //     int.parse(dataFrequence['dateMinimaleFrequence'].substring(6)),
