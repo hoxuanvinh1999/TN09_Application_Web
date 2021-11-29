@@ -1370,8 +1370,10 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                             child: GestureDetector(
                               onTap: () async {
                                 await uploadImage();
-                                String fileName =
-                                    widget.idEtape + '/' + 'photopeser.png';
+                                String fileName = widget.idEtape +
+                                    '/' +
+                                    widget.typeContenant +
+                                    '/' 'photopeser.png';
                                 await FirebaseStorage.instance
                                     .ref(fileName)
                                     .putData(
