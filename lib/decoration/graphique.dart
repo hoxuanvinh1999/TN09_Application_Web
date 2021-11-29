@@ -600,6 +600,12 @@ const Map<String, dynamic> languagefr = {
       'form_subtitle': 'Informations des contacts',
       'hint_1_title': 'Dissocier le contact',
       'hint_2_title': 'Ajouter le contact',
+    },
+    'photo_form': {
+      'button_nom': 'Images',
+      'button_1': 'Changer',
+      'button_2': 'Supprimer',
+      'form_subtitle': 'Informations sur les images',
     }
   },
   'modify_frequence_partenaire_page': {
