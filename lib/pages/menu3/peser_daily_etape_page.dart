@@ -1,11 +1,17 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tn09_app_web_demo/home_screen.dart';
 import 'package:tn09_app_web_demo/menu/header.dart';
 import 'dart:async';
@@ -31,6 +37,7 @@ import 'package:tn09_app_web_demo/.env.dart';
 import 'package:tn09_app_web_demo/pages/widget/company_position.dart'
     as company;
 import 'package:tn09_app_web_demo/decoration/graphique.dart' as graphique;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class PeserDailyEtapePage extends StatefulWidget {
   DateTime thisDay;
@@ -67,8 +74,10 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
   // Save comment
   TextEditingController _notePeserController = TextEditingController();
   // Save rating
-  String ratePeser = '1.5';
+  String ratePeser = '2';
   double poidContenant = 0;
+  // Save peser url
+  String peserphotourl = '';
   void initState() {
     setState(() {
       _typecontenant
@@ -1032,10 +1041,10 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                               height: 50,
                               color: Colors.blue,
                               child: RatingBar.builder(
-                                initialRating: 1.5,
+                                initialRating: 2,
                                 minRating: 1,
                                 direction: Axis.horizontal,
-                                allowHalfRating: true,
+                                allowHalfRating: false,
                                 itemCount: 3,
                                 itemPadding:
                                     EdgeInsets.symmetric(horizontal: 4.0),
@@ -1069,6 +1078,10 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                           msg: 'Please enter weight',
                                           gravity: ToastGravity.TOP);
                                     } else {
+                                      if (int.parse(ratePeser) < 3) {
+                                        await DialogPhotoPeser(
+                                            context: context);
+                                      }
                                       _etape
                                           .where('idEtape',
                                               isEqualTo: widget.idEtape)
@@ -1099,6 +1112,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                               'notePeser':
                                                   _notePeserController.text,
                                               'ratePeser': ratePeser,
+                                              'photoUrl': peserphotourl,
                                             };
                                             resultPeser[widget.typeContenant] =
                                                 contenant_information;
@@ -1157,6 +1171,7 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                               'notePeser':
                                                   _notePeserController.text,
                                               'ratePeser': ratePeser,
+                                              'photoUrl': peserphotourl,
                                             };
                                             resultPeser[widget.typeContenant] =
                                                 contenant_information;
@@ -1228,6 +1243,11 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
                                     ],
                                   ),
                                 )),
+                            // (_file.path == "zz")
+                            //     ? Image.asset('images/app_logo.png')
+                            //     : (kIsWeb)
+                            //         ? Image.memory(webImage)
+                            //         : Image.asset('images/app_logo.png'),
                           ],
                         ),
                       ),
@@ -1240,5 +1260,186 @@ class _PeserDailyEtapePageState extends State<PeserDailyEtapePage> {
         ),
       ),
     );
+  }
+
+  File _file = File("zz");
+  Uint8List webImage = Uint8List(10);
+  Future<PermissionStatus> requestPermissions() async {
+    await Permission.photos.request();
+    return Permission.photos.status;
+  }
+
+  File createFileFromBytes(Uint8List bytes) => File.fromRawPath(bytes);
+  uploadImage() async {
+    var permissionStatus = requestPermissions();
+
+    // MOBILE
+    if (!kIsWeb && await permissionStatus.isGranted) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        var selected = File(image.path);
+
+        setState(() {
+          _file = selected;
+        });
+      } else {
+        Fluttertoast.showToast(
+            msg: "No file selected", gravity: ToastGravity.TOP);
+      }
+    }
+    // WEB
+    else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          //_file = File("a");
+          _file = File(image.path);
+          webImage = f;
+        });
+      } else {
+        Fluttertoast.showToast(
+            msg: "No file selected", gravity: ToastGravity.TOP);
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: "Permission not granted", gravity: ToastGravity.TOP);
+    }
+  }
+
+  DialogPhotoPeser({
+    required BuildContext context,
+  }) {
+    double form_width = MediaQuery.of(context).size.width * 0.8;
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: Container(
+            height: 1000,
+            width: form_width,
+            decoration: BoxDecoration(
+              color: Color(graphique.color['default_white']),
+              border: Border.all(
+                width: 1.0,
+                color: Color(graphique.color['default_black']),
+              ),
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 80,
+                    alignment: Alignment(-0.9, 0),
+                    decoration: BoxDecoration(
+                      color: Color(graphique.color['special_bureautique_2']),
+                      border: Border.all(
+                          width: 1.0,
+                          color: Color(graphique.color['default_black'])),
+                    ),
+                    child: Text(
+                      'Photo',
+                      style: TextStyle(
+                          color: Color(graphique.color['default_black']),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  (_file.path == "zz")
+                      ? Image.asset('images/app_logo.png')
+                      : (kIsWeb)
+                          ? Image.memory(webImage)
+                          : Image.asset('images/app_logo.png'),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: 100,
+                            height: 30,
+                            decoration: BoxDecoration(
+                                color: Color(graphique.color['default_yellow']),
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: const EdgeInsets.only(right: 10),
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              onTap: () async {
+                                await uploadImage();
+                                String fileName =
+                                    widget.idEtape + '/' + 'photopeser.png';
+                                await FirebaseStorage.instance
+                                    .ref(fileName)
+                                    .putData(
+                                      webImage,
+                                      SettableMetadata(
+                                        contentType: 'image/jpeg',
+                                        customMetadata: {
+                                          'date':
+                                              getDateText(date: DateTime.now()),
+                                          'reason': '$ratePeser rate',
+                                        },
+                                      ),
+                                    );
+                                final signature_ref = FirebaseStorage.instance
+                                    .ref()
+                                    .child(fileName);
+                                var signature_url =
+                                    await signature_ref.getDownloadURL();
+                                setState(() {
+                                  peserphotourl = signature_url.toString();
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Add/Change',
+                                    style: TextStyle(
+                                      color: Color(
+                                          graphique.color['default_black']),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Container(
+                            width: 100,
+                            height: 30,
+                            decoration: BoxDecoration(
+                                color: Color(graphique.color['default_yellow']),
+                                borderRadius: BorderRadius.circular(10)),
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              onTap: () async {
+                                Navigator.of(context).pop();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Confirm',
+                                    style: TextStyle(
+                                      color: Color(
+                                          graphique.color['default_black']),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ]),
+          ));
+        });
   }
 }
