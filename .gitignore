@@ -48,3 +48,4 @@ app.*.map.json
 sshkey.pub
 sshkey
 token.txt
+lib/home_screen.dart
