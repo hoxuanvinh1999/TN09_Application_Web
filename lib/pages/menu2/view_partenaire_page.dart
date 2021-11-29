@@ -16,7 +16,7 @@ import 'package:tn09_app_web_demo/pages/math_function/get_date_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/get_time_text.dart';
 import 'package:tn09_app_web_demo/pages/math_function/is_Inconnu.dart';
 import 'package:tn09_app_web_demo/pages/math_function/limit_length_string.dart';
-import 'package:tn09_app_web_demo/pages/menu2/modify_adresse_multiple.dart';
+import 'package:tn09_app_web_demo/pages/menu2/modify_addresse_multiple.dart';
 import 'package:tn09_app_web_demo/pages/menu2/modify_adresse_partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/menu2/partenaire_page.dart';
 import 'package:tn09_app_web_demo/pages/menu2/view_contact_page.dart';
@@ -1829,7 +1829,7 @@ class _ViewPartenairePageState extends State<ViewPartenairePage> {
                                                           //                 1)));
                                                           Navigator.of(context).pushReplacement(MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  ModifyAdresseMultiple(
+                                                                  ModifyAddresseMultiple(
                                                                       partenaire:
                                                                           widget
                                                                               .partenaire,
