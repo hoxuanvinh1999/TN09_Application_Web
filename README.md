@@ -2,7 +2,7 @@
 
 My project was during my TN09 internship at the "Les detritivores". I continue with the web version for data management.
 
-Process: after 95 days  
+Process: after 96 days  
 
 ## Getting Started
 
