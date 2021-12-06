@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -38,11 +40,11 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 80,
                   ),
                   Image.asset('images/app_logo.png'),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Text(
@@ -52,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 30,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Container(
@@ -63,13 +65,17 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       children: [
-                        SizedBox(height: 30),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         Text(
                           'Log In Page',
                           style: TextStyle(
-                              fontSize: 35, fontWeight: FontWeight.bold),
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold,
+                              color: Color(graphique.color['default_black'])),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
@@ -78,13 +84,13 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 15,
                               color: Color(graphique.color['default_grey'])),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Container(
                           width: 300,
                           child: TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Email Address',
                               suffixIcon: Icon(
                                 FontAwesomeIcons.envelope,
@@ -102,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: 300,
                           child: TextField(
                             obscureText: true,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Password',
                               suffixIcon: Icon(
                                 FontAwesomeIcons.eyeSlash,
@@ -117,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(20, 20, 40, 20),
+                          padding: const EdgeInsets.fromLTRB(20, 20, 40, 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -137,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         GestureDetector(
@@ -156,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                                       Color(graphique.color['main_color_2']),
                                     ])),
                             child: Padding(
-                              padding: EdgeInsets.all(12.0),
+                              padding: const EdgeInsets.all(12.0),
                               child: Text('Sign In',
                                   style: TextStyle(
                                     color:
@@ -167,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         GestureDetector(
                           onTap: () {
                             showSignUpDialog(context: context);
@@ -185,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                                       Color(graphique.color['main_color_2']),
                                     ])),
                             child: Padding(
-                              padding: EdgeInsets.all(12.0),
+                              padding: const EdgeInsets.all(12.0),
                               child: Text('Sign Up',
                                   style: TextStyle(
                                     color:
@@ -242,12 +248,15 @@ class _LoginPageState extends State<LoginPage> {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Text(
                     'Sign Up Form',
-                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        color: Color(graphique.color['default_black'])),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
@@ -256,13 +265,11 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 15,
                         color: Color(graphique.color['default_grey'])),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Container(
+                    margin: const EdgeInsets.only(top: 20),
                     width: 300,
                     child: TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Email Address',
                         suffixIcon: Icon(
                           FontAwesomeIcons.envelope,
@@ -280,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: 300,
                     child: TextField(
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Password',
                         suffixIcon: Icon(
                           FontAwesomeIcons.eyeSlash,
@@ -294,7 +301,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   GestureDetector(
@@ -316,7 +323,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Color(graphique.color['main_color_2']),
                               ])),
                       child: Padding(
-                        padding: EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: Text('Sign Up',
                             style: TextStyle(
                               color: Color(graphique.color['default_white']),
