@@ -41,38 +41,16 @@ Widget menu({
                       color: Color(graphique.color['default_black'])),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(
-                  graphique.languagefr['button_1']['title'],
-                  style: TextStyle(
-                    color: Color(graphique.color['main_color_2']),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: Text(
+                graphique.languagefr['button_1']['title'],
+                style: TextStyle(
+                  color: Color(graphique.color['main_color_2']),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
-          // GestureDetector(
-          //   onTap: () {
-          //     showSubMenu1(context: context);
-          //   },
-          //   child: Container(
-          //     alignment: Alignment.center,
-          //     width: 200,
-          //     decoration: BoxDecoration(color: Colors.blue),
-          //     child: Padding(
-          //       padding: EdgeInsets.all(12.0),
-          //       child: Text('Button1',
-          //           style: TextStyle(
-          //             color: Colors.white,
-          //             fontSize: 20,
-          //             fontWeight: FontWeight.bold,
-          //           )),
-          //     ),
-          //   ),
-          // ),
           InkWell(
             onTap: () {
               showSubMenu2(context: context);
@@ -92,15 +70,12 @@ Widget menu({
                       color: Color(graphique.color['default_black'])),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(graphique.languagefr['button_2']['title'],
-                    style: TextStyle(
-                      color: Color(graphique.color['main_color_2']),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
-              ),
+              child: Text(graphique.languagefr['button_2']['title'],
+                  style: TextStyle(
+                    color: Color(graphique.color['main_color_2']),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
             ),
           ),
           InkWell(
@@ -122,15 +97,12 @@ Widget menu({
                       color: Color(graphique.color['default_black'])),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(graphique.languagefr['button_3']['title'],
-                    style: TextStyle(
-                      color: Color(graphique.color['main_color_2']),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
-              ),
+              child: Text(graphique.languagefr['button_3']['title'],
+                  style: TextStyle(
+                    color: Color(graphique.color['main_color_2']),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
             ),
           ),
         ],

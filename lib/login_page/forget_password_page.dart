@@ -42,7 +42,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 50,
                         ),
                         Container(
@@ -53,13 +53,17 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                               borderRadius: BorderRadius.circular(10)),
                           child: Column(
                             children: [
-                              SizedBox(height: 30),
+                              const SizedBox(height: 30),
                               Text(
                                 'Forget Password',
                                 style: TextStyle(
-                                    fontSize: 35, fontWeight: FontWeight.bold),
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Color(graphique.color['default_black']),
+                                ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Text(
@@ -69,13 +73,13 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                     color:
                                         Color(graphique.color['default_grey'])),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Container(
                                 width: 300,
                                 child: TextField(
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Email Address',
                                     suffixIcon: Icon(
                                       FontAwesomeIcons.envelope,
@@ -89,7 +93,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                   },
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               GestureDetector(
@@ -144,7 +148,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                                 .color['main_color_2']),
                                           ])),
                                   child: Padding(
-                                    padding: EdgeInsets.all(12.0),
+                                    padding: const EdgeInsets.all(12.0),
                                     child: Text('Send Request',
                                         style: TextStyle(
                                           color: Color(

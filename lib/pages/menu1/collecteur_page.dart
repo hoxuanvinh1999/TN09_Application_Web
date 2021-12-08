@@ -91,7 +91,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 40,
                     ),
                     Icon(
@@ -118,14 +118,14 @@ class _CollecteurPageState extends State<CollecteurPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
-                    Icon(
+                    const Icon(
                       FontAwesomeIcons.chevronCircleRight,
                       size: 12,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     RichText(
