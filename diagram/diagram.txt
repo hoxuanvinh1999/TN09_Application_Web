@@ -1,0 +1,213 @@
+//https://dbdiagram.io/
+Table collecteur as collecteur{
+  idCollecteur string [pk]
+  datedeNaissance string
+  nomCollecteur string
+  prenomCollecteur string
+  siteCollecteur string
+}
+Table vehicule as vehicule{
+  idVehicule string [pk]
+  nomVehicule string
+  numeroImmatriculation string
+  orderVehicule int
+  siteVehicule string
+  typeVehicule string
+  colorIconVehicule int
+}
+Table contact as contact{
+  idContact string [pk]
+  nomContact string 
+  prenomContact string
+  emailContact string
+  passwordContact string
+  noteContact string
+  telephone1Contact int
+  telephone2Contact int
+  recoitFacture boolean
+  recoitRapport boolean
+  accessExtranet boolean
+  nombredePartenaire int
+}
+
+Table typePartenaire as typePartenaire{
+  idTypePartenaire string [pk]
+  nomTypePartenaire string 
+  nomsimpleTypePartenaire string
+  nombre int
+}
+
+Table partenaire as partenaire{
+  idPartenaire string [pk]
+  idTypePartenaire string [ref: > typePartenaire.idTypePartenaire]
+  idContactPartenaire string [ref: > contact.idContact]
+  nomPartenaire string
+  nombredeAdresses int
+  nombredeContact int
+  nombredeFrequence int
+  notePartenaire string
+  siretPartenaire string
+  typePartenaire string
+  actifPartenaire boolean
+}
+Table contenant as contenant{
+  idContenant string [pk]
+  idAdresseContenant string [ref: > ContenantAdresse.idAdresse]
+  idAdresse string [ref: < adresse.idAdresse]
+  barCodeContenant int32
+  statusContenant string
+  typeContenant string
+}
+
+Table adresse as adresse {
+  idAdresse string [pk]
+  idPartenaireAdresse string [ref: > partenaire.idPartenaire]
+  nomPartenaireAdresse string
+  idPosition string
+  codepostalAdresse int32
+  paysAdresse string
+  surfacepassageAdresse int
+  tarifpassageAdresse double
+  tempspassageAdresse int
+  villeAdresse string
+  ligne1Adresse string
+  ligne2Adresse string
+  latitudeAdresse double
+  longitudeAdresse double
+  passagesAdresse boolean
+  etageAdresse boolean
+  ascenseurAdresse boolean
+  facturationAdresse boolean
+  noteAdresse string
+  nombredeContact int
+}
+
+Table typeContenant as typeContenant{
+  idTypeContenant string [pk]
+  nomTypeContenant string
+  nombre int
+  noteContenant string
+  poidContenant int
+  limitpoidContenant int
+  prepare boolean
+  collecte boolean
+  pesee boolean
+}
+
+Table ContenantAdresse as ContenantAdresse{
+  idAdresse string [ref: < adresse.idAdresse]
+  nombredetype int
+  1 string
+  2 string
+  // this table can have more element
+}
+
+Table Matiere as Matiere{
+  idMatiere string [pk]
+  idMatiereParente string [ref: > Matiere.idMatiere]
+  nomEnglishMatiere string
+  nomMatiere string
+  referenceMatiere string
+  colorMatiere string
+  actifMatiere boolean
+}
+
+Table ContactAdresse as ContactAdresse{
+  idAdresse string [ref: < adresse.idAdresse]
+  idContact string [ref: < contact.idContact]
+}
+
+Table Frequence as Frequence{
+  idFrequence string [pk]
+  idPartenaireFrequence string [ref: > partenaire.idPartenaire]
+  idVehiculeFrequence string [ref: > vehicule.idVehicule]
+  idAdresseFrequence string [ref: > adresse.idAdresse]
+  idContactFrequence string 
+  frequence int
+  jourFrequence string
+  nomAdresseFrequence string
+  siretPartenaire string
+  startFrequence string
+  endFrequence string
+  dureeFrequence int
+  tarifFrequence double
+  dateMinimaleFrequence string
+  dateMaximaleFrequence string
+}
+
+Table PhotoAdresse as PhotoAdresse {
+  idAdresse string [ref: > adresse.idAdresse]
+  number_of_photo int
+  1 string
+  2 string
+  // this table can have more element
+}
+
+Table Tournee as Tournee{
+  idTournee string [pk]
+  idCollecteur string [ref: < collecteur.idCollecteur]
+  idEtapeStart string [ref: < Etape.idEtape]
+  idVehicule string [ref: < vehicule.idVehicule]
+  jourTournee string
+  dateTournee string
+  duree int
+  dureeMinute int
+  nombreEtapeCancel int
+  nombreEtapefinished int
+  nombreEtapenotfinished int
+  nombredeEtape int
+  realEndTime string
+  realStartTime string
+  startTime string
+  status string
+  colorTournee string
+  isCreating boolean
+}
+
+Table Etape as Etape{
+  idEtape string [pk]
+  idAdresseEtape string [ref: < adresse.idAdresse]
+  idCollecteurEtape string [ref: < collecteur.idCollecteur]
+  idEtapeAfter string [ref: < Etape.idEtape]
+  idEtapeBefore string [ref: < Etape.idEtape]
+  idFrequenceEtape string [ref: < Frequence.idFrequence]
+  idPartenaireEtape string [ref: < partenaire.idPartenaire]
+  idTourneeEtape string [ref: < Tournee.idTournee]
+  idVehiculeEtape string [ref: < vehicule.idVehicule]
+  jourEtape string
+  latitudeEtape double
+  longitude double
+  nomAdresseEtape string
+  orderEtape int
+  realEndTime int
+  realStartTime int
+  signature string
+  ligne1Adresse string
+  startFrequenceEtape string
+  endFrequenceEtape string
+  dureeMinute int
+  duree string
+  status string
+  tarifFrequenceEtape int
+  resultCollecte Map
+  resultPeser Map
+}
+
+Table Result as Result{
+  idEtape string [ref: < Etape.idEtape]
+  idTournee string [ref: < Tournee.idTournee]
+  idCollecteur string [ref: < collecteur.idCollecteur]
+  numberOfContenant int
+  numberOfTypeContenant int
+  // this table can have more element depend on 
+  // how many types of contenant collected
+}
+
+Table user as user{
+  email string
+}
+
+Table mail as mail{
+  delivery Map
+  message Map
+}
