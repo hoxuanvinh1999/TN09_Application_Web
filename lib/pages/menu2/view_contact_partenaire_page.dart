@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,9 @@ class ViewContactPartenairePage extends StatefulWidget {
 }
 
 class _ViewContactPartenairePageState extends State<ViewContactPartenairePage> {
+  final auth = FirebaseAuth.instance;
+  //For Send mail
+  CollectionReference _mail = FirebaseFirestore.instance.collection("mail");
   //for controll table
   CollectionReference _contactpartenaire =
       FirebaseFirestore.instance.collection("ContactPartenaire");
@@ -51,6 +55,8 @@ class _ViewContactPartenairePageState extends State<ViewContactPartenairePage> {
   bool recoitFacture = false;
   bool accessExtranet = false;
   String idNewContact = '';
+  String oldemail = '';
+  String oldPassword = '';
   void initState() {
     _contact
         .where('idContact',
@@ -72,6 +78,8 @@ class _ViewContactPartenairePageState extends State<ViewContactPartenairePage> {
           recoitFacture = convertBool(check: dataContact['recoitFacture']);
           accessExtranet = convertBool(check: dataContact['accessExtranet']);
           isPrincipal = convertBool(check: dataContact['isPrincipal']);
+          oldemail = dataContact['emailContact'];
+          oldPassword = dataContact['passwordContact'];
         });
       });
     });
@@ -99,7 +107,7 @@ class _ViewContactPartenairePageState extends State<ViewContactPartenairePage> {
           height: 40,
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 40,
               ),
               Icon(
@@ -769,6 +777,95 @@ class _ViewContactPartenairePageState extends State<ViewContactPartenairePage> {
                           onTap: () async {
                             if (_modifyContactKeyForm.currentState!
                                 .validate()) {
+                              String idmail = _mail.doc().id.toString();
+                              // ignore: non_constant_identifier_names
+                              String email_body =
+                                  'Your password is changed, your account new information is: \rEmail: ' +
+                                      _emailContactController.text +
+                                      '\rPassword: ' +
+                                      _passwordContactController.text;
+                              if (_emailContactController.text.isNotEmpty &&
+                                      _passwordContactController
+                                          .text.isNotEmpty &&
+                                      oldemail ==
+                                          _emailContactController.text &&
+                                      oldPassword !=
+                                          _passwordContactController.text
+                                  // Case we want to change the password
+                                  ) {
+                                try {
+                                  UserCredential userCredential =
+                                      await FirebaseAuth.instance
+                                          .signInWithEmailAndPassword(
+                                    email: _emailContactController.text,
+                                    password: _passwordContactController.text,
+                                  );
+
+                                  userCredential.user
+                                      ?.updatePassword(
+                                          _passwordContactController.text)
+                                      .then((_) async {
+                                    Fluttertoast.showToast(
+                                        msg: 'Successfully changed password',
+                                        gravity: ToastGravity.TOP);
+                                  }).catchError((error) {
+                                    Fluttertoast.showToast(
+                                        msg: "Password can't be changed" +
+                                            ': ' +
+                                            error.toString(),
+                                        gravity: ToastGravity.TOP);
+                                  });
+                                } on FirebaseAuthException catch (e) {
+                                  if (e.code == 'user-not-found') {
+                                    Fluttertoast.showToast(
+                                        msg: 'No user found for that email',
+                                        gravity: ToastGravity.TOP);
+                                  } else if (e.code == 'wrong-password') {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            'Wrong password provided for that user',
+                                        gravity: ToastGravity.TOP);
+                                  }
+                                }
+                                await _mail.doc(idmail).set({
+                                  'to': _emailContactController.text,
+                                  'message': {
+                                    'subject': "Hello from Les detritivores!",
+                                    'text': email_body,
+                                  },
+                                });
+                              } else if (_emailContactController.text.isNotEmpty &&
+                                      _passwordContactController
+                                          .text.isNotEmpty &&
+                                      oldemail != _emailContactController.text
+                                  // Case we want to change the email
+                                  ) {
+                                try {
+                                  //Create Get Firebase Auth User
+                                  await auth.createUserWithEmailAndPassword(
+                                      email: _emailContactController.text,
+                                      password:
+                                          _passwordContactController.text);
+
+                                  //Success
+                                  Fluttertoast.showToast(
+                                      msg: 'Account Created',
+                                      gravity: ToastGravity.TOP);
+                                } on FirebaseAuthException catch (error) {
+                                  //String msgerror = 'Error sign up';
+                                  Fluttertoast.showToast(
+                                    msg: (error.message).toString(),
+                                    gravity: ToastGravity.TOP,
+                                  );
+                                }
+                                await _mail.doc(idmail).set({
+                                  'to': _emailContactController.text,
+                                  'message': {
+                                    'subject': "Hello from Les detritivores!",
+                                    'text': email_body,
+                                  },
+                                });
+                              }
                               await _contact
                                   .where('idContact',
                                       isEqualTo: widget.dataPartenaire[
