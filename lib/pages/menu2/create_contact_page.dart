@@ -456,8 +456,8 @@ class _CreateContactPageState extends State<CreateContactPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              margin:
-                                  EdgeInsets.only(top: 10, right: 10, left: 10),
+                              margin: const EdgeInsets.only(
+                                  top: 10, right: 10, left: 10),
                               width: 310,
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -503,7 +503,7 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                   color:
                                       Color(graphique.color['default_black']),
                                 )),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             IconButton(
@@ -686,7 +686,7 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                       color: Color(
                                           graphique.color['main_color_2']),
                                       fontWeight: FontWeight.w600)),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               StreamBuilder<QuerySnapshot>(
                                   stream: FirebaseFirestore.instance
                                       .collection("Partenaire")
@@ -838,31 +838,35 @@ class _CreateContactPageState extends State<CreateContactPage> {
                                     'isPrincipal': isPrincipal.toString(),
                                   });
                                 }
-                                try {
-                                  //Create Get Firebase Auth User
-                                  await auth.createUserWithEmailAndPassword(
-                                      email: _emailContactController.text,
-                                      password:
-                                          _passwordContactController.text);
+                                if (_emailContactController.text.isNotEmpty &&
+                                    _passwordContactController
+                                        .text.isNotEmpty) {
+                                  try {
+                                    //Create Get Firebase Auth User
+                                    await auth.createUserWithEmailAndPassword(
+                                        email: _emailContactController.text,
+                                        password:
+                                            _passwordContactController.text);
 
-                                  //Success
-                                  Fluttertoast.showToast(
-                                      msg: 'Account Created',
-                                      gravity: ToastGravity.TOP);
-                                } on FirebaseAuthException catch (error) {
-                                  //String msgerror = 'Error sign up';
-                                  Fluttertoast.showToast(
-                                    msg: (error.message).toString(),
-                                    gravity: ToastGravity.TOP,
-                                  );
+                                    //Success
+                                    Fluttertoast.showToast(
+                                        msg: 'Account Created',
+                                        gravity: ToastGravity.TOP);
+                                  } on FirebaseAuthException catch (error) {
+                                    //String msgerror = 'Error sign up';
+                                    Fluttertoast.showToast(
+                                      msg: (error.message).toString(),
+                                      gravity: ToastGravity.TOP,
+                                    );
+                                  }
+                                  await _mail.doc(idmail).set({
+                                    'to': _emailContactController.text,
+                                    'message': {
+                                      'subject': "Hello from Les detritivores!",
+                                      'text': email_body,
+                                    },
+                                  });
                                 }
-                                await _mail.doc(idmail).set({
-                                  'to': _emailContactController.text,
-                                  'message': {
-                                    'subject': "Hello from Les detritivores!",
-                                    'text': email_body,
-                                  },
-                                });
 
                                 await _contact.doc(idNewContact).set({
                                   'nomContact': _nomContactController.text,
