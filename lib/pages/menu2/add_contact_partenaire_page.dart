@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,13 +29,15 @@ class AddContactPartenairePage extends StatefulWidget {
 }
 
 class _AddContactPartenairePageState extends State<AddContactPartenairePage> {
+  final auth = FirebaseAuth.instance;
+  //For Send mail
+  CollectionReference _mail = FirebaseFirestore.instance.collection("mail");
   //for controll table
   CollectionReference _contactpartenaire =
       FirebaseFirestore.instance.collection("ContactPartenaire");
   //For Partenaire
   CollectionReference _partenaire =
       FirebaseFirestore.instance.collection("Partenaire");
-
   //For Create Contact
   CollectionReference _contact =
       FirebaseFirestore.instance.collection("Contact");
@@ -85,7 +88,7 @@ class _AddContactPartenairePageState extends State<AddContactPartenairePage> {
           height: 40,
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 40,
               ),
               Icon(
@@ -480,7 +483,7 @@ class _AddContactPartenairePageState extends State<AddContactPartenairePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     top: 10, right: 10, left: 10),
                                 width: 310,
                                 decoration: BoxDecoration(
@@ -756,6 +759,40 @@ class _AddContactPartenairePageState extends State<AddContactPartenairePage> {
                             if (_createContactKeyForm.currentState!
                                 .validate()) {
                               idNewContact = _contact.doc().id;
+                              String idmail = _mail.doc().id.toString();
+                              String email_body =
+                                  'Your account information is: \rEmail: ' +
+                                      _emailContactController.text +
+                                      '\rPassword: ' +
+                                      _passwordContactController.text;
+                              if (_emailContactController.text.isNotEmpty &&
+                                  _passwordContactController.text.isNotEmpty) {
+                                try {
+                                  //Create Get Firebase Auth User
+                                  await auth.createUserWithEmailAndPassword(
+                                      email: _emailContactController.text,
+                                      password:
+                                          _passwordContactController.text);
+
+                                  //Success
+                                  Fluttertoast.showToast(
+                                      msg: 'Account Created',
+                                      gravity: ToastGravity.TOP);
+                                } on FirebaseAuthException catch (error) {
+                                  //String msgerror = 'Error sign up';
+                                  Fluttertoast.showToast(
+                                    msg: (error.message).toString(),
+                                    gravity: ToastGravity.TOP,
+                                  );
+                                }
+                                await _mail.doc(idmail).set({
+                                  'to': _emailContactController.text,
+                                  'message': {
+                                    'subject': "Hello from Les detritivores!",
+                                    'text': email_body,
+                                  },
+                                });
+                              }
                               await _contact.doc(idNewContact).set({
                                 'nomContact': _nomContactController.text,
                                 'prenomContact': _prenomContractController.text,
