@@ -68,7 +68,7 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
           height: 40,
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 40,
               ),
               Icon(
@@ -76,7 +76,9 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
                 size: 12,
                 color: Color(graphique.color['default_black']),
               ),
-              SizedBox(width: 5),
+              const SizedBox(
+                width: 5,
+              ),
               RichText(
                 text: TextSpan(
                   children: <TextSpan>[
@@ -95,14 +97,14 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Icon(
                 FontAwesomeIcons.chevronCircleRight,
                 size: 12,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               RichText(
@@ -124,14 +126,14 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Icon(
                 FontAwesomeIcons.chevronCircleRight,
                 size: 12,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               RichText(
@@ -151,7 +153,7 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
             ],
           )),
       Align(
-        alignment: Alignment(-0.9, 0),
+        alignment: const Alignment(-0.9, 0),
         child: Container(
           margin: const EdgeInsets.only(
             left: 20,
@@ -178,13 +180,13 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Icon(
                       FontAwesomeIcons.user,
                       size: 17,
                       color: Color(graphique.color['main_color_2']),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
@@ -211,7 +213,7 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Icon(
@@ -219,7 +221,7 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
                       size: 15,
                       color: Color(graphique.color['main_color_2']),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
@@ -249,7 +251,7 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           width: 400,
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -288,7 +290,7 @@ class _CreateCollecteurPageState extends State<CreateCollecteurPage> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           width: 400,
                           decoration: BoxDecoration(
                             border: Border.all(

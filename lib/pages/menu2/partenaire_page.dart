@@ -54,7 +54,7 @@ class _PartenairePageState extends State<PartenairePage> {
           height: 40,
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 40,
               ),
               Icon(
@@ -62,7 +62,9 @@ class _PartenairePageState extends State<PartenairePage> {
                 size: 12,
                 color: Color(graphique.color['default_black']),
               ),
-              SizedBox(width: 5),
+              const SizedBox(
+                width: 5,
+              ),
               RichText(
                 text: TextSpan(
                   children: <TextSpan>[
@@ -81,14 +83,14 @@ class _PartenairePageState extends State<PartenairePage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Icon(
                 FontAwesomeIcons.chevronCircleRight,
                 size: 12,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               RichText(
@@ -107,7 +109,7 @@ class _PartenairePageState extends State<PartenairePage> {
             ],
           )),
       Align(
-          alignment: Alignment(-0.9, 0),
+          alignment: const Alignment(-0.9, 0),
           child: Container(
               margin: const EdgeInsets.only(
                 left: 20,
@@ -304,13 +306,13 @@ class _PartenairePageState extends State<PartenairePage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   width: 20,
                                 ),
                                 buildTypePartenaireIcon(
                                     typePartenaire:
                                         partenaire['typePartenaire']),
-                                SizedBox(
+                                const SizedBox(
                                   width: 30,
                                 ),
                                 buildStatusPartenaireIcon(

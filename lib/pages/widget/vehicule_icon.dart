@@ -37,7 +37,6 @@ Widget buildVehiculeIcon(
           size: sizeIcon,
           color: Color(int.parse(iconcolor)),
         );
-        ;
       }
   }
 }

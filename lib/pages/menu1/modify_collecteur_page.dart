@@ -87,7 +87,7 @@ class _ModifyCollecteurPageState extends State<ModifyCollecteurPage> {
           height: 40,
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 40,
               ),
               Icon(
@@ -95,7 +95,9 @@ class _ModifyCollecteurPageState extends State<ModifyCollecteurPage> {
                 size: 12,
                 color: Color(graphique.color['default_black']),
               ),
-              SizedBox(width: 5),
+              const SizedBox(
+                width: 5,
+              ),
               RichText(
                 text: TextSpan(
                   children: <TextSpan>[

@@ -70,6 +70,7 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
                   ColorPicker(
                       pickerColor: _colorVehicule,
                       onColorChanged: (color) {
+                        // print('Color type |$color|');
                         setState(() {
                           // ignore: unnecessary_this
                           this._colorVehicule = color;
@@ -117,7 +118,7 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
           height: 40,
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 40,
               ),
               Icon(
@@ -125,7 +126,9 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
                 size: 12,
                 color: Color(graphique.color['default_black']),
               ),
-              SizedBox(width: 5),
+              const SizedBox(
+                width: 5,
+              ),
               RichText(
                 text: TextSpan(
                   children: <TextSpan>[
@@ -144,14 +147,14 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Icon(
                 FontAwesomeIcons.chevronCircleRight,
                 size: 12,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               RichText(
@@ -172,14 +175,14 @@ class _ModifyVehiculePageState extends State<ModifyVehiculePage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Icon(
                 FontAwesomeIcons.chevronCircleRight,
                 size: 12,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               RichText(

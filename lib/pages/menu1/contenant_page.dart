@@ -83,14 +83,14 @@ class _ContenantPageState extends State<ContenantPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Icon(
                       FontAwesomeIcons.chevronCircleRight,
                       size: 12,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     RichText(
@@ -110,7 +110,7 @@ class _ContenantPageState extends State<ContenantPage> {
                   ],
                 )),
             Align(
-                alignment: Alignment(-0.9, 0),
+                alignment: const Alignment(-0.9, 0),
                 child: Container(
                   margin: const EdgeInsets.only(
                     left: 20,
@@ -145,7 +145,7 @@ class _ContenantPageState extends State<ContenantPage> {
                                   size: 17,
                                   color: Color(graphique.color['main_color_2']),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
@@ -184,7 +184,7 @@ class _ContenantPageState extends State<ContenantPage> {
                                       color: Color(
                                           graphique.color['default_black']),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
@@ -217,7 +217,7 @@ class _ContenantPageState extends State<ContenantPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Text(
@@ -229,7 +229,7 @@ class _ContenantPageState extends State<ContenantPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 80,
                           ),
                           Text(
@@ -241,7 +241,7 @@ class _ContenantPageState extends State<ContenantPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 100,
                           ),
                           Text(
@@ -253,7 +253,7 @@ class _ContenantPageState extends State<ContenantPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 100,
                           ),
                           Icon(
@@ -274,7 +274,7 @@ class _ContenantPageState extends State<ContenantPage> {
 
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                         // print('$snapshot');
                         return Column(

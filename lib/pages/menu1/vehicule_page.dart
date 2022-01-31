@@ -416,28 +416,18 @@ class _VehiculePageState extends State<VehiculePage> {
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(left: 70),
+                                        alignment: Alignment.center,
                                         width: 30,
                                         height: 50,
                                         color: Color(graphique
                                             .color['special_bureautique_2']),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              vehicule['orderVehicule'],
-                                              style: TextStyle(
-                                                  color: Color(graphique
-                                                      .color['default_black']),
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
+                                        child: Text(
+                                          vehicule['orderVehicule'],
+                                          style: TextStyle(
+                                              color: Color(graphique
+                                                  .color['default_black']),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       Container(

@@ -333,7 +333,7 @@ class _ContactPageState extends State<ContactPage> {
                                               color: Color(graphique
                                                   .color['default_black']),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
                                             RichText(
@@ -390,7 +390,7 @@ class _ContactPageState extends State<ContactPage> {
                                               color: Color(graphique
                                                   .color['default_black']),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
                                             Text(

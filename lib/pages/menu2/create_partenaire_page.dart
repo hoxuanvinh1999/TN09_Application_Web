@@ -554,7 +554,7 @@ class _CreatePartenairePageState extends State<CreatePartenairePage> {
                                   color:
                                       Color(graphique.color['default_black']),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(

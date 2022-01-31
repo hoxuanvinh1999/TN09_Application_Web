@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, unused_local_variable, non_constant_identifier_names
+// ignore_for_file: prefer_final_fields, unnecessary_null_comparison, unused_local_variable, non_constant_identifier_names, unnecessary_string_interpolations, avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -181,7 +181,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                         Color(graphique.color['main_color_2']),
                                     size: 20,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
@@ -291,12 +291,12 @@ class _CollecteurPageState extends State<CollecteurPage> {
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
                               print('${snapshot.error.toString()}');
-                              return Text('Something went wrong');
+                              return const Text('Something went wrong');
                             }
 
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                             // print('$snapshot');
 
@@ -361,7 +361,9 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                   collecteur[
                                                       'prenomCollecteur'],
                                                   style: TextStyle(
-                                                    color: Colors.black,
+                                                    color: Color(
+                                                        graphique.color[
+                                                            'default_black']),
                                                     fontSize: 12,
                                                   ),
                                                 ),
@@ -386,13 +388,15 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                                   color: Color(graphique
                                                       .color['default_black']),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 10,
                                                 ),
                                                 Text(
                                                   collecteur['siteCollecteur'],
                                                   style: TextStyle(
-                                                      color: Colors.black,
+                                                      color: Color(
+                                                          graphique.color[
+                                                              'default_black']),
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -400,7 +404,7 @@ class _CollecteurPageState extends State<CollecteurPage> {
                                               ],
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 120,
                                           ),
                                           Container(
